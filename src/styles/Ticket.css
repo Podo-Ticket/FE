@@ -1,0 +1,151 @@
+.ticket-container {
+  background-color: #ffffff;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  /* 자식 요소가 넘칠 경우 잘림 */
+  /* 위치 조정을 위해 설정 */
+}
+
+.ticketing-title {
+  color: var(--grey-grey7, #3C3C3C);
+  text-align: center;
+
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  margin-top: 55px;
+  margin-bottom: 30px;
+}
+
+.ticket-index {
+  color: var(--grey-grey-5, #9E9E9E);
+  text-align: center;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.ticket-index-current {
+  color: var(--purple-purple-4-main, #6A39C0);
+  text-align: center;
+
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.swiper-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.ticket-swiper {
+  width: 200%;
+  margin-top: 25px;
+  overflow: hidden;
+  position: absolute;
+  /* 절대 위치로 설정 (선택 사항) */
+  left: -41%;
+  /* 위로 100px 이동 (부모 요소의 경계를 넘어감) */
+  /* 슬라이드가 넘치는 부분을 숨김 */
+}
+
+.swiper-wrapper {
+  display: flex;
+  /* 슬라이드를 가로로 나열 */
+}
+
+.swiper-slide {
+  flex: 0 0 auto;
+  /* 슬라이드의 너비를 자동으로 설정 */
+  width: 220px;
+  /* 카드 너비와 동일하게 설정 */
+}
+
+.ticket-card {
+  width: 220px;
+  background: white;
+  overflow: hidden;
+  /* 카드가 넘어가는 부분을 숨김 */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  /* 최대 너비 설정 */
+}
+
+.ticket-image {
+  width: 100%;
+  height: 300px;
+  object-fit: fill;
+  border-radius: 10px;
+  box-shadow: 0px 10px 15px 5px rgba(0, 0, 0, 0.10);
+}
+
+.ticketing-info-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ticketing-detail {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ticketing-detail p {
+  color: var(--grey-grey7, #3C3C3C);
+
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
+  margin-bottom: 10px;
+}
+
+.ticketing-detail span {
+  color: var(--grey-grey-6, #777);
+
+  margin: 0px 0px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+}
+
+.ticketing-seat {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 10px 0;
+  
+  padding: 3px 19px;
+  border-radius: 20px;
+  border: 1px solid var(--purple-purple-7, #B489FF);
+  background: var(--Podo-Ticket-chip-light-purple02, #F5F4FF);
+}
+
+.ticketing-seat-head {
+  color: var(--purple-purple-4-main, #6A39C0);
+
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  margin-right: 5px;
+}
+
+.ticketing-seat-num {
+  color: var(--purple-purple-4-main, #6A39C0);
+
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
