@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import '../../styles/CompleteModal.css'
-import thanksIcon from '../../assets/thanks_icon.png';
+import thanksIcon from '../../assets/images/thanks_icon.png';
 
 const CompleteModal = ({ isOpen, onClose }) => {
     const [isClosing, setIsClosing] = useState(false);

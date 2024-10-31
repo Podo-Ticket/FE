@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/TicketConfirmation.css';
 
 import Loading from '../components/modal/LoadingModal';
-import poster from '../assets/poster4.png'
 import CompleteModal from '../components/modal/CompleteModal';
-import confirmIcon from '../assets/confirm_icon.png'
+import poster from '../assets/images/poster4.png'
+import confirmIcon from '../assets/images/confirm_icon.png'
 
 const TicketConfirmation = () => {
     const navigate = useNavigate();

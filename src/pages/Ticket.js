@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import EvaluationModal from '../components/modal/EvaluationModal';
-import poster from '../assets/poster4.png';
+import poster from '../assets/images/poster4.png';
 import '../styles/Ticket.css';
 import 'swiper/css';
 import 'swiper/css/navigation';

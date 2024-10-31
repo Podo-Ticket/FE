@@ -78,7 +78,7 @@
   width: 14px; /* Adjust to your image size */
   height: 14px; /* Adjust to your image size */
   margin-right: 3px;
-  background-image: url('../assets/privacy_unchecked.png'); /* Unchecked image */
+  background-image: url('../assets/images/privacy_unchecked.png'); /* Unchecked image */
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
@@ -86,7 +86,7 @@
 }
 
 .agreement-checkbox:checked + .custom-checkbox {
-  background-image: url('../assets/privacy_checked.png'); /* Checked image */
+  background-image: url('../assets/images/privacy_checked.png'); /* Checked image */
 }
 
 .agreement-label {

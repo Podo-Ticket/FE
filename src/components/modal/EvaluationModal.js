@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Frown, Meh, Smile } from 'lucide-react';
 
 import '../../styles/EvaluationModal.css';
-import thanksIcon from '../../assets/thanks_icon.png';
+import thanksIcon from '../../assets/images/thanks_icon.png';
 
 function EvaluationModal({ closeModal }) {
     const [selectedIcon, setSelectedIcon] = useState(null);

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import '../styles/NfcHome.css';
+import '../styles/UserHome.css';
 
 import Loading from '../components/modal/LoadingModal';  // 로딩 컴포넌트 가져오기
 import CompleteModal from '../components/modal/CompleteModal';
 import PhoneModal from '../components/modal/PhoneModal'; // 모달 컴포넌트 불러오기
-import poster from '../assets/poster4.png'
+import poster from '../assets/images/poster4.png'
 
 function App() {
   const navigate = useNavigate();

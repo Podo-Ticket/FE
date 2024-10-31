@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './pages/NfcHome';
+import UserHome from './pages/UserHome';
 import reportWebVitals from './reportWebVitals';
 import SelectSeats from './pages/SelectSeats';
 import TicketConfirmation from './pages/TicketConfirmation';
@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Router>
   <Routes>
-    <Route path="/" element={<App />} />
+    <Route path="/userHome" element={<UserHome />} />
     <Route path="/select" element={<SelectSeats />} />
     <Route path="/confirm" element={<TicketConfirmation />} />
     <Route path="/ticket" element={<TicketScreen />} />
