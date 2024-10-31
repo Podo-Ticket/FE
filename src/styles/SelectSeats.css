@@ -1,0 +1,174 @@
+/* seatSelection.css */
+
+.seat-selection-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.seat-header {
+  display: flex;
+  justify-content: space-between;
+  /* 왼쪽과 중앙 정렬을 위한 공간 분배 */
+  align-items: center;
+  background-color: white;
+  z-index: 10;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+}
+
+.seat-header-text {
+  flex: 1;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.refresh-button {
+  display: flex;
+  align-items: center;
+  margin-left: -65px;
+
+  background: none;
+  border: none;
+  font-size: 20px;
+}
+
+.seat-legend {
+  display: flex;
+  flex-direction: row;
+  /* 세로 방향으로 정렬 */
+  gap: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--grey-grey-3, #E2E2E2);
+  background: var(--Backgrounds-Primary, #FFF);
+  padding: 16px 29px;
+  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 12px;
+}
+
+.available-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--grey-grey-3, #E2E2E2);
+}
+
+.selected-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  border: 0.5px solid var(--purple-purple-6, #9E67FF);
+  background: var(--purple-purple-9, #DFCDFF);
+}
+
+.booked-icon {
+  width: 14px;
+  height: 14px;
+  background-color: gray;
+  margin-right: 5px;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--grey-grey-6, #777);
+}
+
+.confirm-button {
+  width: 90%;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #DFCDFF;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.confirm-button-active {
+  background-color: #6A39C0;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-content {
+  padding: 4px 40px;
+  margin-bottom: 60px;
+  text-align: center;
+  justify-items: center;
+  align-items: center;
+
+  border-radius: 10px;
+  border: 1px solid var(--Podo-Ticket-error-red02, #FF9393);
+  background: var(--Podo-Ticket-error-red03, #FFF4F4);
+
+  transform: translateY(100%); /* 기본 위치를 화면 아래로 설정 */
+  animation: slide-up 0.3s forwards; /* 올라오는 애니메이션 */
+}
+
+.error-message {
+  margin-left: 8px;
+  color: red;
+  font-weight: bold;
+  color: var(--Podo-Ticket-error-red01, #FF1515);
+  text-align: center;
+
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: 0.26px;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%); /* 아래에서 시작 */
+    opacity: 0; /* 투명하게 시작 */
+  }
+  to {
+    transform: translateY(0); /* 최종 위치 */
+    opacity: 1; /* 완전하게 보이게 */
+  }
+}
+
+.close-animation {
+  animation: slide-down 0.3s forwards; /* 닫을 때 아래로 내려가는 애니메이션 */
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(0); /* 현재 위치에서 시작 */
+    opacity: 1; /* 현재 보이기 */
+  }
+  to {
+    transform: translateY(100%); /* 아래로 이동 */
+    opacity: 0; /* 투명하게 */
+  }
+}

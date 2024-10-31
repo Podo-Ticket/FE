@@ -1,0 +1,212 @@
+/* TicketConfirmation.css */
+
+.ticketConfirm-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: white;
+}
+
+.ticketConfirm-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    justify-content: space-between;
+}
+
+.header-time {
+    font-size: 14px;
+}
+
+.ticketConfirm-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 24px;
+}
+
+.ticket-icon {
+    width: 57px;
+    height: 55px;
+    margin-bottom: 20px;
+}
+
+.ticketConfirm-title {
+    color: var(--charcoal_black, #282828);
+    text-align: center;
+
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+}
+
+.ticketConfirm-warning {
+    margin-bottom: 32px;
+
+    color: var(--Podo-Ticket-error-red01, #FF1515);
+
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0.26px;
+}
+
+.screen-divider {
+    width: 120%;
+    height: 12px;
+    margin-bottom: 30px;
+
+    background: var(--grey-grey-2, #F2F2F2);
+}
+
+.ticket-info-card {
+    width: 90%;
+    background-color: #F3F4F6;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 32px;
+}
+
+.info-card-title {
+    margin-bottom: 16px;
+
+    color: var(--ect-black, var(--Labels-Primary, #000));
+
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+}
+
+.info-card-content {
+    display: flex;
+    flex-direction: row;
+    /* 가로 정렬 */
+    gap: 16px;
+    align-items: flex-start;
+    /* 위쪽 정렬 */
+}
+
+.poster-image {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+
+    flex-shrink: 0;
+    /* 이미지 크기 고정 */
+    width: 96px;
+    height: 128px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #1F2937;
+}
+
+.poster-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ticket-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.show-title {
+    margin-bottom: 8px;
+
+    color: var(--ect-black, var(--Labels-Primary, #000));
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+}
+
+.details-row {
+    display: flex;
+    margin-bottom: 10px;
+
+    color: var(--grey-grey7, #3C3C3C);
+
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.details-label {
+    padding: 0 10px;
+    margin-right: 10px;
+    color: #6B7280;
+
+    color: var(--grey-grey-6, #777);
+    text-align: center;
+
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+
+    border-radius: 30px;
+    border: 1px solid var(--grey-grey-3, #E2E2E2);
+    background: var(--Backgrounds-Primary, #FFF);
+
+}
+
+.ticketConfirm-button {
+    width: 100%;
+    background-color: #7C3AED;
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background-color 0.2s;
+}
+
+.ticket-button:hover {
+    background-color: #6D28D9;
+}
+
+.ticket-button:active {
+    background-color: #5B21B6;
+}
+
+/* 반응형 처리를 위한 미디어 쿼리 수정 */
+@media (max-width: 640px) {
+    .info-card-content {
+        flex-direction: row;
+        /* 모바일에서도 가로 정렬 유지 */
+    }
+
+    .poster-image {
+        width: 96px;
+        /* 모바일에서도 크기 유지 */
+        height: 128px;
+    }
+}
+
+/* 스크롤바 스타일 */
+.ticket-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ticket-container::-webkit-scrollbar-track {
+    background: #F3F4F6;
+}
+
+.ticket-container::-webkit-scrollbar-thumb {
+    background: #7C3AED;
+    border-radius: 4px;
+}
+
+.ticket-container::-webkit-scrollbar-thumb:hover {
+    background: #6D28D9;
+}

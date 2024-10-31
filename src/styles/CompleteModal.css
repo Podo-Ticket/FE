@@ -1,0 +1,36 @@
+.modal-overlay-complete {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.modal-overlay-complete.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+.modal-overlay-complete.closing {
+    opacity: 0;
+}
+
+.modal-content-complete {
+    padding: 67px;
+    border-radius: 10px;
+    background: var(--Backgrounds-Primary, #FFF);
+
+    transition: transform 0.5s ease;
+}
+
+.thanks-icon-complete{
+    width: 64px;
+    height: 64px;
+}

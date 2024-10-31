@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './css/index.css';
-import App from './component/App';
+
+import App from './pages/NfcHome';
 import reportWebVitals from './reportWebVitals';
-import SeatSelection from './component/seatSelection';
-import TicketScreen from './component/ticket';
+import SelectSeats from './pages/SelectSeats';
+import TicketConfirmation from './pages/TicketConfirmation';
+import TicketScreen from './pages/Ticket';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -12,7 +13,8 @@ root.render(
   <Router>
   <Routes>
     <Route path="/" element={<App />} />
-    <Route path="/seat-selection" element={<SeatSelection />} />
+    <Route path="/select" element={<SelectSeats />} />
+    <Route path="/confirm" element={<TicketConfirmation />} />
     <Route path="/ticket" element={<TicketScreen />} />
   </Routes>
   </Router>
