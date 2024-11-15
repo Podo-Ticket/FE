@@ -1,0 +1,171 @@
+/* TicketConfirmation.css */
+
+.ticketConfirm-container {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
+    overflow: hidden;
+}
+
+.ticketConfirm-header {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    margin-left: 17px;
+    justify-content: space-between;
+}
+
+.ticketConfirm-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.ticket-icon {
+    width: 57px;
+    height: 55px;
+    margin-bottom: 20px;
+}
+
+.ticketConfirm-title {
+    margin-bottom: 0px;
+
+    color: var(--charcoal_black, #282828);
+    text-align: center;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+}
+
+.ticketConfirm-warning {
+    margin-bottom: 30px;
+
+    color: var(--Podo-Ticket-error-red01, #FF1515);
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0.26px;
+}
+
+.screen-divider {
+    width: 120%;
+    height: 12px;
+    margin-bottom: 30px;
+
+    background: var(--grey-grey-2, #F2F2F2);
+}
+
+.ticket-info-card {
+    width: 100%;
+    background-color: #F3F4F6;
+    border-radius: 10px;
+
+    padding: 23px;
+    margin-bottom: 25px;
+}
+
+.info-card-title {
+    margin-bottom: 20px;
+
+    color: var(--ect-black, var(--Labels-Primary, #000));
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+}
+
+.info-card-content {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+    gap: 12px;
+}
+
+.confirm-poster-image {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+
+    width: 114px;
+    height: 157px;
+    border-radius: 10px;
+
+    background-color: #1F2937;
+}
+
+.confirm-poster-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+
+    object-fit: fill;
+    box-shadow: 0px 0px 9px 6px rgba(0, 0, 0, 0.03);
+}
+
+.confirm-ticket-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.confirm-show-title {
+    margin-bottom: 11px;
+
+    color: var(--ect-black, var(--Labels-Primary, #000));
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+}
+
+.confirm-details-row {
+    margin-bottom: 10px;
+
+    color: var(--grey-grey7, #3C3C3C);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.confirm-details-label {
+    border-radius: 30px;
+    border: 1px solid var(--grey-grey-3, #E2E2E2);
+    background: var(--Backgrounds-Primary, #FFF);
+
+    padding: 2px 9px;
+    margin-right: 8px;
+
+    color: var(--grey-grey-6, #777);
+    text-align: center;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.confirm-details-text {
+    color: var(--grey-grey7, #3C3C3C);
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.ticketConfirm-button {
+    width: 100%;
+    background-color: #7C3AED;
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background-color 0.2s;
+}

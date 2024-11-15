@@ -1,0 +1,328 @@
+.list-management-container {}
+
+.list-management-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+
+    padding: 20px 30px;
+
+}
+
+.list-management-title {
+    flex: 1;
+    margin-left: 10%;
+
+    color: var(--grey-grey7, #3C3C3C);
+    text-align: center;
+
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.insert-icon {
+    padding-right: 15px;
+}
+
+.list-management-container-top {
+    background: var(--Backgrounds-Primary, #FFF);
+
+    padding: 8px;
+    width: 100%;
+    border: 1px solid lightgray;
+}
+
+.list-management-container-top select:focus {
+    outline: none;
+    /* 기본 아웃라인 제거 */
+    border: 1px solid #CAABFF;
+    ;
+    /* 보라색 테두리 추가 */
+    box-shadow: 0 0 8px #CAABFF;
+    ;
+    /* 보라색 그림자 효과 추가 */
+}
+
+.session-picker {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+
+    width: 100%;
+
+    padding: 0px 20px;
+    color: var(--grey-grey7, #3C3C3C);
+
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.seesion-picker-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    position: relative;
+}
+
+.session-select {
+    appearance: none;
+    /* 기본 드롭다운 아이콘 숨기기 (크롬 포함) */
+    -webkit-appearance: none;
+    /* Safari에서 드롭다운 아이콘 숨기기 */
+    -moz-appearance: none;
+    /* Firefox에서 드롭다운 아이콘 숨기기 */
+    
+    width: 100%;
+    align-items: center;
+
+    font-size: 16px;
+    padding: 8px;
+    border: 0px solid #ccc;
+    background: var(--Podo-Ticket-BG, #FFF);
+    color: black;
+
+    color: var(--grey-grey7, #3C3C3C);
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+.list-management-container-mid {
+    padding: 15px;
+    border-bottom: 1px solid lightgray;
+    width: 100%;
+}
+
+/* 검색 바 */
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    background-color: white;
+    padding: 6px 15px;
+    font-size: 15px;
+
+    border-radius: 10px;
+    border: 0.5px solid var(--grey-grey-4, #BABABA);
+    background: var(--Backgrounds-Primary, #FFF);
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+}
+
+.search-bar input::placeholder {
+    color: var(--grey-grey-4, #BABABA);
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+.search-button {
+    background: var(--Backgrounds-Primary, #FFF);
+    padding-right: 0px;
+}
+
+.filter-buttons-container {
+    display: flex;
+    align-items: center;
+}
+
+/* 필터 버튼 스타일 */
+.filter-buttons {
+    display: flex;
+    justify-content: center;
+    border-radius: 30px;
+    width: 80%;
+}
+
+.filter-buttons button {
+    padding: 5px 14px;
+    color: #BABABA;
+    margin: 2px;
+
+    border-radius: 30px;
+    border: 1px solid var(--grey-grey-3, #E2E2E2);
+    background: var(--Backgrounds-Primary, #FFF);
+
+    text-align: center;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.filter-buttons button.active {
+    border: 1px solid var(--purple-purple-7, #B489FF);
+    background: var(--Podo-Ticket-chip-light-purple02, #F5F4FF);
+    color: var(--purple-purple-4-main, #6A39C0);
+}
+
+.search-results {
+    width: 100%;
+}
+
+.result-list {
+    list-style: none;
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+}
+
+.result-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+
+    width: 100%;
+
+    margin-bottom: 10px;
+    padding: 0px 0px;
+
+    border-radius: 10px;
+    border: 0.5px solid var(--purple-purple-7, #B489FF);
+    background: var(--Backgrounds-Primary, #FFF);
+}
+
+.result-list li.completed {
+    border: 0.5px solid var(--grey-grey-4, #BABABA);
+}
+
+.result-list li .info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 99%;
+
+    padding: 10px 16px;
+}
+
+.result-list li .name {
+    color: var(--grey-grey7, #3C3C3C);
+
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+}
+
+.result-list li .text-divider {
+    color: var(--grey-grey4, #BABABA);
+
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+
+    margin: 0 9px;
+}
+
+.result-list li .phone {
+    color: var(--grey-grey7, #3C3C3C);
+
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 12px;
+}
+
+.result-list li .status {
+    padding: 5px 13px;
+
+    color: var(--ect-white, var(--Backgrounds-Primary, #FFF));
+    text-align: center;
+
+    font-size: 9px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 11px;
+    letter-spacing: -0.4px;
+
+    border-radius: 30px;
+    background: var(--Main, #6A39C0);
+}
+
+.result-list li.completed .status {
+    padding: 5px 8px;
+    background: var(--grey-grey-5, #9E9E9E);
+}
+
+.result-list li .info-divider {
+    width: 100%;
+    border-bottom: 0.5px solid var(--purple-purple-7, #B489FF);
+    ;
+}
+
+.result-list li.completed .info-divider {
+    width: 100%;
+    border-bottom: 0.5px solid #BABABA;
+}
+
+.result-list li .seat-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    height: 100%;
+    padding: 6px 20px;
+    border-radius: 0px 0px 10px 10px;
+    background: var(--Podo-Ticket-chip-light-purple02, #F5F4FF);
+    color: var(--grey-grey7, #3C3C3C);
+
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 12px;
+}
+
+.result-list li.completed .seat-info {
+    background: var(--grey-grey-2, #F2F2F2);
+}
+
+.result-list li .seats {
+    color: var(--grey-grey7, #3C3C3C);
+    text-align: right;
+
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.result-list li.completed .seat-text {
+    color: var(--grey-grey-6, #777);
+
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 12px;
+}
+
+.result-list li.completed .seats {
+    color: var(--grey-grey-6, #777);
+    text-align: right;
+
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+}

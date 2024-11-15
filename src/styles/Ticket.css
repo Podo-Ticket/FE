@@ -1,0 +1,180 @@
+.ticket-container {
+  text-align: center;
+  overflow: hidden;
+}
+
+.ticketing-title-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.ticketing-title {
+  flex: 1;
+
+  margin-top: 40px;
+  margin-bottom: 30px;
+  margin-left: 62px;
+
+  color: var(--grey-grey7, #3C3C3C);
+  text-align: center;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.ticket-info-icon {
+  width: 26px;
+  height: 26px;
+
+  margin-right: 36px;
+}
+
+.ticket-index {
+  color: var(--grey-grey-5, #9E9E9E);
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: 4px;
+}
+
+.ticket-index-current {
+  color: var(--purple-purple-4-main, #6A39C0);
+  text-align: center;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.swiper-container {
+  width: 100%;
+
+  overflow: hidden;
+}
+
+.ticket-swiper {
+  width: 200%;
+  margin-top: 25px;
+  overflow: hidden;
+  position: absolute;
+  left: -41%;
+}
+
+.swiper-wrapper {
+  display: flex;
+}
+
+.swiper-slide {
+  flex: 0 0 auto;
+  width: 220px;
+}
+
+.ticket-card {
+  width: 220px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-image {
+  width: 100%;
+  height: 300px;
+  object-fit: fill;
+  border-radius: 10px;
+  box-shadow: 0px 10px 15px 5px rgba(0, 0, 0, 0.10);
+}
+
+.ticketing-info-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ticketing-detail {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ticketing-detail p {
+  color: var(--grey-grey7, #3C3C3C);
+
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
+  margin-bottom: 10px;
+}
+
+.ticketing-detail span {
+  color: var(--grey-grey-6, #777);
+
+  margin: 0px 0px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+}
+
+.ticketing-seat {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 20px 0;
+
+  padding: 3px 19px;
+  border-radius: 20px;
+  border: 1px solid var(--purple-purple-7, #B489FF);
+  background: var(--Podo-Ticket-chip-light-purple02, #F5F4FF);
+}
+
+.ticketing-seat-head {
+  color: var(--purple-purple-4-main, #6A39C0);
+
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  margin-right: 5px;
+}
+
+.ticketing-seat-num {
+  color: var(--purple-purple-4-main, #6A39C0);
+
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #6A39C0;
+  /* 화살표 색상 */
+  width: 40px;
+  /* 화살표 너비 */
+  height: 40px;
+  /* 화살표 높이 */
+  background: rgba(255, 255, 255, 0.7);
+  /* 배경색 */
+  border-radius: 50%;
+  /* 둥근 모양 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  /* 그림자 효과 */
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 20px;
+  /* 화살표 크기 */
+}

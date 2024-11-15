@@ -1,13 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+
+import UserHome from './pages/UserHome';
+import OnSiteReserve from './pages/OnSiteReserve';
+import SelectSeats from './pages/SelectSeats';
+import TicketConfirmation from './pages/TicketConfirmation';
+import TicketScreen from './pages/Ticket';
+
+import AdminHome from './pages/AdminHome';
+import RealTimeSeats from "./pages/RealTimeSeats";
+import ListManagement from "./pages/ListManagement";
+import OnSiteManagement from "./pages/OnSiteManagement";
+import InsertList from './pages/InsertList';
+import DeleteList from './pages/DeleteList';
+import ModifyList from './pages/ModifyList';
+
+import './styles/index.css'
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<UserHome />} />
+        <Route path="/reserve" element={<OnSiteReserve />} />
+        <Route path="/select" element={<SelectSeats />} />
+        <Route path="/confirm" element={<TicketConfirmation />} />
+        <Route path="/ticket" element={<TicketScreen />} />
+
+        <Route path="/admin" element={<AdminHome />} />
+        <Route path="/seats" element={<RealTimeSeats />} />
+        <Route path="/manage" element={<ListManagement />} />
+        <Route path="/onsite" element={<OnSiteManagement />} />
+        <Route path="/insert" element={<InsertList />} />
+        <Route path="/delete" element={<DeleteList />} />
+        <Route path="/modify" element={<ModifyList />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

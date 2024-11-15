@@ -1,0 +1,89 @@
+.modal-overlay-delete {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content-delete {
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  width: 90%;
+  text-align: center;
+}
+
+.modal-content-delete h2 {
+  margin-bottom: 5px;
+
+  color: var(--grey-grey7, #3C3C3C);
+  text-align: center;
+
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.modal-content-delete span {
+  color: var(--grey-grey-5, #9E9E9E);
+  text-align: center;
+
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.delete-modal-buttons {
+  margin: 16px 16px;
+}
+
+.delete-back-button {
+  flex: 1;
+  /* 버튼의 너비를 자동으로 설정 */
+  border: 0px solid #6A39C0;
+  /* 보라색 테두리 */
+  border-radius: 8px;
+  /* 둥근 테두리 */
+  font-size: 15px;
+  /* 텍스트 크기 13px */
+  cursor: pointer;
+  /* 배경색 */
+  margin-bottom: 0px;
+  background: #E2E2E2;
+  /* 티켓 받기 버튼 배경: 보라색 */
+  color: #777;
+  /* 텍스트 색상: 흰색 */
+  padding: 10px 30px;
+  margin: 0 4px;
+  width: 45%;
+}
+
+.delete-ticket-button {
+  flex: 1;
+  /* 버튼의 너비를 자동으로 설정 */
+  border: 0px solid #6A39C0;
+  /* 보라색 테두리 */
+  border-radius: 8px;
+  /* 둥근 테두리 */
+  font-size: 15px;
+  /* 텍스트 크기 13px */
+  cursor: pointer;
+  background-color: #fff;
+  /* 배경색 */
+  margin-bottom: 0px;
+  background-color: #6A39C0;
+  /* 티켓 받기 버튼 배경: 보라색 */
+  color: white;
+  /* 텍스트 색상: 흰색 */
+  padding: 10px 30px;
+  margin: 0 4px;
+  width: 45%;
+}

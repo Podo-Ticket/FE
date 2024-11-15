@@ -1,0 +1,218 @@
+/* seatSelection.css */
+
+.seat-selection-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.seat-header {
+  display: flex;
+  justify-content: space-between;
+  /* 왼쪽과 중앙 정렬을 위한 공간 분배 */
+  align-items: center;
+  background-color: white;
+  z-index: 10;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+}
+
+.seat-header-text {
+  flex: 1;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.refresh-button {
+  display: flex;
+  align-items: center;
+  margin-left: -65px;
+
+  background: none;
+  border: none;
+  font-size: 20px;
+}
+
+.seats-time-select-container {
+  width: 90%;
+
+  border-radius: 10px;
+  border: 1px solid var(--grey-grey-3, #E2E2E2);
+  background: var(--Backgrounds-Primary, #FFF);
+  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
+}
+
+.seats-time-select-container select:focus {
+  outline: none;
+  border: 1px solid #CAABFF;
+  box-shadow: 0 0 8px #CAABFF;
+}
+
+.session-picker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+
+  width: 100%;
+
+  padding: 0px 20px;
+  color: var(--grey-grey7, #3C3C3C);
+
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.seesion-picker-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  position: relative;
+}
+
+.calendar-icon {
+  width: 15px;
+  height: 16px;
+}
+
+.session-select {
+  appearance: none;
+  /* 기본 드롭다운 아이콘 숨기기 (크롬 포함) */
+  -webkit-appearance: none;
+  /* Safari에서 드롭다운 아이콘 숨기기 */
+  -moz-appearance: none;
+  /* Firefox에서 드롭다운 아이콘 숨기기 */
+
+  width: 100%;
+  align-items: center;
+
+  font-size: 16px;
+  padding: 8px;
+  border: 0px solid #ccc;
+  background: var(--Podo-Ticket-BG, #FFF);
+  color: black;
+
+  color: var(--grey-grey7, #3C3C3C);
+
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.admin-seat-legend {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 90%;
+
+  gap: 15px;
+  margin-bottom: 0px;
+  border-radius: 10px;
+  border: 1px solid var(--grey-grey-3, #E2E2E2);
+  border-top: none;
+  background: var(--Backgrounds-Primary, #FFF);
+  padding: 16px 17px;
+
+  position: absolute;
+  /* 절대 위치 지정 */
+  top: 83%;
+  /* 원하는 위치로 조정 */
+  left: 50%;
+  /* 수평 중앙 정렬 */
+  transform: translate(-50%, -50%);
+  /* 중앙 정렬을 위한 변환 */
+  z-index: 5;
+  /* 다른 요소들보다 위에 표시되도록 z-index 설정 */
+
+  color: var(--grey-grey7, #3C3C3C);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 12px;
+}
+
+.admin-legend {
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 12px;
+}
+
+.admin-available-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--grey-grey-3, #E2E2E2);
+}
+
+.admin-booked-icon {
+  width: 14px;
+  height: 14px;
+  background-color: gray;
+  margin-right: 5px;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--grey-grey-6, #777);
+  position: relative;
+}
+
+.admin-booked-icon::before,
+.admin-booked-icon::after {
+  content: '';
+  /* 비어 있는 내용을 추가 */
+  position: absolute;
+  top: 50%;
+  /* 세로 중앙에 위치 */
+  left: 50%;
+  /* 가로 중앙에 위치 */
+  width: 50px;
+  /* X 선의 길이 */
+  height: 1px;
+  /* 선의 두께 */
+  background-color: white;
+  /* X의 색상 */
+  transform-origin: center;
+}
+
+.admin-booked-icon::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+  /* 대각선 첫 번째 */
+}
+
+.admin-booked-icon::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+  /* 대각선 두 번째 */
+}
+
+.admin-legend-button {
+  border-radius: 20px;
+  border: 1px solid var(--purple-purple-7, #B489FF);
+  background: var(--Podo-Ticket-chip-light-purple02, #F5F4FF);
+
+  margin-left: 75px;
+  padding: 2px 10px;
+
+  color: var(--purple-purple-4-main, #6A39C0);
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+}

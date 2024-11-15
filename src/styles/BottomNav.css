@@ -1,0 +1,111 @@
+/* BottomNav 스타일 */
+.bottom-nav {
+    position: fixed;
+    /* 화면에 고정 */
+    bottom: 0;
+    /* 하단에 고정 */
+    left: 0;
+    right: 0;
+    height: 70px;
+    /* 높이 설정 */
+    background-color: white;
+    border-top: 1px solid #ccc;
+    box-shadow: 0px 0px 9px 6px rgba(0, 0, 0, 0.03);
+    border-radius: 20px 20px 0px 0px;
+    display: flex;
+    /* Flexbox로 가로 정렬 */
+    justify-content: space-around;
+    /* 두 div를 가로로 균등하게 배치 */
+    align-items: center;
+    /* 수직 중앙 정렬 */
+    z-index: 1000;
+    /* 다른 요소 위에 위치 */
+}
+
+/* 각 버튼의 스타일 */
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    /* 아이콘과 텍스트를 세로로 배치 */
+    align-items: center;
+    /* 중앙 정렬 */
+    justify-content: center;
+
+    color: var(--grey-grey-5, #9E9E9E);
+    text-align: center;
+    
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    /* 166.667% */
+
+    border-radius: 10px;
+    width: 45%;
+    height: 100%;
+}
+
+/* 활성화된(nav-item) div에 연보라색 배경 적용 */
+.nav-item.active {
+    color: #6A39C0;
+    /* 텍스트 색상 */
+}
+
+.icon-seat {
+    width: 27px;
+    height: 19px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.icon-list {
+    width: 27px;
+    height: 19px;
+    margin-top: 10px;
+    margin-bottom: 7px;
+}
+
+.nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    
+    color: inherit;
+    
+    width: inherit;
+    height: inherit;
+}
+
+.nav-link>p {
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item-divider{
+    height: 100%;
+    border: 0.8px solid lightgray;
+}
+
+.nav-item-accept {
+    background: var(--grey-grey-1, #FBFBFB);
+
+    color: var(--purple-purple-4-main, #6A39C0);
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+}
+
+.nav-item-reject {
+    background: var(--grey-grey-1, #FBFBFB);
+
+    color: var(--grey-grey7, #3C3C3C);
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+}

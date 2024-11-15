@@ -1,0 +1,121 @@
+.on-site-reserve-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.on-site-reserve-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    width: 100%;
+    padding: 20px 30px;
+    border-bottom: 1px solid lightgray;
+}
+
+.on-site-reserve-title-text {
+    margin-right: 33%;
+    margin-top: 1px;
+
+    color: var(--grey-grey7, #3C3C3C);
+    text-align: center;
+
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.reserve-form-container {
+    padding: 15px 30px;
+}
+
+.reserve-form-container label {
+    display: block;
+    margin: 10px 0px;
+
+    color: var(--grey-grey7, #3C3C3C);
+
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.reserve-select-container {
+    margin-top: 10px;
+}
+
+.reserve-form-container input,
+.reserve-form-container select {
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 15px;
+
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid var(--grey-grey-6, #777);
+    background: var(--Backgrounds-Primary, #FFF);
+
+    color: var(--grey-grey7, #3C3C3C);
+
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 26px;
+}
+
+.reserve-form-container input::placeholder {
+    color: var(--grey-grey-5, #9E9E9E);
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+.reserve-form-container input:focus {
+    outline: none; /* 기본 아웃라인 제거 */
+    border: 1px solid #CAABFF;; /* 보라색 테두리 추가 */
+    box-shadow: 0 0 8px #CAABFF;; /* 보라색 그림자 효과 추가 */
+}
+
+.reserve-form-container select:focus {
+    outline: none; /* 기본 아웃라인 제거 */
+}
+
+.reserve-select-placeholder {
+    color: var(--grey-grey-5, #9E9E9E);
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+.reserve-request-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 100px;
+    background: var(--purple-purple-4-main, #6A39C0);
+    /* 버튼 색상 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+
+    color: var(--ect-white, var(--Backgrounds-Primary, #FFF));
+    text-align: center;
+
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 27px;
+    /* 150% */
+}
+
+.reserve-request-button:disabled {
+    background: var(--purple-purple-9, #DFCDFF);
+    cursor: not-allowed;
+    /* 비활성화 시 커서 모양 */
+}
