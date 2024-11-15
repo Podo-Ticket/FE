@@ -1,0 +1,65 @@
+.modal-overlay-reserve-way {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal-content-reserve-way {
+    width: 90%;
+    background: var(--Backgrounds-Primary, #FFF);
+
+    padding: 9px;
+
+    border-radius: 10px;
+    text-align: center;
+}
+
+.reserve-way-button-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.reserve-way-icon{
+    width: 44px;
+    height: 44px;
+
+    margin-bottom: 9px;
+}
+
+.reserve-way-button-container p {
+    margin: 0px;
+    margin-bottom: 2px;
+
+    color: #282828;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+}
+
+.reserve-way-button-container span {
+    color: var(--grey-grey-6, #777);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+.check-reservation-button,
+.reserve-button  {
+    padding: 15px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+
+    border-radius: 10px;
+    border: 1px solid var(--purple-purple-8-line, #CAABFF);
+    background: var(--Podo-Ticket-chip-light-purple02, #F5F4FF);
+}

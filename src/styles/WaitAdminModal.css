@@ -1,0 +1,58 @@
+.modal-overlay-wait-admin {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal-content-wait-admin {
+    width: 90%;
+    background: var(--Backgrounds-Primary, #FFF);
+
+    padding: 25px;
+
+    border-radius: 10px;
+    text-align: center;
+}
+
+.modal-content-wait-admin p {
+    margin: 0px;
+    margin: 5px 0;
+    color: var(--grey-grey7, #3C3C3C);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.modal-content-wait-admin span {
+    margin-bottom: 20px;
+
+    color: var(--Podo-Ticket-error-red01, #FF1515);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+.wait-admin-button {
+    width: 50%;
+    padding: 10px;
+    background: var(--purple-purple-4-main, #6A39C0);
+    border: none;
+    border-radius: 10px;
+
+    margin-top: 20px;
+
+    color: var(--ect-white, var(--Backgrounds-Primary, #FFF));
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 26px;
+}

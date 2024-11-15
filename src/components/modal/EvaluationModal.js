@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Frown, Meh, Smile } from 'lucide-react';
 
 import '../../styles/EvaluationModal.css';
-import thanksIcon from '../../assets/images/thanks_icon.png';
+import thanksIcon from '../../assets/images/check_icon.png';
+import smileIcon from '../../assets/images/eval_smile.png';
+import mehIcon from '../../assets/images/eval_meh.png';
+import frownIcon from '../../assets/images/eval_frown.png';
 
 function EvaluationModal({ closeModal }) {
     const [selectedIcon, setSelectedIcon] = useState(null);
@@ -26,7 +28,7 @@ function EvaluationModal({ closeModal }) {
         <div className={`modal-overlay-evaluation ${isClosing ? 'closing' : ''}`} >
             {showThankYou ? (
                 <div className="modal-content-evaluation">
-                    <img src={thanksIcon} className="thanks-icon"></img>;
+                    <img src={thanksIcon} className="thanks-icon"/>
                     <div className="thank-you-message">평가에 응해주셔서 감사합니다</div>
                 </div>
             ) : (
@@ -37,7 +39,7 @@ function EvaluationModal({ closeModal }) {
                             <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 58 58" fill="none">
                                 <circle cx="29" cy="29" r="29" fill="#F2F2F2" />
                             </svg>
-                            <Frown className="evaluation-choice-icon" />
+                            <img src={frownIcon} className="evaluation-choice-icon" />
                             <div className="evaluation-choice-text">더 귀찮았아요</div>
                             {selectedIcon === 'frown' && <div className="overlay-circle" />}
                         </div>
@@ -46,7 +48,7 @@ function EvaluationModal({ closeModal }) {
                             <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 58 58" fill="none">
                                 <circle cx="29" cy="29" r="29" fill="#F2F2F2" />
                             </svg>
-                            <Meh className="evaluation-choice-icon" />
+                            <img src={mehIcon} className="evaluation-choice-icon" />
                             <div className="evaluation-choice-text">비슷해요</div>
                             {selectedIcon === 'meh' && <div className="overlay-circle" />}
                         </div>
@@ -55,7 +57,7 @@ function EvaluationModal({ closeModal }) {
                             <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 58 58" fill="none">
                                 <circle cx="29" cy="29" r="29" fill="#F2F2F2" />
                             </svg>
-                            <Smile className="evaluation-choice-icon" />
+                            <img src={smileIcon} className="evaluation-choice-icon" />
                             <div className="evaluation-choice-text">더 편해졌어요!</div>
                             {selectedIcon === 'smile' && <div className="overlay-circle" />}
                         </div>

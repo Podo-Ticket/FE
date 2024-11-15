@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect }  from 'react';
 
 import '../styles/SeatMap.css';
 
@@ -24,9 +24,22 @@ const rows_r = {
   다8: [59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69]
 };
 
-const bookedSeats = ["나11", "나12", "나13"];
+const bookedSeats = [];
 
 const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpen }) => {
+  const seatMapRef = useRef(null);
+
+  useEffect(() => {
+    // 컴포넌트가 처음 렌더링될 때 seat-map-customer 컨테이너의 중간으로 스크롤
+    if (seatMapRef.current) {
+      seatMapRef.current.scrollTo({
+        top: seatMapRef.current.scrollHeight / 2 - seatMapRef.current.clientHeight / 2,
+        left: seatMapRef.current.scrollWidth / 2,
+        behavior: 'smooth'
+      });
+    }
+  }, []);
+
 
   const handleSeatClick = (row, seat) => {
     const seatId = `${row}${seat}`;
@@ -42,7 +55,7 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
   return (
     <div className="seat-map">
       <div className="stage-container">
-        <svg xmlns="http://www.w3.org/2000/svg" width="329" height="40" viewBox="0 0 329 40" fill="none" className="stage">
+        <svg xmlns="http://www.w3.org/2000/svg" width="360" height="60" viewBox="0 0 329 40" fill="none" className="stage">
           <g filter="url(#filter0_d_710_26307)">
             <path d="M6.85747 7.3947C5.92831 4.19588 8.32797 1 11.659 1H317.341C320.672 1 323.072 4.19588 322.143 7.3947L316.914 25.3947C316.294 27.5307 314.337 29 312.113 29H16.8874C14.6632 29 12.7064 27.5307 12.0859 25.3947L6.85747 7.3947Z" fill="#F2F2F2" />
             <path d="M7.33762 7.25523C6.50138 4.3763 8.66108 1.5 11.659 1.5H317.341C320.339 1.5 322.499 4.37629 321.662 7.25523L316.434 25.2552C315.876 27.1776 314.114 28.5 312.113 28.5H16.8874C14.8856 28.5 13.1245 27.1776 12.5661 25.2552L7.33762 7.25523Z" stroke="#E2E2E2" />

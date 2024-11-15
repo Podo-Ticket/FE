@@ -1,0 +1,143 @@
+.modal-overlay-plus-info {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content-plus-info {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    height: 85%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.plus-info-nav {
+
+    border-radius: 30px;
+    background: var(--grey-grey-2, #F2F2F2);
+
+    padding: 5px;
+    margin-bottom: 15px;
+}
+
+.plus-info-nav button {
+    width: 30%;
+    border: none;
+    border-radius: 30px;
+    background: var(--grey-grey-2, #F2F2F2);
+
+    padding: 5px 9px;
+
+    color: var(--grey-grey-5, #9E9E9E);
+    text-align: center;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.plus-info-nav button.active {
+    border-radius: 30px;
+    border: 1px solid var(--purple-purple-7, #B489FF);
+    background: var(--Podo-Ticket-chip-light-purple02, #F5F4FF);
+
+    color: var(--purple-purple-4-main, #6A39C0);
+    text-align: center;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.seat-description {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 55%;
+
+    margin: 20px 0;
+    overflow: auto;
+}
+
+.seat-description-map {
+    width: 180%;
+    height: 100%;
+
+    border-radius: 10px;
+    border: 1px solid var(--grey-grey-3, #E2E2E2);
+    background: var(--Backgrounds-Primary, #FFF);
+    box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+.venue-map-description {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 55%;
+
+    margin: 20px 0;
+    text-align: center;
+
+    overflow: auto;
+}
+
+.venue-map {
+    width: 150%;
+}
+
+.venue-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.performance-description {
+    width: 100%;
+    height: 60%;
+
+    text-align: left;
+    border-radius: 10px;
+    border: 1px solid var(--grey-grey-3, #E2E2E2);
+    background: var(--Backgrounds-Primary, #FFF);
+    box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
+
+    padding: 10px;
+
+    color: var(--grey-grey-6, #777);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 14px;
+}
+
+.modal-plus-info-close-button {
+    width: 50%;
+
+    margin-top: 20px;
+    padding: 11px 48px;
+    border-radius: 10px;
+    background: var(--purple-purple-4-main, #6A39C0);
+
+    color: var(--ect-white, var(--Backgrounds-Primary, #FFF));
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 26px;
+}
+

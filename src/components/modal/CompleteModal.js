@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import '../../styles/CompleteModal.css'
-import thanksIcon from '../../assets/images/thanks_icon.png';
+import checkIcon from '../../assets/images/check_icon.png';
 
 const CompleteModal = ({ isOpen, onClose }) => {
     const [isClosing, setIsClosing] = useState(false);
@@ -27,7 +27,7 @@ const CompleteModal = ({ isOpen, onClose }) => {
     return (
         <div className={`modal-overlay-complete visible ${isClosing ? 'closing' : ''}`}>
             <div className="modal-content-complete">
-                <img src={thanksIcon} className="thanks-icon-complete" alt="Thank You" />
+                <img src={checkIcon} className="check-icon-complete" alt="Thank You" />
             </div>
         </div>
     );

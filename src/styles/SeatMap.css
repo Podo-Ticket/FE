@@ -30,7 +30,7 @@
     line-height: 20px;
     margin-top: 20px;
     position: relative; /* 위치 조정 */
-    transform: translateX(200px); /* 오른쪽으로 이동 */
+    transform: translateX(220px); /* 오른쪽으로 이동 */
 }
 
 .seat-map-customer {
@@ -64,6 +64,7 @@
     margin: 2px;
     padding: 0px;
     border-radius: 5px;
+    border: none;
     background-color: #f0f0f0;
 
     text-align: center;

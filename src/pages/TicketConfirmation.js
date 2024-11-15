@@ -7,7 +7,7 @@ import '../styles/TicketConfirmation.css';
 
 import Loading from '../components/modal/LoadingModal';
 import CompleteModal from '../components/modal/CompleteModal';
-import poster from '../assets/images/poster4.png'
+import poster from '../assets/images/poster.jpg'
 import confirmIcon from '../assets/images/confirm_icon.png'
 
 const TicketConfirmation = () => {
@@ -16,7 +16,7 @@ const TicketConfirmation = () => {
     const [isComplete, setIsComplete] = useState(false);
 
     const ticketInfo = {
-        title: "밤으로의 긴 여로",
+        title: "옥탑방 고양이",
         date: "2024.10.09 (월) 17:00",
         location: "광운대학교 새빛관 대강의실",
         seats: ["다19", "다20", "다21", "다22"]
@@ -67,26 +67,26 @@ const TicketConfirmation = () => {
                     <h2 className="info-card-title">발권 정보 요약</h2>
                     <div className="info-card-content">
 
-                        <div className="poster-image">
+                        <div className="confirm-poster-image">
                             <img
                                 src={poster}
                                 alt="공연 포스터"
                             />
                         </div>
 
-                        <div className="ticket-details">
-                            <span className="show-title">{ticketInfo.title}</span>
-                            <div className="details-row">
-                                <span className="details-label">시간</span>
-                                <span>{ticketInfo.date}</span>
+                        <div className="confirm-ticket-details">
+                            <span className="confirm-show-title">{ticketInfo.title}</span>
+                            <div className="confirm-details-row">
+                                <span className="confirm-details-label">시간</span>
+                                <span className="confirm-details-text">{ticketInfo.date}</span>
                             </div>
-                            <div className="details-row">
-                                <span className="details-label">장소</span>
-                                <span>{ticketInfo.location}</span>
+                            <div className="confirm-details-row">
+                                <span className="confirm-details-label">장소</span>
+                                <span className="confirm-details-text">{ticketInfo.location}</span>
                             </div>
-                            <div className="details-row">
-                                <span className="details-label">좌석</span>
-                                <span>{ticketInfo.seats.join(", ")}</span>
+                            <div className="confirm-details-row">
+                                <span className="confirm-details-label">좌석</span>
+                                <span className="confirm-details-text">{ticketInfo.seats.join(", ")}</span>
                             </div>
                         </div>
 

@@ -20,7 +20,7 @@
 .modal-content-evaluation {
     padding: 35px;
 
-    width: 70%;
+    width: 90%;
     border-radius: 10px;
     background: var(--Backgrounds-Primary, #FFF);
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -46,7 +46,9 @@
 
 .evaluation-choice {
     position: relative;
+
     margin: 0 20px;
+    margin-bottom: 10px;
 }
 
 .evaluation-choice-icon {
@@ -54,14 +56,13 @@
     height: 45px;
     position: absolute;
     top: 6.5px;
-    /* Adjust to center the Frown icon */
     left: 6.5px;
     z-index: 2;
 }
 
 .evaluation-choice-text {
     margin: 0 -6px;
-
+    margin-top: 10px;
     color: var(--grey-grey7, #3C3C3C);
     text-align: center;
 

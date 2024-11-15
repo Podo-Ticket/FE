@@ -1,18 +1,22 @@
+import React, { useState } from 'react';
+
 import '../../styles/Loading.css'
+import PulseLoader from "react-spinners/PulseLoader";
 
 const Loading = ({ isOpen }) => {
+  let [color, setColor] = useState("#6A39C0");
 
   if (!isOpen) return null;
   return (
-    <div className="modal-overlay-load visible">
+    <div className="modal-overlay-load">
       <div className="modal-content-load">
-        <div className="loading-content">
-          <div className="dots-container">
-            <span className="dot" style={{'--delay': '0s'}}></span>
-            <span className="dot" style={{'--delay': '0.2s'}}></span>
-            <span className="dot" style={{'--delay': '0.4s'}}></span>
-          </div>
-        </div>
+        <PulseLoader
+          color={color}
+          size={20}
+          loading={isOpen}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
       </div>
     </div>
   );

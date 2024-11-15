@@ -1,55 +1,52 @@
 /* App.css */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Pretendard;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 .main-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /*justify-content: center;*/
-  padding: 0px 20px;
+  padding: 0px 30px;
   height: 100vh;
-  /* 높이를 100vh로 설정하여 화면을 꽉 채움 */
-  background-image: url(../assets/images/poster4.png);
-  background-color: rgba(186, 85, 211, 1);
-  /* 연 보라색 배경 설정 */
+  background-image: url(../assets/images/poster.jpg);
   background-size: cover;
-  /* 배경 이미지를 요소에 맞게 채움 */
   background-position: center;
-  /* 배경 이미지의 위치 설정 */
   background-repeat: no-repeat;
-  /* 배경 이미지 반복 안 함 */
   position: relative;
-  /* 자식 요소의 위치 조정을 위해 설정 */
+
+  overflow: hidden;
 }
 
 .main-container::before {
   content: '';
-  /* pseudo-element를 위해 필수 */
   position: absolute;
-  /* 절대 위치 지정 */
   top: 0;
-  /* 상단에 위치 */
   left: 0;
-  /* 좌측에 위치 */
   right: 0;
-  /* 우측에 위치 */
   bottom: 0;
-  /* 하단에 위치 */
   background: var(--Podo-Ticket-gradation-main_bg, linear-gradient(180deg, rgba(166, 161, 207, 0.70) 0%, rgba(245, 244, 255, 0.70) 35%, rgba(166, 161, 207, 0.70) 100%));
-  opacity: 0.7;
-  /* 투명도 설정 (0: 투명, 1: 불투명) */
-  z-index: 1;
-  /* 다른 요소보다 위에 오도록 설정 */
 }
 
 .main-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 20px;
-  font-weight: 600;
+  margin-bottom: 30px;
   margin-top: 40px;
-  z-index: 2;
-  /* 다른 요소보다 위에 오도록 설정 */
+  z-index: 1;
+
+  color: var(--ect-white, var(--Backgrounds-Primary, #FFF));
+  text-align: center;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
 }
 
 .poster-details-container {
@@ -61,7 +58,6 @@
   color: #333;
   border-radius: 27px 27px 0px 0px;
   z-index: 2;
-  /* 다른 요소보다 위에 오도록 설정 */
   perspective: 1000px;
 }
 
@@ -81,12 +77,22 @@
   backface-visibility: hidden;
 }
 
+.card-background-image{
+  position: absolute; /* 위치를 절대적으로 설정 */
+  top: 0;            /* 카드의 위쪽에 위치 */
+  left: 0;           /* 카드의 왼쪽에 위치 */
+  width: 100%;      /* 카드의 너비에 맞춤 */
+  z-index: 1;       /* card-front보다 낮은 z-index 설정 */
+  
+}
+
 .card-front {
   z-index: 2;
   transform: rotateY(0deg);
 }
 
 .card-back {
+  z-index: 2;
   transform: rotateY(180deg);
 }
 
@@ -97,6 +103,8 @@
 .image-container {
   position: relative;
   overflow: hidden;
+
+  z-index: 2;
 }
 
 .image-overlay {
@@ -104,7 +112,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 5px);
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 27px 27px 0px 0px;
 }
@@ -113,7 +121,7 @@
   width: 100%;
   height: 150px;
 
-  border-radius: 27px 27px 0px 0px;
+  border-radius: 20px 20px 0px 0px;
   object-fit: cover;
   object-position: center;
 }
@@ -121,14 +129,11 @@
 .show-details {
   position: absolute;
   top: 60%;
-  /* 이미지의 중앙에 위치 */
   left: 50%;
   transform: translate(-50%, -50%);
-  /* 중앙 정렬 */
   color: white;
   text-align: center;
-  z-index: 10;
-  /* 오버레이 위에 표시되도록 z-index 조정 */
+  z-index: 3;
 }
 
 .show-details h2 {
@@ -137,7 +142,6 @@
   margin: 10px 0 5px;
   color: white;
   white-space: nowrap;
-  /* 줄 바꿈 방지 */
 }
 
 .show-details h3 {
@@ -148,11 +152,12 @@
 }
 
 .detail-container {
-  background: #F5F4FF;
-  padding: 16px 0;
+  padding: 20px 0;
   width: 100%;
   margin: 0 auto;
   border-radius: 0 0 15px 15px;
+  position: relative; /* 포지션을 상대적으로 설정 */
+  z-index: 2;
 }
 
 .back-info {
@@ -179,7 +184,7 @@
   text-align: center;
 }
 
-.info-item {
+.home-info-item {
   display: flex;
   align-items: center;
   color: #333;
@@ -188,11 +193,11 @@
   margin-bottom: -10px;
 }
 
-.back-item{
+.back-item {
   padding: -10px;
 }
 
-.info-item span:first-child {
+.home-info-item span:first-child {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -202,13 +207,13 @@
   color: var(--grey-grey-6, #777);
   width: 59px;
   height: 24px;
-  margin-left: 35px;
+  margin-left: 25px;
   border: 1px solid var(--Podo-Ticket-chip-light-purple01, #DFD9FF);
 }
 
-.info-item p {
-  margin-left: 16px;
+.home-info-item p {
   display: flex;
+  margin-left: 16px;
   align-items: center;
   font-weight: 500;
 
@@ -217,6 +222,10 @@
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
+}
+
+.home-info-item-content{
+  flex-direction: row;
 }
 
 .detail-more-small {
@@ -234,7 +243,8 @@
 }
 
 .detail-more-button {
-  margin: 30px 0;
+  margin: 25px 0;
+  margin-top: 45px;
   color: var(--grey-grey-6, #777);
   font-size: 12px;
   font-style: normal;
@@ -251,47 +261,10 @@
   line-height: 20px;
 }
 
-.perforation-line {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 20px 0;
-  position: relative;
-}
-
-.hole {
-  width: 20px;
-  height: 20px;
-  background-color: transparent;
-  clip-path: circle(50%);
-}
-
-.left-hole {
-  position: absolute;
-  left: -10px;
-  /* 구멍 위치 조정 */
-}
-
-.right-hole {
-  position: absolute;
-  right: -10px;
-  /* 구멍 위치 조정 */
-}
-
-.perforation-line::before {
-  content: "";
-  width: 100%;
-  height: 1px;
-  border-top: 2px dashed #ccc;
-  position: absolute;
-  top: 50%;
-  left: 0;
-}
-
 .button-container {
   text-align: center;
   padding: 30px 0;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .ticket-button {
@@ -312,7 +285,7 @@
   /* "더보기" 바로 아래에 팝업 표시 */
   left: -100%;
   transform: translateX(-50%);
-  width: 155px;
+  width: 168px;
   background: white;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -340,4 +313,74 @@
   border-width: 10px;
   border-style: solid;
   border-color: transparent transparent white transparent;
+}
+
+.modal-invalid-phone-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start; /* 모달을 화면 상단에 정렬 */
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-invalid-phone-content {
+  width: 85%;
+  padding: 4px 40px;
+  margin-top: 100px; /* 화면 위쪽에서 약간의 여백을 줌 */
+  text-align: center;
+  
+  border-radius: 10px;
+  border: 1px solid var(--Podo-Ticket-error-red02, #FF9393);
+  background: var(--Podo-Ticket-error-red03, #FFF4F4);
+
+  transform: translateY(-100%); /* 기본 위치를 화면 위로 설정 */
+  animation: phone-slide-down 0.3s forwards; /* 내려오는 애니메이션 */
+}
+
+.error-icon{
+  width: 14px;
+  height: 14px;
+  transform: translateY(2.5px);
+}
+
+.error-message {
+  margin-left: 8px;
+  color: var(--Podo-Ticket-error-red01, #FF1515);
+  text-align: center;
+
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: 0.26px;
+}
+
+@keyframes phone-slide-down {
+  from {
+    transform: translateY(-100%); /* 위에서 시작 */
+    opacity: 0; /* 투명하게 시작 */
+  }
+  to {
+    transform: translateY(0); /* 최종 위치 */
+    opacity: 1; /* 완전하게 보이게 */
+  }
+}
+
+.phone-close-animation {
+  animation: phone-slide-up 0.3s forwards; /* 닫을 때 위로 올라가는 애니메이션 */
+}
+
+@keyframes phone-slide-up {
+  from {
+    transform: translateY(0); /* 현재 위치에서 시작 */
+    opacity: 1; /* 현재 보이기 */
+  }
+  to {
+    transform: translateY(-100%); /* 위로 이동 */
+    opacity: 0; /* 투명하게 */
+  }
 }

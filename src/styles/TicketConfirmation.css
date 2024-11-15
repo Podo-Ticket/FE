@@ -3,26 +3,24 @@
 .ticketConfirm-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     background-color: white;
+
+    overflow: hidden;
 }
 
 .ticketConfirm-header {
     display: flex;
     align-items: center;
-    padding: 16px;
+    margin-top: 30px;
+    margin-left: 17px;
     justify-content: space-between;
-}
-
-.header-time {
-    font-size: 14px;
 }
 
 .ticketConfirm-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 24px;
+    padding: 0 15px;
 }
 
 .ticket-icon {
@@ -32,9 +30,10 @@
 }
 
 .ticketConfirm-title {
+    margin-bottom: 0px;
+
     color: var(--charcoal_black, #282828);
     text-align: center;
-
     font-size: 22px;
     font-style: normal;
     font-weight: 600;
@@ -42,10 +41,9 @@
 }
 
 .ticketConfirm-warning {
-    margin-bottom: 32px;
+    margin-bottom: 30px;
 
     color: var(--Podo-Ticket-error-red01, #FF1515);
-
     font-size: 13px;
     font-style: normal;
     font-weight: 500;
@@ -62,18 +60,18 @@
 }
 
 .ticket-info-card {
-    width: 90%;
+    width: 100%;
     background-color: #F3F4F6;
-    border-radius: 8px;
-    padding: 25px;
-    margin-bottom: 32px;
+    border-radius: 10px;
+
+    padding: 23px;
+    margin-bottom: 25px;
 }
 
 .info-card-title {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 
     color: var(--ect-black, var(--Labels-Primary, #000));
-
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
@@ -83,41 +81,39 @@
 .info-card-content {
     display: flex;
     flex-direction: row;
-    /* 가로 정렬 */
-    gap: 16px;
     align-items: flex-start;
-    /* 위쪽 정렬 */
+
+    gap: 12px;
 }
 
-.poster-image {
+.confirm-poster-image {
     display: flex;
     align-items: center;
     justify-items: center;
 
-    flex-shrink: 0;
-    /* 이미지 크기 고정 */
-    width: 96px;
-    height: 128px;
-    border-radius: 8px;
-    overflow: hidden;
+    width: 114px;
+    height: 157px;
+    border-radius: 10px;
+
     background-color: #1F2937;
 }
 
-.poster-image img {
+.confirm-poster-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    border-radius: 10px;
+
+    object-fit: fill;
+    box-shadow: 0px 0px 9px 6px rgba(0, 0, 0, 0.03);
 }
 
-.ticket-details {
-    flex: 1;
+.confirm-ticket-details {
     display: flex;
     flex-direction: column;
-
 }
 
-.show-title {
-    margin-bottom: 8px;
+.confirm-show-title {
+    margin-bottom: 11px;
 
     color: var(--ect-black, var(--Labels-Primary, #000));
     font-size: 15px;
@@ -126,35 +122,38 @@
     line-height: 26px;
 }
 
-.details-row {
-    display: flex;
+.confirm-details-row {
     margin-bottom: 10px;
 
     color: var(--grey-grey7, #3C3C3C);
-
     font-size: 12px;
     font-style: normal;
     font-weight: 500;
     line-height: 20px;
 }
 
-.details-label {
-    padding: 0 10px;
-    margin-right: 10px;
-    color: #6B7280;
-
-    color: var(--grey-grey-6, #777);
-    text-align: center;
-
-    font-size: 11px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-
+.confirm-details-label {
     border-radius: 30px;
     border: 1px solid var(--grey-grey-3, #E2E2E2);
     background: var(--Backgrounds-Primary, #FFF);
 
+    padding: 2px 9px;
+    margin-right: 8px;
+
+    color: var(--grey-grey-6, #777);
+    text-align: center;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.confirm-details-text {
+    color: var(--grey-grey7, #3C3C3C);
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
 }
 
 .ticketConfirm-button {
@@ -169,44 +168,4 @@
     cursor: pointer;
     margin-bottom: 10px;
     transition: background-color 0.2s;
-}
-
-.ticket-button:hover {
-    background-color: #6D28D9;
-}
-
-.ticket-button:active {
-    background-color: #5B21B6;
-}
-
-/* 반응형 처리를 위한 미디어 쿼리 수정 */
-@media (max-width: 640px) {
-    .info-card-content {
-        flex-direction: row;
-        /* 모바일에서도 가로 정렬 유지 */
-    }
-
-    .poster-image {
-        width: 96px;
-        /* 모바일에서도 크기 유지 */
-        height: 128px;
-    }
-}
-
-/* 스크롤바 스타일 */
-.ticket-container::-webkit-scrollbar {
-    width: 8px;
-}
-
-.ticket-container::-webkit-scrollbar-track {
-    background: #F3F4F6;
-}
-
-.ticket-container::-webkit-scrollbar-thumb {
-    background: #7C3AED;
-    border-radius: 4px;
-}
-
-.ticket-container::-webkit-scrollbar-thumb:hover {
-    background: #6D28D9;
 }

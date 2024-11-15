@@ -23,14 +23,14 @@
 }
 
 .modal-content-complete {
-    padding: 67px;
+    padding: 38px;
     border-radius: 10px;
     background: var(--Backgrounds-Primary, #FFF);
 
     transition: transform 0.5s ease;
 }
 
-.thanks-icon-complete{
-    width: 64px;
-    height: 64px;
+.check-icon-complete{
+    width: 62px;
+    height: 62px;
 }
