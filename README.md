@@ -1,5 +1,5 @@
 # frontend_PodoTicket
 🍇 PodoTicket web-applicaton front 🍇
 
-## feat/1
-implement user front screen
+## develop
+merge feat/1 & feat/2
