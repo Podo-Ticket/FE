@@ -71,30 +71,49 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
 
   const handleSeatClick = (seatId) => {
     if (disabled) return;
-
+  
     // 좌석 클릭 시 예매 정보 API 호출
     if (isRealTime) {
       const bookedSeatIndex = bookedSeats.findIndex(bookedId => bookedId === seatId);
       if (bookedSeatIndex !== -1) {
-        // allBookedSeats에서 해당 좌석 ID를 조회하여 ID 값을 찾기
-        const bookedSeatInfo = allBookedSeats.seats[bookedSeatIndex]; // 좌석 정보 가져오기
-        const bookedSeatId = bookedSeatInfo.id; // 좌석 ID 가져오기
-        onSeatClick(bookedSeatId); // 좌석 클릭 시 예매 정보 요청
-        console.log("찐막이다");
-        console.log(bookedSeatId);
-        console.log("찐막이라고");
-        return; // 예매 정보 요청 후 함수 종료
+        const bookedSeatInfo = allBookedSeats.seats[bookedSeatIndex];
+        const bookedSeatId = bookedSeatInfo.id;
+        onSeatClick(bookedSeatId);
+        return;
+      }
+    } else {
+      // 일반 좌석 선택 로직
+      console.log(seatId);
+      console.log(seatId);
+      console.log(seatId);
+      console.log(seatId);
+      console.log(seatId);
+
+      if (bookedSeats.includes(seatId)) {
+        setIsAlreadySelectedModalOpen(true);
+      } else if (selectedSeats.includes(seatId)) {
+        // 이미 선택된 좌석을 클릭하면 선택 취소
+        setSelectedSeats(selectedSeats.filter(id => id !== seatId));
+      } else if (selectedSeats.length < headCount) {
+        // headCount에 따라 좌석 선택 제한
+        setSelectedSeats([...selectedSeats, seatId]);
       }
     }
+  };
+
+  const handleUserSeatClick = (row, seat) => {
+    const seatId = `${row}${seat}`; // 좌석 ID 생성
 
     if (bookedSeats.includes(seatId)) {
       setIsAlreadySelectedModalOpen(true);
     } else if (selectedSeats.includes(seatId)) {
+      // 이미 선택된 좌석을 클릭하면 선택 취소
       setSelectedSeats(selectedSeats.filter(id => id !== seatId));
-    } else if (selectedSeats.length < headCount) { // headCount에 따라 좌석 선택 제한
+    } else if (selectedSeats.length < headCount) {
+      // headCount에 따라 좌석 선택 제한
       setSelectedSeats([...selectedSeats, seatId]);
     }
-  };
+  }
 
   return (
     <div className="seat-map">
@@ -130,11 +149,12 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
               {rows_l[row].map(seat => {
                 const seatId = `${row}${seat}`;
                 const isBooked = bookedSeats.includes(seatId);
+
                 return (
                   <button
                     key={seatId}
                     className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''}`}
-                    onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleSeatClick(row, seat)}
+                    onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleUserSeatClick(row, seat)}
                     disabled={disabled}
                   >
                     나 {seat}
@@ -156,7 +176,7 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
                   <button
                     key={seatId}
                     className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''}`}
-                    onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleSeatClick(row, seat)}
+                    onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleUserSeatClick(row, seat)}
                     disabled={disabled}>
                     다 {seat}
                   </button>
