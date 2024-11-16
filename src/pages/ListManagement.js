@@ -1,5 +1,7 @@
-import React, { useState, useRef } from 'react';
+import axios from 'axios';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SERVER_URL } from '../constants/ServerURL';
 
 import '../styles/ListManagement.css';
 import BottomNav from '../components/BottomNav';
@@ -10,20 +12,32 @@ import calendarIcon from '../assets/image/calendar_icon.png'
 function ListManagement() {
   const navigate = useNavigate();
   const selectRef = useRef(null);
-
-  const data = [
-    { id: 1, name: '서 준', phone: '010-5215-5830', seats: 3, status: '발권 완료', session: '2024.10.09 (수) 17:00' },
-    { id: 2, name: '박준석', phone: '010-5215-5830', seats: 2, status: '발권 완료', session: '2024.10.09 (수) 17:00' },
-    { id: 3, name: '김정윤', phone: '010-5215-5830', seats: 1, status: '미 발권', session: '2024.10.10 (목) 17:00' },
-    { id: 4, name: '홍승리', phone: '010-5215-5830', seats: 4, status: '발권 완료', session: '2024.10.11 (금) 17:00' },
-    { id: 5, name: '티모시 샬라메', phone: '010-5215-5830', seats: 13, status: '미 발권', session: '2024.10.10 (목) 17:00' },
-    { id: 6, name: '봉준호', phone: '010-5215-5830', seats: 10, status: '발권 완료', session: '2024.10.09 (수) 17:00' },
-    { id: 7, name: '박찬호', phone: '010-5215-5830', seats: 5, status: '발권 완료', session: '2024.10.10 (목) 17:00' }
-  ];
-
+  const [data, setData] = useState([]);
   const [filter, setFilter] = useState('전체');
   const [search, setSearch] = useState('');
-  const [selectedSession, setSelectedSession] = useState('2024.10.09 (수) 17:00');
+  const [selectedSession, setSelectedSession] = useState(1);
+
+  const fetchUserList = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URL}/user/list`, {
+        withCredentials: true, // 세션 쿠키 포함
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        params: {
+          scheduleId: selectedSession, // 공연일시 ID (여기서는 session을 사용)
+        },
+      });
+      setData(response.data.users); // API 응답에서 사용자 데이터 설정
+      console.log("Fetched Data:", response.data.users); // API 호출 후 데이터 출력
+    } catch (error) {
+      console.error("Error fetching user list:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserList(); // 컴포넌트가 마운트될 때 사용자 목록 가져오기
+  }, [selectedSession]); // selectedSession이 변경될 때마다 호출
 
   const handleFilterClick = (newFilter) => {
     setFilter(newFilter);
@@ -49,16 +63,15 @@ function ListManagement() {
 
   // 필터에 따라 데이터를 필터링 및 정렬
   const filteredData = data
-    .filter(item => item.session === selectedSession) // 세션 필터링
     .filter(item => {
       // 상태 필터링
       if (filter === '전체') return true; // 전체일 경우 필터링 없이 다 보여줌
-      return item.status === filter; // 미 발권 또는 발권 완료 필터
+      return item.state === (filter === '발권 완료'); // 미 발권 또는 발권 완료 필터
     })
     .filter(item => {
       // 검색 필터링 (이름 또는 전화번호)
       const lowerCaseSearch = search.toLowerCase();
-      return item.name.toLowerCase().includes(lowerCaseSearch) || item.phone.includes(lowerCaseSearch);
+      return item.name?.toLowerCase().includes(lowerCaseSearch) || item.phone?.includes(lowerCaseSearch);
     })
     .sort((a, b) => {
       // 1순위: 이름의 가나다 순 정렬
@@ -72,11 +85,12 @@ function ListManagement() {
     });
 
   // 전체 데이터에서 발권 완료 및 미발권 건수 계산
-  const totalCount = filteredData.length;
-  const issuedCount = data.filter(item => item.status === '발권 완료' && item.session === selectedSession).length;
-  const notIssuedCount = data.filter(item => item.status === '미 발권' && item.session === selectedSession).length;
+  const totalCount = data.length;
+  const issuedCount = data.filter(item => item.state === true).length;
+  const notIssuedCount = data.filter(item => item.state === false).length;
 
   const handleDeleteClick = (item) => {
+    item.scheduleId = selectedSession;
     navigate('/delete', { state: { item } }); // 상태로 해당 항목 전달
   };
 
@@ -104,9 +118,7 @@ function ListManagement() {
               value={selectedSession}
               onChange={handleSessionChange}
             >
-              <option value="2024.10.09 (수) 17:00">2024.10.09 (수) 17:00</option>
-              <option value="2024.10.10 (목) 17:00">2024.10.10 (목) 17:00</option>
-              <option value="2024.10.11 (금) 17:00">2024.10.11 (금) 17:00</option>
+              <option value="1">2024.11.16 (토) 18:00</option>
             </select>
           </div>
           <div className="session-picker-right" onClick={handleChevronClick} ><ChevronDown size={21} color="#3C3C3C" /></div>
@@ -156,19 +168,19 @@ function ListManagement() {
       <div className="search-results">
         <ul className="result-list">
           {filteredData.map(item => (
-            <li key={item.id} className={item.status === '발권 완료' ? 'completed' : ''}
+            <li key={item.id} className={item.state === true ? 'completed' : ''}
               onClick={() => handleDeleteClick(item)}>
 
               <div className="info">
-                <div className="name">{item.name} <span className="text-divider">|</span><span className="phone">{item.phone}</span></div>
-                <div className="status">{item.status}</div>
+                <div className="name">{item.name} <span className="text-divider">|</span><span className="phone">{item.phone_number}</span></div>
+                <div className="status">{item.state ? '발권 완료' : '미 발권'}</div>
               </div>
 
               <div className="info-divider"></div>
 
               <div className="seat-info">
                 <div className='seat-text'>예매 좌석 수</div>
-                <div className="seats">{item.seats}석</div>
+                <div className="seats">{item.head_count}석</div>
               </div>
 
             </li>

@@ -1,5 +1,7 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { SERVER_URL } from '../constants/ServerURL';
 
 import '../styles/ModifyList.css';
 import { ChevronLeft } from 'lucide-react';
@@ -11,10 +13,11 @@ function ModifyList() {
 
     const { item } = location.state || {}; // 전달받은 항목 정보 
     const [name, setName] = useState(item?.name || ''); // 초기값으로 item.name 사용
-    const [phone, setPhone] = useState(item?.phone || '');
-    const [attendees, setAttendees] = useState(item?.seats || ''); // 예매 인원
-    const [performance, setPerformance] = useState(item?.session || ''); // 공연 회차
-    
+    const [phone, setPhone] = useState(item?.phone_number || '');
+    const [attendees, setAttendees] = useState(item?.head_count || ''); // 예매 인원
+    const [performance, setPerformance] = useState(item?.scheduleId || ''); // 공연 회차
+    const [error, setError] = useState(''); // 오류 메시지 상태
+
 
     const gotoDelete = () => {
         navigate('/delete', { state: { item } }); // 삭제 페이지로 이동
@@ -38,10 +41,31 @@ function ModifyList() {
         setPhone(formattedValue); // 포맷된 전화번호 상태 업데이트
     };
 
-    const handleSubmit = () => {
-        //POST Request//
-        console.log({ name, phone, attendees, performance });
-        navigate('/manage');
+    const handleSubmit = async () => {
+        try {
+            const response = await axios.patch(`${SERVER_URL}/user/update`, {
+                userId: item.id, // 수정할 사용자의 ID
+                name,
+                phoneNumber: phone, // 하이픈 제거한 전화번호
+                headCount: attendees,
+                scheduleId: performance // 공연 회차 ID
+            }, {
+                withCredentials: true, // 세션 쿠키 포함
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.data.success) {
+                navigate('/manage'); // 성공 시 관리 페이지로 이동
+            }
+        } catch (error) {
+            if (error.response) {
+                setError(error.response.data.error); // 오류 메시지 설정
+            } else {
+                setError("예기치 않은 오류가 발생했습니다."); // 일반 오류 메시지
+            }
+        }
     };
 
     // 버튼 활성화 조건
@@ -87,9 +111,7 @@ function ModifyList() {
                     <label>공연 회차</label>
                     <select value={performance} onChange={(e) => setPerformance(e.target.value)}>
                         <option value="" className="select-placeholder">공연 회차를 선택해 주세요.</option>
-                        <option value="회차1">2024.10.09 (수) 19:00</option>
-                        <option value="회차2">2024.10.10 (목) 19:00</option>
-                        <option value="회차3">2024.10.11 (금) 19:00</option>
+                        <option value="1">2024.11.16 (토) 18:00</option>
                     </select>
                 </div>
 

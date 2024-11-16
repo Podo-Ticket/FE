@@ -1,5 +1,7 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SERVER_URL } from '../constants/ServerURL';
 
 import '../styles/AdminHome.css';
 import podoIcon from '../assets/image/podo_icon.png'
@@ -23,13 +25,30 @@ function AdminHome() {
     }, 300); // 애니메이션과 같은 시간으로 설정
   };
 
-  const handleSubmit = () => {
-    if (adminCode === 'JAKGONG') {
-      navigate('/seats');
-    } else {
-      setIsInvalidCodeModalOpen(true);
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URL}/admin`, {
+        withCredentials: true, // 세션 쿠키 포함
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        params: {
+          code: adminCode,
+        },
+      });
+
+      if (response.data.success) {
+        navigate('/seats'); // 인증 성공 시 이동
+      }
+    } catch (error) {
+      if (error.response && error.response.data.error) {
+        setIsInvalidCodeModalOpen(true); // 인증 실패 시 모달 열기
+      } else {
+        console.error("Error during API call:", error);
+      }
     }
   };
+
 
   return (
     <div className="admin-login-container">

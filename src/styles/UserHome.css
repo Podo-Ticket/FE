@@ -245,6 +245,8 @@ body {
 .detail-more-button {
   margin: 25px 0;
   margin-top: 45px;
+  margin-bottom: 50px;
+
   color: var(--grey-grey-6, #777);
   font-size: 12px;
   font-style: normal;
@@ -261,13 +263,15 @@ body {
   line-height: 20px;
 }
 
-.button-container {
+.userhome-button-container { 
+
   text-align: center;
   padding: 30px 0;
   margin-top: 30px;
+  
 }
 
-.ticket-button {
+.userhome-ticket-button {
   background-color: var(--Main, #6A39C0);
   color: white;
   font-size: 18px;

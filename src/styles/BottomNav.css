@@ -90,6 +90,7 @@
 
 .nav-item-accept {
     background: var(--grey-grey-1, #FBFBFB);
+    border: none;
 
     color: var(--purple-purple-4-main, #6A39C0);
     text-align: center;
@@ -101,6 +102,7 @@
 
 .nav-item-reject {
     background: var(--grey-grey-1, #FBFBFB);
+    border: none;
 
     color: var(--grey-grey7, #3C3C3C);
     text-align: center;

@@ -7,7 +7,8 @@
 .modify-list-title {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
 
     width: 100%;
     padding: 20px 30px;
@@ -15,7 +16,7 @@
 }
 
 .modify-list-title-text {
-    margin-right: 33%;
+
     margin-top: 1px;
 
     color: var(--grey-grey7, #3C3C3C);

@@ -1,4 +1,4 @@
-.seat-map {   
+.seat-map {
     width: 90%;
     height: 400px;
     overflow: auto;
@@ -29,8 +29,10 @@
     font-weight: 500;
     line-height: 20px;
     margin-top: 20px;
-    position: relative; /* 위치 조정 */
-    transform: translateX(215px); /* 오른쪽으로 이동 */
+    position: relative;
+    /* 위치 조정 */
+    transform: translateX(215px);
+    /* 오른쪽으로 이동 */
 }
 
 .seat-map-customer {
@@ -61,10 +63,13 @@
 .seat {
     width: 30px;
     height: 30px;
-    margin: 2px;
-    padding: 0px;
+
+    border: none;
     border-radius: 5px;
     background-color: #f0f0f0;
+
+    margin: 2px;
+    padding: 0px;
 
     text-align: center;
     color: var(--grey-grey-6, #777);

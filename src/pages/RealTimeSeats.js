@@ -1,13 +1,17 @@
-import React, { useState, useRef } from 'react';
+import axios from 'axios';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RotateCw } from 'lucide-react';
+import { SERVER_URL } from '../constants/ServerURL'
 
 import '../styles/BottomNav.css';
 import '../styles/RealTimeSeats.css';
 import BottomNav from '../components/BottomNav';
 import SeatMap from '../components/SeatMap';
 import calendarIcon from '../assets/image/calendar_icon.png'
-import { ChevronDown } from 'lucide-react';
+import personIcon from '../assets/image/person_info_icon.png';
+import phoneIcon from '../assets/image/phone_info_icon.png';
+import seatIcon from '../assets/image/seat_info_icon.png';
+import { ChevronDown, RotateCw } from 'lucide-react';
 
 function RealTimeSeats() {
   const navigate = useNavigate();
@@ -15,16 +19,10 @@ function RealTimeSeats() {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const [selectedSession, setSelectedSession] = useState('2024.10.09 (수) 17:00');
-
-  // 이미 선택된 좌석 모달 함수
-  const handleAlreadySelectedOverlayClick = () => {
-    setIsClosing(true); // 애니메이션 시작
-    setTimeout(() => {
-      setIsAlreadySelectedModalOpen(false); // 모달 닫기
-      setIsClosing(false); // 애니메이션 상태 초기화
-    }, 300); // 애니메이션과 같은 시간으로 설정
-  };
+  const [selectedSession, setSelectedSession] = useState('1');
+  const [availableSeats, setAvailableSeats] = useState(0); // 여석 수
+  const [error, setError] = useState(''); // 오류 메시지
+  const [bookingInfo, setBookingInfo] = useState(null); // 예매 정보 저장
 
   // 좌석 선택란 새로고침
   const handleRefresh = () => {
@@ -40,6 +38,77 @@ function RealTimeSeats() {
     selectRef.current.focus(); // select 요소에 포커스 주기
     selectRef.current.click(); // select 요소 클릭 트리거
   };
+
+  // 좌석 정보 가져오기
+  const fetchSeats = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URL}/seat/realTime`, {
+        withCredentials: true, // 세션 쿠키 포함
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        params: {
+          scheduleId: selectedSession, // 선택된 공연 일시 ID
+        },
+      });
+      setAvailableSeats(response.data.availableSeats); // 여석 수 설정
+      setError(''); // 오류 초기화
+    } catch (error) {
+      console.error("Error fetching seats:", error);
+      if (error.response && error.response.data.error) {
+        setError(error.response.data.error); // 오류 메시지 설정
+      } else {
+        setError("좌석 정보를 가져오는 데 실패했습니다."); // 일반 오류 메시지
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchSeats(); // 컴포넌트가 마운트될 때 좌석 정보 가져오기
+  }, []); // 초기 로드 시 한 번만 호출
+
+  // 좌석 클릭 핸들러
+  const handleSeatClick = async (seatId) => {
+    try {
+      const response = await axios.get(`${SERVER_URL}/seat/audience`, {
+        withCredentials: true, // 세션 쿠키 포함
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        params: {
+          scheduleId: selectedSession,
+          seatId: seatId,
+        },
+      });
+
+      const userInfo = response.data.userInfo;
+      console.log(userInfo);
+      console.log(seatId);
+      console.log(userInfo.head_count,);
+      setBookingInfo({
+        name: userInfo.user.name,
+        phone: userInfo.user.phone_number,
+        headCount: userInfo.user.head_count,
+      });
+    } catch (error) {
+      console.error("Error fetching booking info:", error);
+      setBookingInfo(null); // 에러 발생 시 예매 정보 초기화
+    }
+  };
+
+  // 클릭 이벤트 핸들러
+  const handleClickOutside = (event) => {
+    if (bookingInfo && !event.target.closest('.seats-button-info-container')) {
+      setBookingInfo(null); // 예약 정보 초기화
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [bookingInfo]);
 
   return (
     <div className="admin-login-container">
@@ -62,20 +131,47 @@ function RealTimeSeats() {
               value={selectedSession}
               onChange={handleSessionChange}
             >
-              <option value="2024.10.09 (수) 17:00">2024.10.09 (수) 17:00</option>
-              <option value="2024.10.10 (목) 17:00">2024.10.10 (목) 17:00</option>
-              <option value="2024.10.11 (금) 17:00">2024.10.11 (금) 17:00</option>
+              <option value="1">2024.11.16 (토) 18:00</option>
             </select>
           </div>
           <div className="session-picker-right" onClick={handleChevronClick} ><ChevronDown size={21} color="#3C3C3C" /></div>
         </div>
       </div>
 
+      {bookingInfo && (
+        <div className='seats-button-info-container'>
+          <div className='seats-button-info-item'>
+            <img src={personIcon} className='seats-button-info-icon' />
+            <p>예매자</p>
+            <span>{bookingInfo.name}</span>
+          </div>
+
+          <div className="seats-button-info-divider"></div>
+
+          <div className='seats-button-info-item'>
+            <img src={phoneIcon} className='seats-button-info-icon' />
+            <p>연락처</p>
+            <span>{bookingInfo.phone}</span>
+          </div>
+
+          <div className="seats-button-info-divider"></div>
+
+          <div className='seats-button-info-item'>
+            <img src={seatIcon} className='seats-button-info-icon' />
+            <p>좌석 수</p>
+            <span>{bookingInfo.headCount}석</span>
+          </div>
+        </div>
+      )}
+
       <SeatMap
         selectedSeats={selectedSeats}
         setSelectedSeats={setSelectedSeats}
         setIsAlreadySelectedModalOpen={setIsAlreadySelectedModalOpen}
-        disabled={true}
+        scheduleId={selectedSession}
+        selectedSession={0}
+        isRealTime={true}
+        onSeatClick={handleSeatClick} // 좌석 클릭 핸들러 전달
       />
 
       <div className="admin-seat-legend">
@@ -89,7 +185,7 @@ function RealTimeSeats() {
         </span>
 
         <button className="admin-legend-button">
-          여석 {139}석
+          여석 {availableSeats}석
         </button>
       </div>
 

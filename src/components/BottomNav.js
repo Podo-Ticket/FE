@@ -9,7 +9,7 @@ import activeSeatIcon from '../assets/image/active_seat_icon.png';
 import activeListIcon from '../assets/image/active_list_icon.png';
 import activeOnSiteIcon from '../assets/image/active_on_site_icon.png';
 
-const BottomNav = ({ showActions }) => {
+const BottomNav = ({ showActions, onApprove, onDelete }) => {
     const location = useLocation(); // 현재 경로를 가져옴
 
     return (
@@ -45,11 +45,11 @@ const BottomNav = ({ showActions }) => {
             {showActions && ( // showActions가 true일 때만 버튼을 보여줌
                 <>
                     <div className="nav-item">
-                        <button className="nav-item-accept">수락</button>
+                        <button className="nav-item-accept" onClick={onApprove}>수락</button>
                     </div>
                     <span class="nav-item-divider"></span>
                     <div className="nav-item">
-                        <button className="nav-item-reject">거절</button>
+                        <button className="nav-item-reject" onClick={onDelete}>거절</button>
                     </div>
                 </>
             )}

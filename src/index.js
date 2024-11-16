@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BookingProvider } from './context/BookingContext';
 
 import UserHome from './pages/UserHome';
 import OnSiteReserve from './pages/OnSiteReserve';
@@ -23,21 +24,23 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<UserHome />} />
-        <Route path="/reserve" element={<OnSiteReserve />} />
-        <Route path="/select" element={<SelectSeats />} />
-        <Route path="/confirm" element={<TicketConfirmation />} />
-        <Route path="/ticket" element={<TicketScreen />} />
+      <BookingProvider>
+        <Routes>
+          <Route path="/" element={<UserHome />} />
+          <Route path="/reserve" element={<OnSiteReserve />} />
+          <Route path="/select" element={<SelectSeats />} />
+          <Route path="/confirm" element={<TicketConfirmation />} />
+          <Route path="/ticket" element={<TicketScreen />} />
 
-        <Route path="/admin" element={<AdminHome />} />
-        <Route path="/seats" element={<RealTimeSeats />} />
-        <Route path="/manage" element={<ListManagement />} />
-        <Route path="/onsite" element={<OnSiteManagement />} />
-        <Route path="/insert" element={<InsertList />} />
-        <Route path="/delete" element={<DeleteList />} />
-        <Route path="/modify" element={<ModifyList />} />
-      </Routes>
+          <Route path="/admin" element={<AdminHome />} />
+          <Route path="/seats" element={<RealTimeSeats />} />
+          <Route path="/manage" element={<ListManagement />} />
+          <Route path="/onsite" element={<OnSiteManagement />} />
+          <Route path="/insert" element={<InsertList />} />
+          <Route path="/delete" element={<DeleteList />} />
+          <Route path="/modify" element={<ModifyList />} />
+        </Routes>
+      </BookingProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

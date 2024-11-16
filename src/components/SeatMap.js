@@ -1,4 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import axios from 'axios';
+import React, { useRef, useEffect, useState } from 'react';
+
+import { SERVER_URL } from '../constants/ServerURL';
 
 import '../styles/SeatMap.css';
 
@@ -24,31 +27,71 @@ const rows_r = {
   다8: [59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69]
 };
 
-const bookedSeats = ["나11", "나12", "나13", "다530", "다531", "나536", "나537"];
+const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpen,
+  disabled, scheduleId, headCount, isRealTime, onSeatClick }) => {
 
-const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpen, disabled }) => {
   const seatMapRef = useRef(null);
+  const [bookedSeats, setBookedSeats] = useState([]);
+  const [allBookedSeats, setallBookedSeats] = useState([]);
+
 
   useEffect(() => {
-    // 컴포넌트가 처음 렌더링될 때 seat-map-customer 컨테이너의 중간으로 스크롤
-    if (seatMapRef.current) {
-      seatMapRef.current.scrollTo({
-        top: seatMapRef.current.scrollHeight / 2 - seatMapRef.current.clientHeight / 2,
-        left: seatMapRef.current.scrollWidth / 2,
-        behavior: 'smooth'
-      });
+    const fetchSeats = async () => {
+      if (!scheduleId) {
+        console.error("scheduleId가 없습니다.");
+        return;
+      }
+
+      try {
+        const endpoint = isRealTime ? `${SERVER_URL}/seat/realTime` : `${SERVER_URL}/seat`;
+        const response = await axios.get(endpoint, {
+          withCredentials: true, // 세션 쿠키 포함
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          params: { scheduleId },
+        });
+
+        // bookedSeats를 API 응답에 따라 설정
+        const booked = response.data.seats.map(seat => `${seat.row}${seat.number}`);
+        setBookedSeats(booked); // bookedSeats 상태 업데이트
+        setallBookedSeats(response.data);
+
+        console.log("아래는 (allBookedSeats);");
+        console.log(allBookedSeats.seats);
+
+        console.log("예약된 좌석:", booked); // 예약된 좌석 로그 출력
+      } catch (error) {
+        console.error("Error fetching seats:", error);
+      }
+    };
+
+    fetchSeats(); // scheduleId가 있을 때만 호출
+  }, [scheduleId]);
+
+  const handleSeatClick = (seatId) => {
+    if (disabled) return;
+
+    // 좌석 클릭 시 예매 정보 API 호출
+    if (isRealTime) {
+      const bookedSeatIndex = bookedSeats.findIndex(bookedId => bookedId === seatId);
+      if (bookedSeatIndex !== -1) {
+        // allBookedSeats에서 해당 좌석 ID를 조회하여 ID 값을 찾기
+        const bookedSeatInfo = allBookedSeats.seats[bookedSeatIndex]; // 좌석 정보 가져오기
+        const bookedSeatId = bookedSeatInfo.id; // 좌석 ID 가져오기
+        onSeatClick(bookedSeatId); // 좌석 클릭 시 예매 정보 요청
+        console.log("찐막이다");
+        console.log(bookedSeatId);
+        console.log("찐막이라고");
+        return; // 예매 정보 요청 후 함수 종료
+      }
     }
-  }, []);
 
-  const handleSeatClick = (row, seat) => {
-    if (disabled) return; // 버튼이 비활성화된 경우 클릭 무시
-
-    const seatId = `${row}${seat}`;
     if (bookedSeats.includes(seatId)) {
       setIsAlreadySelectedModalOpen(true);
     } else if (selectedSeats.includes(seatId)) {
       setSelectedSeats(selectedSeats.filter(id => id !== seatId));
-    } else if (selectedSeats.length < 3) {
+    } else if (selectedSeats.length < headCount) { // headCount에 따라 좌석 선택 제한
       setSelectedSeats([...selectedSeats, seatId]);
     }
   };
@@ -91,7 +134,7 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
                   <button
                     key={seatId}
                     className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''}`}
-                    onClick={() => handleSeatClick(row, seat)}
+                    onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleSeatClick(row, seat)}
                     disabled={disabled}
                   >
                     나 {seat}
@@ -113,9 +156,8 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
                   <button
                     key={seatId}
                     className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''}`}
-                    onClick={() => handleSeatClick(row, seat)}
-                    disabled={disabled}
-                  >
+                    onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleSeatClick(row, seat)}
+                    disabled={disabled}>
                     다 {seat}
                   </button>
                 );

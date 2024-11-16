@@ -1,5 +1,8 @@
-import React, { useState, useRef } from 'react';
+import axios from 'axios';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SERVER_URL } from '../constants/ServerURL';
+
 import '../styles/OnSiteManagement.css';
 import BottomNav from '../components/BottomNav';
 import { CalendarClock, ChevronDown, Search } from 'lucide-react';
@@ -10,22 +13,46 @@ import calendarIcon from '../assets/image/calendar_icon.png'
 function OnSiteManagement() {
   const selectRef = useRef(null);
 
-  const data = [
-    { id: 1, name: '나루토', phone: '010-1234-1234', seats: 3, status: '수락 완료', session: '2024.10.09 (수) 17:00' },
-    { id: 2, name: '사스케', phone: '010-1234-5678', seats: 2, status: '수락 완료', session: '2024.10.09 (수) 17:00' },
-    { id: 3, name: '사쿠라', phone: '010-1212-1212', seats: 1, status: '미 수락', session: '2024.10.10 (목) 17:00' },
-    { id: 4, name: '루피', phone: '010-1212-3434', seats: 4, status: '수락 완료', session: '2024.10.11 (금) 17:00' },
-    { id: 5, name: '조로', phone: '010-3434-3434', seats: 13, status: '미 수락', session: '2024.10.10 (목) 17:00' },
-    { id: 6, name: '우솝', phone: '010-3434-5656', seats: 10, status: '수락 완료', session: '2024.10.09 (수) 17:00' },
-    { id: 7, name: '상디', phone: '010-5656-5656', seats: 5, status: '수락 완료', session: '2024.10.10 (목) 17:00' }
-  ];
-
   const [filter, setFilter] = useState('전체');
   const [search, setSearch] = useState('');
-  const [selectedSession, setSelectedSession] = useState('2024.10.09 (수) 17:00');
+  const [selectedSession, setSelectedSession] = useState('1');
+  const [data, setData] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isManaging, setIsManaging] = useState(false);
-  const [checkedItems, setCheckedItems] = useState(data.map(item => ({ id: item.id, checked: false }))); // 체크 상태 배열
+  const [checkedItems, setCheckedItems] = useState([]); // 체크 상태 배열
+  const [error, setError] = useState(''); // 오류 메시지 상태
+
+  useEffect(() => {
+    fetchReservations(); // 컴포넌트가 마운트될 때 예약 리스트 가져오기
+  }, [selectedSession]); // 선택된 공연 회차가 변경될 때마다 호출
+
+  const fetchReservations = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URL}/reservation/admin`, {
+        withCredentials: true, // 세션 쿠키 포함
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        params: {
+          scheduleId: selectedSession, // 공연 일시 ID를 API에 전달
+        },
+      });
+      const users = response.data.users.map(user => ({
+        ...user,
+        userId: user.user.id, // 실제 userId
+        name: user.user.name,
+        phone: user.user.phone_number,
+        seats: user.user.head_count,
+      }));
+      setData(users); // 사용자 데이터를 상태에 저장
+      // 체크 상태를 사용자 데이터에 맞게 초기화
+      setCheckedItems(users.map(item => ({ userId: item.userId, checked: false })));
+    } catch (error) {
+      console.error("Error fetching reservations:", error);
+      setError("예매 리스트를 가져오는 데 실패했습니다."); // 오류 메시지 설정
+    }
+  };
+
 
   const handleFilterClick = (newFilter) => {
     setFilter(newFilter);
@@ -51,21 +78,20 @@ function OnSiteManagement() {
 
   // 필터에 따라 데이터를 필터링 및 정렬
   const filteredData = data
-    .filter(item => item.session === selectedSession) // 세션 필터링
     .filter(item => {
       // 상태 필터링
       if (filter === '전체') return true; // 전체일 경우 필터링 없이 다 보여줌
-      return item.status === filter; // 미 발권 또는 발권 완료 필터
+      return item.approve === (filter === '수락 완료'); // '수락 완료'일 경우 true, 미 수락일 경우 false
     })
     .filter(item => {
       // 검색 필터링 (이름 또는 전화번호)
       const lowerCaseSearch = search.toLowerCase();
-      return item.name.toLowerCase().includes(lowerCaseSearch) || item.phone.includes(lowerCaseSearch);
+      return item.name?.toLowerCase().includes(lowerCaseSearch) || item.phone?.includes(lowerCaseSearch);
     })
     .sort((a, b) => {
       // 1순위: "미 수락" 항목을 최상단으로
-      if (a.status === '미 수락' && b.status !== '미 수락') return -1; // a가 미 수락이면 a를 먼저
-      if (b.status === '미 수락' && a.status !== '미 수락') return 1; // b가 미 수락이면 b를 먼저
+      if (a.approve === false && b.approve !== false) return -1; // a가 미 수락이면 a를 먼저
+      if (b.approve === false && a.approve !== false) return 1; // b가 미 수락이면 b를 먼저
 
       // 2순위: 이름의 가나다 순 정렬
       const nameA = a.name.charCodeAt(0);
@@ -79,8 +105,8 @@ function OnSiteManagement() {
 
   // 전체 데이터에서 발권 완료 및 미발권 건수 계산
   const totalCount = filteredData.length;
-  const acceptCount = data.filter(item => item.status === '수락 완료' && item.session === selectedSession).length;
-  const unacceptCount = data.filter(item => item.status === '미 수락' && item.session === selectedSession).length;
+  const acceptCount = data.filter(item => item.approve === true).length;
+  const unacceptCount = data.filter(item => item.approve === false).length;
 
   // 검색 버튼 클릭 시 검색어 초기화
   const handleSearchButtonClick = () => {
@@ -94,11 +120,112 @@ function OnSiteManagement() {
 
   // 체크 상태 토글 핸들러
   const handleCheckClick = (id) => {
+    console.log("체크한 아이디")
+    console.log(id)
     setCheckedItems(prev =>
       prev.map(item =>
-        item.id === id ? { ...item, checked: !item.checked } : item
+        item.userId === id ? { ...item, checked: !item.checked } : item
       )
     );
+
+  };
+
+  const handleSelectApproveClick = async () => {
+    const userIds = checkedItems.filter(item => item.checked).map(item => item.userId); // userId로 변경
+    if (userIds.length === 0) {
+      alert("수락할 사용자를 선택해 주세요.");
+      return;
+    }
+    try {
+      const response = await axios.patch(`${SERVER_URL}/reservation/approve`, {
+        userIds,
+        scheduleId: selectedSession,
+      }, {
+        withCredentials: true, // 세션 쿠키 포함
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.data.success) {
+        alert("예약이 수락되었습니다.");
+        fetchReservations(); // 예약 리스트 새로 고침
+      }
+    } catch (error) {
+      console.error("Error approving reservations:", error);
+      setError("예약 수락에 실패했습니다.");
+    }
+  };
+  
+  const handleSelectDeleteClick = async () => {
+    const userIds = checkedItems.filter(item => item.checked).map(item => item.userId);
+    if (userIds.length === 0) {
+      alert("삭제할 사용자를 선택해 주세요.");
+      return;
+    }
+    try {
+      const response = await axios.delete(`${SERVER_URL}/reservation/delete`, {
+        data: { userIds: userIds }, // 체크된 사용자 ID를 요청 본문으로 전달
+        withCredentials: true, // 세션 쿠키 포함
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.data.success) {
+        alert("예약이 삭제되었습니다.");
+        fetchReservations(); // 예약 리스트 새로 고침
+      }
+    } catch (error) {
+      console.error("Error deleting reservations:", error);
+      setError("예약 삭제에 실패했습니다.");
+    }
+  };
+
+  const handleIndividualApproveClick = async (userId) => {
+    try {
+      const response = await axios.patch(`${SERVER_URL}/reservation/approve`, {
+        userIds: [userId],
+        scheduleId: selectedSession,
+      }, {
+        withCredentials: true, // 세션 쿠키 포함
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.data.success) {
+        alert("예약이 수락되었습니다.");
+        fetchReservations(); // 예약 리스트 새로 고침
+      }
+
+    } catch (error) {
+      console.error("Error approving reservations:", error);
+      setError("예약 수락에 실패했습니다.");
+    }
+  };
+
+  const handleIndividualDeleteClick = async (userId) => {
+    try {
+      console.log("아래는 userId다");
+      console.log(userId);
+      const response = await axios.delete(`${SERVER_URL}/reservation/delete`, {
+        data: { userIds: [userId] }, // userIds를 요청 본문으로 전달
+        withCredentials: true, // 세션 쿠키 포함
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.data.success) {
+        alert("예약이 삭제되었습니다.");
+        fetchReservations(); // 예약 리스트 새로 고침
+      }
+
+    } catch (error) {
+      console.log(userId);
+      console.error("Error deleting reservations:", error);
+      setError("예약 삭제에 실패했습니다.");
+    }
   };
 
   return (
@@ -121,9 +248,7 @@ function OnSiteManagement() {
               value={selectedSession}
               onChange={handleSessionChange}
             >
-              <option value="2024.10.09 (수) 17:00">2024.10.09 (수) 17:00</option>
-              <option value="2024.10.10 (목) 17:00">2024.10.10 (목) 17:00</option>
-              <option value="2024.10.11 (금) 17:00">2024.10.11 (금) 17:00</option>
+              <option value="1">2024.11.16 (토) 18:00</option>
             </select>
           </div>
           <div className="session-picker-right" onClick={handleChevronClick} ><ChevronDown size={21} color="#3C3C3C" /></div>
@@ -173,29 +298,38 @@ function OnSiteManagement() {
       <div className="search-results">
         <ul className="result-list">
           {filteredData.map(item => (
-            <li key={item.id} className={item.status === '수락 완료' ? 'completed' : ''}>
+            <li key={item.id} className={item.approve === true ? 'completed' : ''}>
 
               <div className="info">
                 <div className="name">{item.name} <span className="text-divider">|</span><span className="phone">{item.phone}</span></div>
 
-                {item.status === '수락 완료' && (<div className="status">
-                  {item.status}
-                </div>
-                )}
-
-                {!isExpanded && item.status === '미 수락' && (
-                  <div className="action-buttons">
-                    <button className="onsite-accept-button">수락</button>
-                    <button className="onsite-reject-button">삭제</button>
+                {item.approve && (
+                  <div className="status">
+                    수락 완료
                   </div>
                 )}
 
-                {isExpanded && item.status === '미 수락' && (
+                {!isExpanded && !item.approve && (
+                  <div className="action-buttons">
+                    <button className="onsite-accept-button"
+                      onClick={() => handleIndividualApproveClick(item.userId)}
+                    >
+                      수락
+                    </button>
+                    <button className="onsite-reject-button"
+                      onClick={() => handleIndividualDeleteClick(item.userId)}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                )}
+
+                {isExpanded && !item.approve && (
                   <img
                     className="onsite-check-button"
-                    src={checkedItems.find(i => i.id === item.id)?.checked ? Checked : Unchecked}
+                    src={checkedItems.find(i => i.userId === item.userId)?.checked ? Checked : Unchecked}
                     alt="상태 이미지"
-                    onClick={() => handleCheckClick(item.id)} // 이미지 클릭 시 체크 상태 변경
+                    onClick={() => handleCheckClick(item.userId)} // 이미지 클릭 시 체크 상태 변경
                   />
                 )}
 
@@ -219,6 +353,8 @@ function OnSiteManagement() {
       {/* 하단 네비게이션 바 */}
       <BottomNav
         showActions={isManaging}
+        onApprove={handleSelectApproveClick} // 수락 함수 전달
+        onDelete={handleSelectDeleteClick}   // 삭제 함수 전달
       />
     </div>
   );

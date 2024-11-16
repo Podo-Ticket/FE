@@ -142,6 +142,8 @@
 
 .search-button {
     background: var(--Backgrounds-Primary, #FFF);
+    border: none;
+
     padding-right: 0px;
 }
 
@@ -338,6 +340,7 @@
 .onsite-accept-button,
 .onsite-reject-button {
     border-radius: 30px;
+    border: none;
 
     padding: 2px 15px;
 
