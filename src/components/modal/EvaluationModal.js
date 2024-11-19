@@ -21,15 +21,13 @@ function EvaluationModal({ closeModal }) {
         setTimeout(async () => {
             try {
                 const response = await axios.post(`${SERVER_URL}/survey`, {
-                    answer: getRatingValue(icon), // 아이콘에 따른 응답 값
+                    answer: parseInt(getRatingValue(icon)), // 아이콘에 따른 응답 값
                 }, {
                     withCredentials: true, // 쿠키 포함
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 });
-
-                
 
                 if (response.data.success) {
                     setShowThankYou(true); // 성공 시 감사 메시지 표시
@@ -41,8 +39,14 @@ function EvaluationModal({ closeModal }) {
                     }, 500);
                 }
             } catch (error) {
+
+                console.log("getRatingValue(icon): ", getRatingValue(icon));
+                console.log("getRatingValue(icon): ", parseInt(getRatingValue(icon)));
+                console.log("getRatingValue(icon): ", getRatingValue(icon).toString());
+
                 if (error.response) {
                     setError(error.response.data.error); // 오류 메시지 설정
+                    console.log(error.response);
                 } else {
                     setError("예기치 않은 오류가 발생했습니다."); // 일반 오류 메시지
                 }

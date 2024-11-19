@@ -5,7 +5,7 @@
   align-items: center;
 }
 
-.seat-header {
+.seat-header-container {
   display: flex;
   justify-content: space-between;
   /* 왼쪽과 중앙 정렬을 위한 공간 분배 */
@@ -19,13 +19,14 @@
 
 .seat-header-text {
   flex: 1;
+
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
   line-height: 24px;
 }
 
-.refresh-button {
+.seat-refresh-button {
   display: flex;
   align-items: center;
   margin-left: -65px;

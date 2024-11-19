@@ -108,10 +108,10 @@ function SelectSeats() {
   return (
     <div className="seat-selection-container">
 
-      <div className="seat-header">
+      <div className="seat-header-container">
         <p className="seat-header-text">좌석을 선택해주세요</p>
-        <button className="refresh-button" onClick={handleRefresh}>
-          <RotateCw size={20} color="#3C3C3C" />
+        <button className="seat-refresh-button" onClick={handleRefresh}>
+          <RotateCw size={15} color="#3C3C3C" />
         </button>
       </div>
 
