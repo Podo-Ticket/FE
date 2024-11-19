@@ -30,6 +30,7 @@ function UserHome() {
   const [isInvalidPhoneModalOpen, setIsInvalidPhoneModalOpen] = useState(false);
   const [isInvalidPhoneModalClosing, setIsInvalidPhoneModalClosing] = useState(false);
   const [invalidPhoneMessage, setInvalidPhoneMessage] = useState('');
+  const [currentScheduleId, setcurrentScheduleId] = useState(null);
 
   //Animation modal declaration
   const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +53,7 @@ function UserHome() {
           setPlayInfo(response.data.play); // 공연 정보 상태 업데이트
           setscheduleInfo(response.data.schedule);
           setScheduleId(response.data.schedule.id); // context scheduleId 설정
+          setcurrentScheduleId(response.data.schedule.id);
 
         } else {
           console.error("공연 정보가 없습니다.");
@@ -135,7 +137,9 @@ function UserHome() {
           headers: {
             'Content-Type': 'application/json',
           },
-          params: { phoneNumber: phone }
+          params: { phoneNumber: phone ,
+            scheduleId : currentScheduleId
+          }
         });
 
         // 성공 케이스 처리
