@@ -29,7 +29,8 @@ const rows_r = {
 };
 
 const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpen,
-  disabled, scheduleId, headCount, isRealTime, onSeatClick, bookingInfo, onSeatEdit }) => {
+  disabled, scheduleId, headCount, isRealTime, onSeatClick, bookingInfo, onSeatEdit
+  , newLockedSeats, setNewLockedSeats }) => {
 
   const seatMapRef = useRef(null);
   const [bookedSeats, setBookedSeats] = useState([]);
@@ -133,20 +134,28 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
 
     // 좌석 클릭 시 예매 정보 API 호출
     if (isRealTime) {
-      console.log("bookedSeatsInfo : ", bookedSeatsInfo);
 
-      const bookedSeatIndex = bookedSeatsInfo.findIndex(seat => `${seat.row}${seat.number}` === seatId);      console.log("bookedSeatIndex : ", bookedSeatIndex);
-      console.log("bookedSeatIndex : ", bookedSeatIndex);
+      if (onSeatEdit) {
+        setNewLockedSeats([...newLockedSeats, seatId]);
+        console.log("newLockedSeats : ", newLockedSeats);
+        
+      } else {
 
-      if (bookedSeatIndex !== -1) {
-        const bookedSeatInfo = bookedSeatsInfo[bookedSeatIndex];
-        const bookedSeatId = bookedSeatInfo.id;
-        onSeatClick(bookedSeatId);
+        console.log("bookedSeatsInfo : ", bookedSeatsInfo);
 
-        // 좌석 클릭 시 해당 좌석을 temporarySelectedSeats에 추가
-        const userSeats = bookingInfo ? bookingInfo.seats.map(seat => `${seat.row}${seat.number}`) : [];
-        setTemporarySelectedSeats(userSeats); // userSeats를 일시적으로 선택된 좌석으로 설정
-        return;
+        const bookedSeatIndex = bookedSeatsInfo.findIndex(seat => `${seat.row}${seat.number}` === seatId); console.log("bookedSeatIndex : ", bookedSeatIndex);
+        console.log("bookedSeatIndex : ", bookedSeatIndex);
+
+        if (bookedSeatIndex !== -1) {
+          const bookedSeatInfo = bookedSeatsInfo[bookedSeatIndex];
+          const bookedSeatId = bookedSeatInfo.id;
+          onSeatClick(bookedSeatId);
+
+          // 좌석 클릭 시 해당 좌석을 temporarySelectedSeats에 추가
+          const userSeats = bookingInfo ? bookingInfo.seats.map(seat => `${seat.row}${seat.number}`) : [];
+          setTemporarySelectedSeats(userSeats); // userSeats를 일시적으로 선택된 좌석으로 설정
+          return;
+        }
       }
     } else {
       // 일반 좌석 선택 로직

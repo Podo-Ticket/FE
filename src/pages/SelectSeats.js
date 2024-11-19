@@ -105,20 +105,6 @@ function SelectSeats() {
 
   };
 
-  const goToTicket = () => {
-    // 선택한 좌석에서 행 이름과 열 번호를 유지
-    const transformedSeats = selectedSeats.map(seat => {
-      const row_t = seat.charAt(0); // 행 이름 (예: '나')
-      const column_t = seat.slice(1); // 열 번호 (예: '1')
-
-      return `${row_t}${column_t.length > 1 ? column_t.slice(1) : ''}`; // 첫 번째 숫자 제거
-    });
-
-    // 변환된 좌석 배열을 state로 전달
-    navigate('/confirm', { state: { selectedSeats: transformedSeats } });
-  };
-
-
   return (
     <div className="seat-selection-container">
 

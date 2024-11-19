@@ -17,7 +17,7 @@ function RealTimeSeats() {
   const navigate = useNavigate();
   const selectRef = useRef(null);
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const [lockedSeats, setLockedSeats] = useState([]);
+  const [newLockedSeats, setNewLockedSeats] = useState([]);
   const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [selectedSession, setSelectedSession] = useState('1');
@@ -123,14 +123,17 @@ function RealTimeSeats() {
   // 좌석 클릭 핸들러
   const handleSeatClick = async (seatId) => {
     if (isEditing) {
+
+      console.log("seatId : ", seatId);
+
       // 편집 모드일 때 선택된 좌석을 LockedSeats에 추가
-      setLockedSeats((prev) => {
+      setNewLockedSeats((prev) => {
         if (prev.includes(seatId)) {
           return prev.filter(id => id !== seatId); // 이미 잠금된 좌석이라면 제거
         }
         return [...prev, seatId]; // 새로 잠금 추가
       });
-      console.log("lockedSeats : ", lockedSeats);
+      console.log("lockedSeats : ", newLockedSeats);
       console.log("current Seat : ", seatId);
     }
     else {
@@ -184,15 +187,26 @@ function RealTimeSeats() {
 
   // 좌석 잠금 함수
   const handleLockSeats = async () => {
-    if (selectedSeats.length === 0) {
+    if (newLockedSeats.length === 0) {
       alert("잠글 좌석을 선택해 주세요."); // 선택된 좌석이 없을 경우 경고
       return;
     }
 
+    console.log("newLockedSeats(api) : ", newLockedSeats);
+
+    const lockedSeats = newLockedSeats.map(seat => {
+      const row = seat.slice(0, 2); // 좌석 ID의 첫 두 문자를 행으로 설정
+      const column = parseInt(seat.slice(2)); // 나머지 부분을 숫자로 변환하여 column으로 설정
+
+      return { "row": row, "number": column }; // 객체 형식으로 변환
+    });
+
+    const encodedSeats = encodeURIComponent(JSON.stringify(lockedSeats));
+
     try {
       const response = await axios.post(`${SERVER_URL}/seat/lock`, {
         scheduleId: selectedSession,
-        seats: selectedSeats.map(seat => encodeURIComponent(seat)), // 좌석 인코딩
+        seats: encodedSeats, // 좌석 인코딩
       }, {
         withCredentials: true,
         headers: {
@@ -203,7 +217,7 @@ function RealTimeSeats() {
       if (response.data.success) {
         alert("좌석이 잠겼습니다."); // 성공 시 알림
         // 잠금된 좌석을 lockedSeats에 추가
-        setLockedSeats((prev) => [...prev, ...selectedSeats]);
+        setNewLockedSeats((prev) => [...prev, ...selectedSeats]);
         setSelectedSeats([]); // 선택된 좌석 초기화
       }
     } catch (error) {
@@ -218,7 +232,7 @@ function RealTimeSeats() {
 
   // 좌석 잠금 해제 함수
   const handleUnlockSeats = async () => {
-    if (lockedSeats.length === 0) {
+    if (newLockedSeats.length === 0) {
       alert("잠금을 해제할 좌석을 선택해 주세요."); // 선택된 좌석이 없을 경우 경고
       return;
     }
@@ -227,7 +241,7 @@ function RealTimeSeats() {
       const response = await axios.delete(`${SERVER_URL}/seat/unlock`, {
         data: {
           scheduleId: selectedSession,
-          seatIds: lockedSeats, // 잠금 해제할 좌석 ID
+          seatIds: newLockedSeats, // 잠금 해제할 좌석 ID
         },
         withCredentials: true,
         headers: {
@@ -238,7 +252,7 @@ function RealTimeSeats() {
       if (response.data.success) {
         alert("좌석 잠금 해제가 완료되었습니다."); // 성공 시 알림
         // 잠금 해제된 좌석을 lockedSeats에서 제거
-        setLockedSeats((prev) => prev.filter(seat => !lockedSeats.includes(seat)));
+        setNewLockedSeats((prev) => prev.filter(seat => !newLockedSeats.includes(seat)));
       }
     } catch (error) {
       console.error("좌석 잠금 해제 오류:", error);
@@ -271,6 +285,7 @@ function RealTimeSeats() {
               className="session-select"
               value={selectedSession}
               onChange={handleSessionChange}
+              disabled={isEditing}
             >
               {schedules.map(schedule => (
                 <option key={schedule.id} value={schedule.id}>
@@ -279,7 +294,12 @@ function RealTimeSeats() {
               ))}
             </select>
           </div>
-          <div className="session-picker-right" onClick={handleChevronClick} ><ChevronDown size={21} color="#3C3C3C" /></div>
+
+          {!isEditing &&
+            <div className="session-picker-right" onClick={handleChevronClick} ><ChevronDown size={21} color="#3C3C3C" />
+            </div>
+          }
+
         </div>
       </div>
 
@@ -312,6 +332,8 @@ function RealTimeSeats() {
       <SeatMap
         selectedSeats={selectedSeats}
         setSelectedSeats={setSelectedSeats}
+        newLockedSeats={newLockedSeats}
+        setNewLockedSeats={setNewLockedSeats}
         setIsAlreadySelectedModalOpen={setIsAlreadySelectedModalOpen}
         scheduleId={selectedSession}
         selectedSession={0}
