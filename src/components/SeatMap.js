@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from 'react';
 
 import { SERVER_URL } from '../constants/ServerURL';
 
+import stage from '../assets/image/stage.png'
 import '../styles/SeatMap.css';
 
 const rows_l = {
@@ -28,12 +29,12 @@ const rows_r = {
 };
 
 const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpen,
-  disabled, scheduleId, headCount, isRealTime, onSeatClick }) => {
+  disabled, scheduleId, headCount, isRealTime, onSeatClick, bookingInfo }) => {
 
   const seatMapRef = useRef(null);
   const [bookedSeats, setBookedSeats] = useState([]);
   const [allBookedSeats, setallBookedSeats] = useState([]);
-
+  const [temporarySelectedSeats, setTemporarySelectedSeats] = useState([]); // 일시적으로 선택된 좌석
 
   useEffect(() => {
     const fetchSeats = async () => {
@@ -69,9 +70,15 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
     fetchSeats(); // scheduleId가 있을 때만 호출
   }, [scheduleId]);
 
+  useEffect(() => {
+    if (!bookingInfo) {
+      setTemporarySelectedSeats([]); // bookingInfo가 null이 될 때 temporarySelectedSeats 초기화
+    }
+  }, [bookingInfo]);
+
   const handleSeatClick = (seatId) => {
     if (disabled) return;
-  
+
     // 좌석 클릭 시 예매 정보 API 호출
     if (isRealTime) {
       const bookedSeatIndex = bookedSeats.findIndex(bookedId => bookedId === seatId);
@@ -79,14 +86,14 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
         const bookedSeatInfo = allBookedSeats.seats[bookedSeatIndex];
         const bookedSeatId = bookedSeatInfo.id;
         onSeatClick(bookedSeatId);
+
+        // 좌석 클릭 시 해당 좌석을 temporarySelectedSeats에 추가
+        const userSeats = bookingInfo ? bookingInfo.seats.map(seat => `${seat.row}${seat.number}`) : [];
+        setTemporarySelectedSeats(userSeats); // userSeats를 일시적으로 선택된 좌석으로 설정
         return;
       }
     } else {
       // 일반 좌석 선택 로직
-      console.log(seatId);
-      console.log(seatId);
-      console.log(seatId);
-      console.log(seatId);
       console.log(seatId);
 
       if (bookedSeats.includes(seatId)) {
@@ -94,9 +101,11 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
       } else if (selectedSeats.includes(seatId)) {
         // 이미 선택된 좌석을 클릭하면 선택 취소
         setSelectedSeats(selectedSeats.filter(id => id !== seatId));
+        setTemporarySelectedSeats([]); // 선택 해제 시 원래 색으로 복원
       } else if (selectedSeats.length < headCount) {
         // headCount에 따라 좌석 선택 제한
         setSelectedSeats([...selectedSeats, seatId]);
+        setTemporarySelectedSeats([]); // 이전 선택된 좌석의 색 복원
       }
     }
   };
@@ -109,36 +118,33 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
     } else if (selectedSeats.includes(seatId)) {
       // 이미 선택된 좌석을 클릭하면 선택 취소
       setSelectedSeats(selectedSeats.filter(id => id !== seatId));
+      setTemporarySelectedSeats([]); // 선택 해제 시 원래 색으로 복원
     } else if (selectedSeats.length < headCount) {
       // headCount에 따라 좌석 선택 제한
       setSelectedSeats([...selectedSeats, seatId]);
+      setTemporarySelectedSeats([]); // 이전 선택된 좌석의 색 복원
     }
   }
+
+  // bookingInfo에서 userSeats를 가져와서 temporarySelectedSeats에 추가
+  useEffect(() => {
+    if (bookingInfo) {
+      const userSeats = bookingInfo.seats.map(seat => `${seat.row}${seat.number}`);
+      setTemporarySelectedSeats(userSeats); // userSeats를 일시적으로 선택된 좌석으로 설정
+    }
+  }, [bookingInfo]);
+
+  // temporarySelectedSeats 값이 변경될 때 로그 출력
+  useEffect(() => {
+    console.log("temporarySelectedSeats:", temporarySelectedSeats);
+  }, [temporarySelectedSeats]);
+
 
   return (
     <div className="seat-map">
       <div className="stage-container">
-        <svg xmlns="http://www.w3.org/2000/svg" width="360" height="60" viewBox="0 0 329 40" fill="none" className="stage">
-          <g filter="url(#filter0_d_710_26307)">
-            <path d="M6.85747 7.3947C5.92831 4.19588 8.32797 1 11.659 1H317.341C320.672 1 323.072 4.19588 322.143 7.3947L316.914 25.3947C316.294 27.5307 314.337 29 312.113 29H16.8874C14.6632 29 12.7064 27.5307 12.0859 25.3947L6.85747 7.3947Z" fill="#F2F2F2" />
-            <path d="M7.33762 7.25523C6.50138 4.3763 8.66108 1.5 11.659 1.5H317.341C320.339 1.5 322.499 4.37629 321.662 7.25523L316.434 25.2552C315.876 27.1776 314.114 28.5 312.113 28.5H16.8874C14.8856 28.5 13.1245 27.1776 12.5661 25.2552L7.33762 7.25523Z" stroke="#E2E2E2" />
-          </g>
-          <text x="50%" y="40%" textAnchor="middle" alignmentBaseline="middle" fill="#777" fontSize="12" fontWeight="500">
-            무대
-          </text>
-          <defs>
-            <filter id="filter0_d_710_26307" x="0.655884" y="0" width="327.688" height="40" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-              <feOffset dy="5" />
-              <feGaussianBlur stdDeviation="3" />
-              <feComposite in2="hardAlpha" operator="out" />
-              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0" />
-              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_710_26307" />
-              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_710_26307" result="shape" />
-            </filter>
-          </defs>
-        </svg>
+        <img src={stage} className="stage" />
+        <span className="stage-label">무대</span>
       </div>
 
       <div className="seat-map-customer" ref={seatMapRef}>
@@ -149,11 +155,12 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
               {rows_l[row].map(seat => {
                 const seatId = `${row}${seat}`;
                 const isBooked = bookedSeats.includes(seatId);
+                const isTemporarySelected = temporarySelectedSeats.includes(seatId);
 
                 return (
                   <button
                     key={seatId}
-                    className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''}`}
+                    className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''} ${isTemporarySelected ? 'temporary-selected' : ''}`}
                     onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleUserSeatClick(row, seat)}
                     disabled={disabled}
                   >
@@ -172,10 +179,12 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
               {rows_r[row].map(seat => {
                 const seatId = `${row}${seat}`;
                 const isBooked = bookedSeats.includes(seatId);
+                const isTemporarySelected = temporarySelectedSeats.includes(seatId);
+
                 return (
                   <button
                     key={seatId}
-                    className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''}`}
+                    className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''} ${isTemporarySelected ? 'temporary-selected' : ''}`}
                     onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleUserSeatClick(row, seat)}
                     disabled={disabled}>
                     다 {seat}

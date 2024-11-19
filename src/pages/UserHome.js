@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useBooking } from '../context/BookingContext';
+import { useSchedule } from '../hook/ScheduleContext';
 import { SERVER_URL } from '../constants/ServerURL';
 
 import '../styles/UserHome.css';
@@ -18,10 +18,11 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 function UserHome() {
   const navigate = useNavigate();
   const popupRef = useRef(null);
-  const { setBookingInfo } = useBooking();
+  const { setScheduleId } = useSchedule(); // scheduleId 설정 함수 가져오기
 
   //Functional modal declaration
   const [playInfo, setPlayInfo] = useState(null);
+  const [scheduleInfo, setscheduleInfo] = useState(null);
   const [isReserveWayModalOpen, setIsReserveWayModalOpen] = useState(false);
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -38,12 +39,20 @@ function UserHome() {
     // 공연 정보 조회
     const fetchPlayInfo = async () => {
       try {
-        const scheduleId = 1; // 사용할 scheduleId 설정
-        const response = await axios.get(`${SERVER_URL}/`, { params: { scheduleId } });
+        const playId = 1; // 사용할 playId 설정
+        const response = await axios.get(`${SERVER_URL}/`, {
+          params: { playId },
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true, // 쿠키 포함
+        });
 
         if (response.data.play) {
           setPlayInfo(response.data.play); // 공연 정보 상태 업데이트
-          console.log(response.data)
+          setscheduleInfo(response.data.schedule);
+          setScheduleId(response.data.schedule.id); // context scheduleId 설정
+
         } else {
           console.error("공연 정보가 없습니다.");
         }
@@ -131,32 +140,24 @@ function UserHome() {
 
         // 성공 케이스 처리
         if (response.data.success) { // 서버에서 성공 응답을 받은 경우
-          const bookingData = {
-            phoneNumber: phone
-          };
-          setBookingInfo(bookingData); // Context에 예매자 정보 저장
-
           setIsLoading(false);
           setIsComplete(true);
 
           setTimeout(() => {
             closePhoneModal(); // 모달 닫기
             setIsComplete(false);
-            navigate('/select'); // 좌석 선택 페이지로 이동
+            navigate('/select', { state: { scheduleId: scheduleInfo.id } }); // 좌석 선택 페이지로 이동
           }, 1000);
         } else {
           // 실패 케이스 처리
           setIsLoading(false);
-          if (response.data.data) {
-              // 이미 발권한 사용자 혹은 예매 내역 확인 불가
-              setInvalidPhoneMessage(response.data.data + "입니다."); // 오류 메시지 설정
-              setIsInvalidPhoneModalOpen(true); // 모달 열기
-          } else {
-              // 올바르지 않은 전화번호 오류 처리
-              setInvalidPhoneMessage("올바르지 않은 전화번호"); // 기본 오류 메시지 설정
-              setIsInvalidPhoneModalOpen(true); // 모달 열기
+          if (response.data.data === "이미 발권한 사용자") {
+            navigate('/ticket'); // 이미 발권한 사용자 페이지로 이동
+          } else if (response.data.data === "예매 내역 확인 불가") {
+            setInvalidPhoneMessage(response.data.data); // 예매 내역 확인 불가 메시지 설정
+            setIsInvalidPhoneModalOpen(true); // 모달 열기
           }
-      }
+        }
       } catch (error) {
         console.error("Error checking phone number:", error);
         setIsLoading(false);
@@ -206,8 +207,8 @@ function UserHome() {
               <div className="show-details">
                 {playInfo && (
                   <>
-                    <h2>{playInfo.play.title}</h2>
-                    <h3>{playInfo.date_time && formatDate(playInfo.date_time)}</h3>
+                    <h2>{playInfo.title}</h2>
+                    <h3>{scheduleInfo.date_time && formatDate(scheduleInfo.date_time)}</h3>
                   </>
                 )}
               </div>
@@ -217,23 +218,24 @@ function UserHome() {
 
               <div className="home-info-item">
                 <span>연출</span>
-                <p>곽민지</p>
+                <p>이진성, 박지원, 권수현, 김정훈</p>
               </div>
               <div className="home-info-item">
                 <span>작</span>
-                <p>김유리</p>
+                <p>방혜영, 윤혜미, 뒤렌마트, 김정훈</p>
               </div>
               <div className="home-info-item">
                 <span>배우</span>
-                <p>황소원, 송현태, 김민채, 지현우</p>
+                <p>김현서, 신주형, 박준서, 구정훈</p>
                 <div className="detail-more-small" onClick={togglePopup}>
                   더보기
 
                   {isPopupVisible && (
                     <div className="speech-bubble" ref={popupRef}>
-                      <div>황소원, 송현태, 김민채, 지현우,</div>
-                      <div>이현진, 김서연, 이동훈, 김태형,</div>
-                      <div>김원중, 김민재, 박준석, 황준혁</div>
+                      <div>김현서, 신주형, 박준서, 구정훈,</div>
+                      <div>홍세림, 전서현, 한태웅, 권연우,</div>
+                      <div>홍지우, 장미현, 이소연, 김정훈</div>
+                      <div>차혜수, 심성연, 양현모</div>
                     </div>
                   )}
 
@@ -241,7 +243,7 @@ function UserHome() {
               </div>
               <div className="home-info-item">
                 <span>관람 시간</span>
-                <p>90분</p>
+                <p>80분</p>
               </div>
               <div className="home-info-item">
                 <span>장소</span>
@@ -269,43 +271,61 @@ function UserHome() {
                 <div className="go-front-button" onClick={handleFlip}><ChevronLeft size={16} /></div>
                 <div className="detail-more-title">상세 정보</div>
               </div>
+              
+              <div className="back-item-scroller">
+                <div className="home-info-item-container">
 
-              <div className="home-info-item-container">
-                <div className="home-info-item back-item">
-                  <span>연출</span>
-                  <p>곽민지</p>
-                </div>
-                <div className="home-info-item">
-                  <span>작</span>
-                  <p>김유리</p>
-                </div>
-                <div className="home-info-item">
-                  <span>배우</span>
-                  <div className="home-info-item-content">
-                    <p>황소원, 송현태, 김민채, 지현우, 이현진</p>
-                    <p>김서연, 이동훈, 김태형,김원중, 김민재</p>
-                    <p>박준석, 황준혁</p>
+                  <div className="home-info-item back-item">
+                    <span>연출</span>
+                    <p>이진성, 박지원, 권수현, 김정훈</p>
                   </div>
-                </div>
-                <div className="home-info-item">
-                  <span>기획</span>
-                  <p>박연수</p>
-                </div>
-                <div className="home-info-item">
-                  <span>무대</span>
-                  <p>이우준, 신혜교, 조준형</p>
-                </div>
-                <div className="home-info-item">
-                  <span>관람 시간</span>
-                  <p>90분</p>
-                </div>
-                <div className="home-info-item">
-                  <span>장소</span>
-                  <p>광운대학교 새빛관 대강의실</p>
-                </div>
-                <div className="home-info-item">
-                  <span>공연 기간</span>
-                  <p>2024.11.16 (토) 18:00</p>
+                  <div className="home-info-item">
+                    <span>작</span>
+                    <p>방혜영, 윤혜미, 뒤렌마트, 김정훈</p>
+                  </div>
+                  <div className="home-info-item">
+                    <span>배우</span>
+                    <div className="home-info-item-content">
+                      <p>김현서, 신주형, 박준서, 구정훈, 홍세림</p>
+                      <p>전서현, 한태웅, 권연우, 홍지우, 장미현</p>
+                      <p>이소연, 김정훈, 차혜수, 심성연, 양현모</p>
+                    </div>
+                  </div>
+                  <div className="home-info-item">
+                    <span>기획</span>
+                    <p>한지민, 김도환, 이슬비</p>
+                  </div>
+                  <div className="home-info-item">
+                    <span>무대</span>
+                    <p>최준혁, 이서진, 김가희, 이용우, 최성민</p>
+                  </div>
+                  <div className="home-info-item">
+                    <span>조명</span>
+                    <p>최예은</p>
+                  </div>
+                  <div className="home-info-item">
+                    <span>음향</span>
+                    <p>이소연</p>
+                  </div>
+                  <div className="home-info-item">
+                    <span>미술</span>
+                    <p>이승주, 이유빈, 황현지</p>
+                  </div>
+                  <div className="home-info-item">
+                    <span>관람 시간</span>
+                    <p>80분</p>
+                  </div>
+                  <div className="home-info-item">
+                    <span>장소</span>
+                    <p>광운대학교 새빛관 대강의실</p>
+                  </div>
+                  <div className="home-info-item">
+                    <span>공연 기간</span>
+                    {playInfo &&
+                      <p>{scheduleInfo.date_time && formatDate(scheduleInfo.date_time)}</p>
+                    }
+                  </div>
+
                 </div>
               </div>
 
@@ -329,7 +349,11 @@ function UserHome() {
         startLoading={handlePhoneSubmit}
       />
 
-      {isLoading && <Loading isOpen={isLoading} />}
+      {isLoading && <Loading
+        isOpen={isLoading}
+        isOnSiteReserve={false}
+      />
+      }
       <CompleteModal
         isOpen={isComplete}
         onClose={handleCompleteClose}

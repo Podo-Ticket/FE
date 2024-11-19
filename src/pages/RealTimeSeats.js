@@ -23,10 +23,11 @@ function RealTimeSeats() {
   const [availableSeats, setAvailableSeats] = useState(0); // 여석 수
   const [error, setError] = useState(''); // 오류 메시지
   const [bookingInfo, setBookingInfo] = useState(null); // 예매 정보 저장
+  const [showInfo, setShowInfo] = useState(false); // 애니메이션을 위한 상태 추가
 
   // 좌석 선택란 새로고침
   const handleRefresh = () => {
-    setSelectedSeats([]);
+    window.location.reload(); // 페이지 새로 고침
   };
 
   // 공연 회차 선택 핸들러
@@ -81,15 +82,16 @@ function RealTimeSeats() {
         },
       });
 
-      const userInfo = response.data.userInfo;
-      console.log(userInfo);
-      console.log(seatId);
-      console.log(userInfo.head_count,);
+      const userInfo = response.data.user;
+      const userSeats = response.data.seats;
+
       setBookingInfo({
-        name: userInfo.user.name,
-        phone: userInfo.user.phone_number,
-        headCount: userInfo.user.head_count,
-      });
+        name: userInfo.name,
+        phone: userInfo.phone_number,
+        headCount: userInfo.head_count,
+        seats: userSeats
+    });
+
     } catch (error) {
       console.error("Error fetching booking info:", error);
       setBookingInfo(null); // 에러 발생 시 예매 정보 초기화
@@ -131,7 +133,10 @@ function RealTimeSeats() {
               value={selectedSession}
               onChange={handleSessionChange}
             >
-              <option value="1">2024.11.16 (토) 18:00</option>
+              <option value="1">2024.11.19 (토) 15:00</option>
+              <option value="2">2024.11.19 (토) 19:00</option>
+              <option value="3">2024.11.20 (토) 15:00</option>
+              <option value="4">2024.11.20 (토) 19:00</option>
             </select>
           </div>
           <div className="session-picker-right" onClick={handleChevronClick} ><ChevronDown size={21} color="#3C3C3C" /></div>
@@ -139,7 +144,7 @@ function RealTimeSeats() {
       </div>
 
       {bookingInfo && (
-        <div className='seats-button-info-container'>
+        <div className={`seats-button-info-container ${showInfo ? 'show' : ''}`}>
           <div className='seats-button-info-item'>
             <img src={personIcon} className='seats-button-info-icon' />
             <p>예매자</p>
@@ -172,6 +177,7 @@ function RealTimeSeats() {
         selectedSession={0}
         isRealTime={true}
         onSeatClick={handleSeatClick} // 좌석 클릭 핸들러 전달
+        bookingInfo = {bookingInfo}
       />
 
       <div className="admin-seat-legend">
@@ -184,9 +190,9 @@ function RealTimeSeats() {
           발권 완료
         </span>
 
-        <button className="admin-legend-button">
+        <div className="admin-legend-rest-seat">
           여석 {availableSeats}석
-        </button>
+        </div>
       </div>
 
       <BottomNav /> {/* 항상 하단에 고정된 네비게이션 바 */}

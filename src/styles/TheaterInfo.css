@@ -1,0 +1,133 @@
+.theater-info-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+}
+
+.theater-info-title {
+    margin: 20px 0;
+    margin-top: 40px;
+
+    color: var(--grey-grey7, #3C3C3C);
+    text-align: center;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.theater-info-nav {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    /* 상대 위치 지정 */
+
+    width: 90%;
+
+    border-radius: 10px;
+    border: 1px solid var(--grey-grey-3, #E2E2E2);
+    background: var(--Backgrounds-Primary, #FFF);
+    box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
+
+    padding: 5px;
+    margin-bottom: 15px;
+}
+
+.theater-info-nav .slider {
+    position: absolute;
+    height: 100%;
+    background: var(--purple-purple-4-main, #6A39C0);
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    z-index: 0;
+}
+
+.theater-info-nav button {
+    width: 30%;
+    border: none;
+    border-radius: 10px;
+    background: var(--grey-grey-2, #FFF);
+    padding: 5px 9px;
+    color: var(--grey-grey-5, #9E9E9E);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.theater-info-nav button.active {
+    border: 1px solid var(--purple-purple-7, #B489FF);
+    border-radius: 10px;
+    background: var(--purple-purple-4-main, #6A39C0);
+
+    color: var(--ect-white, var(--Backgrounds-Primary, #FFF));
+    text-align: center;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.theater-info-seat-description {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: auto;
+
+    overflow: auto;
+}
+
+.theater-info-seat-description-map {
+    width: 240%;
+    height: auto;
+
+    border-radius: 10px;
+    border: 1px solid var(--grey-grey-3, #E2E2E2);
+    background: var(--Backgrounds-Primary, #FFF);
+    box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+.theater-info-venue-map-description {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 55%;
+
+    margin: 20px 0;
+    text-align: center;
+
+    overflow: auto;
+}
+
+.theater-info-venue-map {
+    width: 150%;
+}
+
+.theater-info-performance-description {
+    width: 90%;
+    height: 400px;
+
+    text-align: left;
+    border-radius: 10px;
+    border: 1px solid var(--grey-grey-3, #E2E2E2);
+    background: var(--Backgrounds-Primary, #FFF);
+    box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
+
+    padding: 10px;
+
+    color: var(--grey-grey-6, #777);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 14px;
+}

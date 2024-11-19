@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BookingProvider } from './context/BookingContext';
+import { ScheduleProvider } from './hook/ScheduleContext';
 
 import UserHome from './pages/UserHome';
 import OnSiteReserve from './pages/OnSiteReserve';
@@ -15,6 +15,7 @@ import OnSiteManagement from "./pages/OnSiteManagement";
 import InsertList from './pages/InsertList';
 import DeleteList from './pages/DeleteList';
 import ModifyList from './pages/ModifyList';
+import TheaterInfo from './pages/TheaterInfo';
 
 import './styles/index.css'
 import reportWebVitals from './reportWebVitals';
@@ -24,7 +25,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <BookingProvider>
+      <ScheduleProvider>
         <Routes>
           <Route path="/" element={<UserHome />} />
           <Route path="/reserve" element={<OnSiteReserve />} />
@@ -39,8 +40,9 @@ root.render(
           <Route path="/insert" element={<InsertList />} />
           <Route path="/delete" element={<DeleteList />} />
           <Route path="/modify" element={<ModifyList />} />
+          <Route path="/theater" element={<TheaterInfo />} />
         </Routes>
-      </BookingProvider>
+      </ScheduleProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

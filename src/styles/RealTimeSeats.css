@@ -10,17 +10,19 @@
 .seat-header {
   display: flex;
   justify-content: space-between;
-  /* 왼쪽과 중앙 정렬을 위한 공간 분배 */
+
   align-items: center;
   background-color: white;
   z-index: 10;
   text-align: center;
-  padding: 10px;
   width: 100%;
 }
 
 .seat-header-text {
   flex: 1;
+
+  margin: 15px;
+
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
@@ -114,20 +116,19 @@
   justify-content: center;
 
   position: absolute;
-  top: 20%;
-  /* 원하는 위치로 조정 */
+  top: 16%;
   left: 50%;
-  /* 수평 중앙 정렬 */
   transform: translate(-50%, -50%);
-  /* 중앙 정렬을 위한 변환 */
-  z-index: 5;
-  /* 다른 요소들보다 위에 표시되도록 z-index 설정 */
+  z-index: 10;
+
+  padding: 5px 0;
 
   width: 90%;
   background: #FFF;
   border-radius: 10px 10px 0 0;
-  border-left: 1px solid lightgray;
-  border-right: 1px solid lightgray;
+  
+  border: 1px solid var(--grey-grey-3, #E2E2E2);
+  border-bottom: none;
 }
 
 .seats-button-info-divider{
@@ -141,9 +142,9 @@
   align-items: center;
   justify-content: center;
 
-  gap: 5px;
+  gap: 4px;
 
-  padding: 0 35px;
+  padding: 0 30px;
   padding-top: 16px;
 }
 
@@ -173,32 +174,27 @@
   height: 26px;
 }
 
-
 .admin-seat-legend {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between; /* 자식 요소들 사이에 공간을 분배 */
 
   width: 90%;
 
   gap: 15px;
   margin-bottom: 0px;
-  border-radius: 10px;
+  border-radius: 0 0 10px 10px;
   border: 1px solid var(--grey-grey-3, #E2E2E2);
   border-top: none;
   background: var(--Backgrounds-Primary, #FFF);
-  padding: 16px 17px;
+  padding: 10px 17px;
 
   position: absolute;
-  /* 절대 위치 지정 */
   top: 83%;
-  /* 원하는 위치로 조정 */
   left: 50%;
-  /* 수평 중앙 정렬 */
   transform: translate(-50%, -50%);
-  /* 중앙 정렬을 위한 변환 */
   z-index: 5;
-  /* 다른 요소들보다 위에 표시되도록 z-index 설정 */
 
   color: var(--grey-grey7, #3C3C3C);
   font-size: 10px;
@@ -267,7 +263,7 @@
   /* 대각선 두 번째 */
 }
 
-.admin-legend-button {
+.admin-legend-rest-seat {
   border-radius: 20px;
   border: 1px solid var(--purple-purple-7, #B489FF);
   background: var(--Podo-Ticket-chip-light-purple02, #F5F4FF);

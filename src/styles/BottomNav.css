@@ -41,7 +41,7 @@
     /* 166.667% */
 
     border-radius: 10px;
-    width: 45%;
+    width: 80%;
     height: 100%;
 }
 
@@ -89,7 +89,7 @@
 }
 
 .nav-item-accept {
-    background: var(--grey-grey-1, #FBFBFB);
+    background: var(--grey-grey-1, #FFF);
     border: none;
 
     color: var(--purple-purple-4-main, #6A39C0);
@@ -101,7 +101,7 @@
 }
 
 .nav-item-reject {
-    background: var(--grey-grey-1, #FBFBFB);
+    background: var(--grey-grey-1, #FFF);
     border: none;
 
     color: var(--grey-grey7, #3C3C3C);
@@ -110,4 +110,12 @@
     font-style: normal;
     font-weight: 600;
     line-height: 26px;
+}
+
+.icon-info{
+    width: 22px;
+    height: 22px;
+
+    margin-top: 10px;
+    margin-bottom: 5px;
 }

@@ -154,10 +154,6 @@
 
 .onsite-filter-buttons {
     display: flex;
-    justify-content: center;
-
-    margin-left: 5px;
-    border-radius: 30px;
 }
 
 .onsite-filter-buttons button {

@@ -58,6 +58,7 @@ const TicketConfirmation = () => {
                     location: "광운대학교 새빛관 대강의실", // 장소는 임시로 설정
                     seats: selectedSeats, // 선택한 좌석
                 });
+                console.log(playInfo);
             } catch (error) {
                 console.error('Error fetching ticketing info:', error);
                 setError('티켓 정보를 가져오는 데 실패했습니다.'); // 오류 메시지 설정
@@ -209,7 +210,10 @@ const TicketConfirmation = () => {
                 </button>
 
                 {/* 로딩 컴포넌트 표시 */}
-                {isLoading && <Loading isOpen={isLoading} />}
+                {isLoading && <Loading
+                    isOpen={isLoading}
+                    isOnSiteReserve={false}
+                />}
                 <CompleteModal isOpen={isComplete} onClose={handleCompleteClose} />
             </div>
         </div>

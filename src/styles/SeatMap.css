@@ -16,11 +16,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 0px;
+    position: relative;
+    /* 자식 요소를 절대 위치로 배치할 수 있도록 설정 */
+
+    margin: 0px;
+
+    text-align: center;
 }
 
 .stage {
-    padding: 10px 20px;
+    width: 420px;
+    height: 60px;
+
+    margin-top: 20px;
+    padding: 0px 20px;
 
     color: var(--grey-grey-6, #777);
     text-align: center;
@@ -28,18 +37,32 @@
     font-style: normal;
     font-weight: 500;
     line-height: 20px;
-    margin-top: 20px;
     position: relative;
-    /* 위치 조정 */
-    transform: translateX(215px);
-    /* 오른쪽으로 이동 */
+
+    transform: translateX(240px);
+}
+
+.stage-label {
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    color: var(--grey-grey-6, #777);
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+
+    transform: translateX(225px);
 }
 
 .seat-map-customer {
     display: flex;
-    /* Flexbox 사용 */
     align-items: flex-end;
-    /* 아래 정렬 */
+
+    margin-top: -5px;
 }
 
 .seat-row {
@@ -61,8 +84,8 @@
 }
 
 .seat {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
 
     border: none;
     border-radius: 5px;
@@ -71,18 +94,27 @@
     margin: 2px;
     padding: 0px;
 
-    text-align: center;
     color: var(--grey-grey-6, #777);
-    font-size: 9px;
+    text-align: center;
+    font-size: 11px;
     font-style: normal;
     font-weight: 700;
-    line-height: 11px;
+    line-height: 20px;
     letter-spacing: -0.4px;
+}
+
+.seat span {
+    font-weight: 800;
 }
 
 .selected {
     border: 0.5px solid var(--purple-purple-6, #9E67FF);
     background: var(--purple-purple-9, #DFCDFF);
+}
+
+.seat.temporary-selected {
+    background-color: #6A39C0;
+    /* 일시적으로 선택된 좌석 색상 */
 }
 
 .booked {

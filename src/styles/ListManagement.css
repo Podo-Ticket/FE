@@ -146,9 +146,6 @@
 /* 필터 버튼 스타일 */
 .filter-buttons {
     display: flex;
-    justify-content: center;
-    border-radius: 30px;
-    width: 80%;
 }
 
 .filter-buttons button {

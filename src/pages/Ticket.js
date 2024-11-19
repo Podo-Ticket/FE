@@ -112,12 +112,12 @@ const Ticket = () => {
 
             <div className="swiper-container">
                 <Swiper
+                    onInit={(swiper) => {
+                        updateSlideStyles(swiper); // 초기 상태 설정
+                    }}
                     onSlideChange={(swiper) => {
                         setCurrentIndex(swiper.activeIndex);
                         updateSlideStyles(swiper);
-                    }}
-                    onInit={(swiper) => {
-                        updateSlideStyles(swiper); // 초기 상태 설정
                     }}
                     spaceBetween={-50}
                     slidesPerView={3}

@@ -55,7 +55,7 @@
 
     border-radius: 0;
     border: none;
-    border-bottom: 1px solid var(--grey-grey-6, #777);
+    border-bottom: 1px solid var(--grey-grey-4, #BABABA);
     background: var(--Backgrounds-Primary, #FFF);
 
     color: var(--grey-grey7, #3C3C3C);
@@ -76,13 +76,14 @@
 }
 
 .reserve-form-container input:focus {
-    outline: none; /* 기본 아웃라인 제거 */
-    border: 1px solid #CAABFF;; /* 보라색 테두리 추가 */
-    box-shadow: 0 0 8px #CAABFF;; /* 보라색 그림자 효과 추가 */
+    outline: none;
+    /* 기본 아웃라인 제거 */
+    border-bottom: 1px solid var(--grey-grey7, #3C3C3C);
 }
 
 .reserve-form-container select:focus {
-    outline: none; /* 기본 아웃라인 제거 */
+    outline: none;
+    /* 기본 아웃라인 제거 */
 }
 
 .reserve-select-placeholder {
@@ -94,12 +95,19 @@
     line-height: 28px;
 }
 
+.available-seats-number {
+    color: var(--Podo-Ticket-error-red01, #FF1515);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+}
+
 .reserve-request-button {
     width: 100%;
     padding: 10px;
     margin-top: 100px;
     background: var(--purple-purple-4-main, #6A39C0);
-    /* 버튼 색상 */
     color: white;
     border: none;
     border-radius: 5px;
@@ -111,7 +119,6 @@
     font-style: normal;
     font-weight: 600;
     line-height: 27px;
-    /* 150% */
 }
 
 .reserve-request-button:disabled {
@@ -119,3 +126,44 @@
     cursor: not-allowed;
     /* 비활성화 시 커서 모양 */
 }
+
+.modal-duplicate-phone-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  
+  .modal-duplicate-phone-content {
+    width: 85%;
+    padding: 4px 40px;
+    margin-bottom: 105px;
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+  
+    border-radius: 10px;
+    border: 1px solid var(--Podo-Ticket-error-red02, #FF9393);
+    background: var(--Podo-Ticket-error-red03, #FFF4F4);
+  
+    transform: translateY(100%); /* 기본 위치를 화면 아래로 설정 */
+    animation: slide-up 0.3s forwards; /* 올라오는 애니메이션 */
+  }
+  
+  .error-message {
+    margin-left: 8px;
+    color: red;
+    font-weight: bold;
+    color: var(--Podo-Ticket-error-red01, #FF1515);
+    text-align: center;
+  
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0.26px;
+  }

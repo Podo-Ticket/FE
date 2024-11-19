@@ -1,47 +1,57 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { RotateCw } from 'lucide-react';
 
 import '../styles/SelectSeats.css';
 import { SERVER_URL } from '../constants/ServerURL';
-import { useBooking } from '../context/BookingContext'; // Context 사용
+import { useSchedule } from '../hook/ScheduleContext';
 
 import SeatMap from '../components/SeatMap';
 import errorIcon from '../assets/images/error_icon.png'
 
 function SelectSeats() {
   const navigate = useNavigate();
-  const { setBookingInfo } = useBooking(); // Context에서 setBookingInfo 가져오기
+  const location = useLocation();
+  const { scheduleId, setScheduleId } = useSchedule();
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] = useState(false);
   const [headCount, setHeadCount] = useState(0); // headCount 상태 추가
   const [isClosing, setIsClosing] = useState(false);
   const [error, setError] = useState(null); // 오류 상태 추가
 
+  const [currentScheduleId, setCurrentScheduleIdState] = useState(null);
+
   // 좌석 정보 API 호출
+  const fetchSeats = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URL}/seat`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true, // 쿠키 포함
+      });
+
+      setCurrentScheduleIdState(1);
+      // 성공적으로 응답을 받으면 headCount와 좌석 정보를 상태에 저장
+      setHeadCount(response.data.headCount);
+
+      // 좌석 정보를 사용하려면 추가적인 상태를 여기에서 설정할 수 있습니다.
+    } catch (error) {
+      console.error('Error fetching seats:', error);
+      setError('좌석 정보를 가져오는 데 실패했습니다.'); // 오류 메시지 설정
+    }
+  };
+
   useEffect(() => {
-    const fetchSeats = async () => {
-      try {
-        const response = await axios.get(`${SERVER_URL}/seat`, {
-          params: { scheduleId: 1 }, // 필요한 scheduleId를 쿼리 파라미터로 전달
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true, // 쿠키 포함
-        });
+    setCurrentScheduleIdState(1);
+  }, []); // 컴포넌트가 마운트될 때 한 번만 실행
 
-        // 성공적으로 응답을 받으면 headCount와 좌석 정보를 상태에 저장
-        setHeadCount(response.data.headCount);
-        // 좌석 정보를 사용하려면 추가적인 상태를 여기에서 설정할 수 있습니다.
-      } catch (error) {
-        console.error('Error fetching seats:', error);
-        setError('좌석 정보를 가져오는 데 실패했습니다.'); // 오류 메시지 설정
-      }
-    };
-
-    fetchSeats();
-  }, []); // 빈 배열을 넣어 컴포넌트가 마운트될 때만 실행
+  useEffect(() => {
+    if (currentScheduleId) {
+      fetchSeats(); // currentScheduleId가 변경될 때마다 좌석 정보 가져오기
+    }
+  }, [currentScheduleId]);
 
   // 이미 선택된 좌석 모달 함수
   const handleAlreadySelectedOverlayClick = () => {
@@ -53,24 +63,21 @@ function SelectSeats() {
   };
 
   // 좌석 선택란 새로고침
-  const handleRefresh = () => {
-    setSelectedSeats([]);
+  const handleRefresh = async () => {
+    window.location.reload(); // 페이지 새로 고침
   };
 
   // 좌석 확인 및 발권 요청 함수
   const handleTicketCheck = async () => {
 
     try {
-      console.log(selectedSeats);
       const seats = selectedSeats.map(seat => {
         const row = seat.slice(0, 2); // 좌석 ID의 첫 두 문자를 행으로 설정
         const column = parseInt(seat.slice(2)); // 나머지 부분을 숫자로 변환하여 column으로 설정
-  
+
         return { "row": row, "number": column }; // 객체 형식으로 변환
       });
 
-      console.log(seats)
-      
       const encodedSeats = encodeURIComponent(JSON.stringify(seats));
 
       const response = await axios.get(`${SERVER_URL}/seat/check`, {
@@ -83,9 +90,6 @@ function SelectSeats() {
         },
         withCredentials: true, // 쿠키 포함
       });
-
-      console.log(selectedSeats);
-      console.log(encodedSeats);
 
       if (response.data.success) {
         // 좌석이 유효한 경우
@@ -140,24 +144,22 @@ function SelectSeats() {
         </span>
       </div>
 
-
       <SeatMap
         selectedSeats={selectedSeats}
         setSelectedSeats={setSelectedSeats}
         setIsAlreadySelectedModalOpen={setIsAlreadySelectedModalOpen}
         disabled={false}
-        scheduleId={1}
+        scheduleId={currentScheduleId}
         headCount={headCount}
         isRealTime={false}
       />
 
-
       {selectedSeats.length >= 0 && (
-        <button className={`select-confirm-button ${selectedSeats.length === headCount ? 'select-confirm-button-active' : ''}`}
+        <button className={`select-confirm-button ${selectedSeats.length === parseInt(headCount) ? 'select-confirm-button-active' : ''}`}
           onClick={handleTicketCheck}
-          disabled={selectedSeats.length < headCount}
+          disabled={selectedSeats.length < parseInt(headCount)}
         >
-          선택 완료 {selectedSeats.length} / {headCount} {/* headCount에 따라 표시 */}
+          선택 완료 {selectedSeats.length} / {headCount}
         </button>
       )}
 

@@ -100,7 +100,7 @@ body {
 
   color: var(--grey-grey7, #3C3C3C);
 
-  font-size: 14px;
+  font-size: 16px; /* 확대 및 축소를 방지 16px보다 작으면 자동으로 확대됨..*/
   font-style: normal;
   font-weight: 400;
   line-height: 28px;
@@ -109,12 +109,13 @@ body {
   border: none;
   border-bottom: 1px solid var(--grey-grey-4, #BABABA);
   background: var(--Backgrounds-Primary, #FFF);
+
+  touch-action: manipulation; /* 확대 및 축소를 방지 */
 }
 
 .admin-form-group input:focus {
   outline: none; /* 기본 아웃라인 제거 */
-  border: 1px solid #3C3C3C; /* 보라색 테두리 추가 */
-  box-shadow: 0 0 8px #3C3C3C; /* 보라색 그림자 효과 추가 */
+  border-bottom: 1px solid var(--grey-grey7, #3C3C3C);
 }
 
 .admin-submit-button {

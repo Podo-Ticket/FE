@@ -114,7 +114,7 @@ body {
   width: 100%;
   height: calc(100% - 5px);
   background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 27px 27px 0px 0px;
+  border-radius: 20px 20px 0px 0px;
 }
 
 .poster {
@@ -184,13 +184,18 @@ body {
   text-align: center;
 }
 
+.back-item-scroller{
+  max-height: 370px; /* 원하는 높이 설정 */
+  overflow-y: auto; /* 세로 스크롤 가능 */
+}
+
 .home-info-item {
   display: flex;
   align-items: center;
   color: #333;
   font-size: 11px;
   color: var(--grey-grey7, #3C3C3C);
-  margin-bottom: -10px;
+  margin-bottom: -8.5px;
 }
 
 .back-item {
@@ -264,11 +269,9 @@ body {
 }
 
 .userhome-button-container { 
-
   text-align: center;
   padding: 30px 0;
-  margin-top: 30px;
-  
+  margin-top: -20px;
 }
 
 .userhome-ticket-button {

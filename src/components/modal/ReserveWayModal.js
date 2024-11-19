@@ -20,8 +20,8 @@ const ReserveWayModal = ({ isOpen, onClose, onCheckReservation, onReserve }) => 
                         }}
                     >
                         <img className="reserve-way-icon" src={checkIcon} />
-                        <p>예매 내역 확인</p>
-                        <span>예매한 티켓을 발권받을 수 있어요!</span>
+                        <p>티켓 발권</p>
+                        <span>사전에 예매한 티켓을 발권받을 수 있어요!</span>
                     </button>
                     <button
                         className="reserve-button"

@@ -31,12 +31,11 @@
     width: 44px;
     height: 44px;
 
-    margin-bottom: 9px;
+    margin-bottom: 5px;
 }
 
 .reserve-way-button-container p {
     margin: 0px;
-    margin-bottom: 2px;
 
     color: #282828;
     font-size: 22px;
@@ -46,6 +45,8 @@
 }
 
 .reserve-way-button-container span {
+    display: block;
+
     color: var(--grey-grey-6, #777);
     font-size: 14px;
     font-style: normal;
