@@ -290,11 +290,11 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
                     key={seatId}
                     className={`seat 
   ${isLocked && (isRealTime === true) ? 'locked' : ''} 
-  ${newUnlockedSeats.includes(seatId) && (isRealTime === true) ? 'selected-unlock' : ''} 
+  ${newUnlockedSeats && newUnlockedSeats.includes(seatId) && (isRealTime === true) ? 'selected-unlock' : ''} 
   ${selectedSeats.includes(seatId) ? 'selected' : ''} 
   ${isBooked || (isRealTime === false && isLocked) ? 'booked' : ''} 
   ${isTemporarySelected ? 'temporary-selected' : ''} 
-  ${newLockedSeats.includes(seatId) && (isRealTime === true) ? 'selected-lock' : ''}`}
+  ${newLockedSeats && newLockedSeats.includes(seatId) && (isRealTime === true) ? 'selected-lock' : ''}`}
                     onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleUserSeatClick(row, seat)}
                     disabled={disabled || (onSeatEdit && isBooked)}
                   >
@@ -321,11 +321,11 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
                     key={seatId}
                     className={`seat 
   ${isLocked && (isRealTime === true) ? 'locked' : ''} 
-  ${newUnlockedSeats.includes(seatId) && (isRealTime === true) ? 'selected-unlock' : ''} 
+  ${newUnlockedSeats && newUnlockedSeats.includes(seatId) && (isRealTime === true) ? 'selected-unlock' : ''} 
   ${selectedSeats.includes(seatId) ? 'selected' : ''} 
   ${isBooked || (isRealTime === false && isLocked) ? 'booked' : ''} 
   ${isTemporarySelected ? 'temporary-selected' : ''} 
-  ${newLockedSeats.includes(seatId) && (isRealTime === true) ? 'selected-lock' : ''}`}
+  ${newLockedSeats && newLockedSeats.includes(seatId) && (isRealTime === true) ? 'selected-lock' : ''}`}
                     onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleUserSeatClick(row, seat)}
                     disabled={disabled || (onSeatEdit && isBooked)}>
                     다 {seat}

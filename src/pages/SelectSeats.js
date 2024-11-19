@@ -138,6 +138,8 @@ function SelectSeats() {
         scheduleId={3}
         headCount={headCount}
         isRealTime={false}
+        newLockedSeats={null}
+        newUnlockedSeats={null}
       />
 
       {selectedSeats.length >= 0 && (
