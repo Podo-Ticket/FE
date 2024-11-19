@@ -114,9 +114,9 @@ function RealTimeSeats() {
   // 컴포넌트가 마운트될 때 좌석 정보 가져오기
   useEffect(() => {
     const fetchData = async () => {
-       fetchSeats(); // fetchSeats를 호출하고 기다림
+      fetchSeats(); // fetchSeats를 호출하고 기다림
     };
-  
+
     fetchData(); // 비동기 함수 호출
   }, []); // 초기 로드 시 한 번만 호출
 
@@ -180,6 +180,74 @@ function RealTimeSeats() {
 
   const handleEditClick = () => {
     setIsEditing(!isEditing); // 편집 모드 토글
+  };
+
+  // 좌석 잠금 함수
+  const handleLockSeats = async () => {
+    if (selectedSeats.length === 0) {
+      alert("잠글 좌석을 선택해 주세요."); // 선택된 좌석이 없을 경우 경고
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${SERVER_URL}/seat/lock`, {
+        scheduleId: selectedSession,
+        seats: selectedSeats.map(seat => encodeURIComponent(seat)), // 좌석 인코딩
+      }, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.data.success) {
+        alert("좌석이 잠겼습니다."); // 성공 시 알림
+        // 잠금된 좌석을 lockedSeats에 추가
+        setLockedSeats((prev) => [...prev, ...selectedSeats]);
+        setSelectedSeats([]); // 선택된 좌석 초기화
+      }
+    } catch (error) {
+      console.error("좌석 잠금 오류:", error);
+      if (error.response && error.response.data.error) {
+        alert(error.response.data.error); // 오류 메시지 표시
+      } else {
+        alert("좌석 잠금에 실패했습니다."); // 일반 오류 메시지
+      }
+    }
+  };
+
+  // 좌석 잠금 해제 함수
+  const handleUnlockSeats = async () => {
+    if (lockedSeats.length === 0) {
+      alert("잠금을 해제할 좌석을 선택해 주세요."); // 선택된 좌석이 없을 경우 경고
+      return;
+    }
+
+    try {
+      const response = await axios.delete(`${SERVER_URL}/seat/unlock`, {
+        data: {
+          scheduleId: selectedSession,
+          seatIds: lockedSeats, // 잠금 해제할 좌석 ID
+        },
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.data.success) {
+        alert("좌석 잠금 해제가 완료되었습니다."); // 성공 시 알림
+        // 잠금 해제된 좌석을 lockedSeats에서 제거
+        setLockedSeats((prev) => prev.filter(seat => !lockedSeats.includes(seat)));
+      }
+    } catch (error) {
+      console.error("좌석 잠금 해제 오류:", error);
+      if (error.response && error.response.data.error) {
+        alert(error.response.data.error); // 오류 메시지 표시
+      } else {
+        alert("좌석 잠금 해제에 실패했습니다."); // 일반 오류 메시지
+      }
+    }
   };
 
   return (
@@ -250,6 +318,7 @@ function RealTimeSeats() {
         isRealTime={true}
         onSeatClick={handleSeatClick} // 좌석 클릭 핸들러 전달
         bookingInfo={bookingInfo}
+        onSeatEdit={isEditing}
       />
 
       <div className="admin-seat-legend">
@@ -270,6 +339,8 @@ function RealTimeSeats() {
       <BottomNav
         showActions={false} // 편집 모드에 따라 showActions 전달
         onSeatEdit={isEditing}
+        onLockSeats={handleLockSeats} // 잠금 핸들러 전달
+        onUnlockSeats={handleUnlockSeats} // 잠금 해제 핸들러 전달
       /> {/* 항상 하단에 고정된 네비게이션 바 */}
 
     </div>

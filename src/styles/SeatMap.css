@@ -117,6 +117,10 @@
     /* 일시적으로 선택된 좌석 색상 */
 }
 
+.seat.locked {
+    background-color: blue;
+}
+
 .booked {
     border-radius: 5px;
     background: var(--grey-grey-6, #777);

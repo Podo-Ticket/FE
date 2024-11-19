@@ -29,12 +29,14 @@ const rows_r = {
 };
 
 const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpen,
-  disabled, scheduleId, headCount, isRealTime, onSeatClick, bookingInfo }) => {
+  disabled, scheduleId, headCount, isRealTime, onSeatClick, bookingInfo, onSeatEdit }) => {
 
   const seatMapRef = useRef(null);
   const [bookedSeats, setBookedSeats] = useState([]);
   const [allBookedSeats, setAllBookedSeats] = useState([]);
+  const [bookedSeatsInfo, setbookedSeatsInfo] = useState([]);
   const [temporarySelectedSeats, setTemporarySelectedSeats] = useState([]); // 일시적으로 선택된 좌석
+  const [lockedSeats, setLockedSeats] = useState([]); // 잠금된 좌석 배열 추가
 
   // 좌석 정보 가져오기
   const fetchSeats = async (isRealTime) => {
@@ -54,14 +56,36 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
       });
 
       const booked = response.data.seats.map(seat => `${seat.row}${seat.number}`);
-      setBookedSeats(booked); // bookedSeats 상태 업데이트
-      setAllBookedSeats(response.data);
+
+      // lock이 true인 좌석만 필터링하여 locked 배열 생성
+      const locked = response.data.seats
+        .filter(seat => seat.lock == true) // lock이 true인 좌석만 필터링
+        .map(seat => `${seat.row}${seat.number}`);
+
+      // lock이 0인 좌석만 필터링하여 booked 배열 생성
+      const onlyBooked = response.data.seats
+        .filter(seat => seat.lock === false) // lock이 0인 좌석만 필터링
+        .map(seat => `${seat.row}${seat.number}`); // 좌석 ID 저장
+
+      const bookedSeatInfo = response.data.seats
+        .filter(seat => seat.lock === false)
+
+      setBookedSeats(onlyBooked); // bookedSeats 상태 업데이트
+      setLockedSeats(locked); // lock된 좌석 배열 설정
+      setAllBookedSeats(booked);
+      setbookedSeatsInfo(bookedSeatInfo);
+
+      console.log("LockedSeats : ", locked);
+      console.log("onlyBooked : ", onlyBooked);
+      console.log("total : ", booked);
 
       // 로그를 한 번만 출력하도록 조건 추가
       if (isRealTime) {
-        console.log("예약된 좌석 (실시간):", booked);
+        console.log("예약된 좌석 (실시간):", bookedSeats);
+        console.log("블락된 좌석 (실시간):", lockedSeats);
+        console.log("예약+블락된 좌석 (실시간):", allBookedSeats);
       } else {
-        console.log("예약된 좌석:", booked);
+        console.log("예약된 좌석:", allBookedSeats);
       }
     } catch (error) {
       console.error("Error fetching seats:", error);
@@ -109,9 +133,13 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
 
     // 좌석 클릭 시 예매 정보 API 호출
     if (isRealTime) {
-      const bookedSeatIndex = bookedSeats.findIndex(bookedId => bookedId === seatId);
+      console.log("bookedSeatsInfo : ", bookedSeatsInfo);
+
+      const bookedSeatIndex = bookedSeatsInfo.findIndex(seat => `${seat.row}${seat.number}` === seatId);      console.log("bookedSeatIndex : ", bookedSeatIndex);
+      console.log("bookedSeatIndex : ", bookedSeatIndex);
+
       if (bookedSeatIndex !== -1) {
-        const bookedSeatInfo = allBookedSeats.seats[bookedSeatIndex];
+        const bookedSeatInfo = bookedSeatsInfo[bookedSeatIndex];
         const bookedSeatId = bookedSeatInfo.id;
         onSeatClick(bookedSeatId);
 
@@ -141,7 +169,7 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
   const handleUserSeatClick = (row, seat) => {
     const seatId = `${row}${seat}`; // 좌석 ID 생성
 
-    if (bookedSeats.includes(seatId)) {
+    if (allBookedSeats.includes(seatId)) {
       setIsAlreadySelectedModalOpen(true);
     } else if (selectedSeats.includes(seatId)) {
       // 이미 선택된 좌석을 클릭하면 선택 취소
@@ -171,11 +199,13 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
                 const seatId = `${row}${seat}`;
                 const isBooked = bookedSeats.includes(seatId);
                 const isTemporarySelected = temporarySelectedSeats.includes(seatId);
+                const isLocked = lockedSeats.includes(seatId);
 
                 return (
                   <button
                     key={seatId}
-                    className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''} ${isTemporarySelected ? 'temporary-selected' : ''}`}
+                    className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''} 
+                    ${isTemporarySelected ? 'temporary-selected' : ''} ${isLocked ? 'locked' : ''}`}
                     onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleUserSeatClick(row, seat)}
                     disabled={disabled}
                   >
@@ -195,11 +225,13 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
                 const seatId = `${row}${seat}`;
                 const isBooked = bookedSeats.includes(seatId);
                 const isTemporarySelected = temporarySelectedSeats.includes(seatId);
+                const isLocked = lockedSeats.includes(seatId);
 
                 return (
                   <button
                     key={seatId}
-                    className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''} ${isTemporarySelected ? 'temporary-selected' : ''}`}
+                    className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''} 
+                    ${isTemporarySelected ? 'temporary-selected' : ''} ${isLocked ? 'locked' : ''}`}
                     onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleUserSeatClick(row, seat)}
                     disabled={disabled}>
                     다 {seat}
