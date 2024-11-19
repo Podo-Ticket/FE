@@ -140,7 +140,7 @@ const Ticket = () => {
                     <img src={infoIcon} className="ticket-info-icon" onClick={() => setIsPlusInfoModalOpen(true)} />
                     <div className="ticketing-title-speech-bubble-container">
                         {isPopupVisible && (
-                            <div className={`speech-bubble ${isFadingOut ? 'fade-out' : ''}`} ref={popupRef}>
+                            <div className={`ticket-speech-bubble ${isFadingOut ? 'fade-out' : ''}`} ref={popupRef}>
                                 <div>길을 못 찾겠다면?</div>
                             </div>
                         )}

@@ -235,7 +235,7 @@ function UserHome() {
                   더보기
 
                   {isPopupVisible && (
-                    <div className="speech-bubble" ref={popupRef}>
+                    <div className="home-speech-bubble" ref={popupRef}>
                       <div>김현서, 신주형, 박준서, 구정훈,</div>
                       <div>홍세림, 전서현, 한태웅, 권연우,</div>
                       <div>홍지우, 장미현, 이소연, 김정훈</div>

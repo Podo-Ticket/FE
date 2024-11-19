@@ -286,7 +286,7 @@ body {
   font-weight: 600;
 }
 
-.speech-bubble {
+.home-speech-bubble {
   position: absolute;
   top: 150%;
   /* "더보기" 바로 아래에 팝업 표시 */
@@ -311,7 +311,7 @@ body {
   line-height: 20px;
 }
 
-.speech-bubble::after {
+.home-speech-bubble::after {
   content: '';
   position: absolute;
   bottom: 100%;
