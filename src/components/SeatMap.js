@@ -33,9 +33,10 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
 
   const seatMapRef = useRef(null);
   const [bookedSeats, setBookedSeats] = useState([]);
-  const [allBookedSeats, setallBookedSeats] = useState([]);
+  const [allBookedSeats, setAllBookedSeats] = useState([]);
   const [temporarySelectedSeats, setTemporarySelectedSeats] = useState([]); // 일시적으로 선택된 좌석
 
+  // 일반 좌석 정보 가져오기
   useEffect(() => {
     const fetchSeats = async () => {
       if (!scheduleId) {
@@ -43,8 +44,47 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
         return;
       }
 
+      console.log("Current scheduleId:", scheduleId);
+
       try {
-        const endpoint = isRealTime ? `${SERVER_URL}/seat/realTime` : `${SERVER_URL}/seat`;
+        const endpoint = `${SERVER_URL}/seat`; // 일반 좌석 API
+        const response = await axios.get(endpoint, {
+          withCredentials: true, // 세션 쿠키 포함
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        // bookedSeats를 API 응답에 따라 설정
+        const booked = response.data.seats.map(seat => `${seat.row}${seat.number}`);
+        setBookedSeats(booked); // bookedSeats 상태 업데이트
+        setAllBookedSeats(response.data);
+
+        console.log("예약된 좌석:", booked); // 예약된 좌석 로그 출력
+      } catch (error) {
+        console.error("Error fetching seats:", error);
+      }
+    };
+
+
+    console.log("-----user seats info-----")
+
+    if (!isRealTime) {
+      fetchSeats(); // scheduleId가 있을 때만 호출
+    }
+
+  }, [scheduleId, isRealTime]);
+
+  // 실시간 좌석 정보 가져오기
+  useEffect(() => {
+    const fetchRealTimeSeats = async () => {
+      if (!scheduleId) {
+        console.error("scheduleId가 없습니다.");
+        return;
+      }
+
+      try {
+        const endpoint = `${SERVER_URL}/seat/realTime`; // 실시간 좌석 API
         const response = await axios.get(endpoint, {
           withCredentials: true, // 세션 쿠키 포함
           headers: {
@@ -56,19 +96,20 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
         // bookedSeats를 API 응답에 따라 설정
         const booked = response.data.seats.map(seat => `${seat.row}${seat.number}`);
         setBookedSeats(booked); // bookedSeats 상태 업데이트
-        setallBookedSeats(response.data);
+        setAllBookedSeats(response.data);
 
-        console.log("아래는 (allBookedSeats);");
-        console.log(allBookedSeats.seats);
-
-        console.log("예약된 좌석:", booked); // 예약된 좌석 로그 출력
+        console.log("예약된 좌석 (실시간):", booked); // 예약된 좌석 로그 출력
       } catch (error) {
-        console.error("Error fetching seats:", error);
+        console.error("Error fetching real-time seats:", error);
       }
     };
 
-    fetchSeats(); // scheduleId가 있을 때만 호출
-  }, [scheduleId]);
+    console.log("-----user seats info-----")
+
+    if (isRealTime) {
+      fetchRealTimeSeats(); // scheduleId가 있을 때만 호출
+    }
+  }, [scheduleId, isRealTime]);
 
   useEffect(() => {
     if (!bookingInfo) {

@@ -133,7 +133,6 @@ function OnSiteManagement() {
   const handleSelectApproveClick = async () => {
     const userIds = checkedItems.filter(item => item.checked).map(item => item.userId); // userId로 변경
     if (userIds.length === 0) {
-      alert("수락할 사용자를 선택해 주세요.");
       return;
     }
     try {
@@ -147,7 +146,6 @@ function OnSiteManagement() {
         },
       });
       if (response.data.success) {
-        alert("예약이 수락되었습니다.");
         fetchReservations(); // 예약 리스트 새로 고침
       }
     } catch (error) {
@@ -155,11 +153,10 @@ function OnSiteManagement() {
       setError("예약 수락에 실패했습니다.");
     }
   };
-  
+
   const handleSelectDeleteClick = async () => {
     const userIds = checkedItems.filter(item => item.checked).map(item => item.userId);
     if (userIds.length === 0) {
-      alert("삭제할 사용자를 선택해 주세요.");
       return;
     }
     try {
@@ -172,7 +169,6 @@ function OnSiteManagement() {
       });
 
       if (response.data.success) {
-        alert("예약이 삭제되었습니다.");
         fetchReservations(); // 예약 리스트 새로 고침
       }
     } catch (error) {
@@ -194,7 +190,6 @@ function OnSiteManagement() {
       });
 
       if (response.data.success) {
-        alert("예약이 수락되었습니다.");
         fetchReservations(); // 예약 리스트 새로 고침
       }
 
@@ -217,7 +212,6 @@ function OnSiteManagement() {
       });
 
       if (response.data.success) {
-        alert("예약이 삭제되었습니다.");
         fetchReservations(); // 예약 리스트 새로 고침
       }
 
@@ -248,7 +242,10 @@ function OnSiteManagement() {
               value={selectedSession}
               onChange={handleSessionChange}
             >
-              <option value="1">2024.11.16 (토) 18:00</option>
+              <option value="1">2024.11.19 (화) 15:00</option>
+              <option value="2">2024.11.19 (화) 19:00</option>
+              <option value="3">2024.11.20 (수) 15:00</option>
+              <option value="4">2024.11.20 (수) 19:00</option>
             </select>
           </div>
           <div className="session-picker-right" onClick={handleChevronClick} ><ChevronDown size={21} color="#3C3C3C" /></div>

@@ -80,7 +80,7 @@ function OnSiteReserve() {
     const fetchPerformanceSchedules = async () => {
         try {
             const response = await axios.get(`${SERVER_URL}/reservation`, {
-                params: { playId : scheduleId }, // scheduleId를 쿼리 파라미터로 전달
+                params: { playId : 1 }, // scheduleId를 쿼리 파라미터로 전달
                 withCredentials: true, // 세션 쿠키 포함
                 headers: {
                     'Content-Type': 'application/json',
@@ -94,6 +94,8 @@ function OnSiteReserve() {
     };
 
     useEffect(() => {
+        console.log(scheduleId);
+        console.log(performanceSchedules);
         fetchPerformanceSchedules(); // 컴포넌트가 마운트될 때 공연 회차 정보 가져오기
     }, []);
 
@@ -117,6 +119,7 @@ function OnSiteReserve() {
             if (response.data.success) {
                 handleWaitingApprove(); // 대기 승인 확인 함수 호출
             }
+
         } catch (error) {
             if (error.response) {
                 if (error.response.data.error === "이미 예약되었습니다.") {

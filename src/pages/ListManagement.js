@@ -118,7 +118,10 @@ function ListManagement() {
               value={selectedSession}
               onChange={handleSessionChange}
             >
-              <option value="1">2024.11.16 (토) 18:00</option>
+              <option value="1">2024.11.19 (화) 15:00</option>
+              <option value="2">2024.11.19 (화) 19:00</option>
+              <option value="3">2024.11.20 (수) 15:00</option>
+              <option value="4">2024.11.20 (수) 19:00</option>
             </select>
           </div>
           <div className="session-picker-right" onClick={handleChevronClick} ><ChevronDown size={21} color="#3C3C3C" /></div>

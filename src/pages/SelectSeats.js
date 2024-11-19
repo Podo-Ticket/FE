@@ -32,12 +32,12 @@ function SelectSeats() {
         withCredentials: true, // 쿠키 포함
       });
 
-      setCurrentScheduleIdState(1);
       // 성공적으로 응답을 받으면 headCount와 좌석 정보를 상태에 저장
       setHeadCount(response.data.headCount);
 
       // 좌석 정보를 사용하려면 추가적인 상태를 여기에서 설정할 수 있습니다.
     } catch (error) {
+
       console.error('Error fetching seats:', error);
       setError('좌석 정보를 가져오는 데 실패했습니다.'); // 오류 메시지 설정
     }
@@ -82,7 +82,7 @@ function SelectSeats() {
 
       const response = await axios.get(`${SERVER_URL}/seat/check`, {
         params: {
-          scheduleId: 1, // 공연 일시 ID
+          scheduleId: 2, // 공연 일시 ID
           seats: encodedSeats, // 좌석 정보 인코딩
         },
         headers: {
@@ -149,7 +149,7 @@ function SelectSeats() {
         setSelectedSeats={setSelectedSeats}
         setIsAlreadySelectedModalOpen={setIsAlreadySelectedModalOpen}
         disabled={false}
-        scheduleId={currentScheduleId}
+        scheduleId={2}
         headCount={headCount}
         isRealTime={false}
       />
