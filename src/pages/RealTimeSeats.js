@@ -17,6 +17,7 @@ function RealTimeSeats() {
   const navigate = useNavigate();
   const selectRef = useRef(null);
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [lockedSeats, setLockedSeats] = useState([]);
   const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [selectedSession, setSelectedSession] = useState('1');
@@ -24,8 +25,29 @@ function RealTimeSeats() {
   const [error, setError] = useState(''); // 오류 메시지
   const [bookingInfo, setBookingInfo] = useState(null); // 예매 정보 저장
   const [showInfo, setShowInfo] = useState(false); // 애니메이션을 위한 상태 추가
+  const [isEditing, setIsEditing] = useState(false); // 편집 모드 상태 추가
+  const [schedules, setSchedules] = useState([]); // 공연 회차 상태 추가
 
-  // 좌석 선택란 새로고침
+  // 날짜 지정된 형식으로 변환
+  const formatDate = (dateString) => {
+    // 날짜 문자열을 'YYYY-MM-DD HH:mm:ss' 형식으로 받을 것으로 가정
+    const dateParts = dateString.split(' ')[0].split('-');
+    const timeParts = dateString.split(' ')[1].split(':');
+
+    const year = dateParts[0];
+    const month = dateParts[1].padStart(2, '0'); // 두 자리 수로 만들기
+    const day = dateParts[2].padStart(2, '0'); // 두 자리 수로 만들기
+    const hours = timeParts[0].padStart(2, '0'); // 두 자리 수로 만들기
+    const minutes = timeParts[1].padStart(2, '0'); // 두 자리 수로 만들기
+
+    // 요일 계산
+    const date = new Date(`${year}-${month}-${day}T${hours}:${minutes}`);
+    const dayOfWeek = ['일', '월', '화', '수', '목', '금', '토'][date.getDay()];
+
+    return `${year}.${month}.${day} (${dayOfWeek}) ${hours}:${minutes}`;
+  };
+
+  // 페이지 새로고침
   const handleRefresh = () => {
     window.location.reload(); // 페이지 새로 고침
   };
@@ -35,10 +57,35 @@ function RealTimeSeats() {
     setSelectedSession(event.target.value);
   };
 
+  // 아랫 화살표 누르면 공연 회차 선택되는 함수
   const handleChevronClick = () => {
     selectRef.current.focus(); // select 요소에 포커스 주기
     selectRef.current.click(); // select 요소 클릭 트리거
   };
+
+  // 공연 회차 정보 가져오기
+  const fetchSchedules = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URL}/user/schedule`, {
+        withCredentials: true, // 세션 쿠키 포함
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setSchedules(response.data.schedules); // 공연 회차 상태 업데이트
+      if (response.data.schedules.length > 0) {
+        setSelectedSession(response.data.schedules[0].id.toString()); // 첫 번째 회차 선택
+      }
+    } catch (error) {
+      console.error("Error fetching schedules:", error);
+      setError("공연 회차 정보를 가져오는 데 실패했습니다."); // 오류 메시지
+    }
+  };
+
+  // 공연 회차 정보 가져오기
+  useEffect(() => {
+    fetchSchedules();
+  }, []);
 
   // 좌석 정보 가져오기
   const fetchSeats = async () => {
@@ -64,37 +111,56 @@ function RealTimeSeats() {
     }
   };
 
+  // 컴포넌트가 마운트될 때 좌석 정보 가져오기
   useEffect(() => {
-    fetchSeats(); // 컴포넌트가 마운트될 때 좌석 정보 가져오기
+    const fetchData = async () => {
+       fetchSeats(); // fetchSeats를 호출하고 기다림
+    };
+  
+    fetchData(); // 비동기 함수 호출
   }, []); // 초기 로드 시 한 번만 호출
 
   // 좌석 클릭 핸들러
   const handleSeatClick = async (seatId) => {
-    try {
-      const response = await axios.get(`${SERVER_URL}/seat/audience`, {
-        withCredentials: true, // 세션 쿠키 포함
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        params: {
-          scheduleId: selectedSession,
-          seatId: seatId,
-        },
+    if (isEditing) {
+      // 편집 모드일 때 선택된 좌석을 LockedSeats에 추가
+      setLockedSeats((prev) => {
+        if (prev.includes(seatId)) {
+          return prev.filter(id => id !== seatId); // 이미 잠금된 좌석이라면 제거
+        }
+        return [...prev, seatId]; // 새로 잠금 추가
       });
+      console.log("lockedSeats : ", lockedSeats);
+      console.log("current Seat : ", seatId);
+    }
+    else {
+      // 편집 모드가 아닐 경우 기존 예매 정보 가져오는 로직
+      try {
+        const response = await axios.get(`${SERVER_URL}/seat/audience`, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          params: {
+            scheduleId: selectedSession,
+            seatId: seatId,
+          },
+        });
 
-      const userInfo = response.data.user;
-      const userSeats = response.data.seats;
+        const userInfo = response.data.user;
+        const userSeats = response.data.seats;
 
-      setBookingInfo({
-        name: userInfo.name,
-        phone: userInfo.phone_number,
-        headCount: userInfo.head_count,
-        seats: userSeats
-    });
+        setBookingInfo({
+          name: userInfo.name,
+          phone: userInfo.phone_number,
+          headCount: userInfo.head_count,
+          seats: userSeats
+        });
 
-    } catch (error) {
-      console.error("Error fetching booking info:", error);
-      setBookingInfo(null); // 에러 발생 시 예매 정보 초기화
+      } catch (error) {
+        console.error("Error fetching booking info:", error);
+        setBookingInfo(null);
+      }
     }
   };
 
@@ -112,14 +178,19 @@ function RealTimeSeats() {
     };
   }, [bookingInfo]);
 
+  const handleEditClick = () => {
+    setIsEditing(!isEditing); // 편집 모드 토글
+  };
+
   return (
-    <div className="admin-login-container">
+    <div className="admin-real-time-seats-container">
 
       <div className="seat-header">
-        <p className="seat-header-text">실시간 좌석 현황</p>
         <button className="refresh-button" onClick={handleRefresh}>
-          <RotateCw size={20} color="#3C3C3C" />
+          <RotateCw size={18} color="#3C3C3C" />
         </button>
+        <p className="seat-header-text">{isEditing ? '실시간 좌석 편집' : '실시간 좌석 현황'}</p>
+        <button className="seat-header-edit" onClick={handleEditClick} >{isEditing ? '취소' : '편집'}</button>
       </div>
 
       <div className='seats-time-select-container'>
@@ -133,10 +204,11 @@ function RealTimeSeats() {
               value={selectedSession}
               onChange={handleSessionChange}
             >
-              <option value="1">2024.11.19 (토) 15:00</option>
-              <option value="2">2024.11.19 (토) 19:00</option>
-              <option value="3">2024.11.20 (토) 15:00</option>
-              <option value="4">2024.11.20 (토) 19:00</option>
+              {schedules.map(schedule => (
+                <option key={schedule.id} value={schedule.id}>
+                  {formatDate(schedule.date_time)}
+                </option>
+              ))}
             </select>
           </div>
           <div className="session-picker-right" onClick={handleChevronClick} ><ChevronDown size={21} color="#3C3C3C" /></div>
@@ -177,7 +249,7 @@ function RealTimeSeats() {
         selectedSession={0}
         isRealTime={true}
         onSeatClick={handleSeatClick} // 좌석 클릭 핸들러 전달
-        bookingInfo = {bookingInfo}
+        bookingInfo={bookingInfo}
       />
 
       <div className="admin-seat-legend">
@@ -195,7 +267,10 @@ function RealTimeSeats() {
         </div>
       </div>
 
-      <BottomNav /> {/* 항상 하단에 고정된 네비게이션 바 */}
+      <BottomNav
+        showActions={false} // 편집 모드에 따라 showActions 전달
+        onSeatEdit={isEditing}
+      /> {/* 항상 하단에 고정된 네비게이션 바 */}
 
     </div>
 

@@ -49,8 +49,7 @@
 
 .onsite-management-container-top select:focus {
     outline: none;
-    border: 1px solid #CAABFF;
-    box-shadow: 0 0 8px #CAABFF;
+    border-bottom: 1px solid var(--grey-grey7, #3C3C3C);
 }
 
 

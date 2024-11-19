@@ -16,6 +16,50 @@ function ListManagement() {
   const [filter, setFilter] = useState('전체');
   const [search, setSearch] = useState('');
   const [selectedSession, setSelectedSession] = useState(1);
+  const [schedules, setSchedules] = useState([]); // 공연 회차 상태 추가
+  const [error, setError] = useState(''); // 오류 메시지
+
+  // 날짜 지정된 형식으로 변환
+  const formatDate = (dateString) => {
+    // 날짜 문자열을 'YYYY-MM-DD HH:mm:ss' 형식으로 받을 것으로 가정
+    const dateParts = dateString.split(' ')[0].split('-');
+    const timeParts = dateString.split(' ')[1].split(':');
+
+    const year = dateParts[0];
+    const month = dateParts[1].padStart(2, '0'); // 두 자리 수로 만들기
+    const day = dateParts[2].padStart(2, '0'); // 두 자리 수로 만들기
+    const hours = timeParts[0].padStart(2, '0'); // 두 자리 수로 만들기
+    const minutes = timeParts[1].padStart(2, '0'); // 두 자리 수로 만들기
+
+    // 요일 계산
+    const date = new Date(`${year}-${month}-${day}T${hours}:${minutes}`);
+    const dayOfWeek = ['일', '월', '화', '수', '목', '금', '토'][date.getDay()];
+
+    return `${year}.${month}.${day} (${dayOfWeek}) ${hours}:${minutes}`;
+  };
+
+  // 공연 회차 정보 가져오기
+  const fetchSchedules = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URL}/user/schedule`, {
+        withCredentials: true, // 세션 쿠키 포함
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setSchedules(response.data.schedules); // 공연 회차 상태 업데이트
+      if (response.data.schedules.length > 0) {
+        setSelectedSession(response.data.schedules[0].id.toString()); // 첫 번째 회차 선택
+      }
+    } catch (error) {
+      console.error("Error fetching schedules:", error);
+      setError("공연 회차 정보를 가져오는 데 실패했습니다."); // 오류 메시지
+    }
+  };
+
+  useEffect(() => {
+    fetchSchedules(); // 공연 회차 정보 가져오기
+  }, []);
 
   const fetchUserList = async () => {
     try {
@@ -118,10 +162,11 @@ function ListManagement() {
               value={selectedSession}
               onChange={handleSessionChange}
             >
-              <option value="1">2024.11.19 (화) 15:00</option>
-              <option value="2">2024.11.19 (화) 19:00</option>
-              <option value="3">2024.11.20 (수) 15:00</option>
-              <option value="4">2024.11.20 (수) 19:00</option>
+              {schedules.map(schedule => (
+                <option key={schedule.id} value={schedule.id}>
+                  {formatDate(schedule.date_time)}
+                </option>
+              ))}
             </select>
           </div>
           <div className="session-picker-right" onClick={handleChevronClick} ><ChevronDown size={21} color="#3C3C3C" /></div>

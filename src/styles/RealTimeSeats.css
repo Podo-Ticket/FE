@@ -1,7 +1,4 @@
-/* seatSelection.css */
-
-.seat-selection-container {
-  position: relative;
+.admin-real-time-seats-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,33 +7,46 @@
 .seat-header {
   display: flex;
   justify-content: space-between;
-
   align-items: center;
+
+  width: 100%;
   background-color: white;
   z-index: 10;
+
   text-align: center;
-  width: 100%;
-}
-
-.seat-header-text {
-  flex: 1;
-
-  margin: 15px;
-
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 24px;
 }
 
 .refresh-button {
-  display: flex;
   align-items: center;
-  margin-left: -65px;
 
   background: none;
   border: none;
-  font-size: 20px;
+
+  margin-left: 10px;
+}
+
+.seat-header-text {
+  margin-right: 10px;
+
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.seat-header-edit {
+  background: #FFF;
+  border: none;
+
+  margin-right: 10px;
+
+  color: var(--grey-grey7, #3C3C3C);
+  text-align: right;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px; /* 200% */
+  letter-spacing: 0.26px;
 }
 
 .seats-time-select-container {
@@ -48,10 +58,10 @@
   box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
 }
 
+
 .seats-time-select-container select:focus {
   outline: none;
-  border: 1px solid #CAABFF;
-  box-shadow: 0 0 8px #CAABFF;
+  border-bottom: 1px solid var(--grey-grey7, #3C3C3C);
 }
 
 .session-picker {
