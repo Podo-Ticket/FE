@@ -112,13 +112,24 @@
     background: var(--purple-purple-9, #DFCDFF);
 }
 
+.selected-unlock {
+    border: 3px solid var(--purple-purple-6, #9E67FF);
+    background: var(--purple-purple-9, #DFCDFF);
+}
+
+.selected-lock {
+    border: 3px solid var(--purple-purple-6, #9E67FF);
+    background: var(--purple-purple-9, #DFCDFF);
+}
+
+
 .seat.temporary-selected {
     background-color: #6A39C0;
     /* 일시적으로 선택된 좌석 색상 */
 }
 
 .seat.locked {
-    background-color: blue;
+    background-color: rgba(253, 153, 153, 0.924);
 }
 
 .booked {

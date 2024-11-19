@@ -1,4 +1,4 @@
-.modal-overlay-unlock-approve {
+.modal-overlay-lock-approve {
     position: fixed;
     top: 0;
     left: 0;
@@ -12,7 +12,7 @@
 
 }
 
-.modal-content-unlock-approve {
+.modal-content-lock-approve {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,7 +23,7 @@
     background: var(--Backgrounds-Primary, #FFF);
 }
 
-.modal-content-unlock-approve h2 {
+.modal-content-lock-approve h2 {
     margin: 0px;
     margin-bottom: 5px;
 
@@ -35,7 +35,7 @@
     line-height: 24px;
 }
 
-.modal-content-unlock-approve span {
+.modal-content-lock-approve span {
     margin-bottom: 20px;
 
     color: var(--grey-grey-5, #9E9E9E);
@@ -46,7 +46,7 @@
     line-height: 28px;
 }
 
-.unlock-approve-button-container button {
+.lock-approve-button-container button {
     border: none;
 
     padding: 11px 48px;
@@ -54,7 +54,7 @@
     margin-bottom: 0px;
 }
 
-.unlock-approve-button {
+.lock-approve-button {
     border-radius: 10px;
     background: var(--purple-purple-4-main, #6A39C0);
 
@@ -66,7 +66,7 @@
     line-height: 26px;
 }
 
-.unlock-cancel-button {
+.lock-cancel-button {
     border-radius: 10px;
     background: var(--grey-grey-3, #E2E2E2);
 

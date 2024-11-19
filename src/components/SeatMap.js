@@ -30,7 +30,8 @@ const rows_r = {
 
 const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpen,
   disabled, scheduleId, headCount, isRealTime, onSeatClick, bookingInfo, onSeatEdit
-  , newLockedSeats, setNewLockedSeats }) => {
+  , newLockedSeats, setNewLockedSeats, newUnlockedSeats, setNewUnlockedSeats, setCurrentLockedSeatsInfo
+  , setIsLockAvailable, setIsUnlockAvailable }) => {
 
   const seatMapRef = useRef(null);
   const [bookedSeats, setBookedSeats] = useState([]);
@@ -38,6 +39,7 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
   const [bookedSeatsInfo, setbookedSeatsInfo] = useState([]);
   const [temporarySelectedSeats, setTemporarySelectedSeats] = useState([]); // 일시적으로 선택된 좌석
   const [lockedSeats, setLockedSeats] = useState([]); // 잠금된 좌석 배열 추가
+  const [lockedSeatsInfo, setLockedSeatsInfo] = useState([]);
 
   // 좌석 정보 가져오기
   const fetchSeats = async (isRealTime) => {
@@ -71,10 +73,14 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
       const bookedSeatInfo = response.data.seats
         .filter(seat => seat.lock === false)
 
+      const lockedSeatInfo = response.data.seats
+        .filter(seat => seat.lock === true)
+
       setBookedSeats(onlyBooked); // bookedSeats 상태 업데이트
       setLockedSeats(locked); // lock된 좌석 배열 설정
       setAllBookedSeats(booked);
       setbookedSeatsInfo(bookedSeatInfo);
+      setLockedSeatsInfo(lockedSeatInfo);
 
       console.log("LockedSeats : ", locked);
       console.log("onlyBooked : ", onlyBooked);
@@ -136,14 +142,83 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
     if (isRealTime) {
 
       if (onSeatEdit) {
-        setNewLockedSeats([...newLockedSeats, seatId]);
+        // newLockedSeats가 빈 배열인 경우에도 처리
+        if (!newLockedSeats || newLockedSeats.length === 0) {
+          setNewLockedSeats([seatId]); // 새로 선택한 좌석을 추가
+          setNewUnlockedSeats([seatId]); // 새로 선택한 좌석을 unlocked에 추가
+
+          // 좌석 상태에 따라 lock/unlock 가능 상태 설정
+          if (lockedSeats.includes(seatId)) {
+            setIsUnlockAvailable(true); // 최초 선택한 좌석이 lockedSeats에 속하면 unlock 가능
+            setIsLockAvailable(false);
+          } else {
+            setIsLockAvailable(true); // 최초 선택한 좌석이 lockedSeats에 속하지 않으면 lock 가능
+            setIsUnlockAvailable(false);
+          }
+        } else {
+          const firstLockedSeat = newLockedSeats[0];
+          console.log("newLockedSeats[0] : ", firstLockedSeat);
+
+          // 같은 좌석을 두 번 클릭한 경우
+          if (newLockedSeats.includes(seatId)) {
+            // lockedSeats에서 제거
+            if (newLockedSeats.length === 1) {
+              // 원소가 1개일 경우 배열 초기화
+              setNewLockedSeats([]);
+              setNewUnlockedSeats([]);
+              setIsLockAvailable(false);
+              setIsUnlockAvailable(false);
+            } else {
+              setNewLockedSeats(prev => prev.filter(id => id !== seatId));
+            }
+          } else if (newUnlockedSeats.includes(seatId)) {
+            // unlockedSeats에서 제거
+            if (newUnlockedSeats.length === 1) {
+              // 원소가 1개일 경우 배열 초기화
+              setNewLockedSeats([]);
+              setNewUnlockedSeats([]);
+              setIsLockAvailable(false);
+              setIsUnlockAvailable(false);
+            } else {
+              setNewUnlockedSeats(prev => prev.filter(id => id !== seatId));
+            }
+          } else {
+            // 첫 번째 좌석이 locked인지 확인
+            if (lockedSeats.includes(firstLockedSeat)) {
+              // Locked seats만 선택 가능 --> lock 해제 logic
+              if (lockedSeats.includes(seatId)) {
+                // 새로 선택한 좌석을 unlocked에 추가
+                setNewUnlockedSeats(prev => [...prev, seatId]);
+                setIsUnlockAvailable(true);
+                setIsLockAvailable(false);
+              }
+            } else {
+              // locking logic
+              // lockedSeats에 새로 선택한 좌석 추가
+              if (!lockedSeats.includes(seatId)) {
+                setNewLockedSeats(prev => [...prev, seatId]); // 기존 값에 추가
+                setIsLockAvailable(true);
+                setIsUnlockAvailable(false);
+              }
+            }
+          }
+        }
+
+
+
+
         console.log("newLockedSeats : ", newLockedSeats);
-        
+        console.log("newUnlockedSeats : ", newUnlockedSeats);
+        console.log("lockedSeatsInfo : ", lockedSeatsInfo);
+
+        setCurrentLockedSeatsInfo(lockedSeatsInfo);
+        console.log(lockedSeatsInfo);
       } else {
 
         console.log("bookedSeatsInfo : ", bookedSeatsInfo);
 
-        const bookedSeatIndex = bookedSeatsInfo.findIndex(seat => `${seat.row}${seat.number}` === seatId); console.log("bookedSeatIndex : ", bookedSeatIndex);
+        const bookedSeatIndex = bookedSeatsInfo.findIndex(seat => `${seat.row}${seat.number}` === seatId);
+        console.log("bookedSeatIndex : ", bookedSeatIndex);
         console.log("bookedSeatIndex : ", bookedSeatIndex);
 
         if (bookedSeatIndex !== -1) {
@@ -213,10 +288,15 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
                 return (
                   <button
                     key={seatId}
-                    className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''} 
-                    ${isTemporarySelected ? 'temporary-selected' : ''} ${isLocked ? 'locked' : ''}`}
+                    className={`seat 
+  ${isLocked && (isRealTime === true) ? 'locked' : ''} 
+  ${newUnlockedSeats.includes(seatId) && (isRealTime === true) ? 'selected-unlock' : ''} 
+  ${selectedSeats.includes(seatId) ? 'selected' : ''} 
+  ${isBooked || (isRealTime === false && isLocked) ? 'booked' : ''} 
+  ${isTemporarySelected ? 'temporary-selected' : ''} 
+  ${newLockedSeats.includes(seatId) && (isRealTime === true) ? 'selected-lock' : ''}`}
                     onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleUserSeatClick(row, seat)}
-                    disabled={disabled}
+                    disabled={disabled || (onSeatEdit && isBooked)}
                   >
                     나 {seat}
                   </button>
@@ -239,10 +319,15 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
                 return (
                   <button
                     key={seatId}
-                    className={`seat ${selectedSeats.includes(seatId) ? 'selected' : ''} ${isBooked ? 'booked' : ''} 
-                    ${isTemporarySelected ? 'temporary-selected' : ''} ${isLocked ? 'locked' : ''}`}
+                    className={`seat 
+  ${isLocked && (isRealTime === true) ? 'locked' : ''} 
+  ${newUnlockedSeats.includes(seatId) && (isRealTime === true) ? 'selected-unlock' : ''} 
+  ${selectedSeats.includes(seatId) ? 'selected' : ''} 
+  ${isBooked || (isRealTime === false && isLocked) ? 'booked' : ''} 
+  ${isTemporarySelected ? 'temporary-selected' : ''} 
+  ${newLockedSeats.includes(seatId) && (isRealTime === true) ? 'selected-lock' : ''}`}
                     onClick={isRealTime ? () => handleSeatClick(seatId) : () => handleUserSeatClick(row, seat)}
-                    disabled={disabled}>
+                    disabled={disabled || (onSeatEdit && isBooked)}>
                     다 {seat}
                   </button>
                 );

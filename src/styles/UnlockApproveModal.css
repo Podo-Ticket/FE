@@ -1,4 +1,4 @@
-.modal-overlay-unlock-approve {
+.modal-overlay-complete-ticketing {
     position: fixed;
     top: 0;
     left: 0;
@@ -8,24 +8,25 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 5000;
+    z-index: 100;
 
 }
 
-.modal-content-unlock-approve {
+.modal-content-complete-ticketing {
     display: flex;
     flex-direction: column;
     align-items: center;
 
+    width: 80%;
 
-    padding: 30px;
+    padding: 25px;
     border-radius: 10px;
     background: var(--Backgrounds-Primary, #FFF);
 }
 
-.modal-content-unlock-approve h2 {
-    margin: 0px;
-    margin-bottom: 5px;
+.modal-content-complete-ticketing p {
+    margin: 5px 0;
+    margin-top: 15px;
 
     color: var(--grey-grey7, #3C3C3C);
     text-align: center;
@@ -35,8 +36,8 @@
     line-height: 24px;
 }
 
-.modal-content-unlock-approve span {
-    margin-bottom: 20px;
+.modal-content-complete-ticketing span {
+    margin-bottom: 11px;
 
     color: var(--grey-grey-5, #9E9E9E);
     text-align: center;
@@ -46,29 +47,14 @@
     line-height: 28px;
 }
 
-.unlock-approve-button-container button {
+.modal-content-complete-ticketing button {
+    display: block;
+
     border: none;
-
-    padding: 11px 48px;
-    margin: 5px;
-    margin-bottom: 0px;
-}
-
-.unlock-approve-button {
-    border-radius: 10px;
-    background: var(--purple-purple-4-main, #6A39C0);
-
-    color: var(--ect-white, #FFF);
-    text-align: center;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 26px;
-}
-
-.unlock-cancel-button {
     border-radius: 10px;
     background: var(--grey-grey-3, #E2E2E2);
+
+    padding: 11px 48px;
 
     color: var(--grey-grey-6, #777);
     text-align: center;
@@ -76,4 +62,9 @@
     font-style: normal;
     font-weight: 500;
     line-height: 26px;
+}
+
+.check-icon-complete-ticketing {
+    width: 44px;
+    height: 44px;
 }

@@ -3,6 +3,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../constants/ServerURL'
 
+import LockApproveModal from '../components/modal/LockApproveModal'
+import UnlockApproveModal from '../components/modal/UnlockApproveModal'
+
 import '../styles/BottomNav.css';
 import '../styles/RealTimeSeats.css';
 import BottomNav from '../components/BottomNav';
@@ -18,6 +21,7 @@ function RealTimeSeats() {
   const selectRef = useRef(null);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [newLockedSeats, setNewLockedSeats] = useState([]);
+  const [newUnlockedSeats, setNewUnlockedSeats] = useState([]);
   const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [selectedSession, setSelectedSession] = useState('1');
@@ -27,6 +31,12 @@ function RealTimeSeats() {
   const [showInfo, setShowInfo] = useState(false); // 애니메이션을 위한 상태 추가
   const [isEditing, setIsEditing] = useState(false); // 편집 모드 상태 추가
   const [schedules, setSchedules] = useState([]); // 공연 회차 상태 추가
+  const [currentLockedSeatsInfo, setCurrentLockedSeatsInfo] = useState([]);
+  const [LockApproveModalOpen, setLockApproveModalOpen] = useState(false);
+  const [UnlockApproveModalOpen, setUnlockApproveModalOpen] = useState(false);
+
+  const [isLockAvailable, setIsLockAvailable] = useState(false);
+  const [isUnlockAvailable, setIsUnlockAvailable] = useState(false);
 
   // 날짜 지정된 형식으로 변환
   const formatDate = (dateString) => {
@@ -182,13 +192,20 @@ function RealTimeSeats() {
   }, [bookingInfo]);
 
   const handleEditClick = () => {
+    if (isEditing) {
+      // 편집 모드에서 취소할 때 newLockedSeats 초기화
+      setNewLockedSeats([]); // newLockedSeats 초기화
+      setNewUnlockedSeats([]); // newLockedSeats 초기화
+      setIsLockAvailable(false);
+      setIsUnlockAvailable(false);
+    }
+
     setIsEditing(!isEditing); // 편집 모드 토글
   };
 
   // 좌석 잠금 함수
   const handleLockSeats = async () => {
     if (newLockedSeats.length === 0) {
-      alert("잠글 좌석을 선택해 주세요."); // 선택된 좌석이 없을 경우 경고
       return;
     }
 
@@ -215,33 +232,58 @@ function RealTimeSeats() {
       });
 
       if (response.data.success) {
-        alert("좌석이 잠겼습니다."); // 성공 시 알림
         // 잠금된 좌석을 lockedSeats에 추가
         setNewLockedSeats((prev) => [...prev, ...selectedSeats]);
         setSelectedSeats([]); // 선택된 좌석 초기화
+        window.location.reload(); // 페이지 새로 고침
       }
     } catch (error) {
       console.error("좌석 잠금 오류:", error);
       if (error.response && error.response.data.error) {
-        alert(error.response.data.error); // 오류 메시지 표시
       } else {
-        alert("좌석 잠금에 실패했습니다."); // 일반 오류 메시지
       }
     }
   };
 
   // 좌석 잠금 해제 함수
   const handleUnlockSeats = async () => {
-    if (newLockedSeats.length === 0) {
-      alert("잠금을 해제할 좌석을 선택해 주세요."); // 선택된 좌석이 없을 경우 경고
+    if (newUnlockedSeats.length === 0) {
       return;
     }
+
+    // currentLockedSeatsInfo에서 row와 number를 합쳐서 새로운 배열을 생성
+    const createLockedSeatIdentifiers = () => {
+      return currentLockedSeatsInfo.map(seatInfo => ({
+        id: seatInfo.id, // ID를 저장
+        identifier: `${seatInfo.row}${seatInfo.number}` // row와 number를 합친 값
+      }));
+    };
+
+    // unlockedSeats와 비교하여 잠금 해제된 좌석 찾기
+    const findUnlockedSeats = () => {
+      const lockedSeatIdentifiers = createLockedSeatIdentifiers();
+
+      // newUnlockedSeats와 비교하여 ID를 추출
+      const matchedUnlockedSeats = lockedSeatIdentifiers.filter(lockedSeat =>
+        newUnlockedSeats.includes(lockedSeat.identifier)
+      ).map(lockedSeat => lockedSeat.id); // ID만 추출
+
+      console.log("잠금 해제된 좌석 ID:", matchedUnlockedSeats);
+      return matchedUnlockedSeats;
+    };
+
+    // 호출 예시
+    const matchedSeats = findUnlockedSeats();
+
+    console.log("matchedSeats:", matchedSeats);
+
+
 
     try {
       const response = await axios.delete(`${SERVER_URL}/seat/unlock`, {
         data: {
           scheduleId: selectedSession,
-          seatIds: newLockedSeats, // 잠금 해제할 좌석 ID
+          seatIds: matchedSeats, // 잠금 해제할 좌석 ID
         },
         withCredentials: true,
         headers: {
@@ -250,18 +292,36 @@ function RealTimeSeats() {
       });
 
       if (response.data.success) {
-        alert("좌석 잠금 해제가 완료되었습니다."); // 성공 시 알림
         // 잠금 해제된 좌석을 lockedSeats에서 제거
         setNewLockedSeats((prev) => prev.filter(seat => !newLockedSeats.includes(seat)));
+        window.location.reload(); // 페이지 새로 고침
       }
     } catch (error) {
       console.error("좌석 잠금 해제 오류:", error);
       if (error.response && error.response.data.error) {
-        alert(error.response.data.error); // 오류 메시지 표시
       } else {
-        alert("좌석 잠금 해제에 실패했습니다."); // 일반 오류 메시지
       }
     }
+  };
+
+  // 페이지 새로고침
+  const openLockApproveModal = () => {
+    setLockApproveModalOpen(true); // 페이지 새로 고침
+  };
+
+  // 페이지 새로고침
+  const openUnlockApproveModal = () => {
+    setUnlockApproveModalOpen(true); // 페이지 새로 고침
+  };
+
+  // 페이지 새로고침
+  const closeLockApproveModal = () => {
+    setLockApproveModalOpen(false); // 페이지 새로 고침
+  };
+
+  // 페이지 새로고침
+  const closeUnlockApproveModal = () => {
+    setUnlockApproveModalOpen(false); // 페이지 새로 고침
   };
 
   return (
@@ -333,7 +393,10 @@ function RealTimeSeats() {
         selectedSeats={selectedSeats}
         setSelectedSeats={setSelectedSeats}
         newLockedSeats={newLockedSeats}
+        newUnlockedSeats={newUnlockedSeats}
+        setNewUnlockedSeats={setNewUnlockedSeats}
         setNewLockedSeats={setNewLockedSeats}
+        setCurrentLockedSeatsInfo={setCurrentLockedSeatsInfo}
         setIsAlreadySelectedModalOpen={setIsAlreadySelectedModalOpen}
         scheduleId={selectedSession}
         selectedSession={0}
@@ -341,6 +404,8 @@ function RealTimeSeats() {
         onSeatClick={handleSeatClick} // 좌석 클릭 핸들러 전달
         bookingInfo={bookingInfo}
         onSeatEdit={isEditing}
+        setIsLockAvailable={setIsLockAvailable}
+        setIsUnlockAvailable={setIsUnlockAvailable}
       />
 
       <div className="admin-seat-legend">
@@ -358,11 +423,25 @@ function RealTimeSeats() {
         </div>
       </div>
 
+      <LockApproveModal
+        isOpen={LockApproveModalOpen}
+        onClose={closeLockApproveModal}
+        onConfirm={handleLockSeats}
+      />
+
+      <UnlockApproveModal
+        isOpen={UnlockApproveModalOpen}
+        onClose={closeUnlockApproveModal}
+        onConfirm={handleUnlockSeats}
+      />
+
       <BottomNav
         showActions={false} // 편집 모드에 따라 showActions 전달
         onSeatEdit={isEditing}
-        onLockSeats={handleLockSeats} // 잠금 핸들러 전달
-        onUnlockSeats={handleUnlockSeats} // 잠금 해제 핸들러 전달
+        onLockSeats={openLockApproveModal} // 잠금 핸들러 전달
+        onUnlockSeats={openUnlockApproveModal} // 잠금 해제 핸들러 전달
+        isLockAvailable={isLockAvailable}
+        isUnlockAvailable={isUnlockAvailable}
       /> {/* 항상 하단에 고정된 네비게이션 바 */}
 
     </div>

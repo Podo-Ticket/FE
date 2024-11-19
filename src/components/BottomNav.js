@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation, Link } from 'react-router-dom';
 
+
 import '../styles/BottomNav.css'
 import seatIcon from '../assets/image/seat_icon.png';
 import listIcon from '../assets/image/list_icon.png';
@@ -11,7 +12,9 @@ import activeListIcon from '../assets/image/active_list_icon.png';
 import activeOnSiteIcon from '../assets/image/active_on_site_icon.png';
 import activePlusInfo from '../assets/image/active_plus_info_icon.png';
 
-const BottomNav = ({ showActions, onApprove, onDelete, onSeatEdit, onLockSeats, onUnlockSeats }) => {
+const BottomNav = ({ showActions, onApprove, onDelete, onSeatEdit, onLockSeats, onUnlockSeats
+    , isLockAvailable, isUnlockAvailable
+}) => {
     const location = useLocation(); // 현재 경로를 가져옴
 
     return (
@@ -67,11 +70,23 @@ const BottomNav = ({ showActions, onApprove, onDelete, onSeatEdit, onLockSeats, 
             {onSeatEdit && ( // onSeatEdit가 true일 때 좌석 잠금 및 해제 버튼을 보여줌
                 <>
                     <div className="nav-item">
-                        <button className="nav-item-lock" onClick={onLockSeats}>좌석 잠금</button>
+                        <button
+                            className={`nav-item-lock ${isLockAvailable ? 'lock-active' : ''}`}
+                            onClick={isLockAvailable ? onLockSeats : null} // 사용 가능 여부에 따라 onClick 설정
+                            disabled={!isLockAvailable} // 사용 불가능할 경우 비활성화
+                        >
+                            좌석 잠금
+                        </button>
                     </div>
                     <span className="nav-item-divider"></span>
                     <div className="nav-item">
-                        <button className="nav-item-unlock" onClick={onUnlockSeats}>좌석 해제</button>
+                        <button
+                            className={`nav-item-unlock ${isUnlockAvailable ? 'unlock-active' : ''}`}
+                            onClick={isUnlockAvailable ? onUnlockSeats : null} // 사용 가능 여부에 따라 onClick 설정
+                            disabled={!isUnlockAvailable} // 사용 불가능할 경우 비활성화
+                        >
+                            좌석 해제
+                        </button>
                     </div>
                 </>
             )}
