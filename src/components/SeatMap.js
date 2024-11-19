@@ -155,8 +155,6 @@ const SeatMap = ({ selectedSeats, setSelectedSeats, setIsAlreadySelectedModalOpe
   }
 
 
-
-
   return (
     <div className="seat-map">
       <div className="stage-container">

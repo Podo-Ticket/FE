@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { SERVER_URL } from '../constants/ServerURL';
 //import { Navigation } from 'swiper/modules';
@@ -8,15 +8,21 @@ import EvaluationModal from '../components/modal/EvaluationModal';
 import poster from '../assets/images/poster.jpg';
 import infoIcon from '../assets/images/info_icon.png'
 import PlusInfoModal from '../components/modal/PlusInfoModal'
+import CompleteTicketingModal from '../components/modal/CompleteTicketingModal';
 import '../styles/Ticket.css';
 import 'swiper/css';
 
 
 const Ticket = () => {
+    const popupRef = useRef(null);
+
     const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0); // 현재 티켓 인덱스
     const [isPlusInfoModalOpen, setIsPlusInfoModalOpen] = useState(false);
     const [tickets, setTickets] = useState([]); // 티켓 상태 초기화
+    const [isCompleteTicketingModalOpen, setIsCompleteTicketingModalOpen] = useState(false);
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [isFadingOut, setIsFadingOut] = useState(false); // fade-out 상태 추가
 
     const formatDate = (dateString) => {
         // 날짜 문자열을 'YYYY-MM-DD HH:mm:ss' 형식으로 받을 것으로 가정
@@ -56,14 +62,15 @@ const Ticket = () => {
                 }));
 
                 setTickets(formattedTickets); // 티켓 상태 업데이트
-                console.log("아 진짜 제발좀 되라 개새기야");
-                console.log(tickets);
             } catch (error) {
                 console.error("Error fetching tickets:", error);
             }
         };
 
         fetchTickets(); // 티켓 데이터 가져오기
+
+        // 컴포넌트가 마운트될 때 모달 열기
+        setIsCompleteTicketingModalOpen(true); // 모달 열기
     }, []); // 컴포넌트 마운트 시 한 번 호출
 
     const updateSlideStyles = (swiper) => {
@@ -79,31 +86,67 @@ const Ticket = () => {
         });
     };
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsEvaluationModalOpen(true); // 5초 뒤에 모달을 열기
-        }, 5000); // 5000 밀리초 = 5초
-
-        return () => clearTimeout(timer); // 컴포넌트가 언마운트될 때 타이머를 정리
-    }, []);
 
     const closeModal = () => {
         setIsEvaluationModalOpen(false); // 모달 닫기 함수
+        togglePopup();
     };
 
     const closePlusInfoModal = () => {
         setIsPlusInfoModalOpen(false); // 공연장 정보 모달 닫기
     };
 
+    const closeCompleteTicketingModal = () => {
+        setIsCompleteTicketingModalOpen(false); // 모달 닫기
+        setIsEvaluationModalOpen(true); // 평가 모달 열기
+    };
+
     // 현재 티켓이 존재하는지 확인
     const currentTicket = tickets[currentIndex];
+
+    const togglePopup = () => {
+        setIsPopupVisible(!isPopupVisible);
+        if (!isPopupVisible) {
+            // 말풍선이 열릴 때 3초 후 닫히도록 설정
+            setTimeout(() => {
+                setIsFadingOut(true); // fade-out 효과 시작
+                setTimeout(() => {
+                    setIsPopupVisible(false);
+                    setIsFadingOut(false); // 상태 초기화
+                }, 500); // fade-out이 끝난 후 상태 초기화
+            }, 3000); // 3000ms = 3초
+        }
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (popupRef.current && !popupRef.current.contains(event.target)) {
+                setIsPopupVisible(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
         <div className="ticket-container">
 
             <div className="ticketing-title-container">
                 <h2 className="ticketing-title">티켓 정보</h2>
-                <img src={infoIcon} className="ticket-info-icon" onClick={() => setIsPlusInfoModalOpen(true)} />
+                <div>
+                    <img src={infoIcon} className="ticket-info-icon" onClick={() => setIsPlusInfoModalOpen(true)} />
+                    <div className="ticketing-title-speech-bubble-container">
+                        {isPopupVisible && (
+                            <div className={`speech-bubble ${isFadingOut ? 'fade-out' : ''}`} ref={popupRef}>
+                                <div>길을 못 찾겠다면?</div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
             </div>
 
             <span className="ticket-index">
@@ -148,6 +191,14 @@ const Ticket = () => {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* 모달이 열렸을 때 CompleteTicketingModal 렌더링 */}
+            {isCompleteTicketingModalOpen && (
+                <CompleteTicketingModal
+                    isOpen={isCompleteTicketingModalOpen}
+                    onClose={closeCompleteTicketingModal}
+                />
             )}
 
             {/* 모달이 열렸을 때 EvaluationModal 렌더링 */}

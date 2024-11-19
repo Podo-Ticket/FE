@@ -29,6 +29,8 @@ function EvaluationModal({ closeModal }) {
                     },
                 });
 
+                
+
                 if (response.data.success) {
                     setShowThankYou(true); // 성공 시 감사 메시지 표시
                     setTimeout(() => {
