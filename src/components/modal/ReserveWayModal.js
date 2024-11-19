@@ -7,8 +7,15 @@ import reserveIcon from '../../assets/images/reserve_icon.png'
 const ReserveWayModal = ({ isOpen, onClose, onCheckReservation, onReserve }) => {
     if (!isOpen) return null;
 
+    const handleOverlayClick = (e) => {
+        // 모달 내용 부분 클릭 시 onClose를 호출하지 않도록
+        if (e.target.classList.contains('modal-overlay-reserve-way')) {
+            onClose();
+        }
+    };
+
     return (
-        <div className="modal-overlay-reserve-way">
+        <div className="modal-overlay-reserve-way" onClick={handleOverlayClick}>
             <div className="modal-content-reserve-way">
 
                 <div className="reserve-way-button-container">
