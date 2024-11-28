@@ -258,6 +258,8 @@ function UserHome() {
                 <span onClick={handleFlip}>자세히 보기 <ChevronRight size={16} style={{ verticalAlign: 'middle' }} /></span>
               </div>
 
+              <div className="userhome-button-blank"></div>
+
               <div className="userhome-button-container">
                 <button onClick={openReserveWayModal} className="userhome-ticket-button">티켓 발권</button>
               </div>

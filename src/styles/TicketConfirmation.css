@@ -123,6 +123,9 @@
 }
 
 .confirm-details-row {
+    display: flex;
+    align-items: flex-start;
+
     margin-bottom: 10px;
 
     color: var(--grey-grey7, #3C3C3C);
@@ -133,11 +136,15 @@
 }
 
 .confirm-details-label {
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 20px;
     border-radius: 30px;
     border: 1px solid var(--grey-grey-3, #E2E2E2);
     background: var(--Backgrounds-Primary, #FFF);
 
-    padding: 2px 9px;
     margin-right: 8px;
 
     color: var(--grey-grey-6, #777);
@@ -146,6 +153,11 @@
     font-style: normal;
     font-weight: 600;
     line-height: 20px;
+}
+
+.confirm-details-text-container {
+    display: flex;
+    flex-direction: row; /* 세로 방향으로 정렬 */
 }
 
 .confirm-details-text {

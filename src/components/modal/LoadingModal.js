@@ -33,7 +33,7 @@ const LoadingModal = ({ isOpen, isOnSiteReserve }) => {
           <div className="modal-content-load">
             <PulseLoader
               color={color}
-              size={20}
+              size={21}
               loading={isOpen}
               aria-label="Loading Spinner"
               data-testid="loader"

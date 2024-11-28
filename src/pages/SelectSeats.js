@@ -82,7 +82,7 @@ function SelectSeats() {
 
       const response = await axios.get(`${SERVER_URL}/seat/check`, {
         params: {
-          scheduleId: 4, // 공연 일시 ID
+          scheduleId: 1, // 공연 일시 ID
           seats: encodedSeats, // 좌석 정보 인코딩
         },
         headers: {
@@ -135,7 +135,7 @@ function SelectSeats() {
         setSelectedSeats={setSelectedSeats}
         setIsAlreadySelectedModalOpen={setIsAlreadySelectedModalOpen}
         disabled={false}
-        scheduleId={4}
+        scheduleId={1}
         headCount={headCount}
         isRealTime={false}
         newLockedSeats={null}

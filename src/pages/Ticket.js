@@ -24,6 +24,7 @@ const Ticket = () => {
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [isFadingOut, setIsFadingOut] = useState(false); // fade-out 상태 추가
 
+    // 날짜 형식 맞추기 함수
     const formatDate = (dateString) => {
         // 날짜 문자열을 'YYYY-MM-DD HH:mm:ss' 형식으로 받을 것으로 가정
         const dateParts = dateString.split(' ')[0].split('-');
@@ -42,6 +43,7 @@ const Ticket = () => {
         return `${year}.${month}.${day} (${dayOfWeek}) ${hours}:${minutes}`;
     };
 
+    // 티켓 정보 가져오기
     useEffect(() => {
         const fetchTickets = async () => {
             try {
@@ -73,6 +75,7 @@ const Ticket = () => {
         setIsCompleteTicketingModalOpen(true); // 모달 열기
     }, []); // 컴포넌트 마운트 시 한 번 호출
 
+    // 슬라이더 카드 스타일 함수
     const updateSlideStyles = (swiper) => {
         const slides = swiper.slides;
         slides.forEach((slide, index) => {
@@ -85,7 +88,6 @@ const Ticket = () => {
             }
         });
     };
-
 
     const closeModal = () => {
         setIsEvaluationModalOpen(false); // 모달 닫기 함수
@@ -156,7 +158,7 @@ const Ticket = () => {
             <div className="swiper-container">
                 <Swiper
                     onInit={(swiper) => {
-                        updateSlideStyles(swiper); // 초기 상태 설정
+                        updateSlideStyles(swiper); // 초기 상태 설정을 지연시킴
                     }}
                     onSlideChange={(swiper) => {
                         setCurrentIndex(swiper.activeIndex);

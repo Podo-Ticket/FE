@@ -152,11 +152,17 @@ body {
 }
 
 .detail-container {
-  padding: 20px 0;
-  width: 100%;
-  margin: 0 auto;
-  border-radius: 0 0 15px 15px;
+  display: flex; /* flex 컨테이너로 설정 */
+  flex-direction: column; /* 세로 방향으로 정렬 */
   position: relative; /* 포지션을 상대적으로 설정 */
+
+  width: 100%;
+  border-radius: 0 0 15px 15px;
+
+  padding: 20px 0;
+  margin: 0 auto;
+
+  
   z-index: 2;
 }
 
@@ -239,7 +245,6 @@ body {
 
   color: var(--grey-grey-6, #777);
   text-align: center;
-  font-family: Pretendard;
   font-size: 11px;
   font-style: normal;
   font-weight: 400;
@@ -268,21 +273,27 @@ body {
   line-height: 20px;
 }
 
+.userhome-button-blank{
+  flex-grow: 1;
+}
+
 .userhome-button-container { 
+  position: relative;
   text-align: center;
-  padding: 30px 0;
-  margin-top: -20px;
 }
 
 .userhome-ticket-button {
+
+  width: 80%;
+
   background-color: var(--Main, #6A39C0);
-  color: white;
-  font-size: 18px;
-  padding: 12px 20px;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
-  width: 80%;
+
+  padding: 12px 20px;
+
+  color: white;
+  font-size: 18px;
   font-weight: 600;
 }
 
@@ -389,5 +400,19 @@ body {
   to {
     transform: translateY(-100%); /* 위로 이동 */
     opacity: 0; /* 투명하게 */
+  }
+}
+
+/* iphone 15 pro */
+@media (min-height: 630px) {
+  .userhome-button-blank {
+    height: 30px; /* 원하는 높이 설정 (예시) */
+  }
+}
+
+/* iphone 16 pro max */
+@media (min-height: 700px) {
+  .userhome-button-blank {
+    height: 110px; /* 원하는 높이 설정 (예시) */
   }
 }

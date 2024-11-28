@@ -45,6 +45,7 @@ function EvaluationModal({ closeModal }) {
                 console.log("getRatingValue(icon): ", getRatingValue(icon).toString());
 
                 if (error.response) {
+                    
                     setError(error.response.data.error); // 오류 메시지 설정
                     console.log(error.response);
                 } else {

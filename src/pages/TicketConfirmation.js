@@ -186,16 +186,29 @@ const TicketConfirmation = () => {
                                         <span className="confirm-details-text">{ticketInfo.location}</span>
                                     </div>
                                     <div className="confirm-details-row">
-                                        <span className="confirm-details-label">좌석</span>
-                                        <span className="confirm-details-text">
-                                            {ticketInfo.seats.map(seat => {
-                                                const index = seat.search(/[0-9]/); // 숫자가 처음 나타나는 인덱스 찾기
-                                                if (index !== -1) {
-                                                    return seat.slice(0, index) + seat.slice(index + 1); // 첫 번째 숫자 제거
-                                                }
-                                                return seat; // 숫자가 없으면 그대로 반환
-                                            }).join(", ")}
-                                        </span>
+                                        <div className="confirm-details-text-container">
+                                            <span className="confirm-details-label">좌석</span>
+                                            <span className="confirm-details-text">
+                                                {ticketInfo.seats.reduce((acc, seat, index) => {
+                                                    const seatDisplay = seat.replace(/[0-9]/, ''); // 숫자 제거
+                                                    const groupIndex = Math.floor(index / 4); // 4개씩 그룹화
+
+                                                    // 그룹이 아직 존재하지 않으면 생성
+                                                    if (!acc[groupIndex]) {
+                                                        acc[groupIndex] = [];
+                                                    }
+
+                                                    // 4개씩 묶기
+                                                    acc[groupIndex].push(seatDisplay);
+
+                                                    return acc;
+                                                }, []).map((group, index) => (
+                                                    <div key={`group-${index}`} className="seat-group">
+                                                        {group.join(", ")} {/* 각 그룹을 ,로 연결하여 표시 */}
+                                                    </div>
+                                                ))}
+                                            </span>
+                                        </div>
                                     </div>
                                 </>
                             )}
