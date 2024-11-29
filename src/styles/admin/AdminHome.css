@@ -8,6 +8,12 @@ body {
   box-sizing: border-box;
 }
 
+button {
+  user-select: none; /* 텍스트 선택 방지 */
+  -webkit-user-select: none; /* Safari에서 드래그 방지 */
+  -moz-user-select: none; /* Firefox에서 드래그 방지 */
+}
+
 .admin-login-container {
   display: flex;
   flex-direction: column;
@@ -33,6 +39,10 @@ body {
   font-style: normal;
   font-weight: 600;
   line-height: 24px;
+
+  user-select: none; /* 텍스트 선택 방지 */
+  -webkit-user-select: none; /* Safari에서 드래그 방지 */
+  -moz-user-select: none; /* Firefox에서 드래그 방지 */
 }
 
 .admin-detail-container {

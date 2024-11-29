@@ -43,6 +43,13 @@
     border-radius: 10px;
     width: 80%;
     height: 100%;
+
+    user-select: none;
+    /* 텍스트 선택 방지 */
+    -webkit-user-select: none;
+    /* Safari에서 드래그 방지 */
+    -moz-user-select: none;
+    /* Firefox에서 드래그 방지 */
 }
 
 /* 활성화된(nav-item) div에 연보라색 배경 적용 */
@@ -150,7 +157,8 @@
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
-    line-height: 26px; /* 162.5% */
+    line-height: 26px;
+    /* 162.5% */
 }
 
 .unlock-active {
@@ -159,5 +167,6 @@
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
-    line-height: 26px; /* 162.5% */
+    line-height: 26px;
+    /* 162.5% */
 }

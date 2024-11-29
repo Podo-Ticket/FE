@@ -13,7 +13,11 @@
   background-color: white;
   z-index: 10;
 
-  text-align: center;
+  padding: 5px 0;
+
+  user-select: none; /* 텍스트 선택 방지 */
+  -webkit-user-select: none; /* Safari에서 드래그 방지 */
+  -moz-user-select: none; /* Firefox에서 드래그 방지 */
 }
 
 .refresh-button {
@@ -26,9 +30,10 @@
 }
 
 .seat-header-text {
-  margin-right: 10px;
-
-  font-size: 18px;
+  text-align: center;
+  color: var(--grey-grey7, #3C3C3C);
+  margin-left: 10px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 600;
   line-height: 18px;

@@ -13,6 +13,10 @@
     width: 100%;
     padding: 20px 30px;
     border-bottom: 1px solid lightgray;
+
+    user-select: none; /* 텍스트 선택 방지 */
+    -webkit-user-select: none; /* Safari에서 드래그 방지 */
+    -moz-user-select: none; /* Firefox에서 드래그 방지 */
 }
 
 .modify-list-title-text {
