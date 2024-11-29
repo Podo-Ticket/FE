@@ -17,7 +17,7 @@ body {
   align-items: center;
   padding: 0px 30px;
   height: 100vh;
-  background-image: url(../assets/images/poster.jpg);
+  background-image: url(../../assets/images/poster.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -333,76 +333,7 @@ body {
   border-color: transparent transparent white transparent;
 }
 
-.modal-invalid-phone-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: flex-start; /* 모달을 화면 상단에 정렬 */
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-invalid-phone-content {
-  width: 85%;
-  padding: 4px 40px;
-  margin-top: 100px; /* 화면 위쪽에서 약간의 여백을 줌 */
-  text-align: center;
-  
-  border-radius: 10px;
-  border: 1px solid var(--Podo-Ticket-error-red02, #FF9393);
-  background: var(--Podo-Ticket-error-red03, #FFF4F4);
-
-  transform: translateY(-100%); /* 기본 위치를 화면 위로 설정 */
-  animation: phone-slide-down 0.3s forwards; /* 내려오는 애니메이션 */
-}
-
-.error-icon{
-  width: 14px;
-  height: 14px;
-  transform: translateY(2.5px);
-}
-
-.error-message {
-  margin-left: 8px;
-  color: var(--Podo-Ticket-error-red01, #FF1515);
-  text-align: center;
-
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 26px;
-  letter-spacing: 0.26px;
-}
-
-@keyframes phone-slide-down {
-  from {
-    transform: translateY(-100%); /* 위에서 시작 */
-    opacity: 0; /* 투명하게 시작 */
-  }
-  to {
-    transform: translateY(0); /* 최종 위치 */
-    opacity: 1; /* 완전하게 보이게 */
-  }
-}
-
-.phone-close-animation {
-  animation: phone-slide-up 0.3s forwards; /* 닫을 때 위로 올라가는 애니메이션 */
-}
-
-@keyframes phone-slide-up {
-  from {
-    transform: translateY(0); /* 현재 위치에서 시작 */
-    opacity: 1; /* 현재 보이기 */
-  }
-  to {
-    transform: translateY(-100%); /* 위로 이동 */
-    opacity: 0; /* 투명하게 */
-  }
-}
-
+/* home ticketing button position */
 /* iphone 15 pro */
 @media (min-height: 630px) {
   .userhome-button-blank {

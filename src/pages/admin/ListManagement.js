@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SERVER_URL } from '../constants/ServerURL';
+import { SERVER_URL } from '../../constants/ServerURL';
 
-import '../styles/ListManagement.css';
-import BottomNav from '../components/BottomNav';
+import '../../styles/admin/ListManagement.css';
+import BottomNav from '../../components/BottomNav';
 import { UserPlus, ChevronDown, Search } from 'lucide-react';
-import calendarIcon from '../assets/image/calendar_icon.png'
+import calendarIcon from '../../assets/images/calendar_icon.png'
 
 
 function ListManagement() {

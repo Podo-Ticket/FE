@@ -1,18 +1,19 @@
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useSchedule } from '../hook/ScheduleContext';
-import { SERVER_URL } from '../constants/ServerURL';
+import { useSchedule } from '../../hook/ScheduleContext';
+import { SERVER_URL } from '../../constants/ServerURL';
 
-import '../styles/UserHome.css';
+import '../../styles/user/UserHome.css';
 
-import ReserveWayModal from '../components/modal/ReserveWayModal';
-import Loading from '../components/modal/LoadingModal';  // 로딩 컴포넌트 가져오기
-import CompleteModal from '../components/modal/CompleteModal';
-import PhoneModal from '../components/modal/PhoneModal'; // 모달 컴포넌트 불러오기
-import poster from '../assets/images/poster.jpg'
-import homeTicket from '../assets/images/home_ticket.png'
-import errorIcon from '../assets/images/error_icon.png'
+import ReserveWayModal from '../../components/modal/ReserveWayModal';
+import LoadingModal from '../../components/modal/LoadingModal';  // loading modal
+import CompleteModal from '../../components/modal/CompleteModal';
+import PhoneModal from '../../components/modal/PhoneModal'; // phone number auth modal
+import DefaultErrorModalU2D from '../../components/modal/DefaultErrorModalU2D'
+
+import poster from '../../assets/images/poster.jpg'
+import homeTicket from '../../assets/images/home_ticket.png'
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 function UserHome() {
@@ -28,7 +29,6 @@ function UserHome() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isInvalidPhoneModalOpen, setIsInvalidPhoneModalOpen] = useState(false);
-  const [isInvalidPhoneModalClosing, setIsInvalidPhoneModalClosing] = useState(false);
   const [invalidPhoneMessage, setInvalidPhoneMessage] = useState('');
   const [currentScheduleId, setcurrentScheduleId] = useState(null);
 
@@ -36,8 +36,8 @@ function UserHome() {
   const [isLoading, setIsLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
+  // Get performance info
   useEffect(() => {
-    // 공연 정보 조회
     const fetchPlayInfo = async () => {
       try {
         const playId = 1; // 사용할 playId 설정
@@ -98,14 +98,7 @@ function UserHome() {
     setIsPopupVisible(!isPopupVisible);
   };
 
-  const handleInvalidPhoneOverlayClick = () => {
-    setIsInvalidPhoneModalClosing(true); // 애니메이션 시작
-    setTimeout(() => {
-      setIsInvalidPhoneModalOpen(false); // 모달 상태를 닫음
-      setIsInvalidPhoneModalClosing(false); // 애니메이션 상태 초기화
-    }, 300); // 애니메이션과 같은 시간으로 설정
-  };
-
+  // message bubble overlay click effect
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -119,6 +112,7 @@ function UserHome() {
     };
   }, []);
 
+  // submit phone number
   const handlePhoneSubmit = async (phone) => {
     if (!phone) {
       setIsInvalidPhoneModalOpen(true); // 핸드폰 번호가 없을 경우 InvalidPhoneModal 열기
@@ -127,6 +121,7 @@ function UserHome() {
     }
   };
 
+  // auth phone number api
   const goToSeatSelection = async (phone) => {
     setIsLoading(true);  // 로딩 시작
 
@@ -137,8 +132,9 @@ function UserHome() {
           headers: {
             'Content-Type': 'application/json',
           },
-          params: { phoneNumber: phone ,
-            scheduleId : currentScheduleId
+          params: {
+            phoneNumber: phone,
+            scheduleId: currentScheduleId
           }
         });
 
@@ -175,6 +171,7 @@ function UserHome() {
     navigate('/select'); // Navigate after closing
   };
 
+  // formatting date to desired one
   const formatDate = (dateString) => {
     // 날짜 문자열을 'YYYY-MM-DD HH:mm:ss' 형식으로 받을 것으로 가정
     const dateParts = dateString.split(' ')[0].split('-');
@@ -277,7 +274,7 @@ function UserHome() {
                 <div className="go-front-button" onClick={handleFlip}><ChevronLeft size={16} /></div>
                 <div className="detail-more-title">상세 정보</div>
               </div>
-              
+
               <div className="back-item-scroller">
                 <div className="home-info-item-container">
 
@@ -345,8 +342,8 @@ function UserHome() {
       <ReserveWayModal
         isOpen={isReserveWayModalOpen}
         onClose={closeReserveWayModal}
-        onCheckReservation={handleCheckReservation} // 예매 내역 확인
-        onReserve={handleReserve} // 현장 예매
+        onCheckReservation={handleCheckReservation}
+        onReserve={handleReserve} 
       />
 
       <PhoneModal
@@ -355,24 +352,21 @@ function UserHome() {
         startLoading={handlePhoneSubmit}
       />
 
-      {isLoading && <Loading
+      <LoadingModal
         isOpen={isLoading}
         isOnSiteReserve={false}
       />
-      }
+
       <CompleteModal
         isOpen={isComplete}
         onClose={handleCompleteClose}
       />
 
-      {isInvalidPhoneModalOpen && (
-        <div className="modal-invalid-phone-overlay" onClick={handleInvalidPhoneOverlayClick}>
-          <div className={`modal-invalid-phone-content ${isInvalidPhoneModalClosing ? 'phone-close-animation' : ''}`}>
-            <img className="error-icon" src={errorIcon} />
-            <span className="error-message">{invalidPhoneMessage}</span>
-          </div>
-        </div>
-      )}
+      <DefaultErrorModalU2D
+        isOpen={isInvalidPhoneModalOpen}
+        onClose={() => setIsInvalidPhoneModalOpen(false)}
+        errorMessage={invalidPhoneMessage}
+      />
 
     </div>
   );

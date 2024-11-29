@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { RotateCw } from 'lucide-react';
 
-import '../styles/SelectSeats.css';
-import { SERVER_URL } from '../constants/ServerURL';
-import { useSchedule } from '../hook/ScheduleContext';
+import '../../styles/user/SelectSeats.css';
+import { SERVER_URL } from '../../constants/ServerURL';
+import { useSchedule } from '../../hook/ScheduleContext';
 
-import SeatMap from '../components/SeatMap';
-import errorIcon from '../assets/images/error_icon.png'
+import SeatMap from '../../components/SeatMap';
+import errorIcon from '../../assets/images/error_icon.png'
 
 function SelectSeats() {
   const navigate = useNavigate();

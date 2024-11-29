@@ -2,20 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ScheduleProvider } from './hook/ScheduleContext';
 
-import UserHome from './pages/UserHome';
-import OnSiteReserve from './pages/OnSiteReserve';
-import SelectSeats from './pages/SelectSeats';
-import TicketConfirmation from './pages/TicketConfirmation';
-import TicketScreen from './pages/Ticket';
+import UserHome from './pages/user/UserHome';
+import OnSiteReserve from './pages/user/OnSiteReserve';
+import SelectSeats from './pages/user/SelectSeats';
+import TicketConfirmation from './pages/user/TicketConfirmation';
+import TicketScreen from './pages/user/Ticket';
 
-import AdminHome from './pages/AdminHome';
-import RealTimeSeats from "./pages/RealTimeSeats";
-import ListManagement from "./pages/ListManagement";
-import OnSiteManagement from "./pages/OnSiteManagement";
-import InsertList from './pages/InsertList';
-import DeleteList from './pages/DeleteList';
-import ModifyList from './pages/ModifyList';
-import TheaterInfo from './pages/TheaterInfo';
+import AdminHome from './pages/admin/AdminHome';
+import RealTimeSeats from "./pages/admin/RealTimeSeats";
+import ListManagement from "./pages/admin/ListManagement";
+import OnSiteManagement from "./pages/admin/OnSiteManagement";
+import InsertList from './pages/admin/InsertList';
+import DeleteList from './pages/admin/DeleteList';
+import ModifyList from './pages/admin/ModifyList';
+import TheaterInfo from './pages/admin/TheaterInfo';
 
 import './styles/index.css'
 import reportWebVitals from './reportWebVitals';

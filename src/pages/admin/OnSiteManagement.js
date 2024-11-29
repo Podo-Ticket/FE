@@ -1,14 +1,14 @@
 import axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { SERVER_URL } from '../constants/ServerURL';
+import { SERVER_URL } from '../../constants/ServerURL';
 
-import '../styles/OnSiteManagement.css';
-import BottomNav from '../components/BottomNav';
-import { CalendarClock, ChevronDown, Search } from 'lucide-react';
-import Checked from '../assets/image/privacy_checked.png'
-import Unchecked from '../assets/image/onsite_unckecked.png'
-import calendarIcon from '../assets/image/calendar_icon.png'
+import BottomNav from '../../components/BottomNav';
+
+import '../../styles/admin/OnSiteManagement.css';
+import { ChevronDown, Search } from 'lucide-react';
+import Checked from '../../assets/images/privacy_checked.png'
+import Unchecked from '../../assets/images/onsite_unckecked.png'
+import calendarIcon from '../../assets/images/calendar_icon.png'
 
 function OnSiteManagement() {
   const selectRef = useRef(null);

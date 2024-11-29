@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-import SeatMap from '../assets/images/seat_map.png'
-import VenueMap from '../assets/images/venue_map.png'
-import BottomNav from '../components/BottomNav';
+import SeatMap from '../../assets/images/seat_map.png'
+import VenueMap from '../../assets/images/venue_map.png'
+import BottomNav from '../../components/BottomNav';
 
-import '../styles/TheaterInfo.css'
+import '../../styles/admin/TheaterInfo.css'
 
 function TheaterInfo() {
     const [activeTab, setActiveTab] = useState('1'); // 기본 활성화된 탭
     const [sliderPosition, setSliderPosition] = useState(0); // 슬라이더 위치
-    const [selectedSeats, setSelectedSeats] = useState([]);
-    const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] = useState(false);
 
     const renderContent = () => {
         switch (activeTab) {

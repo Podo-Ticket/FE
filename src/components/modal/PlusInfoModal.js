@@ -2,13 +2,10 @@ import React, { useState } from 'react';
 
 import SeatMap from '../../assets/images/seat_map.png'
 import VenueMap from '../../assets/images/venue_map.png'
-import '../../styles/PlusInfoModal.css'
+import '../../styles/user/PlusInfoModal.css'
 
 const PlusInfoModal = ({ isOpen, onClose }) => {
     const [activeTab, setActiveTab] = useState('1'); // 기본 활성화된 탭
-    const [selectedSeats, setSelectedSeats] = useState([]);
-    const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] = useState(false);
-
 
     if (!isOpen) return null;
 

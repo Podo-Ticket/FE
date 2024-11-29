@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import '../../styles/WaitAdminModal.css'; // 스타일 파일 추가
+import '../../styles/user/WaitAdminModal.css'; // 스타일 파일 추가
 
 const WaitAdminModal = ({ isOpen, onClose }) => {
     const navigate = useNavigate();

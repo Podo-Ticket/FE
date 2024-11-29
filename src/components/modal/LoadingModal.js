@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import '../../styles/LoadingModal.css'
+import '../../styles/user/LoadingModal.css'
 import PulseLoader from "react-spinners/PulseLoader";
 import waitReserve from "../../assets/images/wait_reserve_icon.png";
 

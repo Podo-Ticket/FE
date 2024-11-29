@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import DeleteModal from '../components/modal/DeleteModal';
-import { SERVER_URL } from '../constants/ServerURL';
+import DeleteModal from '../../components/modal/DeleteModal';
+import { SERVER_URL } from '../../constants/ServerURL';
 
-import '../styles/DeleteList.css';
+import '../../styles/admin/DeleteList.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import modifyIcon from '../assets/image/modify_icon.png';
+import modifyIcon from '../../assets/images/modify_icon.png';
 
 function DeleteList() {
     const location = useLocation();

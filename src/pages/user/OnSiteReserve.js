@@ -1,14 +1,14 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SERVER_URL } from '../constants/ServerURL';
-import { useSchedule } from '../hook/ScheduleContext';
+import { SERVER_URL } from '../../constants/ServerURL';
+import { useSchedule } from '../../hook/ScheduleContext';
 
-import '../styles/OnSiteReserve.css';
+import '../../styles/user/OnSiteReserve.css';
 import { ChevronLeft } from 'lucide-react';
-import WaitAdminModal from '../components/modal/WaitAdminModal';
-import LoadingModal from '../components/modal/LoadingModal';
-import CompleteModal from '../components/modal/CompleteModal';
+import WaitAdminModal from '../../components/modal/WaitAdminModal';
+import LoadingModal from '../../components/modal/LoadingModal';
+import CompleteModal from '../../components/modal/CompleteModal';
 
 function OnSiteReserve() {
     const navigate = useNavigate();

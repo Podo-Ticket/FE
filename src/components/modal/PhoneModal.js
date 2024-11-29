@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import '../../styles/PhoneModal.css';
+import '../../styles/user/PhoneModal.css';
 
 function PhoneModal({ showPhoneModal, closePhoneModal, startLoading }) {
   const [isChecked, setIsChecked] = useState(false); // 체크박스 상태 관리  

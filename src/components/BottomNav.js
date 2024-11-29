@@ -1,16 +1,15 @@
 import React from "react";
 import { useLocation, Link } from 'react-router-dom';
 
-
-import '../styles/BottomNav.css'
-import seatIcon from '../assets/image/seat_icon.png';
-import listIcon from '../assets/image/list_icon.png';
-import onSiteIcon from '../assets/image/on_site_icon.png';
-import plusInfo from '../assets/image/plus_info_icon.png';
-import activeSeatIcon from '../assets/image/active_seat_icon.png';
-import activeListIcon from '../assets/image/active_list_icon.png';
-import activeOnSiteIcon from '../assets/image/active_on_site_icon.png';
-import activePlusInfo from '../assets/image/active_plus_info_icon.png';
+import '../styles/admin/BottomNav.css'
+import seatIcon from '../assets/images/seat_icon.png';
+import listIcon from '../assets/images/list_icon.png';
+import onSiteIcon from '../assets/images/on_site_icon.png';
+import plusInfo from '../assets/images/plus_info_icon.png';
+import activeSeatIcon from '../assets/images/active_seat_icon.png';
+import activeListIcon from '../assets/images/active_list_icon.png';
+import activeOnSiteIcon from '../assets/images/active_on_site_icon.png';
+import activePlusInfo from '../assets/images/active_plus_info_icon.png';
 
 const BottomNav = ({ showActions, onApprove, onDelete, onSeatEdit, onLockSeats, onUnlockSeats
     , isLockAvailable, isUnlockAvailable

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SERVER_URL } from '../constants/ServerURL';
+import { SERVER_URL } from '../../constants/ServerURL';
 
-import '../styles/InsertList.css';
+import '../../styles/admin/InsertList.css';
 import { ChevronLeft } from 'lucide-react';
 
 function InsertList() {

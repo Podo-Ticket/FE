@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
-import '../../styles/CompleteTicketingModal.css'
+import '../../styles/user/CompleteTicketingModal.css'
 import checkIcon from '../../assets/images/check_icon.png';
 
 const CompleteTicketingModal = ({ isOpen, onClose }) => {
-    const [isClosing, setIsClosing] = useState(false);
 
     if (!isOpen) return null;
     

@@ -2,14 +2,14 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { SERVER_URL } from '../constants/ServerURL';
+import { SERVER_URL } from '../../constants/ServerURL';
 
-import '../styles/TicketConfirmation.css';
+import '../../styles/user/TicketConfirmation.css';
 
-import Loading from '../components/modal/LoadingModal';
-import CompleteModal from '../components/modal/CompleteModal';
-import poster from '../assets/images/poster.jpg'
-import confirmIcon from '../assets/images/confirm_icon.png'
+import Loading from '../../components/modal/LoadingModal';
+import CompleteModal from '../../components/modal/CompleteModal';
+import poster from '../../assets/images/poster.jpg'
+import confirmIcon from '../../assets/images/confirm_icon.png'
 
 const TicketConfirmation = () => {
     const navigate = useNavigate();

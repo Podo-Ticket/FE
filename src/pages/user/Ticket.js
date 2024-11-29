@@ -1,15 +1,15 @@
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { SERVER_URL } from '../constants/ServerURL';
+import { SERVER_URL } from '../../constants/ServerURL';
 //import { Navigation } from 'swiper/modules';
 
-import EvaluationModal from '../components/modal/EvaluationModal';
-import poster from '../assets/images/poster.jpg';
-import infoIcon from '../assets/images/info_icon.png'
-import PlusInfoModal from '../components/modal/PlusInfoModal'
-import CompleteTicketingModal from '../components/modal/CompleteTicketingModal';
-import '../styles/Ticket.css';
+import EvaluationModal from '../../components/modal/EvaluationModal';
+import poster from '../../assets/images/poster.jpg';
+import infoIcon from '../../assets/images/info_icon.png'
+import PlusInfoModal from '../../components/modal/PlusInfoModal'
+import CompleteTicketingModal from '../../components/modal/CompleteTicketingModal';
+import '../../styles/user/Ticket.css';
 import 'swiper/css';
 
 

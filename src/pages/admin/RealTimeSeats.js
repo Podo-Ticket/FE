@@ -1,19 +1,19 @@
 import axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SERVER_URL } from '../constants/ServerURL'
+import { SERVER_URL } from '../../constants/ServerURL'
 
-import LockApproveModal from '../components/modal/LockApproveModal'
-import UnlockApproveModal from '../components/modal/UnlockApproveModal'
+import LockApproveModal from '../../components/modal/LockApproveModal'
+import UnlockApproveModal from '../../components/modal/UnlockApproveModal'
 
-import '../styles/BottomNav.css';
-import '../styles/RealTimeSeats.css';
-import BottomNav from '../components/BottomNav';
-import SeatMap from '../components/SeatMap';
-import calendarIcon from '../assets/image/calendar_icon.png'
-import personIcon from '../assets/image/person_info_icon.png';
-import phoneIcon from '../assets/image/phone_info_icon.png';
-import seatIcon from '../assets/image/seat_info_icon.png';
+import '../../styles/admin/BottomNav.css';
+import '../../styles/admin/RealTimeSeats.css';
+import BottomNav from '../../components/BottomNav';
+import SeatMap from '../../components/SeatMap';
+import calendarIcon from '../../assets/images/calendar_icon.png'
+import personIcon from '../../assets/images/person_info_icon.png';
+import phoneIcon from '../../assets/images/phone_info_icon.png';
+import seatIcon from '../../assets/images/seat_info_icon.png';
 import { ChevronDown, RotateCw } from 'lucide-react';
 
 function RealTimeSeats() {

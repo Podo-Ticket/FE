@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from 'react';
 
 import { SERVER_URL } from '../constants/ServerURL';
 
-import stage from '../assets/image/stage.png'
+import stage from '../assets/images/stage.png'
 import '../styles/SeatMap.css';
 
 const rows_l = {

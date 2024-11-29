@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../../styles/ReserveWayModal.css'; // 스타일 파일 추가
+import '../../styles/user/ReserveWayModal.css'; // 스타일 파일 추가
 import checkIcon from '../../assets/images/check_reserve_icon.png'
 import reserveIcon from '../../assets/images/reserve_icon.png'
 

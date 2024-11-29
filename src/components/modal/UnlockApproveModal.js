@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import '../../styles/UnlockApproveModal.css'
+import '../../styles/admin/UnlockApproveModal.css'
 
 const UnlockApproveModal = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;

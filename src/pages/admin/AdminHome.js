@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SERVER_URL } from '../constants/ServerURL';
+import { SERVER_URL } from '../../constants/ServerURL';
 
-import '../styles/AdminHome.css';
-import podoIcon from '../assets/image/podo_icon.png'
+import '../../styles/admin/AdminHome.css';
+import podoIcon from '../../assets/images/podo_icon.png'
 
 function AdminHome() {
   const navigate = useNavigate();

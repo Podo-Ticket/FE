@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import '../../styles/DeleteModal.css';
+import '../../styles/admin/DeleteModal.css';
 
 function DeleteModal({ showDeleteModal, closeDeleteModal, onDelete }) {
   const navigate = useNavigate();

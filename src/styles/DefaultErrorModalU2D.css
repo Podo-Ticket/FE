@@ -1,0 +1,114 @@
+.modal-invalid-default-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-invalid-default-content {
+    width: 85%;
+
+    padding: 4px 40px;
+    margin-top: 110px;
+
+    border-radius: 10px;
+    border: 1px solid var(--Podo-Ticket-error-red02, #FF9393);
+    background: var(--Podo-Ticket-error-red03, #FFF4F4);
+
+    text-align: center;
+
+    transform: translateY(-100%);
+    animation: phone-slide-down 0.3s forwards;
+}
+
+.invalid-error-icon {
+    width: 14px;
+    height: 14px;
+    transform: translateY(2.5px);
+}
+
+.invalid-error-message {
+    margin-left: 8px;
+
+    color: var(--Podo-Ticket-error-red01, #FF1515);
+    text-align: center;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0.26px;
+}
+
+/* The modal's position */
+/* iphone SE 3rd */
+@media (min-height: 500px) {
+    .modal-invalid-default-content {
+        margin-top: 70px;
+    }
+}
+
+/* iphone 13 mini */
+@media (min-height: 580px) {
+    .modal-invalid-default-content {
+        margin-top: 110px;
+    }
+}
+
+/* iphone 15 pro */
+@media (min-height: 630px) {
+    .modal-invalid-default-content {
+        margin-top: 125px;
+    }
+}
+
+/* iphone 16 pro max */
+@media (min-height: 700px) {
+    .modal-invalid-default-content {
+        margin-top: 170px;
+    }
+}
+
+/* Up to down animation */
+@keyframes phone-slide-down {
+    from {
+        transform: translateY(-100%);
+        /* 위에서 시작 */
+        opacity: 0;
+        /* 투명하게 시작 */
+    }
+
+    to {
+        transform: translateY(0);
+        /* 최종 위치 */
+        opacity: 1;
+        /* 완전하게 보이게 */
+    }
+}
+
+.phone-close-animation {
+    animation: phone-slide-up 0.3s forwards;
+    /* 닫을 때 위로 올라가는 애니메이션 */
+}
+
+@keyframes phone-slide-up {
+    from {
+        transform: translateY(0);
+        /* 현재 위치에서 시작 */
+        opacity: 1;
+        /* 현재 보이기 */
+    }
+
+    to {
+        transform: translateY(-100%);
+        /* 위로 이동 */
+        opacity: 0;
+        /* 투명하게 */
+    }
+}
+
+/* Down to up animation */

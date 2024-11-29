@@ -1,10 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { SERVER_URL } from '../constants/ServerURL';
+import { SERVER_URL } from '../../constants/ServerURL';
 
-import '../styles/ModifyList.css';
-import { ChevronLeft } from 'lucide-react';
+import '../../styles/admin/ModifyList.css';
 
 function ModifyList() {
     const location = useLocation();

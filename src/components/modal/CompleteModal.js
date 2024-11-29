@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import '../../styles/CompleteModal.css'
+import '../../styles/user/CompleteModal.css'
 import checkIcon from '../../assets/images/check_icon.png';
 
 const CompleteModal = ({ isOpen, onClose }) => {

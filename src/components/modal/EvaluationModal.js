@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { SERVER_URL } from '../../constants/ServerURL';
 
-import '../../styles/EvaluationModal.css';
+import '../../styles/user/EvaluationModal.css';
 import thanksIcon from '../../assets/images/check_icon.png';
 import smileIcon from '../../assets/images/eval_smile.png';
 import mehIcon from '../../assets/images/eval_meh.png';
