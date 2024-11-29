@@ -100,7 +100,7 @@ body {
 
   color: var(--grey-grey7, #3C3C3C);
 
-  font-size: 16px; /* 확대 및 축소를 방지 16px보다 작으면 자동으로 확대됨..*/
+  font-size: 16px; /* 확대 및 축소를 방지 16px보다 작으면 자동으로 확대됨*/
   font-style: normal;
   font-weight: 400;
   line-height: 28px;
@@ -142,69 +142,31 @@ body {
   cursor: not-allowed;
 }
 
-.modal-invalid-code-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.modal-invalid-code-content {
-  width: 85%;
-  padding: 4px 40px;
-  margin-bottom: 105px;
-  text-align: center;
-  justify-items: center;
-  align-items: center;
-
-  border-radius: 10px;
-  border: 1px solid var(--Podo-Ticket-error-red02, #FF9393);
-  background: var(--Podo-Ticket-error-red03, #FFF4F4);
-
-  transform: translateY(100%); /* 기본 위치를 화면 아래로 설정 */
-  animation: slide-up 0.3s forwards; /* 올라오는 애니메이션 */
-}
-
-.error-message {
-  margin-left: 8px;
-  color: red;
-  font-weight: bold;
-  color: var(--Podo-Ticket-error-red01, #FF1515);
-  text-align: center;
-
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 26px;
-  letter-spacing: 0.26px;
-}
-
-@keyframes slide-up {
-  from {
-    transform: translateY(100%); /* 아래에서 시작 */
-    opacity: 0; /* 투명하게 시작 */
-  }
-  to {
-    transform: translateY(0); /* 최종 위치 */
-    opacity: 1; /* 완전하게 보이게 */
+/* The modal's position */
+/* iphone SE 3rd */
+@media (min-height: 500px) {
+  .admin-form-group {
+      margin-top: 0px;
   }
 }
 
-.close-animation {
-  animation: slide-down 0.3s forwards; /* 닫을 때 아래로 내려가는 애니메이션 */
+/* iphone 13 mini */
+@media (min-height: 580px) {
+  .admin-form-group {
+      margin-top: 50px;
+  }
 }
 
-@keyframes slide-down {
-  from {
-    transform: translateY(0); /* 현재 위치에서 시작 */
-    opacity: 1; /* 현재 보이기 */
+/* iphone 15 pro */
+@media (min-height: 630px) {
+  .admin-form-group {
+      margin-top: 80px;
   }
-  to {
-    transform: translateY(100%); /* 아래로 이동 */
-    opacity: 0; /* 투명하게 */
+}
+
+/* iphone 16 pro max */
+@media (min-height: 700px) {
+  .admin-form-group {
+      margin-top: 170px;
   }
 }

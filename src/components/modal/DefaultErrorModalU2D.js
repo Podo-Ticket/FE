@@ -17,8 +17,8 @@ const DefaultErrorModalU2D = ({ isOpen, onClose, errorMessage }) => {
     };
 
     return (
-        <div className="modal-invalid-default-overlay" onClick={handleInvalidPhoneOverlayClick}>
-            <div className={`modal-invalid-default-content ${isInvalidPhoneModalClosing ? 'phone-close-animation' : ''}`}>
+        <div className="modal-invalid-default-U2D-overlay" onClick={handleInvalidPhoneOverlayClick}>
+            <div className={`modal-invalid-default-U2D-content ${isInvalidPhoneModalClosing ? 'U2D-close-animation' : ''}`}>
                 <img className="invalid-error-icon" src={errorIcon} />
                 <span className="invalid-error-message">{errorMessage}</span>
             </div>

@@ -127,41 +127,37 @@
     /* 비활성화 시 커서 모양 */
 }
 
-.modal-duplicate-phone-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-  }
-  
-  .modal-duplicate-phone-content {
-    width: 85%;
-    padding: 4px 30px;
-    margin-bottom: 80px;
-    text-align: center;
-    justify-items: center;
-    align-items: center;
-  
-    border-radius: 10px;
-    border: 1px solid var(--Podo-Ticket-error-red02, #FF9393);
-    background: var(--Podo-Ticket-error-red03, #FFF4F4);
-  
-    transform: translateY(100%); /* 기본 위치를 화면 아래로 설정 */
-    animation: slide-up 0.3s forwards; /* 올라오는 애니메이션 */
-  }
-  
-  .duplicate-phone-error-message {
-    margin-left: 10px;
+/* The modal's position */
+/* iphone SE 3rd */
+@media (min-height: 500px) {
+    .reserve-request-button {
+        margin-top: 20px;
+    }
+}
 
-    color: var(--Podo-Ticket-error-red01, #FF1515);
-    text-align: center;
-    font-size: 13px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 26px; /* 200% */
-    letter-spacing: 0.26px;
-  }
+/* iphone 13 mini */
+@media (min-height: 580px) {
+    .reserve-request-button {
+        margin-top: 100px;
+    }
+}
+
+/* iphone 15 pro */
+@media (min-height: 630px) {
+    .reserve-request-button {
+        margin-top: 100px;
+    }
+    .reserve-form-container label{
+        margin : 12.5px 0;
+    }
+}
+
+/* iphone 16 pro max */
+@media (min-height: 700px) {
+    .reserve-request-button {
+        margin-top: 120px;
+    }
+    .reserve-form-container label{
+        margin : 20px 0;
+    }
+}
