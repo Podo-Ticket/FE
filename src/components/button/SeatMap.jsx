@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useRef, useEffect, useState } from 'react';
+const SERVER_URL = import.meta.env.VITE_API_URL;
 
-import stage from '../assets/images/stage.png'
+import stage from '../../assets/images/stage.png'
+import './SeatMap.module.css';
 
 const rows_l = {
   나1: [1, 2, 3, 4, 5, 6],

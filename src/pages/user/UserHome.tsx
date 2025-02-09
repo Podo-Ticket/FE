@@ -11,8 +11,6 @@ import Loading from '../../components/loading/Loading.tsx';
 import poster from '../../assets/images/poster.jpeg'
 import homeTicket from '../../assets/images/home_ticket.png'
 
-import goBackIcon from '../../assets/images/left_arrow.png'
-
 import { fetchPlayInfo } from '../../api/user/UserHomeApi';
 import { slideUp } from '../../styles/animation/DefaultAnimation.ts'
 import { BASE_PERFORMANCE_INFO } from '../../constants/text/InfoText.ts'
@@ -45,6 +43,7 @@ const UserHome: React.FC = () => {
         const data = await fetchPlayInfo(playId);
         setPlayInfo(data.play);
         setScheduleId(data.schedule.id);
+        localStorage.setItem("scheduleId", data.schedule.id);
         setPerformanceSession(data.schedule.date_time);
       } catch (error) {
         console.error('Failed to load play info:', error);

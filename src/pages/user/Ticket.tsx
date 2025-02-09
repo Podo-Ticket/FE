@@ -1,16 +1,27 @@
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
-//import { Navigation } from 'swiper/modules';
+import styled from 'styled-components';
 
-import { DateUtil } from '../../utils/DateUtil'
+import TicketCarousel from '../../components/slide/TicketCarousel.tsx'
+import TopNav from '../../components/nav/TopNav.tsx';
+//import EvaluationModal from '../../components/Modal/EvaluationModal';
+//import PlusInfoModal from '../../components/Modal/PlusInfoModal';
+//import CompleteTicketingModal from '../../components/Modal/CompleteTicketingModal';
 
 import poster from '../../assets/images/poster.jpeg';
 import infoIcon from '../../assets/images/info_icon.png';
 
-import TicketCarousel from '../../components/slide/TicketCarousel.tsx'
-//import EvaluationModal from '../../components/Modal/EvaluationModal';
-//import PlusInfoModal from '../../components/Modal/PlusInfoModal';
-//import CompleteTicketingModal from '../../components/Modal/CompleteTicketingModal';
+import { DateUtil } from '../../utils/DateUtil'
+import { fetchTickets } from "../../api/user/TicketApi";
+
+interface Ticket {
+    id: string;
+    title: string;
+    location: string;
+    dateTime: string;
+    seat: string;
+    image: string;
+}
 
 const Ticket = () => {
     const popupRef = useRef(null);
@@ -18,7 +29,7 @@ const Ticket = () => {
     const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0); // 현재 티켓 인덱스
     const [isPlusInfoModalOpen, setIsPlusInfoModalOpen] = useState(false);
-    const [tickets, setTickets] = useState([]); // 티켓 상태 초기화
+    const [tickets, setTickets] = useState<Ticket[]>([]);
     const [isSurveied, setIsSurveied] = useState(false);
     const [isCompleteTicketingModalOpen, setIsCompleteTicketingModalOpen] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -26,50 +37,22 @@ const Ticket = () => {
 
     // 티켓 정보 가져오기
     useEffect(() => {
-        const fetchTickets = async () => {
+        const loadTickets = async () => {
             try {
-                const response = await axios.get(`${SERVER_URL}/ticket/info`, {
-                    withCredentials: true, // 쿠키 포함
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                const formattedTickets = response.data.seats.map(seat => ({
-                    id: `${seat.row}${seat.number}`, // 각 티켓의 ID 생성
-                    title: seat.schedule.play.title,
-                    location: "광운대학교 새빛관 대강의실", // 고정된 공연장 이름 (필요에 따라 수정)
-                    date: DateUtil.formatDate(seat.schedule.date_time), // 날짜 형식 변환 필요
-                    seat: `${seat.row} ${seat.number}`, // 좌석 정보
-                    image: poster, // 포스터 이미지
-                }));
-
-                setIsSurveied(response.data.isSurvey);
-                setTickets(formattedTickets); // 티켓 상태 업데이트
+                const { tickets, isSurveyed } = await fetchTickets(); // 분리된 API 호출 함수 사용
+                setTickets(tickets); // 티켓 상태 업데이트
+                setIsSurveied(isSurveyed); // 설문 여부 상태 업데이트
+                console.log(tickets);
             } catch (error) {
-                console.error("Error fetching tickets:", error);
+                console.error("Error loading tickets:", error);
             }
         };
 
-        fetchTickets(); // 티켓 데이터 가져오기
+        loadTickets(); // 티켓 데이터 가져오기
 
         // 컴포넌트가 마운트될 때 모달 열기
         setIsCompleteTicketingModalOpen(true); // 모달 열기
     }, []); // 컴포넌트 마운트 시 한 번 호출
-
-    // 슬라이더 카드 스타일 함수
-    const updateSlideStyles = (swiper) => {
-        const slides = swiper.slides;
-        slides.forEach((slide, index) => {
-            if (index === swiper.activeIndex) {
-                slide.style.opacity = '1';
-                slide.style.transform = 'scale(1)';
-            } else {
-                slide.style.opacity = '0.5';
-                slide.style.transform = 'scale(0.9)';
-            }
-        });
-    };
 
     const closeModal = () => {
         setIsEvaluationModalOpen(false); // 모달 닫기 함수
@@ -115,71 +98,128 @@ const Ticket = () => {
         };
     }, []);
 
+    const righter = {
+        icon: infoIcon,
+        iconWidth: 26,
+        iconHeight: 26,
+        text: "티켓 정보",
+        clickFunc: () => setIsPlusInfoModalOpen(true)
+    }
+
+    const handleActiveIndexChange = (index: number) => {
+        console.log("현재 Active Index:", index);
+        setCurrentIndex(index); // 부모 컴포넌트에서 active index 업데이트
+    };
+
     return (
-        <div className="ticket-container">
+        <ViewContainer>
+            <TopNav lefter={null} center={righter} righter={righter} />
 
-            <div className="ticketing-title-container">
-                <h2 className="ticketing-title">티켓 정보</h2>
-                <div>
-                    <img src={infoIcon} className="ticket-info-icon" onClick={() => setIsPlusInfoModalOpen(true)} />
-                    <div className="ticketing-title-speech-bubble-container">
-                        {isPopupVisible && (
-                            <div className={`ticket-speech-bubble ${isFadingOut ? 'fade-out' : ''}`} ref={popupRef}>
-                                <div>길을 못 찾겠다면?</div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-            </div>
-
-            <span className="ticket-index">
-                <span className="ticket-index-current">{currentIndex + 1}</span>/{tickets.length}
-            </span>
-
-            <div className="swiper-container">
-                <Swiper
-                    onInit={(swiper) => {
-                        updateSlideStyles(swiper); // 100ms 후에 초기 상태 설정    
-                    }}
-                    onSlideChange={(swiper) => {
-                        setCurrentIndex(swiper.activeIndex);
-                        updateSlideStyles(swiper);
-                    }}
-                    spaceBetween={-50}
-                    slidesPerView={3}
-                    centeredSlides={true}
-                    className="ticket-swiper"
-                >
-                    {tickets.map((ticket, index) => (
-                        <SwiperSlide key={ticket.id}>
-                            <div className="ticket-card">
-                                <img src={ticket.image} alt={ticket.title} className="ticket-image" />
-                            </div>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
-                <TicketCarousel/>
-            </div>
+            <TicketCarouselContainer>
+                <TicketIndex>
+                    <CurrentTicketIndex>{currentIndex + 1}</CurrentTicketIndex>
+                    <DummyComponent>/</DummyComponent>
+                    <DummyComponent>{tickets.length}</DummyComponent>
+                </TicketIndex>
+                <TicketCarousel ticketCount={tickets.length} onActiveIndexChange={handleActiveIndexChange} />
+            </TicketCarouselContainer>
 
             {currentTicket && ( // currentTicket이 존재할 때만 정보 표시
-                <div className="ticketing-info-container">
-                    <div className="ticketing-detail">
-                        <p>{currentTicket.title}</p>
-                        <span>{currentTicket.date}</span>
-                        <span>{currentTicket.location}</span>
-                    </div>
-                    <div className="ticketing-seat">
-                        <div className="ticketing-seat-head">좌석</div>
-                        <div className="ticketing-seat-num">
+                <CurrentTicketInfo>
+                    <CurrentTicketDetail>
+                        <Title>{currentTicket.title}</Title>
+                        <Description>{currentTicket.dateTime}</Description>
+                        <Description>{currentTicket.location}</Description>
+                    </CurrentTicketDetail>
+                    <CurrentTicketSeat>
+                        <SeatLabel>좌석</SeatLabel>
+                        <SeatDetail className="ticketing-seat-num">
                             {currentTicket.seat.replace(/([^\d]*)(\d)/, '$1')} {/* 첫 번째 숫자 제거 */}
-                        </div>
-                    </div>
-                </div>
+                        </SeatDetail>
+                    </CurrentTicketSeat>
+                </CurrentTicketInfo>
             )}
 
-        </div>
+        </ViewContainer>
     );
 };
 
 export default Ticket;
+
+const ViewContainer = styled.div`
+
+`;
+
+const TicketCarouselContainer = styled.div`
+display: flex;
+flex-direction : column;
+
+gap: 25px;
+margin-bottom: 30px;
+`;
+
+const TicketIndex = styled.div.attrs({ className: 'Podo-Ticket-Headline-H4' })`
+display: flex;
+justify-content: center;
+align-items: center;
+
+gap: 3px;
+
+color: var(--grey-5);
+`;
+
+const CurrentTicketIndex = styled.span.attrs({ className: 'Podo-Ticket-Headline-H2' })`
+color: var(--purple-4);
+`;
+
+const CurrentTicketInfo = styled.div`
+display: flex;
+flex-direction : column;
+justify-content: center;
+align-items: center;
+
+gap: 20px;
+
+`;
+
+const CurrentTicketDetail = styled.div`
+display: flex;
+flex-direction : column;
+justify-content: center;
+align-items: center;
+`;
+
+const Title = styled.div.attrs({ className: 'Podo-Ticket-Headline-H2' })`
+padding-bottom: 10px;
+
+color: var(--grey-7);
+`;
+
+const Description = styled.div.attrs({ className: 'Podo-Ticket-Body-B4' })`
+color: var(--grey-6);
+`;
+
+const CurrentTicketSeat = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+
+border-radius: 20px;
+border: 1px solid var(--purple-7);
+background: var(--lightpurple-2);
+
+gap: 5px;
+padding: 6px 19px;
+
+color: var(--purple-4);
+`;
+
+const SeatLabel = styled.span.attrs({ className: 'Podo-Ticket-Body-B3' })`
+
+`;
+
+const SeatDetail = styled.span.attrs({ className: 'Podo-Ticket-Headline-H3' })`
+
+`;
+
+const DummyComponent = styled.span``;

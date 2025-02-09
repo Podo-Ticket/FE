@@ -5,13 +5,13 @@ import availableSeat from '../../assets/images/purple_rectangle.png'
 import selectedSeat from '../../assets/images/lightgrey_rectangle.png'
 import disabledSeat from '../../assets/images/purple_rectangle.png'
 
-interface SelectSeatsInfoProps {
+interface SeatsInfoInfoProps {
 
 }
 
-const SelectSeatsInfo: React.FC<SelectSeatsInfoProps> = ({  }) => {
+const SeatsInfo: React.FC<SeatsInfoInfoProps> = ({  }) => {
     return (
-        <SelectSeatsInfoContainer>
+        <SeatsInfoContainer>
 
             <SeatsInfoItem className='Podo-Ticket-Body-B11'>
                 <SeatsImage src={selectedSeat} />
@@ -28,13 +28,13 @@ const SelectSeatsInfo: React.FC<SelectSeatsInfoProps> = ({  }) => {
                 <SeatsDescription>선택 불가능 좌석</SeatsDescription>
             </SeatsInfoItem>
 
-        </SelectSeatsInfoContainer>
+        </SeatsInfoContainer>
     )
 }
 
-export default SelectSeatsInfo
+export default SeatsInfo
 
-const SelectSeatsInfoContainer = styled.div`
+const SeatsInfoContainer = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;

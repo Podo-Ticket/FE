@@ -23,7 +23,7 @@ const LargeBtn: React.FC<LargeBtnProps> = ({ content, onClick, isAvailable }) =>
 export default LargeBtn;
 
 const LargeBtnContainer = styled.button<{ isAvailable: boolean }>`
-  width: 22.0625rem;
+  width: 353px;
 
   padding: 14px 0px;
   border-radius: 10px;

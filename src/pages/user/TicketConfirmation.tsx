@@ -8,22 +8,21 @@ import poster from '../../assets/images/poster.jpeg';
 import confirmIcon from '../../assets/images/confirm_icon.png';
 import backIcon from '../../assets/images/left_arrow.png'
 
-import { fetchTicketingInfo, handleTicketIssuance } from '../../api/user/TicketConfirmationApi';
+import { fetchTicketingInfo, handleTicketIssuance, TicketInfo } from '../../api/user/TicketConfirmationApi';
+import TicketConfirmCard from '../../components/info/TicketConfirmCard';
 
 const TicketConfirmation = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [ticketInfo, setTicketInfo] = useState(null);
-
-
+    const [ticketInfo, setTicketInfo] = useState<TicketInfo>(undefined);
     const selectedSeats = location.state ? location.state.selectedSeats : []; // 선택한 좌석
 
     // 티켓 정보 가져오기
     useEffect(() => {
         const loadTicketingInfo = async () => {
             try {
-                const info = await fetchTicketingInfo(selectedSeats);
+                const info = await fetchTicketingInfo();
                 setTicketInfo(info);
             } catch (error) {
                 console.error(error.message);
@@ -31,24 +30,22 @@ const TicketConfirmation = () => {
         };
 
         loadTicketingInfo();
-    },[]);
+    }, []);
 
     // 티켓 발권 처리
     const handleIssuance = async () => {
         try {
             const success = await handleTicketIssuance(selectedSeats);
-
             if (success) {
-                setTimeout(() => navigate('/ticket'), 1000); // 성공 시 티켓 페이지로 이동
+                navigate('/ticket'); // 성공 시 티켓 페이지로 이동
             }
         } catch (error) {
             console.error(error.message);
         }
     };
 
-    const handleBack = () => {
-        navigate("/select", { state: { from: "/confirm" } });
-      };
+
+    const handleBack = () => navigate("/select", { state: { from: "/confirm" } });
 
     return (
         <Container>
@@ -58,59 +55,41 @@ const TicketConfirmation = () => {
             </Header>
 
             {/* Main Content */}
-            <Content>
+            <TopContent>
                 <Icon src={confirmIcon} alt="확인 아이콘" />
                 <Title className='Podo-Ticket-Headline-H2'>선택한 좌석으로</Title>
                 <Title className='Podo-Ticket-Headline-H2'>티켓 발권 해드릴까요?</Title>
                 <Warning className='Podo-Ticket-Body-B6'>발권 이후 좌석 변경은 불가합니다.</Warning>
+            </TopContent>
 
-                <Divider />
+            <Divider />
 
-                {/* Ticket Information Card */}
-                <InfoCard>
-                    <CardTitle className='Podo-Ticket-Headline-H4'>발권 정보 요약</CardTitle>
-                    <CardContent>
-                        <PosterContainer>
-                            {ticketInfo && <Poster src={poster} alt="공연 포스터" />}
-                        </PosterContainer>
+            <BottomContent>
+                {ticketInfo && (
+                    <TicketConfirmCard
+                        title={ticketInfo.title}
+                        poster={poster}
+                        dateTime={ticketInfo.date}
+                        location={ticketInfo.location}
+                        seats={selectedSeats}
+                    />
+                )}
 
-                        <Details>
-                            {ticketInfo && (
-                                <>
-                                    <ShowTitle>{ticketInfo.title}</ShowTitle>
-                                    <DetailsRow>
-                                        <Label>시간</Label>
-                                        <Text>{ticketInfo.date}</Text>
-                                    </DetailsRow>
-                                    <DetailsRow>
-                                        <Label>장소</Label>
-                                        <Text>{ticketInfo.location}</Text>
-                                    </DetailsRow>
-                                    <DetailsRow>
-                                        <Label>좌석</Label>
-                                        <Text>{selectedSeats.join(', ')}</Text>
-                                    </DetailsRow>
-                                </>
-                            )}
-                        </Details>
-                    </CardContent>
-                </InfoCard>
+                <ButtonContainer>
+                    <GetTicketBtn
+                        content="티켓 빌권"
+                        onClick={handleIssuance}
+                        isAvailable={true}
+                    />
+                </ButtonContainer>
+            </BottomContent>
 
-                {/* Button */}
-                <GetTicketBtn
-                    content="티켓 빌권"
-                    onClick={handleIssuance}
-                    isAvailable={true}
-                />
-
-            </Content>
-        </Container>
+        </Container >
     );
 };
 
 export default TicketConfirmation;
 
-// Styled Components
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -128,7 +107,16 @@ width: 13px;
 height: 20px;
 `;
 
-const Content = styled.div`
+const TopContent = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    padding: 0 15px;
+
+    align-items: center;
+`;
+
+const BottomContent = styled.div`
     display: flex;
     flex-direction: column;
 
@@ -157,49 +145,16 @@ const Warning = styled.span`
 `;
 
 const Divider = styled.div`
-    width: 120%;
+    width: 100%;
     height: 12px;
 
     margin-bottom: 30px;
     background-color: var(--grey-2);
 `;
 
-const InfoCard = styled.div`
-    width: 100%;
-    background: var(--grey-2);
-    border-radius: 10px;
-    
-    padding: 23px;  
-    margin-bottom: 30px;
-`;
-
-const CardTitle = styled.h2`
-    color: var(--ect-black, #000);
-`;
-
-const CardContent = styled.div`
+const ButtonContainer = styled.div`
     display: flex;
+    flex-direction: column;
+
+    margin-top: 30px;
 `;
-
-const PosterContainer = styled.div`
-    width: 114px;
-`;
-
-const Poster = styled.img`
-    width: 100%;
-`;
-
-const Details = styled.div`
-    display: flex;
-`;
-
-const ShowTitle = styled.span``;
-
-const DetailsRow = styled.div``;
-
-const Label = styled.span``;
-
-const Text = styled.span``;
-
-const Button = styled.button``;
-

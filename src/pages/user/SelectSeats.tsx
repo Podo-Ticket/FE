@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-// import SeatMap from '../../components/SeatMap';
-import ErrorModal from '../../components/error/DefaultErrorModal';
 import TopNav from '../../components/nav/TopNav';
-import SelectSeatsInfo from '../../components/info/SelectSeatsInfo';
+import SelectSeatsInfo from '../../components/info/SeatsInfo';
+import SeatMap from '../../components/button/UserSeatMap';
+import LargeBtn from '../../components/button/LargeBtn';
+import ErrorModal from '../../components/error/DefaultErrorModal';
 
 import { SELECT_FAIL } from '../../constants/text/ErrorMessage';
 import refreshIcon from '../../assets/images/refresh2_icon.png'
-import LargeBtn from '../../components/button/LargeBtn';
 
 import { fetchSeats, checkSeats } from '../../api/user/SelectSeatsApi';
 
@@ -17,24 +17,20 @@ function SelectSeats() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [currentScheduleId, setCurrentScheduleIdState] = useState(null);
+  const currentScheduleId = Number(localStorage.getItem("scheduleId")) || 0;
 
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [unclickableSeats, setUnclickableSeats] = useState([]);
   const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] = useState(false);
-  const [headCount, setHeadCount] = useState(0); // headCount 상태 추가
+  const [headCount, setHeadCount] = useState(0); // headCount
 
-  // 현재 공연 세션 정보 설정
-  useEffect(() => {
-    setCurrentScheduleIdState(1); // 스케줄 ID 설정
-  }, []);
-
-  // 해당 공연 좌석 정보 호출
+  // 예매 인원 수 확인 Api (인원 수만 확인함)
   useEffect(() => {
     if (currentScheduleId) {
       const loadSeats = async () => {
         try {
           const data = await fetchSeats(currentScheduleId);
-          setHeadCount(data.headCount); // 응답 데이터에서 headCount 설정
+          setHeadCount(data.headCount);
         } catch (error) {
           console.error(error.message);
         }
@@ -42,7 +38,7 @@ function SelectSeats() {
 
       loadSeats();
     }
-  }, [currentScheduleId]);
+  }, []);
 
   // 좌석 확인 및 발권 요청 함수
   const handleTicketCheck = async () => {
@@ -63,8 +59,6 @@ function SelectSeats() {
 
   // 좌석 선택란 새로고침
   const handleRefresh = () => window.location.reload();
-  // 다음 화면 이동 함수
-  const handleNext = () => navigate("/confirm", { state: { from: "/select" } });
   // 발권 버튼 텍스트
   const buttonText = `선택 완료 ${selectedSeats.length} / ${headCount}`;
 
@@ -85,13 +79,24 @@ function SelectSeats() {
         <SelectSeatsInfo />
 
         <SeatMapContainer>
-          <div style={{ height: 364, border: '1px solid black' }}></div>
+          <SeatMap
+            currentSelectedSeats={selectedSeats}
+            setCurrentSelectedSeats={setSelectedSeats}
+
+            showErrorModal={setIsAlreadySelectedModalOpen}
+            disabled={false}
+            scheduleId={1}
+            headCount={headCount}
+            isRealTime={false}
+            newLockedSeats={null}
+            newUnlockedSeats={null}
+          />
         </SeatMapContainer>
 
         <LargeBtn
           content={buttonText}
-          onClick={handleNext}
-          isAvailable={selectedSeats.length < parseInt(headCount)}
+          onClick={handleTicketCheck}
+          isAvailable={!(selectedSeats.length < parseInt(headCount))}
         />
 
       </SelectSeatsContentContainer>
@@ -118,10 +123,23 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 
+background: var(--background-1);
+
 gap: 15px;
 padding: 0 20px;
 `;
 
 const SeatMapContainer = styled.div`
 display: flex;
+justify-content: center;
+align-items: center;
+
+width: 100%;
+height: 60vh;
+
+border-radius: 10px;
+border: 1px solid var(--grey-3);
+background: var(--ect-white);
+box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
+
 `;

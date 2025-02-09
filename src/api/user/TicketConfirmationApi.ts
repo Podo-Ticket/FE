@@ -8,34 +8,58 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
+
+interface Seat {
+  row: string;
+  number: string;
+  schedule_id: number;
+}
+
+interface Play {
+  date_time: string;
+  play: {
+    title: string;
+    poster: string;
+  };
+}
+
+interface TicketingApiResponse {
+  play: Play[];
+  seats: Seat[];
+}
 
 interface TicketInfo {
   title: string;
   date: string;
   poster: string;
   location: string;
-  seats: string[];
+  seats: string;
 }
 
-// 티켓 정보 가져오기 API
-export const fetchTicketingInfo = async (selectedSeats: string[]): Promise<TicketInfo> => {
+// 좌석 선택 중인 티켓 정보 가져오기 API
+export const fetchTicketingInfo = async (): Promise<TicketInfo> => {
   try {
-    const response = await api.get('/seat/ticketing');
+    const response = await api.get<TicketingApiResponse>('/seat/ticketing');
+    console.log("response in ticketing api: ", response);
+
     const playInfo = response.data.play[0];
+    const seats = response.data.seats.map((seat) => `${seat.row}${seat.number}`).join(", ");
 
     return {
       title: playInfo.play.title,
       date: playInfo.date_time,
       poster: playInfo.play.poster,
       location: "광운대학교 새빛관 대강의실",
-      seats: selectedSeats,
+      seats,
     };
   } catch (error) {
     console.error('Error fetching ticketing info:', error);
     throw new Error('티켓 정보를 가져오는 데 실패했습니다.');
   }
 };
+
 
 // 티켓 발권 API
 export const handleTicketIssuance = async (selectedSeats: string[]): Promise<boolean> => {
