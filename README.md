@@ -11,3 +11,4 @@
 5. CSS 관리 개선, 컴포넌트 화 진행 (styled-component)
 6. 현장 예매 플로우 개선 (webSocket)
 7. 변경된 디자인 시스템 반영
+8. zod, react-hook-form으로 유효성 검증 플로우 추가
