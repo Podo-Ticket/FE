@@ -39,6 +39,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 
+width: 100%;
 border-radius: 10px;
 border: 1px solid var(--grey-3);
 background: var(--ect-white);

@@ -80,16 +80,15 @@ function SelectSeats() {
 
         <SeatMapContainer>
           <SeatMap
+            isRealTime={false}
+            scheduleId={3}
+            headCount={headCount}
+            disabled={false}
             currentSelectedSeats={selectedSeats}
             setCurrentSelectedSeats={setSelectedSeats}
-
-            showErrorModal={setIsAlreadySelectedModalOpen}
-            disabled={false}
-            scheduleId={1}
-            headCount={headCount}
-            isRealTime={false}
             newLockedSeats={null}
             newUnlockedSeats={null}
+            showErrorModal={setIsAlreadySelectedModalOpen}
           />
         </SeatMapContainer>
 
@@ -105,6 +104,7 @@ function SelectSeats() {
         showDefaultErrorModal={isAlreadySelectedModalOpen}
         errorMessage={SELECT_FAIL}
         onAcceptFunc={() => setIsAlreadySelectedModalOpen(false)}
+        aboveButton={true}
       />
 
     </SelectSeatsContainer>

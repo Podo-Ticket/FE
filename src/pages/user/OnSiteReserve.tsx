@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
@@ -9,6 +9,7 @@ import TopNav from '../../components/nav/TopNav';
 import DefaultInput from '../../components/inputField/DefaultInput';
 import LargeBtn from '../../components/button/LargeBtn';
 import ErrorModal from '../../components/error/DefaultErrorModal';
+import Loading from '../../components/loading/Loading.tsx';
 
 import goBackIcon from '../../assets/images/left_arrow.png';
 import { DateUtil } from '../../utils/DateUtil';
@@ -16,21 +17,26 @@ import { fadeIn } from '../../styles/animation/DefaultAnimation.ts';
 import {
     fetchPerformanceSchedules,
     submitReservation,
-    createApprovalChecker,
+    connectOnsiteReserveSocket,
+    ReservationRequest
 } from '../../api/user/OnSiteReserveApi';
 
 // Define the schema for form validation using Zod
 const reservationSchema = z.object({
-    name: z.string().min(1, '이름을 입력해주세요.'),
-    phone: z
+    name: z
+        .string()
+        .min(1, '이름을 입력해주세요.'),
+    phoneNumber: z
         .string()
         .regex(/^\d{3}-\d{3,4}-\d{4}$/, '올바른 전화번호 형식이 아닙니다.')
         .min(1, '전화번호를 입력해주세요.'),
-    attendees: z
+    headCount: z
         .number()
         .min(1, '최소 1명 이상의 인원을 입력해주세요.')
-        .max(10, '최대 10명까지 예매 가능합니다.'),
-    performance: z.string().min(1, '공연 회차를 선택해주세요.'),
+        .max(16, '최대 10명까지 예매 가능합니다.'),
+    scheduleId: z
+        .number()
+        .min(1, '공연 회차를 선택해주세요.'),
 });
 
 // Define the TypeScript type for form data
@@ -38,76 +44,96 @@ type ReservationFormData = z.infer<typeof reservationSchema>;
 
 function OnSiteReserve() {
     const navigate = useNavigate();
-    const [performanceSchedules, setPerformanceSchedules] = useState<
-        Array<{ id: string; date_time: string; available_seats: number }>
-    >([]);
+
+    const [performanceSchedules, setPerformanceSchedules] = useState<Array<{ id: string; date_time: string; available_seats: number }>>([]);
+
+    const [isLoading, setIsLoading] = useState(false); // 승인 대기 로딩 상태
+    const socketRef = useRef<WebSocket | null>(null);
+
     const [isDuplicatePhoneModalOpen, setIsDuplicatePhoneModalOpen] = useState(false);
 
     // React Hook Form setup with Zod resolver
     const {
         control,
         handleSubmit,
-        formState: { errors },
-        setValue,
+        formState: { errors, isDirty, isValid },
     } = useForm<ReservationFormData>({
         resolver: zodResolver(reservationSchema),
+        mode: 'onChange',
         defaultValues: {
             name: '',
-            phone: '',
-            attendees: undefined,
-            performance: '',
+            phoneNumber: '',
+            headCount: 0,
+            scheduleId: 0,
         },
     });
 
-    // Fetch performance schedules on component mount
+    // 공연 일정 정보 반영
     useEffect(() => {
+        const loadSchedules = async () => {
+            try {
+                const schedules = await fetchPerformanceSchedules(1);
+                setPerformanceSchedules(schedules);
+            } catch (error) {
+                console.error('Failed to load schedules:', error);
+            }
+        };
         loadSchedules();
     }, []);
 
-    const loadSchedules = async () => {
+    // 예매 신청 처리 함수
+    const handleReservationSubmit = async (data: ReservationRequest) => {
         try {
-            const schedules = await fetchPerformanceSchedules(1);
-            setPerformanceSchedules(schedules);
-        } catch (error) {
-            console.error('Failed to load schedules:', error);
-        }
-    };
-
-    // Handle form submission
-    const onSubmit = async (data: ReservationFormData) => {
-        try {
-            const response = await submitReservation({
-                name: data.name,
-                phoneNumber: data.phone,
-                headCount: data.attendees,
-                scheduleId: Number(data.performance),
-            });
+            // 예매 신청 API 호출
+            const response = await submitReservation(data);
 
             if (response.success) {
-                handleWaitingApprove();
-            } else if (response.error === '이미 예약되었습니다.') {
-                setIsDuplicatePhoneModalOpen(true);
+                // WebSocket 연결 열기
+                socketRef.current = connectOnsiteReserveSocket(8080);
+                const socket = socketRef.current;
+
+                socket.onopen = () => {
+                    console.log('WebSocket connection established');
+                    setIsLoading(true); // 로딩 창 표시
+                };
+
+                socket.onmessage = (event) => {
+                    const messageData = JSON.parse(event.data);
+
+                    if (messageData.type === 'approval') {
+                        console.log('approval data: ', messageData.message);
+
+                        if (messageData.status === 'approved') {
+                            console.log('Reservation approved');
+                            setIsLoading(false);
+                            socket.close();
+
+                            navigate('/select');
+                        } else if (messageData.status === 'rejected') {
+                            console.log('Reservation rejected');
+                            setIsLoading(false);
+                            socket.close();
+                        }
+                    }
+                };
+
+                socket.onerror = () => {
+                    console.error('WebSocket error occurred');
+                    setIsLoading(false);
+                };
+
+                socket.onclose = () => {
+                    console.log('WebSocket connection closed');
+                };
+            } else {
+                console.error('Failed to submit reservation:', response.error);
+                if (response.error === '이미 예약되었습니다.') {
+                    setIsDuplicatePhoneModalOpen(true);
+                }
             }
         } catch (error) {
-            console.error('Failed to submit reservation:', error);
+            console.error('Error during reservation submission:', error);
         }
-    };
-
-    // Handle approval status polling
-    const handleWaitingApprove = () => {
-        const approvalChecker = createApprovalChecker();
-
-        approvalChecker.startPolling(
-            () => {
-                /* 승인 처리 로직 */
-            },
-            () => {
-                /* 타임아웃 처리 */
-            },
-            (message) => {
-                /* 에러 처리 */
-            }
-        );
     };
 
     const lefter = {
@@ -123,7 +149,6 @@ function OnSiteReserve() {
             <TopNav lefter={lefter} center={lefter} righter={null} isUnderlined={true} />
 
             <InputContainer>
-                {/* Name Input */}
                 <Controller
                     name="name"
                     control={control}
@@ -133,14 +158,12 @@ function OnSiteReserve() {
                             placeholder="이름을 입력해주세요."
                             value={field.value}
                             onChangeFunc={field.onChange}
-                            errorMessage={errors.name?.message}
                         />
                     )}
                 />
 
-                {/* Phone Input */}
                 <Controller
-                    name="phone"
+                    name="phoneNumber"
                     control={control}
                     render={({ field }) => (
                         <DefaultInput
@@ -148,23 +171,18 @@ function OnSiteReserve() {
                             placeholder="연락처를 입력해주세요."
                             value={field.value}
                             onChangeFunc={(e) => {
-                                const rawValue = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                                const formattedValue = rawValue
-                                    .slice(0, 11) // Limit raw input to 11 digits (XXX-XXXX-XXXX)
-                                    .replace(/(\d{3})(\d{3,4})?(\d{4})?/, (_, p1, p2, p3) =>
-                                        [p1, p2, p3].filter(Boolean).join('-')
-                                    );
-
-                                field.onChange(formattedValue); // Update the field value
+                                const rawValue = e.target.value.replace(/[^0-9]/g, '');
+                                const formattedValue = rawValue.slice(0, 11).replace(/(\d{3})(\d{3,4})?(\d{4})?/, (_, p1, p2, p3) =>
+                                    [p1, p2, p3].filter(Boolean).join('-')
+                                );
+                                field.onChange(formattedValue);
                             }}
-                            errorMessage={errors.phone?.message}
                         />
                     )}
                 />
 
-                {/* Attendees Input */}
                 <Controller
-                    name="attendees"
+                    name="headCount"
                     control={control}
                     render={({ field }) => (
                         <DefaultInput
@@ -172,16 +190,14 @@ function OnSiteReserve() {
                             placeholder="예매 인원을 선택해주세요."
                             isSelect={true}
                             isNumberSelect={true}
-                            value={field.value}
+                            value={field.value.toString()}
                             onChangeFunc={(e) => field.onChange(Number(e.target.value))}
-                            errorMessage={errors.attendees?.message}
                         />
                     )}
                 />
 
-                {/* Performance Selection */}
                 <Controller
-                    name="performance"
+                    name="scheduleId"
                     control={control}
                     render={({ field }) => (
                         <DefaultInput
@@ -192,25 +208,24 @@ function OnSiteReserve() {
                                 value: schedule.id,
                                 label: `${DateUtil.formatDate(schedule.date_time)} [여석: ${schedule.available_seats}]`,
                             }))}
-                            value={field.value}
-                            onChangeFunc={(e) => field.onChange(e.target.value)}
-                            errorMessage={errors.performance?.message}
+                            value={field.value.toString()}
+                            onChangeFunc={(e) => field.onChange(Number(e.target.value))}
                         />
                     )}
                 />
             </InputContainer>
 
-            {/* Submit Button */}
             <ButtonContainer>
-                <LargeBtn content="예매 신청" onClick={handleSubmit(onSubmit)} isAvailable={!Object.keys(errors).length} />
+                <LargeBtn content="예매 신청" onClick={handleSubmit(handleReservationSubmit)} isAvailable={isDirty && isValid} />
             </ButtonContainer>
 
-            {/* Error Modal */}
+            <Loading showLoading={isLoading} isOnSiteReserve={true} />
+
             <ErrorModal
                 showDefaultErrorModal={isDuplicatePhoneModalOpen}
                 errorMessage="이미 예매 신청이 완료된 연락처입니다."
                 onAcceptFunc={() => setIsDuplicatePhoneModalOpen(false)}
-                OnTopSide={true}
+                aboveButton={true}
             />
         </OnSiteReserveContainer>
     );

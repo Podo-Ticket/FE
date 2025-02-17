@@ -30,7 +30,7 @@ interface TicketingApiResponse {
   seats: Seat[];
 }
 
-interface TicketInfo {
+export interface TicketInfo {
   title: string;
   date: string;
   poster: string;
@@ -60,6 +60,17 @@ export const fetchTicketingInfo = async (): Promise<TicketInfo> => {
   }
 };
 
+// 좌석 선택 취소 API
+export const cancelSeatSelection = async (): Promise<boolean> => {
+  try {
+    const response = await api.delete(`/seat/back`);
+
+    return response.data.success; // 성공 여부 반환
+  } catch (error) {
+    console.error('Error cancelling seat selection:', error);
+    throw new Error('발권 신청을 취소하는 데 실패했습니다.');
+  }
+};
 
 // 티켓 발권 API
 export const handleTicketIssuance = async (selectedSeats: string[]): Promise<boolean> => {

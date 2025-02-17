@@ -10,7 +10,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, slideDirection = "l
   const pageVariants = {
     initial: { x: slideDirection === "left" ? "100vw" : "-100vw", opacity: 0 },
     animate: { x: 0, opacity: 1 },
-    exit: { x: slideDirection === "left" ? "-100vw" : "100vw", opacity: 0 },
+    exit: { x: slideDirection === "left" ? "100vw" : "-100vw", opacity: 0 },
   };
 
   return (
@@ -19,7 +19,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, slideDirection = "l
       initial="initial"
       animate="animate"
       exit="exit"
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.5 }}
     >
       {children}
     </motion.div>

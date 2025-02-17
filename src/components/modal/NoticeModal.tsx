@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
-import MediumBtn from '../button/MediumBtn.tsx';
+import SmallBtn from '../button/SmallBtn.tsx';
+
+import successImage from '../../assets/images/check_icon.png';
+import dangerImage from '../../assets/images/purple_danger.png';
 
 import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
 
 interface NoticeModalProps {
   showNoticeModal: boolean;
+  imgStatus?: 'success' | 'danger' | null;
   title: string;
   description: string;
   onAcceptFunc: () => void;
 }
 
-const NoticeModal: React.FC<NoticeModalProps> = ({ showNoticeModal, title, description, onAcceptFunc }) => {
+const NoticeModal: React.FC<NoticeModalProps> = ({ showNoticeModal, imgStatus, title, description, onAcceptFunc }) => {
   const [isClosing, setIsClosing] = useState(false);
 
   if (!showNoticeModal && !isClosing) return null;
@@ -25,16 +29,31 @@ const NoticeModal: React.FC<NoticeModalProps> = ({ showNoticeModal, title, descr
     }, 300); // 애니메이션 시간과 동일하게 설정
   };
 
+  // 이미지 경로 선택
+  const getImageSrc = () => {
+    switch (imgStatus) {
+      case 'success':
+        return successImage;
+      case 'danger':
+        return dangerImage;
+      default:
+        return null;
+    }
+  };
+  const imageSrc = getImageSrc();
+
   return (
     <Overlay onClick={handleOverlayClick}>
       <Content isClosing={isClosing}>
-        <Title className='title-sm-300'>{title}</Title>
-        <Description className='caption-md-300'>{description}</Description>
+        {imageSrc && <ContentImage src={imageSrc} alt={imgStatus || ''} />}
+        <Title className='Podo-Ticket-Headline-H3'>{title}</Title>
+        <Description className='Podo-Ticket-Body-B5'>{description}</Description>
         <ButtonContainer>
-          <MediumBtn
-            content="확인"
+          <SmallBtn
+            content="다음"
             onClick={onAcceptFunc}
             isAvailable={true}
+            isGray={true}
           />
         </ButtonContainer>
       </Content>
@@ -54,14 +73,21 @@ const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
   z-index: 10000;
 `;
 
 const Content = styled.div <{ isClosing: boolean }>`
-  width: 20.1875rem;
-  background-color: var(--gray-0);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 22.0625rem;
+  background-color: var(--ect-white);
   border-radius: 10px;
 
+  gap: 5px;
   padding: 25px;
 
   text-align: center;
@@ -69,19 +95,23 @@ const Content = styled.div <{ isClosing: boolean }>`
   animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
 `;
 
-const Title = styled.div`
-  margin-bottom: 10px;
+const ContentImage = styled.img`
+ width: 44px;
+ height: 44px;
 
-  color: var(--gray-80);
+ margin-bottom: 10px;
+`;
+
+const Title = styled.div`
+  color: var(--grey-7);
 `;
 
 const Description = styled.span`
-  color: var(--gray-80);
+  margin-bottom: 11px;
 
-  margin-bottom: 20px;
+  color: var(--grey-5);
 `;
 
 const ButtonContainer = styled.div`
-  margin-top: 20px;
   display: flex;
 `;

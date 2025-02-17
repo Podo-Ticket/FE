@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
-import poster from '../../assets/images/poster.jpeg'
+import poster from '../../assets/images/posters/73th_KwangwoonUniv_poster.jpeg'
 
 interface TicketCarouselProps {
   ticketCount: number;

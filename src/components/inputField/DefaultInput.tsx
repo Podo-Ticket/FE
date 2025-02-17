@@ -6,7 +6,7 @@ interface DefaultInputProps {
     placeholder: string;     // 입력 필드의 플레이스홀더
     type?: string;          // 입력 필드의 타입 (기본값은 text)
     value: string;          // 입력 필드의 값
-    onChangeFunc: (event: React.ChangeEvent<HTMLInputElement>) => void; // onChange 핸들러
+    onChangeFunc: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void; // onChange 핸들러
     isSelect?: boolean;         // select 여부 (기본값 false)
     options?: Array<{ value: string | number; label: string }> | string[];
     isNumberSelect?: boolean;
@@ -23,7 +23,7 @@ const DefaultInput: React.FC<DefaultInputProps> = ({ category, placeholder, type
                     onChange={onChangeFunc}
                 >
                     {placeholder && (
-                        <option value="" disabled>
+                        <option value="placeholder">
                             {placeholder}
                         </option>
                     )}

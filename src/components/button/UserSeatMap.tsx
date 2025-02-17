@@ -12,17 +12,6 @@ import {
 
 import { fetchSeats } from '../../api/user/SelectSeatsApi';
 
-const apiUrl = import.meta.env.VITE_API_URL; // 환경 변수에서 API URL 가져오기
-
-const api = axios.create({
-  baseURL: apiUrl, // 기본 URL 설정
-  timeout: 10000, // 요청 타임아웃 설정
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: true, // 쿠키 포함
-});
-
 interface SeatMapProps {
   isRealTime: boolean; // 실시간 모드 여부
   scheduleId: number | null; // 스케줄 ID
@@ -69,7 +58,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
 
     try {
       // const endpoint = isRealTime ? `${SERVER_URL}/seat/realTime` : `${SERVER_URL}/seat`;
-      const data = await fetchSeats(0 | localStorage.getItem("scheduleId"));
+      const data = await fetchSeats(0 | Number(localStorage.getItem("scheduleId")));
 
       // 선택 불가 좌석 배열 생성
       const unclickable = data.seats.map(seat => `${seat.row}${seat.number}`);
@@ -101,7 +90,9 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
         console.log("블락된 좌석 (실시간):", lockedSeats);
         console.log("예약+블락된 좌석 (실시간):", unclickableSeats);
       } else {
-        console.log("예약된 좌석:", unclickableSeats);
+        console.log("예약+블락된 좌석:", unclickableSeats);
+        console.log("예약된 좌석:", reservedSeats);
+        console.log("블락된 좌석:", lockedSeats);
       }
     } catch (error) {
       console.error("Error fetching seats:", error);
@@ -241,9 +232,9 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
     } else {
       // 일반 좌석 선택 로직
       console.log(seatId);
-
-      if (bookedSeats.includes(seatId)) {
-        setIsAlreadySelectedModalOpen(true);
+      console.log("으아앙아ㅏㅇ아");
+      if (unclickableSeats.includes(seatId)) {
+        showErrorModal(true);
       } else if (currentSelectedSeats.includes(seatId)) {
         // 이미 선택된 좌석을 클릭하면 선택 취소
         setCurrentSelectedSeats(currentSelectedSeats.filter(id => id !== seatId));
@@ -256,11 +247,12 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
     }
   };
 
-  const handleUserSeatClick = (row, seat) => {
+  const handleUserSeatClick = (row: string, seat: number) => {
     const seatId = `${row}${seat}`; // 좌석 ID 생성
-
+    console.log("쨘쨘:", unclickableSeats);
     if (unclickableSeats.includes(seatId)) {
-      setIsAlreadySelectedModalOpen(true);
+      showErrorModal(true);
+      console.log("쨘");
     } else if (currentSelectedSeats.includes(seatId)) {
       // 이미 선택된 좌석을 클릭하면 선택 취소
       setCurrentSelectedSeats(currentSelectedSeats.filter(id => id !== seatId));
@@ -299,7 +291,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
                         ? () => handleSeatClick(seatId)
                         : () => handleUserSeatClick(row, seat)
                     }
-                    isAvailable={!disabled && !(onSeatEdit && isReserved)}
+                    isAvailable={!disabled && !(onSeatEdit && isReserved) || true}
                     isSelected={currentSelectedSeats.includes(seatId)}
                     isReserved={isReserved}
                     isLocked={isLocked}

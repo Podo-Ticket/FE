@@ -1,18 +1,16 @@
-import axios from 'axios';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import TicketCarousel from '../../components/slide/TicketCarousel.tsx'
 import TopNav from '../../components/nav/TopNav.tsx';
-//import EvaluationModal from '../../components/Modal/EvaluationModal';
-//import PlusInfoModal from '../../components/Modal/PlusInfoModal';
-//import CompleteTicketingModal from '../../components/Modal/CompleteTicketingModal';
+import TheaterInfoModal from '../../components/modal/TheaterInfoModal.tsx'
+import FinishTicketingModal from '../../components/modal/NoticeModal.tsx';
+import SurveyModal from '../../components/modal/SurveyModal.tsx'
 
-import poster from '../../assets/images/poster.jpeg';
 import infoIcon from '../../assets/images/info_icon.png';
 
-import { DateUtil } from '../../utils/DateUtil'
 import { fetchTickets } from "../../api/user/TicketApi";
+import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
 
 interface Ticket {
     id: string;
@@ -24,16 +22,17 @@ interface Ticket {
 }
 
 const Ticket = () => {
-    const popupRef = useRef(null);
-
-    const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
-    const [currentIndex, setCurrentIndex] = useState(0); // 현재 티켓 인덱스
-    const [isPlusInfoModalOpen, setIsPlusInfoModalOpen] = useState(false);
     const [tickets, setTickets] = useState<Ticket[]>([]);
+    const [currentIndex, setCurrentIndex] = useState(0); // 현재 티켓 인덱스
+
     const [isSurveied, setIsSurveied] = useState(false);
-    const [isCompleteTicketingModalOpen, setIsCompleteTicketingModalOpen] = useState(false);
+    const [isSurveyModalOpen, setIsSurveyModalOpen] = useState(false);
+    const [isFinshTicketingModalOpen, setIsFinishTicketingModalOpen] = useState(false);
+
+    const [isTheaterInfoModalOpen, setIsTheaterInfoModalOpen] = useState(false);
+
     const [isPopupVisible, setIsPopupVisible] = useState(false);
-    const [isFadingOut, setIsFadingOut] = useState(false); // fade-out 상태 추가
+    const [isPopupClosing, setIsPopupClosing] = useState(false); // fade-out 상태 추가
 
     // 티켓 정보 가져오기
     useEffect(() => {
@@ -47,63 +46,48 @@ const Ticket = () => {
                 console.error("Error loading tickets:", error);
             }
         };
-
         loadTickets(); // 티켓 데이터 가져오기
-
-        // 컴포넌트가 마운트될 때 모달 열기
-        setIsCompleteTicketingModalOpen(true); // 모달 열기
-    }, []); // 컴포넌트 마운트 시 한 번 호출
-
-    const closeModal = () => {
-        setIsEvaluationModalOpen(false); // 모달 닫기 함수
-        togglePopup();
-    };
-
-    const closePlusInfoModal = () => {
-        setIsPlusInfoModalOpen(false); // 공연장 정보 모달 닫기
-    };
-
-    const closeCompleteTicketingModal = () => {
-        setIsCompleteTicketingModalOpen(false); // 모달 닫기
-        setIsEvaluationModalOpen(true); // 평가 모달 열기
-    };
+        setIsFinishTicketingModalOpen(true); // 모달 열기
+    }, []);
 
     // 현재 티켓이 존재하는지 확인
     const currentTicket = tickets[currentIndex];
+
+    const closeModal = () => {
+        setIsSurveyModalOpen(false); // 모달 닫기 함수
+        togglePopup();
+    };
+
+    const closeTheaterInfoModal = () => { setIsTheaterInfoModalOpen(false); };
+
+    const closeFinishTicketingModal = () => {
+        setIsFinishTicketingModalOpen(false); // Finish Ticketing Modal 닫기
+        if (!isSurveied) {
+            setIsSurveyModalOpen(true); // 설문 모달 열기
+        }
+        else { togglePopup() }
+    };
 
     const togglePopup = () => {
         setIsPopupVisible(!isPopupVisible);
         if (!isPopupVisible) {
             // 말풍선이 열릴 때 3초 후 닫히도록 설정
             setTimeout(() => {
-                setIsFadingOut(true); // fade-out 효과 시작
+                setIsPopupClosing(true); // fade-out 효과 시작
                 setTimeout(() => {
                     setIsPopupVisible(false);
-                    setIsFadingOut(false); // 상태 초기화
-                }, 500); // fade-out이 끝난 후 상태 초기화
+                    setIsPopupClosing(false); // 상태 초기화
+                }, 350); // fade-out이 끝난 후 상태 초기화
             }, 3000); // 3000ms = 3초
         }
     };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (popupRef.current && !popupRef.current.contains(event.target)) {
-                setIsPopupVisible(false);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
 
     const righter = {
         icon: infoIcon,
         iconWidth: 26,
         iconHeight: 26,
         text: "티켓 정보",
-        clickFunc: () => setIsPlusInfoModalOpen(true)
+        clickFunc: () => setIsTheaterInfoModalOpen(true)
     }
 
     const handleActiveIndexChange = (index: number) => {
@@ -113,7 +97,15 @@ const Ticket = () => {
 
     return (
         <ViewContainer>
-            <TopNav lefter={null} center={righter} righter={righter} />
+            <TopNavContainer>
+                <TopNav lefter={null} center={righter} righter={righter} />
+                {isPopupVisible && (
+                    <SpeechBubble isClosing={isPopupClosing}>
+                        <div>길을 못 찾겠다면?</div>
+                    </SpeechBubble>
+                )}
+            </TopNavContainer>
+
 
             <TicketCarouselContainer>
                 <TicketIndex>
@@ -140,6 +132,21 @@ const Ticket = () => {
                 </CurrentTicketInfo>
             )}
 
+            <TheaterInfoModal
+                showTheaterInfoModal={isTheaterInfoModalOpen}
+                onAcceptFunc={closeTheaterInfoModal}
+            />
+
+            <FinishTicketingModal
+                showNoticeModal={isFinshTicketingModalOpen}
+                imgStatus="success"
+                title="발권 완료"
+                description="바로 입장해주시면 됩니다!"
+                onAcceptFunc={closeFinishTicketingModal}
+            />
+
+            <SurveyModal showSurveyModal={isSurveyModalOpen} onAcceptFunc={closeModal} />
+
         </ViewContainer>
     );
 };
@@ -148,6 +155,44 @@ export default Ticket;
 
 const ViewContainer = styled.div`
 
+`;
+
+const TopNavContainer = styled.div`
+position: relative;
+`;
+
+const SpeechBubble = styled.div.attrs({ className: 'Podo-Ticket-Body-B7' }) <{ isClosing: boolean }>`
+  position: absolute;
+  top: 85%; 
+  left: 82%;
+  transform: translateX(-50%);
+
+  width: 105px;
+  background: var(--purple-4);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+  padding: 10px 0;
+  padding-left: 10px;
+  padding-right: 0px;
+
+  text-align: left;
+  color: var(--ect-white);
+
+  z-index: 1000;
+
+  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 75%;
+    transform: translateX(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent var(--purple-4) transparent;
+  }
 `;
 
 const TicketCarouselContainer = styled.div`

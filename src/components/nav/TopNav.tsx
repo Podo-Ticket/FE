@@ -11,9 +11,9 @@ interface lefter {
 }
 */
 
-const TopNav = ({ lefter, center, righter, isGrey = false, isUnderlined = false }) => {
+const TopNav = ({ lefter, center, righter, isGrey = false, isUnderlined = false, customStyles = {}}) => {
   return (
-    <NavContainer isGrey={isGrey} isUnderlined={isUnderlined}>
+    <NavContainer isGrey={isGrey} isUnderlined={isUnderlined} style={customStyles}>
       <ImageContainer onClick={lefter ? lefter.clickFunc : undefined}>
         {lefter ? (
           lefter.icon ? (

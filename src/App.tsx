@@ -56,8 +56,8 @@ function App() {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<UserHome />} />
             <Route path="/reserve" element={<OnSiteReserve />} />
-            <Route path="/select" element={ <PageWrapper slideDirection="left"> <SelectSeats /> </PageWrapper> }/>
-            <Route path="/confirm" element={ <PageWrapper slideDirection="right"> <TicketConfirmation /> </PageWrapper> } />
+            <Route path="/select" element={ <PageWrapper slideDirection="right"> <SelectSeats /> </PageWrapper> }/>
+            <Route path="/confirm" element={ <PageWrapper slideDirection="left"> <TicketConfirmation /> </PageWrapper> } />
             <Route path="/ticket" element={<TicketScreen />} />
           </Routes>
       </AnimatePresence>

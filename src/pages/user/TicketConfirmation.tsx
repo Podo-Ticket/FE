@@ -3,17 +3,24 @@ import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import GetTicketBtn from '../../components/button/LargeBtn';
+import TicketConfirmCard from '../../components/info/TicketConfirmCard';
+import Loading from '../../components/loading/Loading';
+import Success from '../../components/loading/Success'
 
-import poster from '../../assets/images/poster.jpeg';
+import poster from '../../assets/images/posters/73th_KwangwoonUniv_poster.jpeg'
 import confirmIcon from '../../assets/images/confirm_icon.png';
 import backIcon from '../../assets/images/left_arrow.png'
 
-import { fetchTicketingInfo, handleTicketIssuance, TicketInfo } from '../../api/user/TicketConfirmationApi';
-import TicketConfirmCard from '../../components/info/TicketConfirmCard';
+import { fetchTicketingInfo, handleTicketIssuance, TicketInfo, cancelSeatSelection } from '../../api/user/TicketConfirmationApi';
+
 
 const TicketConfirmation = () => {
     const navigate = useNavigate();
     const location = useLocation();
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
     const [ticketInfo, setTicketInfo] = useState<TicketInfo>(undefined);
     const selectedSeats = location.state ? location.state.selectedSeats : []; // 선택한 좌석
@@ -32,20 +39,41 @@ const TicketConfirmation = () => {
         loadTicketingInfo();
     }, []);
 
-    // 티켓 발권 처리
-    const handleIssuance = async () => {
+    // 뒤로가기 처리
+    const handleBack = async () => {
         try {
-            const success = await handleTicketIssuance(selectedSeats);
+            const success = await cancelSeatSelection(); // API 호출
             if (success) {
-                navigate('/ticket'); // 성공 시 티켓 페이지로 이동
+                navigate('/select', { state: { from: '/confirm' } }); // 성공 시 선택 페이지로 이동
+            } else {
+                console.log('이미 발권 신청이 완료되었습니다.'); // 실패 메시지 설정
             }
         } catch (error) {
             console.error(error.message);
+            console.log('발권 신청을 취소하는 데 실패했습니다.'); // 오류 메시지 설정
         }
     };
 
+    // 티켓 발권 처리
+    const handleIssuance = async () => {
+        setIsLoading(true);
+        await delay(500); // 로딩 애니메이션 시간
 
-    const handleBack = () => navigate("/select", { state: { from: "/confirm" } });
+        try {
+            const success = await handleTicketIssuance(selectedSeats);
+            if (success) {
+                setIsSuccess(true);
+                setTimeout(() => {
+                    setIsSuccess(false);
+                    navigate('/ticket');
+                }, 1000)
+            }
+        } catch (error) {
+            console.error(error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <Container>
@@ -84,6 +112,8 @@ const TicketConfirmation = () => {
                 </ButtonContainer>
             </BottomContent>
 
+            <Loading showLoading={isLoading} />
+            <Success showSuccess={isSuccess} />
         </Container >
     );
 };

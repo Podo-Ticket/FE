@@ -16,7 +16,7 @@ interface Schedule {
     available_seats: number;
 }
 
-interface ReservationRequest {
+export interface ReservationRequest {
     name: string;
     phoneNumber: string;
     headCount: number;
@@ -68,33 +68,21 @@ export const checkReservationApproval = async () => {
     }
 };
 
-// 예매 승인 상태 폴링 함수
-export const createApprovalChecker = () => {
-    let intervalId: NodeJS.Timeout;
+export const connectOnsiteReserveSocket = (PORT: number) => {
+    const socket = new WebSocket(`ws://localhost:${PORT}`);
 
-    const startPolling = async (
-        onApprove: () => void,
-        onTimeout: () => void,
-        onError: (message: string) => void
-    ) => {
-        intervalId = setInterval(async () => {
-            try {
-                const { approve } = await checkReservationApproval();
-                if (approve) {
-                    clearInterval(intervalId);
-                    onApprove();
-                }
-            } catch (error) {
-                clearInterval(intervalId);
-                onError("예기치 않은 오류가 발생했습니다.");
-            }
-        }, 3000);
-
-        setTimeout(() => {
-            clearInterval(intervalId);
-            onTimeout();
-        }, 100000);
+    // WebSocket 이벤트 핸들러
+    socket.onopen = () => {
+        console.log("WebSocket connection established.");
     };
 
-    return { startPolling };
+    socket.onerror = (error) => {
+        console.error("WebSocket error:", error);
+    };
+
+    socket.onclose = () => {
+        console.log("WebSocket connection closed.");
+    };
+
+    return socket;
 };

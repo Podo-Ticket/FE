@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { chunkArray } from '../../utils/ParseUtil';
+
 interface TicketConfirmCardProps {
     poster: string;
     title: string;
@@ -9,16 +11,10 @@ interface TicketConfirmCardProps {
     seats: string[];
 }
 
-const chunkArray = (array: string[], size: number): string[][] => {
-    const result = [];
-    for (let i = 0; i < array.length; i += size) {
-        result.push(array.slice(i, i + size));
-    }
-    return result;
-};
-
 const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({ poster, title, dateTime, location, seats }) => {
-    const seatGroups = chunkArray(seats, 4);
+    const modifiedSeats = seats.map(seat => seat.replace(/([가-힣])[0-9]/, "$1"));
+    const sortedSeats = modifiedSeats.sort((a, b) => a.localeCompare(b, "ko"));
+    const seatGroups = chunkArray(sortedSeats, 4);
 
     return (
         <TicketConfirmCardContainer>

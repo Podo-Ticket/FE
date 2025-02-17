@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import BackBtn from '../button/SmallBtn'
 import NextBtn from '../button/SmallBtn'
 import PrivacyPolicyModal from '../modal/TextModal';
+import Loading from '../../components/loading/Loading.tsx';
 import ErrorModal from '../../components/error/DefaultErrorModal.tsx';
 
 import CheckedIcon from '../../assets/images/privacy_checked.png'
 import UncheckedIcon from '../../assets/images/privacy_unchecked.png'
 
+import { useNavigateTo } from '../../utils/NavigateUtil.ts';
 import { checkPhoneNumber } from '../../api/user/UserHomeApi';
 import { AGREE_CONTENT } from '../../constants/text/InfoText.ts'
 import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
@@ -21,9 +23,16 @@ interface PhoneAuthModalProps {
 }
 
 const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, scheduleId, onAcceptFunc, onUnacceptFunc }) => {
+  const navigateTo = useNavigateTo();
+  const [phone, setPhone] = useState(''); // 전화번호 상태 관리
+
   const [isClosing, setIsClosing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 관리
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
   const [isChecked, setIsChecked] = useState(false); // 체크박스 상태 관리  
-  const [phone, setPhone] = useState(''); // 전화번호 상태 추가
+  const handleCheckboxChange = () => { setIsChecked(prevChecked => !prevChecked); };
+  const handleCheckboxClick = () => { setIsChecked(prevChecked => !prevChecked); };
 
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const openPrivacyModal = () => setShowPrivacyModal(true);
@@ -61,40 +70,36 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, schedul
     setPhone(formattedValue);
   };
 
-  const handleCheckboxChange = () => {
-    setIsChecked(prevChecked => !prevChecked);
-  };
-
-  const handleCheckboxClick = () => {
-    setIsChecked(prevChecked => !prevChecked);
-  };
-
   const isButtonEnabled = isChecked && phone.length === 13; // Assuming formatted phone is "000-0000-0000"
 
   const handleSubmit = async () => {
-    if (isButtonEnabled) {
-      if (!phone || !scheduleId) {
-        console.error("전화번호 또는 scheduleId 없음");
-        return;
-      }
-      try {
-        console.log("전화번호 검증 시작:", phone, scheduleId);
-        const result = await checkPhoneNumber(phone, scheduleId);
-        console.log("전화번호 검증 성공:", result);
-
-        if (result.data === '예매 내역 확인 불가') {
-          openInvalidPhoneError(); // 에러 모달 표시
-        }
-        else {
-          onAcceptFunc(); // 부모 컴포넌트에서 처리할 로직 실행
-        }
-
-      } catch (error) {
-        console.error("전화번호 검증 실패:", error);
-        openInvalidPhoneError(); // 에러 모달 표시
-      }
-    } else {
+    if (!isButtonEnabled) {
       console.log("버튼 비활성화 상태");
+      return;
+    }
+
+    if (!phone || !scheduleId) {
+      console.error("전화번호 또는 scheduleId 없음");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await delay(500); // 로딩 애니메이션 시간
+      const result = await checkPhoneNumber(phone, scheduleId);
+
+      if (result.data === '예매 내역 확인 불가') {
+        openInvalidPhoneError(); // 에러 모달 표시
+      } else if (result.data === '이미 발권한 사용자') {
+        navigateTo('/ticket'); // 티켓 페이지로 이동
+      } else {
+        onAcceptFunc();
+      }
+    } catch (error) {
+      console.error("전화번호 검증 실패:", error);
+      openInvalidPhoneError(); // 에러 모달 표시
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -139,6 +144,8 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, schedul
         title='개인정보 수집 동의 약관'
         description={AGREE_CONTENT}
       />
+
+      <Loading showLoading={isLoading} />
 
       <ErrorModal
         showDefaultErrorModal={invalidPhoneError}

@@ -1,6 +1,8 @@
 import axios from 'axios';
-import { DateUtil } from "../../utils/DateUtil";
+
 const apiUrl = import.meta.env.VITE_API_URL;
+
+import { DateUtil } from "../../utils/DateUtil";
 
 // Create an Axios instance with default configurations
 const api = axios.create({
@@ -36,5 +38,17 @@ export const fetchTickets = async () => {
   } catch (error) {
     console.error("Error fetching tickets:", error);
     throw new Error("티켓 정보를 가져오는 데 실패했습니다.");
+  }
+};
+
+// 평가 데이터를 서버에 전송 API
+export const submitEvaluation = async (rating: number): Promise<boolean> => {
+  try {
+    const response = await api.post(`/survey`, { answer: rating });
+
+    return response.data.success;
+  } catch (error: any) {
+    console.error('Error submitting evaluation:', error);
+    throw error.response?.data?.error || '예기치 않은 오류가 발생했습니다.';
   }
 };

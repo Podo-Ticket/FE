@@ -35,7 +35,7 @@ const DefaultErrorModal: React.FC<DefaultErrorModalProps> = ({ showDefaultErrorM
         {isSuccess ? <ContentIcon src={successIcon} /> : <ContentIcon src={errorIcon} />}
         <ContentText className='Podo-Ticket-Body-B6'>{errorMessage}</ContentText>
       </Content>
-      {aboveButton ? <div style={{ height: '30px' }}></div> : undefined}
+      {aboveButton ? <div style={{ height: '130px' }}></div> : undefined}
       {OnTopSide ? <div style={{ height: '400px' }}></div> : undefined}
     </Overlay>
   );

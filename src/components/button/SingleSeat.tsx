@@ -31,7 +31,7 @@ const SingleSeat: React.FC<SingleSeatProps> = ({
     return (
         <SingleSeatContainer
             onClick={onClick}
-            disabled={!isAvailable || (isReserved && !isRealTime)}
+            disabled={!isAvailable}
             isAvailable={isAvailable}
             isAdmin={isAdmin}
             isLocked={isLocked}
@@ -128,6 +128,6 @@ const SingleSeatContainer = styled.button<{
         return "1";
     }};
   
-  transition: all .2s ease-in-out;
+  transition: all .3s ease-in-out;
   }
 `;
