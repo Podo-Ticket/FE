@@ -32,13 +32,15 @@ height: 3.125rem;
 
 padding: 11px 48px;
 border-radius: 15px;
-background: ${({ isAvailable, isDarkblue }) => isDarkblue ? 'var(--gray-20)' : (isAvailable ? 'var(--orange-70)' : 'var(--orange-90)')};
+background: ${({ isAvailable, isDarkblue }) => isDarkblue ? 'var(--grey-3)' : (isAvailable ? 'var(--purple-4)' : 'var(--purple-9)')};
 border: none;
 
 gap: 10px;
 
-color: ${({ isAvailable, isDarkblue }) => isDarkblue ? 'var(--gray-80)' : (isAvailable ? 'var(--gray-100)' : 'var(--gray-40)')};
+color: ${({ isAvailable, isDarkblue }) => isDarkblue ? 'var(--grey-6)' : (isAvailable ? 'var(--ect-white)' : 'var(--ect-white)')};
 text-align: center;
+
+transition: background 0.3s ease-in-out;
 
 user-select: none; /* 텍스트 선택 방지 */
 -webkit-user-select: none; /* Safari에서 드래그 방지 */

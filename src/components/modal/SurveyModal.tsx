@@ -37,7 +37,12 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
 
     const [activeTab, setActiveTab] = useState<string>('1');
     const [selectedRating1, setSelectedRating1] = useState<number | 0>(0); // 첫 번째 별점
-    const [selectedRating2, setSelectedRating2] = useState<number | 0>(0); // 두 번째 별점
+
+    const [selectedRating2, setSelectedRating2] = useState<number | 0>(0); // 초기값 설정
+
+    const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedRating2(Number(event.target.value));
+    };
 
     const handleIconClick = async (icon: IconType) => {
         setSelectedIcon(icon); // 선택된 아이콘 상태 업데이트
@@ -159,7 +164,7 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
 
             case '3': // 세 번째 설문: 두 번째 별점 선택
                 return (
-                    <StarContent>
+                    <SliderContent>
                         <StarContentHeader>
                             <ContentIndex className='Podo-Ticket-Headline-H4'>
                                 <span className='Podo-Ticket-Headline-H2' style={{ color: 'var(--purple-4)' }}>1</span>
@@ -172,25 +177,29 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
 
                             </StarEvaluationTitle>
                         </StarContentHeader>
-                        <StarRatingContainer>
-                            <StarRatings
-                                rating={selectedRating2}                    // 현재 별점 값
-                                starRatedColor="#B489FF"                    // --purple-7
-                                starHoverColor="#B489FF"                    // --purple-7
-                                changeRating={(newRating) => setSelectedRating2(newRating)}
-                                numberOfStars={10}                   // 전체 별의 개수
-                                name="rating2"                       // 별점 컴포넌트의 이름
-                                starDimension="41px"                // 각 별의 크기
-                                starSpacing="9px"                   // 별 사이의 간격
+
+                        <SliderContainer>
+                            <SliderInput
+                                type="range"
+                                min="0"
+                                max="10"
+                                value={selectedRating2}
+                                onChange={handleSliderChange}
                             />
-                            <RatingDescription>{selectedRating2}/10</RatingDescription>
-                        </StarRatingContainer>
+                            <SliderLabels>
+                                {Array.from({ length: 11 }, (_, index) => (
+                                    <Label key={index} isActive={index === selectedRating2}>
+                                        {index}
+                                    </Label>
+                                ))}
+                            </SliderLabels>
+                        </SliderContainer>
 
                         <ButtonContainer>
                             <SmallBtn content="닫기" onClick={handleClose} isAvailable={true} isGray={true} />
-                            <SmallBtn content="다음" onClick={handleNext} isAvailable={true} />
+                            <SmallBtn content="완료" onClick={handleNext} isAvailable={true} />
                         </ButtonContainer>
-                    </StarContent>
+                    </SliderContent>
                 );
 
             case '4': // 마지막 단계: 감사 메시지 표시
@@ -354,6 +363,101 @@ flex-direction: column;
 gap: 5px;
 `;
 
+const SliderContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 22.0625rem;
+  background-color: var(--ect-white);
+  border-radius: 10px;
+
+  gap: 35px;
+  padding: 15px;
+  padding-bottom: 25px;
+
+  text-align: center;
+`;
+
+const SliderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+
+  gap: 8px;
+  padding: 0 9px;
+`;
+
+interface SliderProps {
+    value: number; // value는 숫자 타입
+}
+
+const SliderInput = styled.input.attrs<SliderProps>(props => ({
+    type: 'range', // input의 기본 속성을 설정
+}))`
+  -webkit-appearance: none; /* 기본 브라우저 스타일 제거 */
+  
+  width: 100%;
+  height: 19px;
+  background: linear-gradient(
+    to right,
+    #f5f4ff 0%, /* 그라디언트 시작 색상 */
+    #dfcdff ${props => props.value * 10}%, /* 채워진 부분 끝 */
+    var(--grey-2) ${props => props.value * 10}% /* 비활성화된 부분 시작 */
+  );
+  border-radius: 13px;
+
+  outline: none;
+  transition: background 0.2s ease;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none; /* 기본 브라우저 스타일 제거 */
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #fff;
+    cursor: pointer;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1); /* 호버 시 크기 확대 */
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #fff;
+    cursor: pointer;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1); /* 호버 시 크기 확대 */
+    }
+  }
+`;
+
+const SliderLabels = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  padding-left: 7px;
+  padding-right: 1px;
+`;
+
+
+const Label = styled.span.attrs<{ isActive?: boolean }>(props => ({ className: props.isActive ? 'Podo-Ticket-Headline-H5' : 'Podo-Ticket-Headline-H6', }))
+    <{ isActive?: boolean }>`
+  color: ${props => (props.isActive ? 'var(--purple-4)' : 'var(--grey-5)')};
+`;
+
+
 const RatingDescription = styled.div.attrs({ className: 'Podo-Ticket-Headline-H6' })`
 color: var(--grey-5);
 `;
@@ -362,5 +466,4 @@ const ButtonContainer = styled.div`
 display: flex;
 
 gap: 11px;
-
 `;

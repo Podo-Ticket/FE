@@ -25,6 +25,7 @@ export interface ReservationRequest {
 
 interface ReservationResponse {
     success: boolean;
+    userId?: number;
     error?: string;
 }
 
@@ -43,17 +44,18 @@ export const fetchPerformanceSchedules = async (playId: number) => {
 };
 
 // 예매 신청
-export const submitReservation = async (data: ReservationRequest) => {
+export const submitReservation = async (data: ReservationRequest): Promise<ReservationResponse> => {
     try {
-        const response = await api.post<ReservationResponse>('/reservation', data, {
-            withCredentials: true
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error submitting reservation:', error);
-        throw error;
+      const response = await api.post('/reservation', data, { withCredentials: true });
+      return response.data;
+    } catch (error: any) {
+      if (error.response && error.response.data.error) {
+        throw new Error(error.response.data.error);
+      } else {
+        throw new Error('예매 신청 중 오류가 발생했습니다.');
+      }
     }
-};
+  };
 
 // 예매 승인 상태 확인
 export const checkReservationApproval = async () => {
@@ -66,23 +68,4 @@ export const checkReservationApproval = async () => {
         console.error('Error checking approval:', error);
         throw error;
     }
-};
-
-export const connectOnsiteReserveSocket = (PORT: number) => {
-    const socket = new WebSocket(`ws://localhost:${PORT}`);
-
-    // WebSocket 이벤트 핸들러
-    socket.onopen = () => {
-        console.log("WebSocket connection established.");
-    };
-
-    socket.onerror = (error) => {
-        console.error("WebSocket error:", error);
-    };
-
-    socket.onclose = () => {
-        console.log("WebSocket connection closed.");
-    };
-
-    return socket;
 };

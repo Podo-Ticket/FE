@@ -24,7 +24,7 @@ const TopNav = ({ lefter, center, righter, isGrey = false, isUnderlined = false,
               height={lefter.iconHeight}
             />
           ) : lefter.text ? (
-            <span>{lefter ? lefter.text : undefined}</span>
+            <span className="Podo-Ticket-Body-B6" style={{color: 'var(--grey-7)'}}>{lefter ? lefter.text : undefined}</span>
           ) : null
         ) : undefined}
       </ImageContainer>
@@ -43,7 +43,7 @@ const TopNav = ({ lefter, center, righter, isGrey = false, isUnderlined = false,
               height={righter.iconHeight}
             />
           ) : righter.text ? (
-            <span>{righter ? righter.text : undefined}</span>
+            <span className="Podo-Ticket-Body-B6" style={{color: 'var(--grey-7)'}}>{righter ? righter.text : undefined}</span>
           ) : null
         ) : undefined}
       </ImageContainer>

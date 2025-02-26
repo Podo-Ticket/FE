@@ -4,14 +4,27 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
-import poster from '../../assets/images/posters/73th_KwangwoonUniv_poster.jpeg'
+import ticketBackground from '../../assets/images/ticket_image.png'
+import poster from '../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg'
+
+import { splitDateTime } from '../../utils/DateUtil';
+
+interface Ticket {
+  id: string;
+  title: string;
+  location: string;
+  dateTime: string;
+  seat: string;
+  image: string;
+}
 
 interface TicketCarouselProps {
   ticketCount: number;
   onActiveIndexChange: (index: number) => void; // active index 변경 시 호출되는 콜백
+  currentTicketInfo: Ticket;
 }
 
-const TicketCarousel: React.FC<TicketCarouselProps> = ({ ticketCount, onActiveIndexChange }) => {
+const TicketCarousel: React.FC<TicketCarouselProps> = ({ ticketCount, onActiveIndexChange, currentTicketInfo }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleSlideChange = (swiper: any) => {
@@ -20,11 +33,16 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({ ticketCount, onActiveIn
     onActiveIndexChange(newIndex); // 부모 컴포넌트로 active index 전달
   };
 
+  if (!currentTicketInfo) return null;
+
+  // 공연 날짜와 공연 시작시간 분리
+  const result = splitDateTime(currentTicketInfo.dateTime);
+
   return (
     <TicketCarouselContainer>
       <TicketSwiper
-        slidesPerView={2}
-        spaceBetween={20}
+        slidesPerView={1.4}
+        spaceBetween={25}
         centeredSlides={true}
         pagination={{
           clickable: true,
@@ -33,7 +51,54 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({ ticketCount, onActiveIn
       >
         {Array.from({ length: ticketCount }, (_, index) => (
           <TicketSwiperSlide key={index} className={index === activeIndex ? "active-slide" : "inactive-slide"}>
-            <img src={poster} alt={`티켓 ${index + 1}`} />
+            <TicketCellBackground src={ticketBackground} alt={`티켓 ${index + 1}`} />
+
+            <TicketHeaderContainer>
+              <Poster src={poster} alt="공연 포스터" />
+            </TicketHeaderContainer>
+
+            <TicketInformation>
+              <TopContent>
+                <ContentItem>
+                  <Category>공연 제목</Category>
+                  <PlayTitle>{currentTicketInfo.title}</PlayTitle>
+                </ContentItem>
+
+              </TopContent>
+
+              <MiddleContent>
+                <MiddleLeftContent>
+                  <ContentItem>
+                    <Category>공연 일자</Category>
+                    <Description>{result?.date}</Description>
+                  </ContentItem>
+
+                  <ContentItem>
+                    <Category>공연 장소</Category>
+                    <Description>{currentTicketInfo.location}</Description>
+                  </ContentItem>
+
+                </MiddleLeftContent>
+                <MiddleRightContent>
+                  <ContentItem>
+                    <Category>시작 시간</Category>
+                    <Description>{result?.time}</Description>
+                  </ContentItem>
+                  <ContentItem>
+                    <Category>관람 시간</Category>
+                    <Description>100분</Description>
+                  </ContentItem>
+                </MiddleRightContent>
+              </MiddleContent>
+
+              <DummyContent/>
+
+              <BottomContent>
+                <Category>좌석 번호</Category>
+                <CurrentSeat>{currentTicketInfo.seat}</CurrentSeat>
+              </BottomContent>
+            </TicketInformation>
+
           </TicketSwiperSlide>
         ))}
 
@@ -46,10 +111,8 @@ export default TicketCarousel;
 
 const TicketCarouselContainer = styled.div`
   width: 100%;
-  height: 300px;
+  height: 475px;
   background: transparent;
-
-  padding: 5px;
 
   text-align: center;
 
@@ -63,36 +126,136 @@ const TicketSwiper = styled(Swiper)`
   width: 100%;
   height: 100%;
 
-  padding: 15px 0;
-
   .active-slide {
-    transform: scale(1.05);
     opacity: 1;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+    transition: box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out;
   }
 
   .inactive-slide {
-    transform: scale(0.95);
-    opacity: 0.6;
-    box-shadow: 0px 5px 7.5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0.5;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+    transition: box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out;
   }
 `;
 
 const TicketSwiperSlide = styled(SwiperSlide)`
   display: flex;
+  flex-direction: column;
 
-  width: 90%;
-  height: 90%;
-  border-radius: 10px;
+  width: 100%;
+  height: 100%;
 
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
-    object-fit: cover;
-    transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
-  }
+`;
+
+const TicketCellBackground = styled.img`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+
+  object-fit: contain; 
+  object-position: center;
+
+  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+ 
+  z-index: 2;
+`;
+
+const TicketHeaderContainer = styled.div`
+  position: relative;
+  display: flex;
+
+  width: calc(100% - 3px);
+  border-bottom: 1px solid var(--grey-2);
+  overflow: hidden;
+  z-index: 2;
+
+  transform: translate(1.5px, 0.8px); // 티켓 보라색 테두리 고려
+`;
+
+const Poster = styled.img`
+  width: calc(100%); // 티켓 보라색 테두리 고려
+  height: calc(135px); // 티켓 보라색 테두리 고려
+  border-radius: 20px 20px 0px 0px;
+  
+
+  object-fit: cover;
+  object-position: center;
+`;
+
+const TicketInformation = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 2;
+`;
+
+const Category = styled.div.attrs({ className: 'Podo-Ticket-Body-B7' })`
+color: var(--grey-5);
+`;
+
+const Description = styled.div.attrs({ className: 'Podo-Ticket-Body-B6' })`
+color: var(--grey-7);
+`;
+
+const TopContent = styled.div`
+padding: 20px;
+padding-bottom: 0;
+`;
+
+const PlayTitle = styled.div.attrs({ className: 'Podo-Ticket-Body-B1' })`
+padding-bottom: 20px;
+border-bottom: 1px solid var(--grey-2);
+
+color: var(--grey-7);
+`;
+
+const MiddleContent = styled.div`
+display: flex;
+
+padding: 20px;
+
+gap: 0px;
+`;
+
+const MiddleLeftContent = styled.div`
+display: flex;
+flex-direction: column;
+
+gap: 25px;
+`;
+
+const MiddleRightContent = styled.div`
+display: flex;
+flex-direction: column;
+
+gap: 25px;
+`;
+
+const ContentItem = styled.div`
+display: flex;
+flex-direction: column;
+
+text-align: left;
+
+gap: 3px;
+`;
+
+const DummyContent = styled.div`flex-grow: 1;`;
+
+const BottomContent = styled.div``;
+
+const CurrentSeat = styled.div.attrs({ className: 'Podo-Ticket-Body-B2' })`
+padding-bottom: 20px;
+
+color: var(--purple-4);
 `;

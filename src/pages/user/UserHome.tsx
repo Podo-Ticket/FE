@@ -10,13 +10,13 @@ import Loading from '../../components/loading/Loading.tsx';
 import Success from '../../components/loading/Success.tsx';
 import TopNav from '../../components/nav/TopNav.tsx';
 
-import poster from '../../assets/images/posters/73th_KwangwoonUniv_poster.jpeg'
+import poster from '../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg' // 해당 공연에 맞는 상수값 적용 필요
 import homeTicket from '../../assets/images/home_ticket.png'
 import goBackIcon from '../../assets/images/left_arrow.png'
 
 import { fetchPlayInfo } from '../../api/user/UserHomeApi';
 import { slideUp } from '../../styles/animation/DefaultAnimation.ts'
-import { BASE_PERFORMANCE_INFO, DETAILED_PERFORMANCE_INFO } from '../../constants/text/playInfo/73th_kwangwoonUniv.ts'
+import { BASE_PERFORMANCE_INFO, DETAILED_PERFORMANCE_INFO } from '../../constants/text/playInfo/24th_seoulnationalUniv_riveract.ts' // 해당 공연에 맞는 상수값 적용 필요
 import { DateUtil } from '../../utils/DateUtil';
 import { toggleModal } from '../../utils/ModalUtil.ts'
 import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts';
@@ -36,7 +36,7 @@ const UserHome: React.FC = () => {
     success: false
   });
 
-  // Animation modal declaration
+  // 애니메이션 모달 선언 부
   const [isFlipped, setIsFlipped] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isPopupClosing, setIsPopupClosing] = useState(false);
@@ -45,7 +45,7 @@ const UserHome: React.FC = () => {
   useEffect(() => {
     const loadPlayInfo = async () => {
       try {
-        const playId = 1; // Replace with dynamic ID if needed
+        const playId = 2; // 추후에 다이나믹하게 변경
         const data = await fetchPlayInfo(playId);
         setPlayInfo(data.play);
         setScheduleId(data.schedule.id);
@@ -85,11 +85,11 @@ const UserHome: React.FC = () => {
 
   // 휴대폰 번호 인증 성공 처리
   const handleAuthModalAccept = () => {
-      toggleModal('success', true, setModals);
-      setTimeout(() => {
-        toggleModal('success', false, setModals);
-        navigateTo('/select');
-      }, 1000)
+    toggleModal('success', true, setModals);
+    setTimeout(() => {
+      toggleModal('success', false, setModals);
+      navigateTo('/select');
+    }, 1000)
   }
 
   return (
@@ -143,8 +143,8 @@ const UserHome: React.FC = () => {
                               isUnderlined={true} />
                             {isPopupVisible && (
                               <SpeechBubble isClosing={isPopupClosing}>
-                                <div>이진성, 장미현, 이소연, 양현모</div>
-                                <div>한태웅</div>
+                                <div>박도현, 박세웅, 오지우, 윤가은</div>
+                                <div>이윤하</div>
                               </SpeechBubble>
                             )}
                           </div>
@@ -156,16 +156,18 @@ const UserHome: React.FC = () => {
                   </InfoContent>
                 </FrontCardInfoItem>
               ))}
+              <MoreDetailBtnContainer>
+                <MoreDetailBtn
+                  content="자세히 보기"
+                  onClick={() => toggleFlip()}
+                  isAvailable={true}
+                />
+              </MoreDetailBtnContainer>
+
             </DetailContainer>
 
             <DetailBtnContainer>
-              <MoreDetailBtn
-                content="자세히 보기"
-                onClick={() => toggleFlip()}
-                isAvailable={true}
-              />
-
-              <MediumBtn
+              <GetTicketBtn
                 content="티켓 발권"
                 onClick={() => toggleModal('reserveWayModal', true, setModals)}
                 isAvailable={true}
@@ -224,7 +226,7 @@ const UserHome: React.FC = () => {
       />
 
       <Loading showLoading={modals.loading} />
-      <Success showSuccess={modals.success}/>
+      <Success showSuccess={modals.success} />
 
     </MainContainer >
   );
@@ -294,6 +296,10 @@ const Card = styled.div<{ isFlipped?: boolean }>`
 
 const CardFront = styled.div`
   position: absolute;
+
+  display: flex;
+  flex-direction: column;
+
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
@@ -411,17 +417,32 @@ const BackInfoContent = styled.div`
 color: var(--grey-7);
 `;
 
-const DetailBtnContainer = styled.div`
-position: relative;
+const MoreDetailBtnContainer = styled.div`
 display: flex;
-flex-direction: column;
 justify-content: center;
 align-items: center;
 
-margin-top: 40px;
-gap: 66px;
+padding-right: 36px;
+margin-top: 26px;
 
-z-index: 2;
+`;
+
+const DetailBtnContainer = styled.div`
+  position: absolute;
+  left: 9%; // 화면 중앙 고정
+  bottom: 30px; /* 하단에서 30px 위로 위치 */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+
+  z-index: 2;
+`;
+
+const GetTicketBtn = styled(MediumBtn)`
+
 `;
 
 const CardBack = styled.div`

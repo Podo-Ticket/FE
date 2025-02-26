@@ -30,3 +30,19 @@ export class DateUtil {
     }
   }
 }
+
+// 공연 날짜와 시작 시간 분리 함수
+export function splitDateTime(input: string): { date: string; time: string } | null {
+  // 정규식을 사용하여 'YYYY.MM.DD (요일) HH:mm' 형식 매칭
+  const pattern = /^(\d{4}\.\d{2}\.\d{2} \([가-힣]\)) (\d{2}:\d{2})$/;
+  const match = input.match(pattern);
+
+  if (match) {
+    const date = match[1]; // 'YYYY.MM.DD (요일)' 추출
+    const time = match[2]; // 'HH:mm' 추출
+    return { date, time };
+  }
+
+  // 형식이 맞지 않는 경우 null 반환
+  return null;
+}

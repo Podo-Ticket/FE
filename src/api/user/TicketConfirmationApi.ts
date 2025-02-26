@@ -51,7 +51,7 @@ export const fetchTicketingInfo = async (): Promise<TicketInfo> => {
       title: playInfo.play.title,
       date: playInfo.date_time,
       poster: playInfo.play.poster,
-      location: "광운대학교 새빛관 대강의실",
+      location: "서울대학교 인문소극장(14동) B1층",
       seats,
     };
   } catch (error) {

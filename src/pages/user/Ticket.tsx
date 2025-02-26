@@ -113,24 +113,12 @@ const Ticket = () => {
                     <DummyComponent>/</DummyComponent>
                     <DummyComponent>{tickets.length}</DummyComponent>
                 </TicketIndex>
-                <TicketCarousel ticketCount={tickets.length} onActiveIndexChange={handleActiveIndexChange} />
+                <TicketCarousel
+                    ticketCount={tickets.length}
+                    onActiveIndexChange={handleActiveIndexChange}
+                    currentTicketInfo={currentTicket}
+                />
             </TicketCarouselContainer>
-
-            {currentTicket && ( // currentTicket이 존재할 때만 정보 표시
-                <CurrentTicketInfo>
-                    <CurrentTicketDetail>
-                        <Title>{currentTicket.title}</Title>
-                        <Description>{currentTicket.dateTime}</Description>
-                        <Description>{currentTicket.location}</Description>
-                    </CurrentTicketDetail>
-                    <CurrentTicketSeat>
-                        <SeatLabel>좌석</SeatLabel>
-                        <SeatDetail className="ticketing-seat-num">
-                            {currentTicket.seat.replace(/([^\d]*)(\d)/, '$1')} {/* 첫 번째 숫자 제거 */}
-                        </SeatDetail>
-                    </CurrentTicketSeat>
-                </CurrentTicketInfo>
-            )}
 
             <TheaterInfoModal
                 showTheaterInfoModal={isTheaterInfoModalOpen}
@@ -215,56 +203,6 @@ color: var(--grey-5);
 
 const CurrentTicketIndex = styled.span.attrs({ className: 'Podo-Ticket-Headline-H2' })`
 color: var(--purple-4);
-`;
-
-const CurrentTicketInfo = styled.div`
-display: flex;
-flex-direction : column;
-justify-content: center;
-align-items: center;
-
-gap: 20px;
-
-`;
-
-const CurrentTicketDetail = styled.div`
-display: flex;
-flex-direction : column;
-justify-content: center;
-align-items: center;
-`;
-
-const Title = styled.div.attrs({ className: 'Podo-Ticket-Headline-H2' })`
-padding-bottom: 10px;
-
-color: var(--grey-7);
-`;
-
-const Description = styled.div.attrs({ className: 'Podo-Ticket-Body-B4' })`
-color: var(--grey-6);
-`;
-
-const CurrentTicketSeat = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-
-border-radius: 20px;
-border: 1px solid var(--purple-7);
-background: var(--lightpurple-2);
-
-gap: 5px;
-padding: 6px 19px;
-
-color: var(--purple-4);
-`;
-
-const SeatLabel = styled.span.attrs({ className: 'Podo-Ticket-Body-B3' })`
-
-`;
-
-const SeatDetail = styled.span.attrs({ className: 'Podo-Ticket-Headline-H3' })`
-
 `;
 
 const DummyComponent = styled.span``;

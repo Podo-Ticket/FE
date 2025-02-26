@@ -7,12 +7,12 @@ import TicketConfirmCard from '../../components/info/TicketConfirmCard';
 import Loading from '../../components/loading/Loading';
 import Success from '../../components/loading/Success'
 
-import poster from '../../assets/images/posters/73th_KwangwoonUniv_poster.jpeg'
+import poster from '../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg'
 import confirmIcon from '../../assets/images/confirm_icon.png';
 import backIcon from '../../assets/images/left_arrow.png'
 
+import { DateUtil } from '../../utils/DateUtil';
 import { fetchTicketingInfo, handleTicketIssuance, TicketInfo, cancelSeatSelection } from '../../api/user/TicketConfirmationApi';
-
 
 const TicketConfirmation = () => {
     const navigate = useNavigate();
@@ -97,7 +97,7 @@ const TicketConfirmation = () => {
                     <TicketConfirmCard
                         title={ticketInfo.title}
                         poster={poster}
-                        dateTime={ticketInfo.date}
+                        dateTime={DateUtil.formatDate(ticketInfo.date)}
                         location={ticketInfo.location}
                         seats={selectedSeats}
                     />

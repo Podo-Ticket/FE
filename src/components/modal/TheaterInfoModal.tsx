@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import TopNav from '../nav/TopNav';
-import SeatMap from '../../assets/images/seat_map.png';
+import SeatMap from '../../assets/images/seatMap/seoul_national_durae.png';
 import VenueMap from '../../assets/images/venue_map.png';
 import CloseBtn from '../button/SmallBtn';
 
-import { PERFORMANCE_NOTICE } from '../../constants/venue/KwangwoonUniv'
+import { PERFORMANCE_NOTICE } from '../../constants/text/playInfo/24th_seoulNationalUniv_riveract.ts'
 import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
 
 // Props 타입 정의
@@ -182,7 +182,7 @@ const HighlightBox = styled.div<{ activeTab: string }>`
     }
   }};
   
-  transition: transform 0.3s ease-in-out; /* 부드러운 이동 애니메이션 */
+  transition: transform 0.3s ease-in-out;
 `;
 
 const RenderedContentContainer = styled.div`
@@ -197,7 +197,7 @@ const RenderedContentContainer = styled.div`
 
   padding-right: 10px;
 
-  overflow: auto; 
+  overflow: auto;
 `;
 
 const SeatDescription = styled.div`

@@ -88,6 +88,7 @@ const PosterContainer = styled.div`
 
 const Poster = styled.img`
     width: 100%;
+    border-radius: 10px;
 `;
 
 const Details = styled.div`
@@ -111,7 +112,11 @@ color: var(--grey-7);
 `;
 
 const Label = styled.span.attrs({ className: 'Podo-Ticket-Body-B9' })`
+display: flex; /* 플렉스 박스 사용 */
+align-items: center; /* 수직 중앙 정렬 */
+justify-content: center; /* 수평 중앙 정렬 */
 
+height: 24px;
 border-radius: 30px;
 border: 1px solid var(--grey-3);
 background: var(--ect-white);
@@ -119,6 +124,7 @@ background: var(--ect-white);
 padding: 0 8px;
 
 color: var(--grey-6);
+white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 `;
 
 const Text = styled.span.attrs({ className: 'Podo-Ticket-Body-B7' })`

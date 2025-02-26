@@ -28,6 +28,14 @@ export const fetchSeats = async (scheduleId: number) => {
 export const checkSeats = async (scheduleId: number, selectedSeats: string[]) => {
   try {
     const seats = selectedSeats.map((seat) => {
+      // 좌석의 row가 전부 다르고 영어인 경우
+      if (/^[A-Za-z]/.test(seat)) {
+        const row = seat.slice(0, 1);
+        const column = parseInt(seat.slice(1));
+        return { row, number: column }; // 객체 형식으로 변환
+      }
+
+      // 좌석의 row가 같은 문자인 경우 
       const row = seat.slice(0, 2); // 좌석 ID의 첫 두 문자를 행으로 설정
       const column = parseInt(seat.slice(2)); // 나머지 부분을 숫자로 변환하여 column으로 설정
 

@@ -14,6 +14,15 @@ import SelectSeats from './pages/user/SelectSeats.tsx';
 import TicketConfirmation from './pages/user/TicketConfirmation.tsx';
 import TicketScreen from './pages/user/Ticket.tsx';
 
+import AdminAuth from './pages/admin/AdminAuth.tsx'
+import AdminHome from './pages/admin/AdminHome.tsx'
+import ManageLockingSeats from './pages/admin/ManageLockingSeats.tsx';
+import RealtimeSeats from './pages/admin/RealtimeSeats.tsx'
+import ReservedManange from './pages/admin/ReservedManage.tsx'
+import OnsiteManage from './pages/admin/OnsiteManage.tsx'
+import AdminSetting from './pages/admin/AdminSetting.tsx'
+
+
 const GlobalStyle = createGlobalStyle`
     * {
         margin: 0;
@@ -59,6 +68,14 @@ function App() {
             <Route path="/select" element={ <PageWrapper slideDirection="right"> <SelectSeats /> </PageWrapper> }/>
             <Route path="/confirm" element={ <PageWrapper slideDirection="left"> <TicketConfirmation /> </PageWrapper> } />
             <Route path="/ticket" element={<TicketScreen />} />
+
+            <Route path="/adminAuth" element={<AdminAuth/>} />
+            <Route path="/home" element={<AdminHome/>} />
+            <Route path="/home/realtime" element={<RealtimeSeats/>} />
+            <Route path="/home/lock" element={<ManageLockingSeats/>} />
+            <Route path="/reserved" element={<ReservedManange/>} />
+            <Route path="/onsite" element={<OnsiteManage/>} />
+            <Route path="/setting" element={<AdminSetting/>} />
           </Routes>
       </AnimatePresence>
 

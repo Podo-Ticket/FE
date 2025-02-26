@@ -36,6 +36,8 @@ gap: 6px;
 color: var(--gray-0);
 text-align: center;
 
+transition: background 0.3s ease-in-out;
+
 user-select: none; /* 텍스트 선택 방지 */
 -webkit-user-select: none; /* Safari에서 드래그 방지 */
 -moz-user-select: none; /* Firefox에서 드래그 방지 */

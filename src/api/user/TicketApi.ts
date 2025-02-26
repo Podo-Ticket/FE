@@ -25,7 +25,7 @@ export const fetchTickets = async () => {
     const formattedTickets = response.data.seats.map((seat: any) => ({
       id: `${seat.row}${seat.number}`, // 각 티켓의 ID 생성
       title: seat.schedule.play.title,
-      location: "광운대학교 새빛관 대강의실", // 고정된 공연장 이름
+      location: "서울대학교 인문소극장(14동) B1층", // 고정된 공연장 이름
       dateTime: DateUtil.formatDate(seat.schedule.date_time), // 날짜 형식 변환
       seat: `${seat.row} ${seat.number}`, // 좌석 정보
       image: "https://via.placeholder.com/150", // 포스터 이미지 (임시 URL)

@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import TopNav from '../../components/nav/TopNav';
 import SelectSeatsInfo from '../../components/info/SeatsInfo';
-import SeatMap from '../../components/button/UserSeatMap';
 import LargeBtn from '../../components/button/LargeBtn';
 import ErrorModal from '../../components/error/DefaultErrorModal';
 
@@ -12,6 +11,10 @@ import { SELECT_FAIL } from '../../constants/text/ErrorMessage';
 import refreshIcon from '../../assets/images/refresh2_icon.png'
 
 import { fetchSeats, checkSeats } from '../../api/user/SelectSeatsApi';
+
+/* 각 극장에 맞는 SeatMap component로 설정 필요 */
+import RiveractSeatMap from '../../components/button/SeatMap/UserSeatMap_Riveract';
+// import KwangwoonSeatMap from '../../components/button/SeatMap/UserSeatMap_Kwangwoon';
 
 function SelectSeats() {
   const navigate = useNavigate();
@@ -79,9 +82,9 @@ function SelectSeats() {
         <SelectSeatsInfo />
 
         <SeatMapContainer>
-          <SeatMap
+          <RiveractSeatMap
             isRealTime={false}
-            scheduleId={3}
+            scheduleId={5}
             headCount={headCount}
             disabled={false}
             currentSelectedSeats={selectedSeats}

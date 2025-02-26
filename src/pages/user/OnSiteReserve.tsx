@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import socket from '../../api/socket';
+
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,7 +19,6 @@ import { fadeIn } from '../../styles/animation/DefaultAnimation.ts';
 import {
     fetchPerformanceSchedules,
     submitReservation,
-    connectOnsiteReserveSocket,
     ReservationRequest
 } from '../../api/user/OnSiteReserveApi';
 
@@ -47,8 +48,8 @@ function OnSiteReserve() {
 
     const [performanceSchedules, setPerformanceSchedules] = useState<Array<{ id: string; date_time: string; available_seats: number }>>([]);
 
+    const [currentUserId, setCurrentUserId] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false); // 승인 대기 로딩 상태
-    const socketRef = useRef<WebSocket | null>(null);
 
     const [isDuplicatePhoneModalOpen, setIsDuplicatePhoneModalOpen] = useState(false);
 
@@ -81,60 +82,61 @@ function OnSiteReserve() {
         loadSchedules();
     }, []);
 
-    // 예매 신청 처리 함수
+    // 현장 예매 신청 처리 함수
     const handleReservationSubmit = async (data: ReservationRequest) => {
         try {
-            // 예매 신청 API 호출
-            const response = await submitReservation(data);
-
-            if (response.success) {
-                // WebSocket 연결 열기
-                socketRef.current = connectOnsiteReserveSocket(8080);
-                const socket = socketRef.current;
-
-                socket.onopen = () => {
-                    console.log('WebSocket connection established');
-                    setIsLoading(true); // 로딩 창 표시
-                };
-
-                socket.onmessage = (event) => {
-                    const messageData = JSON.parse(event.data);
-
-                    if (messageData.type === 'approval') {
-                        console.log('approval data: ', messageData.message);
-
-                        if (messageData.status === 'approved') {
-                            console.log('Reservation approved');
-                            setIsLoading(false);
-                            socket.close();
-
-                            navigate('/select');
-                        } else if (messageData.status === 'rejected') {
-                            console.log('Reservation rejected');
-                            setIsLoading(false);
-                            socket.close();
-                        }
-                    }
-                };
-
-                socket.onerror = () => {
-                    console.error('WebSocket error occurred');
-                    setIsLoading(false);
-                };
-
-                socket.onclose = () => {
-                    console.log('WebSocket connection closed');
-                };
-            } else {
-                console.error('Failed to submit reservation:', response.error);
-                if (response.error === '이미 예약되었습니다.') {
-                    setIsDuplicatePhoneModalOpen(true);
-                }
-            }
+          // 예매 신청 API 호출
+          const response = await submitReservation(data);
+      
+          console.log("response: ", response);
+      
+          if (response.success) {
+            console.log("Reservation request sent successfully.");
+            console.log("current user id: ", response.userId);
+            setIsLoading(true); // 로딩 상태 활성화
+      
+            const userId = response.userId; // 예매 신청한 사용자 ID
+      
+            // 기존 리스너 제거 (중복 방지)
+            socket.off(`user:${userId}`);
+            socket.off("error");
+            socket.off("disconnect");
+      
+            // WebSocket 이벤트 리스너 등록
+            socket.on(`user:${userId}`, (messageData) => {
+              console.log(`Message received for user ${userId}:`, messageData);
+      
+              if (messageData.type === "approval") {
+                console.log("Reservation approved");
+                setIsLoading(false);
+                navigate("/select"); // 성공 시 이동
+              } else if (messageData.type === "reject") {
+                console.log("Reservation rejected");
+                setIsLoading(false);
+              } else {
+                console.warn("Unknown message type:", messageData.type);
+              }
+            });
+      
+            socket.on("error", (error) => {
+              console.error("WebSocket error occurred:", error);
+              setIsLoading(false); // 로딩 상태 해제
+            });
+      
+            socket.on("disconnect", () => {
+              console.log("WebSocket connection closed");
+              setIsLoading(false); // 로딩 상태 해제
+            });
+      
+            console.log("Waiting for approval...");
+          } else {
+            console.error("Reservation submission failed:", response.error);
+          }
         } catch (error) {
-            console.error('Error during reservation submission:', error);
+          console.error("Error during reservation submission:", error);
+          setIsLoading(false); // 오류 발생 시 로딩 상태 해제
         }
-    };
+      };
 
     const lefter = {
         icon: goBackIcon,

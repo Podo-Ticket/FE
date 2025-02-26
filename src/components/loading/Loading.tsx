@@ -20,8 +20,8 @@ const Loading: React.FC<LoadingModalProps> = ({ showLoading, isOnSiteReserve = f
         {isOnSiteReserve ? (
           <ModalContentReserve>
             <img src={waitReserve} alt="대기 아이콘" className="modal-content-load-icon" />
-            <p>예매 수락 대기 중</p>
-            <span>관리자가 내역을 확인 중입니다.</span>
+            <p className='Podo-Ticket-Headline-H3'>예매 수락 대기 중</p>
+            <span className='Podo-Ticket-Body-B5'>관리자가 내역을 확인 중입니다.</span>
             <PulseLoader
               color={color}
               size={13}
@@ -59,7 +59,7 @@ const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 1000;
 `;
 
 const ModalContentLoad = styled.div`
@@ -79,24 +79,27 @@ const ModalContentReserve = styled.div`
   justify-content: center;
   align-items: center;
 
+  background: var(--ect-white);
+  border-radius: 10px;
+
+  padding: 30px 35px;
+  padding-bottom: 5px;
+
   img {
     width: 50px; /* 아이콘 크기 설정 */
     height: auto;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   p {
-    font-size: 18px;
-    font-weight: bold;
     margin-bottom: 5px;
-    color: #333; /* 텍스트 색상 */
+
+    color: var(--grey-7);
   }
 
   span {
-    font-size: 14px;
-    color: #777; /* 서브 텍스트 색상 */
-    margin-bottom: 15px;
-    text-align: center;
-    line-height: 1.5;
+    margin-bottom: 30px;
+
+    color: var(--grey-5);
   }
 `;

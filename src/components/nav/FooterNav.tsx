@@ -2,90 +2,60 @@ import React from "react";
 import { useLocation, Link } from "react-router-dom";
 import styled from "styled-components";
 
-import Home from "../../assets/images/gray_star.png";
-import ActHome from "../../assets/images/orange_star.png";
-import Quest from "../../assets/images/gray_task_add.png";
-import ActQuest from "../../assets/images/orange_task_add.png";
-import Board from "../../assets/images/gray_pin_paper.png";
-import ActBoard from "../../assets/images/orange_pin_paper.png";
-import Mypage from "../../assets/images/gray_person_circle.png";
-import ActMypage from "../../assets/images/orange_person_circle.png";
-
-import Setting from "../../assets/images/admin/gray_setting.png"
-import ActSetting from "../../assets/images/admin/orange_setting.png"
+import Home from "../../assets/images/admin/grey_home.png";
+import ActHome from "../../assets/images/admin/purple_home.png";
+import Reserved from "../../assets/images/admin/grey_checked_list.png";
+import ActReserved from "../../assets/images/admin/purple_checked_list.png";
+import Onsite from "../../assets/images/admin/grey_plus_list.png";
+import ActOnsite from "../../assets/images/admin/purple_plus_list.png";
+import Setting from "../../assets/images/admin/grey_setting.png"
+import ActSetting from "../../assets/images/admin/purple_setting.png"
 
 interface FooterNavProps {
-    isAdmin?: boolean // 어드민 계정 여부
 }
 
-const FotterNav: React.FC<FooterNavProps> = ({ isAdmin = false }) => {
+const FotterNav: React.FC<FooterNavProps> = () => {
   const location = useLocation(); // 현재 경로를 가져옴
 
   return (
-    <Nav className="caption-md-200">
-      {isAdmin ?
-        <>
-          <NavItem className={location.pathname.startsWith("/member") ? "active" : ""}>
-            <NavLink to="/member">
-              <IconQuest src={location.pathname.startsWith("/member") ? ActMypage : Mypage} />
-              <p>구성원</p>
-            </NavLink>
-          </NavItem>
-          <NavItem
-            className={location.pathname.startsWith("/admin-board") ? "active" : ""}
-          >
-            <NavLink to="/admin-board">
-              <IconBoard
-                src={location.pathname.startsWith("/admin-board") ? ActBoard : Board}
-              />
-              <p>게시글</p>
-            </NavLink>
-          </NavItem>
-          <NavItem className={location.pathname.startsWith("/setting") ? "active" : ""}>
-            <NavLink to="/setting">
-              <IconMypage
-                src={location.pathname.startsWith("/setting") ? ActSetting : Setting}
-              />
-              <p>설정</p>
-            </NavLink>
-          </NavItem>
-        </>
-        :
-        <>
-          <NavItem className={location.pathname.startsWith("/home") ? "active" : ""}>
-            <NavLink to="/home">
-              <IconHome
-                src={location.pathname.startsWith("/home") ? ActHome : Home}
-              />
-              <p>홈</p>
-            </NavLink>
-          </NavItem>
-          <NavItem className={location.pathname.startsWith("/quest") ? "active" : ""}>
-            <NavLink to="/quest">
-              <IconQuest src={location.pathname.startsWith("/quest") ? ActQuest : Quest} />
-              <p>퀘스트</p>
-            </NavLink>
-          </NavItem>
-          <NavItem
-            className={location.pathname.startsWith("/board") ? "active" : ""}
-          >
-            <NavLink to="/board">
-              <IconBoard
-                src={location.pathname.startsWith("/board") ? ActBoard : Board}
-              />
-              <p>게시판</p>
-            </NavLink>
-          </NavItem>
-          <NavItem className={location.pathname.startsWith("/mypage") ? "active" : ""}>
-            <NavLink to="/mypage">
-              <IconMypage
-                src={location.pathname.startsWith("/mypage") ? ActMypage : Mypage}
-              />
-              <p>나의 정보</p>
-            </NavLink>
-          </NavItem>
-        </>
-      }
+    <Nav className="Podo-Ticket-Body-B7">
+
+      <>
+        <NavItem className={location.pathname.startsWith("/home") ? "active" : ""}>
+          <NavLink to="/home">
+            <IconHome src={location.pathname.startsWith("/home") ? ActHome : Home} />
+            <p>홈</p>
+          </NavLink>
+        </NavItem>
+        <NavItem
+          className={location.pathname.startsWith("/reserved") ? "active" : ""}
+        >
+          <NavLink to="/reserved">
+            <IconReserved
+              src={location.pathname.startsWith("/reserved") ? ActReserved : Reserved}
+            />
+            <p>발권 명단 관리</p>
+          </NavLink>
+        </NavItem>
+        <NavItem className={location.pathname.startsWith("/onsite") ? "active" : ""}>
+          <NavLink to="/onsite">
+            <IconOnsite
+              src={location.pathname.startsWith("/onsite") ? ActOnsite : Onsite}
+            />
+            <p>현장 예매 관리</p>
+          </NavLink>
+        </NavItem>
+        <NavItem className={location.pathname.startsWith("/setting") ? "active" : ""}>
+          <NavLink to="/setting">
+            <IconSetting
+              src={location.pathname.startsWith("/setting") ? ActSetting : Setting}
+            />
+            <p>설정</p>
+          </NavLink>
+        </NavItem>
+      </>
+
+
 
     </Nav>
   );
@@ -102,10 +72,10 @@ const Nav = styled.nav`
   left: 0;
   right: 0;
 
-  height: 100px;
-  background: var(--gray-0);
+  height: 86px;
+  background: var(--ect-white);
   border: none;
-  border-top: 1px solid #666;
+  border-top: 1px solid var(--grey-3);
   box-shadow: 0px 0px 9px 6px rgba(0, 0, 0, 0.03);
   border-radius: 20px 20px 0px 0px;
 
@@ -121,12 +91,14 @@ const NavItem = styled.div`
   width: 80%;
   height: 100%;
 
-  color: var(--gray-20);
+  color: var(--grey-5);
   text-align: center;
 
   &.active {
-    color: var(--orange-70); /* 활성화된 텍스트 색상 */
+    color: var(--purple-4); /* 활성화된 텍스트 색상 */
   }
+
+  transition: color 0.3s ease-in-out;
 
   user-select: none; /* 텍스트 선택 방지 */
   -webkit-user-select: none; /* Safari에서 드래그 방지 */
@@ -156,27 +128,31 @@ const NavLink = styled(Link)`
 const IconHome = styled.img`
   width: 24px;
   height: 24px;
-  margin-top: 19px;
+
+  margin-top: 17px;
   margin-bottom: 5px;
 `;
 
-const IconQuest = styled.img`
-  width: 24px;
-  height: 24px;
-  margin-top: 19px;
-  margin-bottom: 1px;
-`;
+const IconReserved = styled.img`
+  width: 25px;
+  height: 23px;
 
-const IconBoard = styled.img`
-  width: 24px;
-  height: 22px;
-  margin-top: 21px;
+  margin-top: 18px;
   margin-bottom: 5px;
 `;
 
-const IconMypage = styled.img`
+const IconOnsite = styled.img`
+  width: 20px;
+  height: 19px;
+
+  margin-top: 20px;
+  margin-bottom: 7px;
+`;
+
+const IconSetting = styled.img`
   width: 22px;
   height: 22px;
-  margin-top: 19px;
-  margin-bottom: 5px;
+
+  margin-top: 18px;
+  margin-bottom: 6px;
 `;

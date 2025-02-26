@@ -9,7 +9,7 @@ interface SingleSeatProps {
     isLocked?: boolean; // 좌석이 잠겨 있는지 여부
     isReserved?: boolean; // 좌석이 예약되었는지 여부
     isSelected?: boolean; // 좌석이 선택되었는지 여부
-    isTemporarySelected?: boolean; // 임시 선택된 좌석인지 여부
+    isSelectedAudience?: boolean; // 임시 선택된 좌석인지 여부
     isRealTime?: boolean; // 실시간 모드인지 여부
     newLockedSeats?: boolean; // 새로 잠긴 좌석인지 여부
     newUnlockedSeats?: boolean; // 새로 잠금 해제된 좌석인지 여부
@@ -23,7 +23,7 @@ const SingleSeat: React.FC<SingleSeatProps> = ({
     isLocked = false,
     isReserved = false,
     isSelected = false,
-    isTemporarySelected = false,
+    isSelectedAudience = false,
     isRealTime = false,
     newLockedSeats = false,
     newUnlockedSeats = false,
@@ -37,7 +37,7 @@ const SingleSeat: React.FC<SingleSeatProps> = ({
             isLocked={isLocked}
             isReserved={isReserved}
             isSelected={isSelected}
-            isTemporarySelected={isTemporarySelected}
+            isSelectedAudience={isSelectedAudience}
             newLockedSeats={newLockedSeats}
             newUnlockedSeats={newUnlockedSeats}
         >
@@ -55,7 +55,7 @@ const SingleSeatContainer = styled.button<{
     isLocked: boolean;
     isReserved: boolean;
     isSelected: boolean;
-    isTemporarySelected: boolean;
+    isSelectedAudience: boolean;
     newLockedSeats: boolean;
     newUnlockedSeats: boolean;
 }>`
@@ -71,15 +71,15 @@ const SingleSeatContainer = styled.button<{
     isLocked,
     isReserved,
     isSelected,
-    isTemporarySelected,
+    isSelectedAudience,
     newLockedSeats,
     newUnlockedSeats
 }) => {
+        if (isSelectedAudience) return "1px solid var(--purple-6)";
         if (isLocked) return "none";
         if (isReserved) return "none";
         if (newLockedSeats) return "purple";
         if (newUnlockedSeats) return "green";
-        if (isTemporarySelected) return "orange";
         if (isSelected) return "1px solid var(--purple-6)";
         return "none";
     }};
@@ -89,26 +89,28 @@ const SingleSeatContainer = styled.button<{
         isAdmin,
         isReserved,
         isSelected,
-        isTemporarySelected,
+        isSelectedAudience,
         newLockedSeats,
         newUnlockedSeats
     }) => {
-        if (isLocked) {return isAdmin ? "var(--red-1)" : "var(--grey-6)"};
+        if (isLocked) { return isAdmin ? "var(--red-1)" : "var(--grey-6)" };
+        if (isSelectedAudience) return "var(--purple-9)";
         if (isReserved) return "var(--grey-6)";
         if (newLockedSeats) return "purple";
         if (newUnlockedSeats) return "green";
-        if (isTemporarySelected) return "orange";
         if (isSelected) return "var(--purple-9)";
         return "var(--grey-3)";
     }};
   
   color: ${({
+        isSelectedAudience,
         isLocked,
         isReserved,
         isSelected,
         newLockedSeats,
         newUnlockedSeats
     }) => {
+        if (isSelectedAudience) return "var(--purple-4)";
         if (isLocked || isReserved || newLockedSeats) return "var(--grey-4)";
         if (newUnlockedSeats) return "white";
         if (isSelected) return "var(--purple-4)"
@@ -128,6 +130,6 @@ const SingleSeatContainer = styled.button<{
         return "1";
     }};
   
-  transition: all .3s ease-in-out;
+  transition: all .2s ease-in-out;
   }
 `;

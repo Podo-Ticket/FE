@@ -37,9 +37,9 @@ const DefaultModal: React.FC<DefaultModalProps> = ({ showDefaultModal, title, de
   return (
     <Overlay>
       <Content isClosing={isClosing} isExpand={description === ''}>
-        <Title className='title-sm-300'>{title}</Title>
+        <Title className='Podo-Ticket-Headline-H3'>{title}</Title>
         {description === '' ? undefined :
-          <Description className='caption-md-300'>{description}</Description>
+          <Description className='Podo-Ticket-Body-B5'>{description}</Description>
         }
 
         <ButtonContainer>
@@ -82,10 +82,11 @@ const Content = styled.div<{ isClosing: boolean, isExpand: boolean }>`
   flex-direction: column;
 
   width: 20.1875rem;
-  background: var(--gray-0);
+  background: var(--ect-white);
   border-radius: 10px;
 
-  padding: ${({ isExpand }) => (isExpand ? 25 : 15)}px;
+  padding: ${({ isExpand }) => (isExpand ? 35 : 25)}px 21px;
+  padding-top: 30px;
 
   text-align: center;
 
@@ -95,11 +96,11 @@ const Content = styled.div<{ isClosing: boolean, isExpand: boolean }>`
 const Title = styled.h2`
   margin-bottom: 10px;
 
-  color: var(--gray-80);
+  color: var(--grey-7);
 `;
 
 const Description = styled.span`
-  color: var(--gray-80);
+  color: var(--grey-5);
 `;
 
 const ButtonContainer = styled.div`
@@ -108,6 +109,5 @@ const ButtonContainer = styled.div`
 
   margin-top: 20px;
 
-  
   gap: 8px;
 `;
