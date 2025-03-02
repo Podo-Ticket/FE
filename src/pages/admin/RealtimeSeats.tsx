@@ -6,6 +6,7 @@ import TopNav from '../../components/nav/TopNav';
 import PlaySessionPicker from '../../components/nav/PlaySessionPicker';
 
 import backIcon from '../../assets/images/left_arrow.png'
+import refreshIcon from '../../assets/images/refresh2_icon.png'
 
 import { Schedule, fetchSchedules } from '../../api/admin/RealtimeSeatsApi';
 
@@ -23,6 +24,10 @@ const RealtimeSeats = () => {
         height: 1,
         text: "실시간 좌석",
         clickFunc: () => { navigate(-1); }
+    }
+    const righter = {
+        icon: refreshIcon,
+        clickFunc: () => { }
     }
 
     // 공연 회차 선택 관리
@@ -60,7 +65,7 @@ const RealtimeSeats = () => {
 
     return (
         <ViewContainer>
-            <TopNav lefter={navItem} center={navItem} righter={null} />
+            <TopNav lefter={navItem} center={navItem} righter={righter} />
 
             <SelectSeatsContentContainer>
 

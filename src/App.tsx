@@ -70,9 +70,11 @@ function App() {
             <Route path="/ticket" element={<TicketScreen />} />
 
             <Route path="/adminAuth" element={<AdminAuth/>} />
+
             <Route path="/home" element={<AdminHome/>} />
             <Route path="/home/realtime" element={<RealtimeSeats/>} />
-            <Route path="/home/lock" element={<ManageLockingSeats/>} />
+            <Route path="/home/manage" element={<ManageLockingSeats/>} />
+
             <Route path="/reserved" element={<ReservedManange/>} />
             <Route path="/onsite" element={<OnsiteManage/>} />
             <Route path="/setting" element={<AdminSetting/>} />

@@ -10,9 +10,8 @@ interface SingleSeatProps {
     isReserved?: boolean; // 좌석이 예약되었는지 여부
     isSelected?: boolean; // 좌석이 선택되었는지 여부
     isSelectedAudience?: boolean; // 임시 선택된 좌석인지 여부
-    isRealTime?: boolean; // 실시간 모드인지 여부
-    newLockedSeats?: boolean; // 새로 잠긴 좌석인지 여부
-    newUnlockedSeats?: boolean; // 새로 잠금 해제된 좌석인지 여부
+    isLocking?: boolean; // 새로 잠긴 좌석인지 여부
+    isUnlocking?: boolean; // 새로 잠금 해제된 좌석인지 여부
 }
 
 const SingleSeat: React.FC<SingleSeatProps> = ({
@@ -24,9 +23,8 @@ const SingleSeat: React.FC<SingleSeatProps> = ({
     isReserved = false,
     isSelected = false,
     isSelectedAudience = false,
-    isRealTime = false,
-    newLockedSeats = false,
-    newUnlockedSeats = false,
+    isLocking = false,
+    isUnlocking = false,
 }) => {
     return (
         <SingleSeatContainer
@@ -38,8 +36,8 @@ const SingleSeat: React.FC<SingleSeatProps> = ({
             isReserved={isReserved}
             isSelected={isSelected}
             isSelectedAudience={isSelectedAudience}
-            newLockedSeats={newLockedSeats}
-            newUnlockedSeats={newUnlockedSeats}
+            isLocking={isLocking}
+            isUnlocking={isUnlocking}
         >
             {content}
         </SingleSeatContainer>
@@ -56,8 +54,8 @@ const SingleSeatContainer = styled.button<{
     isReserved: boolean;
     isSelected: boolean;
     isSelectedAudience: boolean;
-    newLockedSeats: boolean;
-    newUnlockedSeats: boolean;
+    isLocking: boolean;
+    isUnlocking: boolean;
 }>`
   width: 32px;
   height: 32px;
@@ -72,14 +70,14 @@ const SingleSeatContainer = styled.button<{
     isReserved,
     isSelected,
     isSelectedAudience,
-    newLockedSeats,
-    newUnlockedSeats
+    isLocking,
+    isUnlocking
 }) => {
         if (isSelectedAudience) return "1px solid var(--purple-6)";
         if (isLocked) return "none";
         if (isReserved) return "none";
-        if (newLockedSeats) return "purple";
-        if (newUnlockedSeats) return "green";
+        if (isLocking) return "1px solid var(--purple-6)";
+        if (isUnlocking) return "1px solid var(--purple-6)";
         if (isSelected) return "1px solid var(--purple-6)";
         return "none";
     }};
@@ -90,14 +88,14 @@ const SingleSeatContainer = styled.button<{
         isReserved,
         isSelected,
         isSelectedAudience,
-        newLockedSeats,
-        newUnlockedSeats
+        isLocking,
+        isUnlocking
     }) => {
         if (isLocked) { return isAdmin ? "var(--red-1)" : "var(--grey-6)" };
         if (isSelectedAudience) return "var(--purple-9)";
         if (isReserved) return "var(--grey-6)";
-        if (newLockedSeats) return "purple";
-        if (newUnlockedSeats) return "green";
+        if (isLocking) return "var(--purple-9)";
+        if (isUnlocking) return "var(--purple-9)";
         if (isSelected) return "var(--purple-9)";
         return "var(--grey-3)";
     }};
@@ -107,13 +105,14 @@ const SingleSeatContainer = styled.button<{
         isLocked,
         isReserved,
         isSelected,
-        newLockedSeats,
-        newUnlockedSeats
+        isLocking,
+        isUnlocking
     }) => {
         if (isSelectedAudience) return "var(--purple-4)";
-        if (isLocked || isReserved || newLockedSeats) return "var(--grey-4)";
-        if (newUnlockedSeats) return "white";
-        if (isSelected) return "var(--purple-4)"
+        if (isLocked || isReserved) return "var(--grey-4)";
+        if (isUnlocking) return "var(--purple-4)";
+        if (isLocking) return "var(--purple-4)";
+        if (isSelected) return "var(--purple-4)";
         return "var(--grey-6)";
     }};
   
@@ -122,11 +121,10 @@ const SingleSeatContainer = styled.button<{
   opacity: ${({
         isLocked,
         isReserved,
-        newLockedSeats,
-        newUnlockedSeats
+        isUnlocking
     }) => {
-        if (isLocked || isReserved || newLockedSeats) return "0.6";
-        if (newUnlockedSeats) return "1";
+        if (isLocked || isReserved ) return "0.6";
+        if (isUnlocking) return "1";
         return "1";
     }};
   
