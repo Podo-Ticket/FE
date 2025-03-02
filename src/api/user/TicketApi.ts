@@ -25,9 +25,10 @@ export const fetchTickets = async () => {
     const formattedTickets = response.data.seats.map((seat: any) => ({
       id: `${seat.row}${seat.number}`, // 각 티켓의 ID 생성
       title: seat.schedule.play.title,
-      location: "서울대학교 인문소극장(14동) B1층", // 고정된 공연장 이름
+      location: seat.schedule.play.location, // 고정된 공연장 이름
       dateTime: DateUtil.formatDate(seat.schedule.date_time), // 날짜 형식 변환
       seat: `${seat.row} ${seat.number}`, // 좌석 정보
+      runningTime: seat.schedule.play.running_time,
       image: "https://via.placeholder.com/150", // 포스터 이미지 (임시 URL)
     }));
 

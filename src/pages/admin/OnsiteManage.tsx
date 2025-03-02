@@ -11,10 +11,6 @@ import FooterNav from '../../components/nav/FooterNav.tsx'
 import { fadeIn } from '../../styles/animation/DefaultAnimation.ts';
 import { UserWithApproval, approveOnsite, Schedule, fetchOnsiteUserList, fetchSchedules } from '../../api/admin/OnsiteManageApi';
 
-/* 각 극장에 맞는 SeatMap component로 설정 필요 */
-import RiveractAdminSeatMap from '../../components/button/SeatMap/AdminSeatMap_Riveract';
-// import KwangwoonSeatMap from '../../components/button/SeatMap/AdminSeatMap_Kwangwoon';
-
 interface CheckedItem {
     id: number;
 }
