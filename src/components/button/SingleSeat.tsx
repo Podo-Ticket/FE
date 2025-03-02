@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import lockIcon from "../../assets/images/admin/purple_seat_lock.png";
+
 interface SingleSeatProps {
     isAdmin: boolean; // 어드민 계정 여부
     content: string; // 버튼 안 내용
@@ -40,6 +42,10 @@ const SingleSeat: React.FC<SingleSeatProps> = ({
             isUnlocking={isUnlocking}
         >
             {content}
+            <LockImage
+                isLocked={isLocked}
+                isUnlocking={isUnlocking}
+            />
         </SingleSeatContainer>
     );
 };
@@ -73,11 +79,11 @@ const SingleSeatContainer = styled.button<{
     isLocking,
     isUnlocking
 }) => {
+        if (isUnlocking) return "1px solid var(--purple-6)";
         if (isSelectedAudience) return "1px solid var(--purple-6)";
         if (isLocked) return "none";
         if (isReserved) return "none";
         if (isLocking) return "1px solid var(--purple-6)";
-        if (isUnlocking) return "1px solid var(--purple-6)";
         if (isSelected) return "1px solid var(--purple-6)";
         return "none";
     }};
@@ -91,11 +97,11 @@ const SingleSeatContainer = styled.button<{
         isLocking,
         isUnlocking
     }) => {
+        if (isUnlocking) return "var(--purple-9)";
         if (isLocked) { return isAdmin ? "var(--red-1)" : "var(--grey-6)" };
         if (isSelectedAudience) return "var(--purple-9)";
         if (isReserved) return "var(--grey-6)";
         if (isLocking) return "var(--purple-9)";
-        if (isUnlocking) return "var(--purple-9)";
         if (isSelected) return "var(--purple-9)";
         return "var(--grey-3)";
     }};
@@ -108,26 +114,57 @@ const SingleSeatContainer = styled.button<{
         isLocking,
         isUnlocking
     }) => {
+        if (isUnlocking) return "var(--purple-4)";
         if (isSelectedAudience) return "var(--purple-4)";
         if (isLocked || isReserved) return "var(--grey-4)";
-        if (isUnlocking) return "var(--purple-4)";
         if (isLocking) return "var(--purple-4)";
         if (isSelected) return "var(--purple-4)";
         return "var(--grey-6)";
     }};
   
   cursor: ${({ isAvailable }) => (isAvailable ? "pointer" : "not-allowed")};
-  
-  opacity: ${({
-        isLocked,
-        isReserved,
-        isUnlocking
-    }) => {
-        if (isLocked || isReserved ) return "0.6";
-        if (isUnlocking) return "1";
-        return "1";
-    }};
-  
+    
   transition: all .2s ease-in-out;
-  }
+
+  position: relative; /* 가상 요소 배치를 위해 position 설정 */
+
+   /* 대각선 X 표시 */
+   &::before, &::after {
+      content: ${({ isReserved, isLocked, isUnlocking, isSelected }) => (isReserved || isLocked || (isSelected && isUnlocking)) ? '""' : 'none'}; /* 조건부로 X 표시 */
+
+      position: absolute;
+      top: calc(50%); /* 버튼 중앙에 배치 */
+      left: calc(50%);
+
+      width: 41px; /* 대각선 길이 조정 */
+      height: 1px; /* 선의 두께 */
+      background-color: ${({ isUnlocking }) => (isUnlocking) ? 'var(--purple-4)' : 'var(--ect-white)'}; /* 흰색 선 */
+      transform-origin: center;
+   }
+
+   &::before {
+     transform: translate(-50%, -50%) rotate(45deg);
+   }
+
+   &::after {
+     transform: translate(-50%, -50%) rotate(-45deg);
+   }
+`;
+
+const LockImage = styled.div<{ isLocked: boolean, isUnlocking: boolean }>`
+      content: ${({ isLocked, isUnlocking }) => (isLocked || isUnlocking ? '""' : 'none')}; /* 잠금 상태일 때만 표시 */
+      position: absolute;
+      top: -3px; /* 버튼의 오른쪽 위로 이동 */
+      right: -3px;
+
+      width: 12px;
+      height: 16px;
+      border: none;
+      background-image: ${({ isLocked }) =>
+        isLocked ? `url(${lockIcon})` : "none"}; /* 동적으로 이미지 설정 */
+      background-size: cover; /* 이미지 크기 설정 */
+      background-repeat: no-repeat; /* 이미지 반복 방지 */
+      background-color: transparent;
+
+      z-index: 2; /* 버튼 위에 표시되도록 설정 */
 `;

@@ -17,20 +17,8 @@ import AdminSeatMap from '../../components/button/SeatMap/AdminSeatMap_Riveract'
 const RealtimeSeats = () => {
     const navigate = useNavigate();
 
-    // Top navigation 요소 정의
-    const navItem = {
-        icon: backIcon,
-        width: 1,
-        height: 1,
-        text: "실시간 좌석",
-        clickFunc: () => { navigate(-1); }
-    }
-    const righter = {
-        icon: refreshIcon,
-        clickFunc: () => { }
-    }
-
     // 공연 회차 선택 관리
+    const [isRefreshed, setIsRefreshed] = useState<boolean>(false); 
     const [schedules, setSchedules] = useState<Schedule[]>([]);
     const [selectedSession, setSelectedSession] = useState<string>("");
     // 공연 회차 선택 핸들러
@@ -62,6 +50,20 @@ const RealtimeSeats = () => {
         if (!selectedSession) return;
         localStorage.setItem("currentScheduleId", selectedSession);
     }, [selectedSession]);
+    const triggerRefresh = () => setIsRefreshed((prev) => !prev);
+
+    // Top navigation 요소 정의
+    const navItem = {
+        icon: backIcon,
+        width: 1,
+        height: 1,
+        text: "실시간 좌석",
+        clickFunc: () => { navigate(-1); }
+    }
+    const righter = {
+        icon: refreshIcon,
+        clickFunc: triggerRefresh
+    }
 
     return (
         <ViewContainer>
@@ -78,12 +80,11 @@ const RealtimeSeats = () => {
                 <SeatMapContainer>
                     <AdminSeatMap
                         isRealTime={true}
+                        manageMode={false}
+                        isRefreshed={isRefreshed}
+
                         scheduleId={Number(selectedSession)}
-                        headCount={0}
                         disabled={false}
-                        currentSelectedSeats={null}
-                        setCurrentSelectedSeats={null}
-                        showErrorModal={false}
                     />
                 </SeatMapContainer>
 

@@ -11,10 +11,6 @@ import FooterNav from '../../components/nav/FooterNav.tsx'
 import { fadeIn } from '../../styles/animation/DefaultAnimation.ts';
 import { UserWithApproval, approveOnsite, Schedule, fetchOnsiteUserList, fetchSchedules } from '../../api/admin/OnsiteManageApi';
 
-interface CheckedItem {
-    id: number;
-}
-
 interface OnsiteApprovalRequest {
     userIds: number[];
     scheduleId: number;
@@ -24,6 +20,7 @@ interface OnsiteApprovalRequest {
 const OnsiteManage = () => {
     const navigate = useNavigate();
 
+    const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
     const [schedules, setSchedules] = useState<Schedule[]>([]);
     const [selectedSession, setSelectedSession] = useState<string>("");
     // 공연 회차 선택 핸들러
@@ -51,6 +48,7 @@ const OnsiteManage = () => {
 
         loadSchedules();
     }, []);
+    const triggerRefresh = () => setIsRefreshed((prev) => !prev);
 
     const [search, setSearch] = useState('');
     const [filter, setFilter] = useState('전체');
@@ -75,7 +73,7 @@ const OnsiteManage = () => {
         };
 
         loadUserList();
-    }, [selectedSession]);
+    }, [selectedSession, isRefreshed]);
     // 현장 예매자 발권 승인, 거절 처리
     const handleApproveClick = async (request: OnsiteApprovalRequest) => {
         try {
@@ -93,11 +91,30 @@ const OnsiteManage = () => {
             alert(error.message);
         }
     };
+    // 현장 예매자 일괄 승인/삭제 처리
+    const handleGroupApproveClick = async (isApprove: boolean) => {
+        const request: OnsiteApprovalRequest = {
+            userIds: checkedItems, // 단일 사용자 ID를 배열로 전달
+            scheduleId: Number(selectedSession), // 예시로 사용되는 공연 일정 ID
+            check: isApprove, // 승인 여부
+        };
+
+        try {
+            const result = await handleApproveClick(request); // 결과 저장
+
+            setIsManaging(false);
+            setCheckedItems([]);
+            toggleExpand();
+            triggerRefresh();
+
+        } catch (error: any) {
+            console.error("Error during group approval:", error.message);
+        }
+    }
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [isManaging, setIsManaging] = useState(false);
-    const [checkedItems, setCheckedItems] = useState<CheckedItem[]>([]);
-
+    const [checkedItems, setCheckedItems] = useState<number[]>([]);
     const toggleExpand = () => setIsExpanded(!isExpanded);
     const handleManageClick = () => {
         setIsManaging(!isManaging); // 상태 토글
@@ -107,16 +124,16 @@ const OnsiteManage = () => {
     const handleCheckClick = (id: number) => {
         setCheckedItems((prev) => {
             // 해당 ID가 이미 있는지 확인
-            const isAlreadyChecked = prev.some((item) => item.id === id);
+            const isAlreadyChecked = prev.includes(id);
 
             if (isAlreadyChecked) {
                 // 이미 체크된 경우: 제거
-                const updatedItems = prev.filter((item) => item.id !== id);
+                const updatedItems = prev.filter((item) => item !== id);
                 console.log("Updated checkedItems after removing:", updatedItems);
                 return updatedItems;
             } else {
                 // 체크되지 않은 경우: 추가
-                const updatedItems = [...prev, { id: id }];
+                const updatedItems = [...prev, id];
                 console.log("Updated checkedItems after adding:", updatedItems);
                 return updatedItems;
             }
@@ -198,7 +215,7 @@ const OnsiteManage = () => {
             </ListContainer>
 
 
-            <FooterNav />
+            <FooterNav isGroupAllow={isManaging} groupAllowCnt={checkedItems.length} isApproveClick={() => handleGroupApproveClick(true)} isDeleteClick={() => handleGroupApproveClick(false)} />
         </ViewContainer >
     );
 };

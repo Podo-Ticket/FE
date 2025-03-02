@@ -32,18 +32,19 @@ interface ReservedAudienceInfo {
 
 interface SeatMapProps {
   isRealTime: boolean; // true: 실시간 모드, false: 좌석 잠금 모드
+  manageMode: boolean; // true: 잠금 모드, false: 잠금 해제 모드
+  isRefreshed: boolean; // 새로고침 트리거
 
   scheduleId: number | null; // 스케줄 ID
   disabled: boolean; // 좌석 선택 비활성화 여부
-
   bookingInfo?: { seats: { row: string; number: number }[] }; // 예약 정보 (옵션)
 
-  onLockedSeatsChange: (newLockedSeats: string[]) => void;
-  onUnlockedSeatsChange: (newUnlockedSeats: string[]) => void;
-  onCurrentLockedSeatsInfoChange: (currentLockedSeatsInfo: { id: string; row: string; number: number }[]) => void;
+  onLockedSeatsChange?: (newLockedSeats: string[]) => void;
+  onUnlockedSeatsChange?: (newUnlockedSeats: string[]) => void;
+  onCurrentLockedSeatsInfoChange?: (currentLockedSeatsInfo: { id: string; row: string; number: number }[]) => void;
 }
 
-const SeatMap: React.FC<SeatMapProps> = ({ disabled, scheduleId, isRealTime, bookingInfo, 
+const SeatMap: React.FC<SeatMapProps> = ({ disabled, scheduleId, isRealTime, manageMode, isRefreshed, bookingInfo,
   onLockedSeatsChange, onUnlockedSeatsChange, onCurrentLockedSeatsInfoChange, }) => {
 
   const seatMapRef = useRef(null);
@@ -60,10 +61,8 @@ const SeatMap: React.FC<SeatMapProps> = ({ disabled, scheduleId, isRealTime, boo
   const [selectedAudienceSeats, setSelectedAudienceSeats] = useState<string[]>([]); // 관객 정보 가시화 좌석
 
   const [newLockedSeats, setNewLockedSeats] = useState<string[]>([]);
-  const [isLockAvailable, setIsLockAvailable] = useState<Boolean>(false);
   const [newUnlockedSeats, setNewUnlockedSeats] = useState<string[]>([]);
-  const [isUnlockAvailable, setIsUnlockAvailable] = useState<Boolean>(false);
-  const [currentLockedSeatsInfo, setCurrentLockedSeatsInfo] = useState<string[]>([]);
+  const [currentLockedSeatsInfo, setCurrentLockedSeatsInfo] = useState<{ id: string; row: string; number: number }[]>([]);
 
   // 좌석 정보 가져오기
   const loadSeatMapSeats = async (isRealTime: boolean) => {
@@ -118,10 +117,12 @@ const SeatMap: React.FC<SeatMapProps> = ({ disabled, scheduleId, isRealTime, boo
   // 관리자 좌석 정보 가져오기 (지연 실행으로 null값 피하기)
   useEffect(() => {
     const timer = setTimeout(() => {
+      setNewLockedSeats([]);
+      setNewUnlockedSeats([]);
       loadSeatMapSeats(true); // 실시간 좌석 정보 가져오기
     }, 100); // 100ms의 지연 후 실행
     return () => clearTimeout(timer); // cleanup
-  }, [scheduleId]); // scheduleId와 isRealTime이 변경될 때마다 실행
+  }, [scheduleId, isRefreshed]); // scheduleId와 isRealTime이 변경될 때마다 실행
 
   ////////////////////////////////////
   //* 실시간 좌석 현황 클릭 처리 함수 부분 *//
@@ -151,8 +152,6 @@ const SeatMap: React.FC<SeatMapProps> = ({ disabled, scheduleId, isRealTime, boo
       const userInfo = response.user;
       const userSeats = response.seats;
 
-      console.log("userSeats : ", userSeats);
-
       setReservedAudienceInfo({
         name: userInfo.name,
         phoneNumber: userInfo.phone_number,
@@ -160,12 +159,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ disabled, scheduleId, isRealTime, boo
         seats: userSeats,
       });
 
-      console.log("AudienceInfo: 제발제발 ", reservedAudienceInfo);
-      if (reservedAudienceInfo) {
-        setSelectedAudienceSeats(reservedAudienceInfo.seats.map(seat => `${seat.row}${seat.number}`));
-      }
-
-      console.log("SelectedAudienceSeats: ", selectedAudienceSeats);
+      if (reservedAudienceInfo) setSelectedAudienceSeats(reservedAudienceInfo.seats.map(seat => `${seat.row}${seat.number}`));
 
       setShowAudienceInfo(true);
     } catch (error) {
@@ -181,15 +175,15 @@ const SeatMap: React.FC<SeatMapProps> = ({ disabled, scheduleId, isRealTime, boo
 
   // 상태가 변경될 때 부모 컴포넌트로 전달
   useEffect(() => {
-    onLockedSeatsChange(newLockedSeats);
+    if (!isRealTime) { onLockedSeatsChange(newLockedSeats); }
   }, [newLockedSeats, onLockedSeatsChange]);
 
   useEffect(() => {
-    onUnlockedSeatsChange(newUnlockedSeats);
+    if (!isRealTime) { onUnlockedSeatsChange(newUnlockedSeats); }
   }, [newUnlockedSeats, onUnlockedSeatsChange]);
 
   useEffect(() => {
-    onCurrentLockedSeatsInfoChange(currentLockedSeatsInfo);
+    if (!isRealTime) { onCurrentLockedSeatsInfoChange(currentLockedSeatsInfo); }
   }, [currentLockedSeatsInfo, onCurrentLockedSeatsInfoChange]);
 
   // 좌석 클릭 처리 함수
@@ -198,74 +192,26 @@ const SeatMap: React.FC<SeatMapProps> = ({ disabled, scheduleId, isRealTime, boo
 
     // 좌석 잠금 또는 해제 모드의 경우 좌석 클릭 시
     if (!isRealTime) {
-      // newLockedSeats가 빈 배열인 경우에도 처리
-      if (!newLockedSeats || newLockedSeats.length === 0) {
-        setNewLockedSeats([seatId]); // 새로 선택한 좌석을 추가
-        setNewUnlockedSeats([seatId]); // 새로 선택한 좌석을 unlocked에 추가
-
-        // 좌석 상태에 따라 lock/unlock 가능 상태 설정
-        if (lockedSeats.includes(seatId)) {
-          setIsUnlockAvailable(true); // 최초 선택한 좌석이 lockedSeats에 속하면 unlock 가능
-          setIsLockAvailable(false);
+      if (manageMode) {
+        // newLockedSeats 배열에서 seatId가 이미 존재하는지 확인
+        if (newLockedSeats.includes(seatId)) {
+          // 이미 존재하면 제거
+          setNewLockedSeats(prev => prev.filter(id => id !== seatId));
         } else {
-          setIsLockAvailable(true); // 최초 선택한 좌석이 lockedSeats에 속하지 않으면 lock 가능
-          setIsUnlockAvailable(false);
+          // 존재하지 않으면 추가
+          setNewLockedSeats(prev => [...prev, seatId]);
         }
       } else {
-        const firstLockedSeat = newLockedSeats[0];
-        console.log("newLockedSeats[0] : ", firstLockedSeat);
-
-        // 같은 좌석을 두 번 클릭한 경우
-        if (newLockedSeats.includes(seatId)) {
-          // lockedSeats에서 제거
-          if (newLockedSeats.length === 1) {
-            // 원소가 1개일 경우 배열 초기화
-            setNewLockedSeats([]);
-            setNewUnlockedSeats([]);
-            setIsLockAvailable(false);
-            setIsUnlockAvailable(false);
-          } else {
-            setNewLockedSeats(prev => prev.filter(id => id !== seatId));
-          }
-        } else if (newUnlockedSeats.includes(seatId)) {
-          // unlockedSeats에서 제거
-          if (newUnlockedSeats.length === 1) {
-            // 원소가 1개일 경우 배열 초기화
-            setNewLockedSeats([]);
-            setNewUnlockedSeats([]);
-            setIsLockAvailable(false);
-            setIsUnlockAvailable(false);
-          } else {
-            setNewUnlockedSeats(prev => prev.filter(id => id !== seatId));
-          }
+        // newUnlockedSeats 배열에서 seatId가 이미 존재하는지 확인
+        if (newUnlockedSeats.includes(seatId)) {
+          // 이미 존재하면 제거
+          setNewUnlockedSeats(prev => prev.filter(id => id !== seatId));
         } else {
-          // 첫 번째 좌석이 locked인지 확인
-          if (lockedSeats.includes(firstLockedSeat)) {
-            // Locked seats만 선택 가능 --> lock 해제 logic
-            if (lockedSeats.includes(seatId)) {
-              // 새로 선택한 좌석을 unlocked에 추가
-              setNewUnlockedSeats(prev => [...prev, seatId]);
-              setIsUnlockAvailable(true);
-              setIsLockAvailable(false);
-            }
-          } else {
-            // locking logic
-            // lockedSeats에 새로 선택한 좌석 추가
-            if (!lockedSeats.includes(seatId)) {
-              setNewLockedSeats(prev => [...prev, seatId]); // 기존 값에 추가
-              setIsLockAvailable(true);
-              setIsUnlockAvailable(false);
-            }
-          }
+          // 존재하지 않으면 추가
+          setNewUnlockedSeats(prev => [...prev, seatId]);
         }
       }
-
-      console.log("newLockedSeats : ", newLockedSeats);
-      console.log("newUnlockedSeats : ", newUnlockedSeats);
-      console.log("lockedSeatsInfo : ", lockedSeatsInfo);
-
       setCurrentLockedSeatsInfo(lockedSeatsInfo);
-      console.log(lockedSeatsInfo);
     }
     // 실시간 좌석 예매된 좌석 클릭 시
     else {
@@ -338,13 +284,17 @@ const SeatMap: React.FC<SeatMapProps> = ({ disabled, scheduleId, isRealTime, boo
                 const isLocking = newLockedSeats.includes(seatId)
                 const isUnlocking = newUnlockedSeats.includes(seatId)
 
+                // 클릭 가능 여부를 isRealTime, manageMode, 배열 상태에 따라 설정
+                const isAvailable = isRealTime ? true
+                  : manageMode ? !unclickableSeats.includes(seatId) : isLocked;
+
                 return (
                   <SingleSeat
                     key={seatId}
                     isAdmin={false}
                     content={`${row}${seat}`}
                     onClick={() => handleSeatClick(seatId)}
-                    isAvailable={!disabled && !(isReserved) || true}
+                    isAvailable={isAvailable}
                     isSelectedAudience={isShowSelectedAudience}
                     isReserved={isReserved}
                     isLocked={isLocked}

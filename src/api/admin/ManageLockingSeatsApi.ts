@@ -46,3 +46,40 @@ export const fetchSeats = async (scheduleId: number) => {
     throw new Error('좌석 정보를 가져오는 데 실패했습니다.');
   }
 };
+
+export interface Seat {
+  row: string; // 좌석 행 (예: "A")
+  number: number; // 좌석 열 번호 (예: 1)
+}
+
+interface LockSeatsRequest {
+  scheduleId: number;
+  seats: string; // encodeURIComponent으로 문자열 화 고려.
+}
+
+interface UnlockSeatsRequest {
+  scheduleId: number;
+  seatIds: string[];
+}
+
+// 좌석 잠금 API
+export const lockSeats = async (request: LockSeatsRequest): Promise<boolean> => {
+  try {
+    const response = await api.post("/seat/lock", request);
+    return response.data.success;
+  } catch (error) {
+    console.error("Error locking seats:", error);
+    throw new Error("좌석 잠금에 실패했습니다.");
+  }
+};
+
+// 좌석 잠금 해제 API
+export const unlockSeats = async (request: UnlockSeatsRequest): Promise<boolean> => {
+  try {
+    const response = await api.delete("/seat/unlock", { data: request });
+    return response.data.success;
+  } catch (error) {
+    console.error("Error unlocking seats:", error);
+    throw new Error("좌석 잠금 해제에 실패했습니다.");
+  }
+};

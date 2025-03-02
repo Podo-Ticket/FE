@@ -37,7 +37,8 @@ border: none;
 
 gap: 10px;
 
-color: ${({ isAvailable, isGray }) => isGray ? 'var(--grey-6)' : (isAvailable ? 'var(--ect-white)' : 'var(--ect-white)')};
+color: ${({ isAvailable, isGray }) =>isGray && !isAvailable ? 'var(--grey-4)' : isGray
+    ? 'var(--grey-6)': isAvailable? 'var(--ect-white)': 'var(--ect-white)'};
 text-align: center;
 
 transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
