@@ -18,6 +18,7 @@ import lockIcon from "../../assets/images/admin/lock_icon.png";
 import unlockIcon from "../../assets/images/admin/unlock_icon.png";
 import greyRightArrow from "../../assets/images/admin/grey_right_arrow.png";
 import character from "../../assets/images/admin/character.png";
+import character_100 from "../../assets/images/admin/100_character.png";
 
 const AdminHome = () => {
   const [performance, setPerformance] = useState<PerformanceInfo | null>(null);
@@ -169,11 +170,26 @@ const AdminHome = () => {
                 </>
               )}
             </TicketingStatusTitle>
-            <BarContainer>
-              <BarFill progress={issuingProgress} />
-              <Circle position={issuingProgress} />
-            </BarContainer>
+            <div style={{ position: "relative" }}>
+              {issuingProgress === 100 && (
+                <img
+                  src={character_100}
+                  alt="100% 완료 캐릭터"
+                  style={{
+                    position: "absolute",
+                    right: "20px", // 오른쪽 정렬
+                    top: "-45px", // BarContainer 위로 올리기
 
+                    height: "60px",
+                    zIndex: 10, // 바보다 위로 배치
+                  }}
+                />
+              )}
+              <BarContainer>
+                <BarFill progress={issuingProgress} />
+                <Circle position={issuingProgress} />
+              </BarContainer>
+            </div>
             <TicketingPercent>
               <p
                 className="Podo-Ticket/Body/B11"
@@ -195,7 +211,7 @@ const AdminHome = () => {
                   fontWeight: "600",
                 }}
               >
-                ${issuingProgress}%
+                {issuingProgress}%
               </span>
             </TicketingPercent>
           </TopMenu>
@@ -282,7 +298,6 @@ const Highlight = styled.span`
 
 const CharacterImg = styled.img`
   height: 215px;
-  transform: rotate(15deg);
   //   border: 1px solid var(--grey-grey7, #3c3c3c);
 `;
 
