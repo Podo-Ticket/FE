@@ -57,11 +57,6 @@ interface LockSeatsRequest {
   seats: string; // encodeURIComponent으로 문자열 화 고려.
 }
 
-interface UnlockSeatsRequest {
-  scheduleId: number;
-  seatIds: string[];
-}
-
 // 개별 예약된 좌석 정보
 export interface ReservedSeat {
   row: string; // 좌석 행 (예: "나2")
@@ -91,13 +86,40 @@ export const lockSeats = async (request: LockSeatsRequest): Promise<LockSeatsRes
   }
 };
 
+interface UnlockSeatsRequest {
+  scheduleId: number;
+  seats: string;
+}
+
+interface UnlockSeatsResponse {
+  success: boolean;
+  error?: string;
+}
+
 // 좌석 잠금 해제 API
-export const unlockSeats = async (request: UnlockSeatsRequest): Promise<boolean> => {
+export const unlockSeats = async (request: UnlockSeatsRequest): Promise<UnlockSeatsResponse> => {
   try {
     const response = await api.delete("/seat/unlock", { data: request });
     return response.data;
   } catch (error) {
     console.error("Error unlocking seats:", error);
     throw new Error("좌석 잠금 해제에 실패했습니다.");
+  }
+};
+
+export interface CheckingLockSeatsRequest {
+  scheduleId: number;
+  seats: string; // encodeURIComponent으로 문자열 화 고려.
+}
+
+// 좌석 예약 정보 확인 API
+export const checkReservedSeats = async (request: CheckingLockSeatsRequest): Promise<LockSeatsResponse> => {
+  try {
+    const response = await api.post("/seat/check", request);
+    console.log("response.dataresponse.data:", response.data);
+    return response.data as LockSeatsResponse;
+  } catch (error) {
+    console.error("Error checking reserved seats:", error);
+    throw new Error("예약된 좌석 확인에 실패했습니다.");
   }
 };

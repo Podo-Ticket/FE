@@ -75,8 +75,8 @@ const ReservedManage = () => {
     // Top navigation 요소 정의
     const navItem = {
         icon: insertCustomer,
-        width: 22,
-        height: 19,
+        iconWidth: 22,
+        iconHeight: 19,
         text: "예매 명단 관리",
         clickFunc: undefined
     }
@@ -129,6 +129,7 @@ const ReservedManage = () => {
                 schedules={schedules}
                 selectedSession={selectedSession}
                 onContentChange={handleSessionChange}
+                isRounded={true}
             />
 
             <SearchFilterBar

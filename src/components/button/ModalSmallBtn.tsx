@@ -5,10 +5,10 @@ interface SmallBtnProps {
     content: string;        // 버튼 안 내용
     onClick: () => void;        // 온 클릭 함수
     isAvailable: boolean;       // 버튼 동작 여부
-    isDarkblue: boolean;        // 남색 버튼 여부
+    isDarkblue?: boolean;        // 남색 버튼 여부
 }
 
-const ModalSmallBtn: React.FC<SmallBtnProps> = ({ content, onClick, isAvailable, isDarkblue }) => {
+const ModalSmallBtn: React.FC<SmallBtnProps> = ({ content, onClick, isAvailable, isDarkblue = false }) => {
     return (
         <ModalSmallBtnContainer
             className='text-lg-300'

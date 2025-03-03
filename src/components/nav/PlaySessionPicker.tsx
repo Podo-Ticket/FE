@@ -20,6 +20,7 @@ interface PlaySessionPickerProps {
   onContentChange: (event: React.ChangeEvent<HTMLSelectElement>) => void; // 드롭다운 변경 핸들러
   isEllipse?: boolean; // 컨테이너 모양 (타원형 여부)
   isDisabled?: boolean; // 드롭다운 비활성화 여부
+  isRounded?: boolean;
 }
 
 const PlaySessionPicker: React.FC<PlaySessionPickerProps> = ({
@@ -28,6 +29,7 @@ const PlaySessionPicker: React.FC<PlaySessionPickerProps> = ({
   onContentChange,
   isEllipse = false,
   isDisabled = false,
+  isRounded = false
 }) => {
   // Ref for the select element
   const selectRef = useRef<HTMLSelectElement>(null);
@@ -45,7 +47,7 @@ const PlaySessionPicker: React.FC<PlaySessionPickerProps> = ({
   };
 
   return (
-    <SessionPickerContainer isEllipse={isEllipse}>
+    <SessionPickerContainer isEllipse={isEllipse} isRounded={isRounded}>
       <SessionPickerContent>
         <SessionPickerContentLeft>
           <IconContainer src={calendarIcon} onClick={handleIconClick} />
@@ -76,16 +78,16 @@ const PlaySessionPicker: React.FC<PlaySessionPickerProps> = ({
 
 export default PlaySessionPicker;
 
-const SessionPickerContainer = styled.div<{ isEllipse?: boolean }>`
+const SessionPickerContainer = styled.div<{ isEllipse?: boolean, isRounded: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
 
   width: ${({ isEllipse }) => (isEllipse ? "90%" : "100%")};
-  border-radius: ${({ isEllipse }) => (isEllipse ? "10px" : "0")};
-
+  border-radius: ${({ isEllipse, isRounded }) => (isEllipse || isRounded ? "10px" : "0")};
   border: 1px solid var(--grey-3);
   background: var(--ect-white);
+  box-shadow: ${({ isRounded }) => (isRounded ? "0px 0px 5px 3px rgba(0, 0, 0, 0.02)" : "none")};
 
   user-select: none; /* 텍스트 선택 방지 */
 `;

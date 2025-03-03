@@ -13,7 +13,7 @@ import MultipleAcceptModal from '../../components/modal/DefaultModal';
 import backIcon from '../../assets/images/admin/grey_left_arrow.png'
 import refreshIcon from '../../assets/images/refresh2_icon.png'
 
-import { Schedule, fetchSchedules, Seat, lockSeats, unlockSeats, LockSeatsResponses } from '../../api/admin/ManageLockingSeatsApi';
+import { Schedule, fetchSchedules, Seat, lockSeats, unlockSeats, LockSeatsResponses, checkReservedSeats, CheckingLockSeatsRequest, ReservedSeat } from '../../api/admin/ManageLockingSeatsApi';
 
 /* 각 극장에 맞는 SeatMap component로 설정 필요 */
 import AdminSeatMap from '../../components/button/SeatMap/AdminSeatMap_Riveract';
@@ -70,7 +70,7 @@ const ManageLockingSeats = () => {
 
     const [showSingleAcceptModal, setShowSingleAcceptModal] = useState<boolean>(false);
     const [showMultipleAcceptModal, setShowMultipleAcceptModal] = useState<boolean>(false);
-    const [showMultipleWarningAcceptModal, setShowMultipleWarningAcceptModal] = useState<boolean>(true);
+    const [showMultipleWarningAcceptModal, setShowMultipleWarningAcceptModal] = useState<boolean>(false);
     const singleAcceptTitle = manage === "lock" ? "해당 회차 좌석을 잠그시겠습니까?" : "선택한 좌석의 해당 회차만 잠금 해제하시겠습니까?";
     const singleAcceptSubTitle = manage === "lock" ? "좌석을 잠그면 발권이 불가합니다." : "";
     const multipleAcceptTitle = manage === "lock" ? "전체 회차 좌석을 잠그시겠습니까?" : "선택한 좌석의 전체 회차를 잠금 해제하시겠습니까?";
@@ -91,6 +91,7 @@ const ManageLockingSeats = () => {
     const [newLockedSeats, setNewLockedSeats] = useState<string[]>([]);
     const [newUnlockedSeats, setNewUnlockedSeats] = useState<string[]>([]);
     const [currentLockedSeatsInfo, setCurrentLockedSeatsInfo] = useState<{ id: string; row: string; number: number }[]>([]);
+    const [reservedList, setReservedList] = useState<ReservedSeat[]>([]);
 
     useEffect(() => {
         console.log("newLockedSeats : ", newLockedSeats);
@@ -161,30 +162,20 @@ const ManageLockingSeats = () => {
             return;
         }
 
-        // currentLockedSeatsInfo에서 row와 number를 합쳐서 새로운 배열 생성
-        const createLockedSeatIdentifiers = () => {
-            return currentLockedSeatsInfo.map((seatInfo) => ({
-                id: seatInfo.id,
-                identifier: `${seatInfo.row}${seatInfo.number}`, // row와 number를 합친 값
-            }));
-        };
+        // 좌석 데이터를 변환
+        const unlockedSeats: Seat[] = newUnlockedSeats.map((seat) => {
+            const row = seat.slice(0, 1); // 좌석 ID의 첫 글자를 행으로 설정
+            const column = parseInt(seat.slice(1)); // 나머지 부분을 숫자로 변환하여 열로 설정
 
-        // unlockedSeats와 비교하여 잠금 해제된 좌석 찾기
-        const findUnlockedSeatIds = () => {
-            const lockedSeatIdentifiers = createLockedSeatIdentifiers();
+            return { row, number: column }; // 객체 형식으로 변환
+        });
 
-            // newUnlockedSeats와 비교하여 ID를 추출
-            return lockedSeatIdentifiers
-                .filter((lockedSeat) => newUnlockedSeats.includes(lockedSeat.identifier))
-                .map((lockedSeat) => lockedSeat.id); // ID만 추출
-        };
-
-        const matchedSeatIds = findUnlockedSeatIds();
+        const encodedSeats = encodeURIComponent(JSON.stringify(unlockedSeats));
 
         try {
             const success = await unlockSeats({
                 scheduleId: Number(selectedSession),
-                seatIds: matchedSeatIds,
+                seats: encodedSeats,
             });
 
             if (success) {
@@ -199,7 +190,7 @@ const ManageLockingSeats = () => {
         }
     };
 
-    // 전체 회차 잠금 함수
+    // 전체 회차 동시 잠금 함수
     const handleLockSeatsForAllSchedules = async () => {
         if (newLockedSeats.length === 0) {
             return;
@@ -230,7 +221,7 @@ const ManageLockingSeats = () => {
                 console.log("Response:", result);
 
                 if (result.success) {
-                    if (result.reservedList.length === 0) {
+                    if (!result.reservedList) {
                         console.log("예약된 좌석이 없습니다.");
                     } else {
                         console.log("이미 예약된 좌석 목록:", result.reservedList);
@@ -260,49 +251,77 @@ const ManageLockingSeats = () => {
             return;
         }
 
-        // currentLockedSeatsInfo에서 row와 number를 합쳐서 새로운 배열 생성
-        const createLockedSeatIdentifiers = () => {
-            return currentLockedSeatsInfo.map((seatInfo) => ({
-                id: seatInfo.id,
-                identifier: `${seatInfo.row}${seatInfo.number}`, // row와 number를 합친 값
-            }));
-        };
+        // 좌석 데이터를 변환
+        const unlockedSeats: Seat[] = newUnlockedSeats.map((seat) => {
+            const row = seat.slice(0, 1); // 좌석 ID의 첫 글자를 행으로 설정
+            const column = parseInt(seat.slice(1)); // 나머지 부분을 숫자로 변환하여 열로 설정
 
-        // unlockedSeats와 비교하여 잠금 해제된 좌석 찾기
-        const findUnlockedSeatIds = () => {
-            const lockedSeatIdentifiers = createLockedSeatIdentifiers();
+            return { row, number: column }; // 객체 형식으로 변환
+        });
 
-            // newUnlockedSeats와 비교하여 ID를 추출
-            return lockedSeatIdentifiers
-                .filter((lockedSeat) => newUnlockedSeats.includes(lockedSeat.identifier))
-                .map((lockedSeat) => lockedSeat.id); // ID만 추출
-        };
-
-        const matchedSeatIds = findUnlockedSeatIds();
+        const encodedSeats = encodeURIComponent(JSON.stringify(unlockedSeats));
 
         try {
             // 모든 회차에 대해 좌석 잠금 해제 요청을 병렬로 처리
             const unlockPromises = schedules.map((schedule) => {
-              console.log("current seatIds: ", schedule.id, " and ", matchedSeatIds); // 디버그용 로그
-              return unlockSeats({ scheduleId: schedule.id, seatIds: matchedSeatIds });
+                console.log("current seatIds: ", schedule.id); // 디버그용 로그
+                return unlockSeats({ scheduleId: schedule.id, seats: encodedSeats });
             });
-          
+
             const results = await Promise.all(unlockPromises); // 모든 요청 완료 대기
-          
+
             console.log("results: ", results);
 
             // 성공 여부 확인
             if (results.every((res) => res.success)) {
-              console.log("전체 회차 좌석 잠금 해제 성공");
-              setNewUnlockedSeats([]); // 상태 초기화
-              triggerRefresh(); // 새로고침 트리거
-              setShowMultipleAcceptModal(false); // 모달 닫기
+                console.log("전체 회차 좌석 잠금 해제 성공");
+                setNewUnlockedSeats([]); // 상태 초기화
+                triggerRefresh(); // 새로고침 트리거
+                setShowMultipleAcceptModal(false); // 모달 닫기
             } else {
-              console.error("일부 회차에서 좌석 잠금 해제 실패");
+                console.error("일부 회차에서 좌석 잠금 해제 실패");
             }
-          } catch (error) {
+        } catch (error) {
             console.error("전체 회차 좌석 잠금 해제 오류:", error);
-          }
+        }
+    };
+
+    // 전체 회차 잠금 시 모달 컨트롤 처리
+    const handleMultipleManagelBtn = async () => {
+        try {
+            // 좌석 데이터를 변환
+            const lockedSeats: Seat[] = newLockedSeats.map((seat) => {
+                const row = seat.slice(0, 1); // 좌석 ID의 첫 글자를 행으로 설정
+                const column = parseInt(seat.slice(1)); // 나머지 부분을 숫자로 변환하여 열로 설정
+
+                return { row, number: column }; // 객체 형식으로 변환
+            });
+
+            const encodedSeats = encodeURIComponent(JSON.stringify(lockedSeats));
+
+            const request: CheckingLockSeatsRequest = {
+                scheduleId: Number(selectedSession), // 공연 ID
+                seats: encodedSeats,
+            };
+
+            const result = await checkReservedSeats(request);
+
+            console.log("예약된 좌석 확인 결과:", result);
+
+            if (result.success) {
+                if (!result.reservedList) {
+                    console.log("예약된 좌석이 없습니다.");
+                    setShowMultipleAcceptModal(true); // 일반 모달 표시
+                }
+            }
+            else {
+                console.log("이미 예약된 좌석 목록:", result.reservedList);
+                setReservedList(result.reservedList); // 예약된 좌석 목록 저장
+                setShowMultipleWarningAcceptModal(true); // 경고 모달 표시
+            }
+        } catch (error) {
+            console.error("좌석 확인 중 오류 발생:", error);
+        }
     };
 
     return (
@@ -315,6 +334,7 @@ const ManageLockingSeats = () => {
                     schedules={schedules}
                     selectedSession={selectedSession}
                     onContentChange={handleSessionChange}
+                    isRounded={true}
                 />
 
                 <SeatMapContainer>
@@ -342,7 +362,7 @@ const ManageLockingSeats = () => {
 
                     <MultipleManagelBtn
                         content={multipleButtonTitle}
-                        onClick={() => { setShowMultipleAcceptModal(true) }}
+                        onClick={manage === "lock" ? handleMultipleManagelBtn : () => { setShowMultipleAcceptModal(true) }}
                         isAvailable={manage === "lock" ? newLockedSeats.length !== 0 : newUnlockedSeats.length !== 0}
                     />
                 </ButtonContainer>
@@ -409,7 +429,7 @@ justify-content: center;
 align-items: center;
 
 width: 100%;
-height: 73vh;
+height: 65vh;
 
 border-radius: 10px;
 border: 1px solid var(--grey-3);

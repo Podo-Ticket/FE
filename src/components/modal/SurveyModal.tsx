@@ -319,63 +319,6 @@ const ContentIndex = styled.div`
 margin-bottom: 14px;
 `;
 
-const EvaluationContent = styled.div`
-display: flex;
-
-gap: 41px;
-padding-bottom: 10px;
-`;
-
-const EvaluationChoice = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const EvaluationImageContainer = styled.div`
-position: relative;
-`;
-
-const ChoiceImage = styled.img`
-width: 45px;
-height: 45px;
-
-margin-bottom: 10px;
-`;
-
-const ChoiceText = styled.div.attrs({ className: 'Podo-Ticket-Body-B9' }) <{ isSelected: boolean }>`
-color: ${({ isSelected }) => (isSelected ? 'var(--purple-4)' : 'var(--grey-7)')};
-`;
-
-const Circle = styled.div`
-  position: absolute;
-  top: -6.5px;
-  left: -6.5px;
-
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: var(--grey-2);
-  opacity: 0.4;
-  
-  z-index: 2;
-`;
-
-const OverlayCircle = styled.div`
-  position: absolute;
-  top: -6.5px;
-  left: -6.5px;
-
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: var(--purple-8);
-  opacity: 0.4;
-
-  z-index: 2;
-`;
-
 const StarRatingContainer = styled.div`
 display: flex;
 flex-direction: column;

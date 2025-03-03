@@ -5,7 +5,6 @@ import TicketCarousel from '../../components/slide/TicketCarousel.tsx'
 import TopNav from '../../components/nav/TopNav.tsx';
 import TheaterInfoModal from '../../components/modal/TheaterInfoModal.tsx'
 import FinishTicketingModal from '../../components/modal/NoticeModal.tsx';
-import SurveyModal from '../../components/modal/SurveyModal.tsx'
 
 import infoIcon from '../../assets/images/info_icon.png';
 
@@ -27,7 +26,6 @@ const Ticket = () => {
     const [currentIndex, setCurrentIndex] = useState(0); // 현재 티켓 인덱스
 
     const [isSurveied, setIsSurveied] = useState(false);
-    const [isSurveyModalOpen, setIsSurveyModalOpen] = useState(false);
     const [isFinshTicketingModalOpen, setIsFinishTicketingModalOpen] = useState(false);
 
     const [isTheaterInfoModalOpen, setIsTheaterInfoModalOpen] = useState(false);
@@ -54,19 +52,11 @@ const Ticket = () => {
     // 현재 티켓이 존재하는지 확인
     const currentTicket = tickets[currentIndex];
 
-    const closeModal = () => {
-        setIsSurveyModalOpen(false); // 모달 닫기 함수
-        togglePopup();
-    };
-
     const closeTheaterInfoModal = () => { setIsTheaterInfoModalOpen(false); };
 
     const closeFinishTicketingModal = () => {
         setIsFinishTicketingModalOpen(false); // Finish Ticketing Modal 닫기
-        if (!isSurveied) {
-            setIsSurveyModalOpen(true); // 설문 모달 열기
-        }
-        else { togglePopup() }
+        togglePopup()
     };
 
     const togglePopup = () => {
@@ -133,8 +123,6 @@ const Ticket = () => {
                 description="바로 입장해주시면 됩니다!"
                 onAcceptFunc={closeFinishTicketingModal}
             />
-
-            <SurveyModal showSurveyModal={isSurveyModalOpen} onAcceptFunc={closeModal} />
 
         </ViewContainer>
     );

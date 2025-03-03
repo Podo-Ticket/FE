@@ -18,7 +18,7 @@ const RealtimeSeats = () => {
     const navigate = useNavigate();
 
     // 공연 회차 선택 관리
-    const [isRefreshed, setIsRefreshed] = useState<boolean>(false); 
+    const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
     const [schedules, setSchedules] = useState<Schedule[]>([]);
     const [selectedSession, setSelectedSession] = useState<string>("");
     // 공연 회차 선택 핸들러
@@ -75,6 +75,7 @@ const RealtimeSeats = () => {
                     schedules={schedules}
                     selectedSession={selectedSession}
                     onContentChange={handleSessionChange}
+                    isRounded={true}
                 />
 
                 <SeatMapContainer>

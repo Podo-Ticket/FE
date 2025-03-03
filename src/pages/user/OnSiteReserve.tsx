@@ -249,8 +249,8 @@ function OnSiteReserve() {
 
             <NoticeModal
                 showNoticeModal={isRejectedModalOpen}
-                title="예매 거절"
-                description="예매가 거절되었습니다."
+                title="예매 신청이 승인되지 않았습니다."
+                description="관리자에게 문의 부탁드립니다."
                 onAcceptFunc={() => setIsRejectedModalOpen(false)}
             />
         </OnSiteReserveContainer>
