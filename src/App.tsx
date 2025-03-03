@@ -13,6 +13,7 @@ import OnSiteReserve from './pages/user/OnSiteReserve.tsx';
 import SelectSeats from './pages/user/SelectSeats.tsx';
 import TicketConfirmation from './pages/user/TicketConfirmation.tsx';
 import TicketScreen from './pages/user/Ticket.tsx';
+import SurveyLink from './pages/user/SurveyLink.tsx';
 
 import AdminAuth from './pages/admin/AdminAuth.tsx'
 import AdminHome from './pages/admin/AdminHome.tsx'
@@ -21,7 +22,6 @@ import RealtimeSeats from './pages/admin/RealtimeSeats.tsx'
 import ReservedManange from './pages/admin/ReservedManage.tsx'
 import OnsiteManage from './pages/admin/OnsiteManage.tsx'
 import AdminSetting from './pages/admin/AdminSetting.tsx'
-
 
 const GlobalStyle = createGlobalStyle`
     * {
@@ -78,6 +78,8 @@ function App() {
             <Route path="/reserved" element={<ReservedManange/>} />
             <Route path="/onsite" element={<OnsiteManage/>} />
             <Route path="/setting" element={<AdminSetting/>} />
+
+            <Route path="/survey" element={<SurveyLink/>} />
           </Routes>
       </AnimatePresence>
 

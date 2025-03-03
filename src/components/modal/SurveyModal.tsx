@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import StarRatings from 'react-star-ratings';
 
 import thanksIcon from '../../assets/images/check_icon.png';
-import smileIcon from '../../assets/images/eval_smile.png';
-import mehIcon from '../../assets/images/eval_meh.png';
-import frownIcon from '../../assets/images/eval_frown.png';
+import surveyImage1 from '../../assets/images/admin/landing_character_1.png'
+import surveyImage2 from '../../assets/images/admin/landing_character_2.png'
 
 import { submitEvaluation } from '../../api/user/TicketApi'; // API 호출 함수 가져오기
 import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
-import SmallBtn from '../button/SmallBtn.tsx';
+import SmallBtn from '../button/ModalSmallBtn.tsx';
+import TopNav from '../nav/TopNav.tsx';
+import LargeBtn from '../button/LargeBtn.tsx';
 
 interface SurveyModalProps {
     showSurveyModal: boolean;
@@ -21,6 +22,10 @@ type IconType = 'frown' | 'meh' | 'smile' | null;
 const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc }) => {
     const [selectedIcon, setSelectedIcon] = useState<IconType>(null);
     const [isClosing, setIsClosing] = useState(false);
+
+    const center = {
+        text: '포도티켓 서비스 평가',
+    };
 
     const getRatingValue = (icon: IconType): string => {
         switch (icon) {
@@ -70,7 +75,12 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
         });
     };
 
-    const handleClose = () => { onAcceptFunc(); };
+    const handleClose = () => {
+        setActiveTab((prevTab) => {
+            const nextTab = (parseInt(prevTab) - 1).toString(); // 현재 탭 + 1
+            return nextTab;
+        });
+    };
 
     // 서베이 모달 자동 닫기 처리
     useEffect(() => {
@@ -91,53 +101,18 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
 
     const renderContent = () => {
         switch (activeTab) {
-            case '1': // 첫 번째 설문: 아이콘 선택
-                return (
-                    <Content isClosing={isClosing} isThanksContent={false}>
-                        <EvaluationTitle className="Podo-Ticket-Headline-H3">
-                            저희 서비스를 평가해주세요!
-                        </EvaluationTitle>
-                        <EvaluationContent>
-                            <EvaluationChoice onClick={() => handleIconClick('frown')}>
-                                <EvaluationImageContainer>
-                                    {selectedIcon === 'frown' ? <OverlayCircle /> : <Circle />}
-                                    <ChoiceImage src={frownIcon} alt="더 귀찮았어요" />
-                                </EvaluationImageContainer>
-                                <ChoiceText isSelected={selectedIcon === 'frown'} >더 귀찮았어요</ChoiceText>
-                            </EvaluationChoice>
-
-                            <EvaluationChoice onClick={() => handleIconClick('meh')}>
-                                <EvaluationImageContainer>
-                                    {selectedIcon === 'meh' ? <OverlayCircle /> : <Circle />}
-                                    <ChoiceImage src={mehIcon} alt="비슷해요" />
-                                </EvaluationImageContainer>
-                                <ChoiceText isSelected={selectedIcon === 'meh'}>비슷해요</ChoiceText>
-                            </EvaluationChoice>
-
-                            <EvaluationChoice onClick={() => handleIconClick('smile')}>
-                                <EvaluationImageContainer>
-                                    {selectedIcon === 'smile' ? <OverlayCircle /> : <Circle />}
-                                    <ChoiceImage src={smileIcon} alt="더 편해졌어요" />
-                                </EvaluationImageContainer>
-                                <ChoiceText isSelected={selectedIcon === 'smile'}>더 편해졌어요!</ChoiceText>
-                            </EvaluationChoice>
-                        </EvaluationContent>
-                    </Content>
-                );
-
-            case '2': // 두 번째 설문: 첫 번째 별점 선택
+            case '1': // 두 번째 설문: 첫 번째 별점 선택
                 return (
                     <StarContent>
+
                         <StarContentHeader>
                             <ContentIndex className='Podo-Ticket-Headline-H4'>
                                 <span className='Podo-Ticket-Headline-H2' style={{ color: 'var(--purple-4)' }}>1</span>
                                 /2
                             </ContentIndex>
+                            <ContentImage src={surveyImage1} />
                             <StarEvaluationTitle className="Podo-Ticket-Headline-H3">
                                 <span style={{ color: 'var(--purple-4)' }}>포도티켓의 전반적인 만족도</span>는<br />어땠는지 알려주세요!
-                            </StarEvaluationTitle>
-                            <StarEvaluationTitle className="Podo-Ticket-Headline-H3">
-
                             </StarEvaluationTitle>
                         </StarContentHeader>
 
@@ -152,17 +127,29 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
                                 starDimension="41px"                // 각 별의 크기
                                 starSpacing="9px"                   // 별 사이의 간격
                             />
-                            <RatingDescription>{selectedRating1}/5</RatingDescription>
+                            <RatingDescription>
+                                {selectedRating1}/5 (
+                                <span className='Podo-Ticket-Body-B7'>
+                                    {selectedRating1 === 1
+                                        ? "진짜 별로에요"
+                                        : selectedRating1 === 2
+                                            ? "좀 아쉬워요"
+                                            : selectedRating1 === 3
+                                                ? "흠"
+                                                : selectedRating1 === 4
+                                                    ? "쓸만해요"
+                                                    : "최고에요"}
+                                </span>
+                                )</RatingDescription>
                         </StarRatingContainer>
 
                         <ButtonContainer>
-                            <SmallBtn content="닫기" onClick={handleClose} isAvailable={true} isGray={true} />
-                            <SmallBtn content="다음" onClick={handleNext} isAvailable={true} />
+                            <LargeBtn content="다음" onClick={handleNext} isAvailable={selectedRating1 !== 0} />
                         </ButtonContainer>
                     </StarContent>
                 );
 
-            case '3': // 세 번째 설문: 두 번째 별점 선택
+            case '2': // 세 번째 설문: 두 번째 별점 선택
                 return (
                     <SliderContent>
                         <StarContentHeader>
@@ -170,11 +157,9 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
                                 <span className='Podo-Ticket-Headline-H2' style={{ color: 'var(--purple-4)' }}>1</span>
                                 /2
                             </ContentIndex>
+                            <ContentImage src={surveyImage2} />
                             <StarEvaluationTitle className="Podo-Ticket-Headline-H3">
                                 친구나 동료에게 <span style={{ color: 'var(--purple-4)' }}>추천할 의향</span>이<br />얼마나 있는지 알려주세요!
-                            </StarEvaluationTitle>
-                            <StarEvaluationTitle className="Podo-Ticket-Headline-H3">
-
                             </StarEvaluationTitle>
                         </StarContentHeader>
 
@@ -196,17 +181,26 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
                         </SliderContainer>
 
                         <ButtonContainer>
-                            <SmallBtn content="닫기" onClick={handleClose} isAvailable={true} isGray={true} />
-                            <SmallBtn content="완료" onClick={handleNext} isAvailable={true} />
+                            <SmallBtn content="이전" onClick={handleClose} isAvailable={true} isDarkblue={true} />
+                            <SmallBtn content="완료" onClick={handleNext} isAvailable={selectedRating2 !== 0} />
                         </ButtonContainer>
                     </SliderContent>
                 );
 
-            case '4': // 마지막 단계: 감사 메시지 표시
+            case '3': // 마지막 단계: 감사 메시지 표시
                 return (
                     <Content isClosing={isClosing} isThanksContent={true}>
-                        <ThanksImage src={thanksIcon} alt="감사 아이콘" />
-                        <ThankYouMessage className='Podo-Ticket-Headline-H3'>평가에 응해주셔서 감사합니다</ThankYouMessage>
+                        <ThanksContentContainer>
+                            <ThanksImage src={thanksIcon} alt="감사 아이콘" />
+                            <ThankYouMessageContainer>
+                                <ThankYouMessage className='Podo-Ticket-Headline-H3'>서비스 평가에 응해주셔서 감사합니다!</ThankYouMessage>
+                                <ThankYouMessage className='Podo-Ticket-Headline-H3'>더 나은 서비스로 보답하겠습니다!</ThankYouMessage>
+                            </ThankYouMessageContainer>
+                        </ThanksContentContainer>
+
+                        <ButtonContainer>
+                            <LargeBtn content="처음으로" onClick={() => { onAcceptFunc(); setActiveTab('1'); setSelectedRating1(0); setSelectedRating2(0); }} isAvailable={true} />
+                        </ButtonContainer>
                     </Content>
                 );
 
@@ -216,7 +210,10 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
     };
 
     return (
-        <Overlay>{renderContent()}</Overlay>
+        <Overlay>
+            <TopNav lefter={null} center={center} righter={null} />
+            {renderContent()}
+        </Overlay>
     );
 };
 
@@ -228,10 +225,10 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: var(--ect-white);
 
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
 
   z-index: 10000;
@@ -243,12 +240,8 @@ const Content = styled.div <{ isClosing: boolean, isThanksContent: boolean }>`
   justify-content: center;
   align-items: center;
 
-  width: 22.0625rem;
+  height: 100%;
   background-color: var(--ect-white);
-  border-radius: 10px;
-
-  gap: 40px;
-  padding: ${({ isThanksContent }) => (isThanksContent ? '50px' : '35px')};
 
   text-align: center;
 
@@ -270,12 +263,35 @@ const StarContent = styled.div`
   padding-bottom: 25px;
 
   text-align: center;
+`;
 
+const ContentImage = styled.img`
+width: 200px;
+height: 200px;
+`;
+
+const ThanksContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+    
+  flex-grow: 1;
+
+  gap: 40px;
 `;
 
 const ThanksImage = styled.img`
-width: 64px;
-height: 64px;
+width: 121px;
+height: 121px;
+`;
+
+const ThankYouMessageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+gap: 5px;
 `;
 
 const ThankYouMessage = styled.div`
@@ -287,7 +303,11 @@ color: var(--purple-4);
 `;
 
 const StarContentHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
+  gap: 20px;
 `;
 
 const StarEvaluationTitle = styled.div`
@@ -463,7 +483,8 @@ color: var(--grey-5);
 `;
 
 const ButtonContainer = styled.div`
-display: flex;
+  display: flex;
 
-gap: 11px;
+  gap: 20px;
+  padding-bottom: 35px;
 `;
