@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate, useLocation,createSearchParams } from "react-router-dom";
+import { useNavigate, createSearchParams } from "react-router-dom";
 
 import {
   fetchAdminEnter,
@@ -36,6 +35,10 @@ const AdminHome = () => {
         await verifyAdminCode("kwdc"); // ✅ 세션 생성 (먼저 실행)
         console.log("🔄 어드민 메인 데이터 가져오기...");
         const data = await fetchAdminEnter();
+
+        if (!data || !data.info) {
+          throw new Error("공연정보가 없습니다.");
+        }
         setPerformance(data.info);
         console.log(data);
       } catch (error) {
@@ -47,15 +50,14 @@ const AdminHome = () => {
 
     loadPerformanceData();
   }, []);
-  
-   const handleMoveLockingPage = (isLocking: boolean) => {
-        const params = { manage: isLocking ? "lock" : "unlock" };
-        navigate({
-            pathname: "/home/manage",
-            search: `?${createSearchParams(params)}`, // Query Parameters 추가
-        });
-    };
 
+  const handleMoveLockingPage = (isLocking: boolean) => {
+    const params = { manage: isLocking ? "lock" : "unlock" };
+    navigate({
+      pathname: "/home/manage",
+      search: `?${createSearchParams(params)}`, // Query Parameters 추가
+    });
+  };
 
   // 공연시작시간 계산
   const getMinutesUntilShowtime = (dateTime: string): number => {
@@ -67,7 +69,6 @@ const AdminHome = () => {
 
     return diffMinutes;
   };
-  
 
   if (!performance) {
     return null;
@@ -89,9 +90,9 @@ const AdminHome = () => {
         <TextContainer>
           {performance === null ? (
             <p
-              className="Podo-Ticket/Body/B1"
+              className="Podo-Ticket-Body-B1"
               style={{
-                color: "var(--grey-grey7, #3C3C3C)",
+                color: "var(--grey-7)",
               }}
             >
               예정된 공연이 없어요!
@@ -100,7 +101,7 @@ const AdminHome = () => {
             </p>
           ) : (
             <>
-              <MainText className="Podo-Ticket/Body/B1">
+              <MainText className="Podo-Ticket-Body-B1">
                 다음 공연 시작까지
                 <br />
                 <div>
@@ -118,7 +119,7 @@ const AdminHome = () => {
               navigate("realtime");
             }}
           >
-            <p className="Podo-Ticket/Headline/H5">실시간 좌석 현황</p>
+            <p className="Podo-Ticket-Headline-H5">실시간 좌석 현황</p>
             <img
               style={{ width: "7px", height: "12px" }}
               src={rightArror}
@@ -136,7 +137,7 @@ const AdminHome = () => {
             title="좌석 잠금"
             description="이용 제한이 필요한 좌석을 빠르게 관리해보세요!"
             onClick={() => {
-              handleMoveLockingPage(true)
+              handleMoveLockingPage(true);
             }}
           />
           <SeatLockButton
@@ -144,11 +145,10 @@ const AdminHome = () => {
             title="좌석 잠금 해제"
             description="좌석 이용을 다시 활성화할 수 있어요!"
             onClick={() => {
-              handleMoveLockingPage(false)
+              handleMoveLockingPage(false);
             }}
           />
         </LockButtonDiv>
-
 
         {/* 발권진행률 */}
         <TicketingStatusDiv>
@@ -156,8 +156,8 @@ const AdminHome = () => {
             <TicketingStatusTitle>
               {issuingProgress === 100 ? (
                 <span
-                  className="Podo-Ticket/Headline/H5"
-                  style={{ color: "var(--grey-grey7, #3C3C3C)" }}
+                  className="Podo-Ticket-Headline-H5"
+                  style={{ color: "var(--grey-7)" }}
                 >
                   발권이 모두 완료되었어요!
                 </span>
@@ -192,9 +192,9 @@ const AdminHome = () => {
             </div>
             <TicketingPercent>
               <p
-                className="Podo-Ticket/Body/B11"
+                className="Podo-Ticket-Body-B11"
                 style={{
-                  color: "var(--grey-grey-6, #777)",
+                  color: "var(--grey-6)",
                   fontSize: "10px",
                   fontWeight: "500",
                 }}
@@ -202,9 +202,9 @@ const AdminHome = () => {
                 발권진행률
               </p>
               <span
-                className="Podo-Ticket/Headline/H6"
+                className="Podo-Ticket-Headline-H6"
                 style={{
-                  color: "var(--purple-purple-4-main, #6A39C0)",
+                  color: "var(--purple-4)",
                   textAlign: "right",
                   display: "block",
                   fontSize: "12px",
@@ -221,10 +221,9 @@ const AdminHome = () => {
             }}
           >
             <span
-              className="Podo-Ticket/Headline/H6"
+              className="Podo-Ticket-Headline-H6"
               style={{
-                color: "var(--grey-grey7, #3C3C3C)",
-                marginRight: "10px",
+                color: "var(--grey-7)",
               }}
             >
               발권 명단 관리
@@ -277,7 +276,7 @@ const MainContainer = styled.div`
   width: 100%;
   padding-left: 30px;
 
-  //   border: 1px solid var(--grey-grey7, #3c3c3c);
+  //   border: 1px solid var(--grey-7);
 `;
 
 const TextContainer = styled.div`
@@ -290,15 +289,15 @@ const MainText = styled.div`
   display: flex;
   gap: 5px;
   flex-direction: column;
-  color: var(--grey-grey7, #3c3c3c);
+  color: var(--grey-7);
 `;
 const Highlight = styled.span`
-  color: var(--Main, #6a39c0);
+  color: var(--purple-4);
 `;
 
 const CharacterImg = styled.img`
   height: 215px;
-  //   border: 1px solid var(--grey-grey7, #3c3c3c);
+  //   border: 1px solid var(--grey-7);
 `;
 
 const LiveSeatButton = styled.button`
@@ -309,10 +308,10 @@ const LiveSeatButton = styled.button`
   justify-content: center;
   align-items: center;
   gap: 9px;
-  background: var(--purple-purple-4-main, #6a39c0);
+  background: var(--purple-4);
   border: none;
 
-  color: var(--ect-white, #fff);
+  color: var(--ect-white);
   text-align: center;
 `;
 
@@ -338,7 +337,7 @@ const TicketingStatusDiv = styled.div`
 `;
 
 const TopMenu = styled.div`
-  background: var(--ect-white, #fff);
+  background: var(--ect-white);
   border-radius: 16px 16px 0 0;
   padding-top: 17px;
   padding-bottom: 15px;
@@ -352,7 +351,7 @@ const BarContainer = styled.div`
   width: 306px;
   height: 19px;
   border-radius: 13px;
-  background: var(--grey-grey-2, #f2f2f2);
+  background: var(--grey-2);
   margin: 18px 15px 0 16px;
 `;
 
@@ -374,7 +373,7 @@ const Circle = styled.div<{ position: number }>`
   height: 23px;
   transition: all 0.3s ease; /* 애니메이션 효과 */
 
-  background-color: var(--ect-white, #fff);
+  background-color: var(--ect-white);
   border-radius: 50%; /* 원형 유지 */
   box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.15);
 `;
@@ -389,6 +388,10 @@ const TicketingPercent = styled.div`
 `;
 
 const BottomMenu = styled.div`
-  text-align: right;
+  display: flex;
+  align-items: center; /* 수직 중앙 정렬 */
   margin-top: 8px;
+  align-items: center; // 세로 배열 가운데 정렬
+  justify-content: right;
+  gap: 10px;
 `;
