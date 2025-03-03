@@ -62,3 +62,28 @@ export const fetchSchedules = async (): Promise<Schedule[]> => {
         );
     }
 };
+
+export interface ReservationRequest {
+    name: string;
+    phoneNumber: string;
+    headCount: number;
+    scheduleId: number;
+}
+
+interface ReservationResponse {
+    success: boolean;
+    error?: string;
+}
+
+// 현장 예매 요청
+export const addReservation = async (reservationData: ReservationRequest): Promise<ReservationResponse> => {
+    try {
+        const response = await api.post<ReservationResponse>("/user/admin", reservationData);
+        return response.data;
+    } catch (error: any) {
+        console.error("Error reserving ticket:", error);
+        throw new Error(
+            error.response?.data?.error || "Failed to reserve ticket"
+        );
+    }
+};

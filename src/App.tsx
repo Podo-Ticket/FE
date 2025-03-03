@@ -20,6 +20,7 @@ import AdminHome from './pages/admin/AdminHome.tsx'
 import ManageLockingSeats from './pages/admin/ManageLockingSeats.tsx';
 import RealtimeSeats from './pages/admin/RealtimeSeats.tsx'
 import ReservedManange from './pages/admin/ReservedManage.tsx'
+import ReservedAdd from './pages/admin/ReservedAdd.tsx'
 import OnsiteManage from './pages/admin/OnsiteManage.tsx'
 import AdminSetting from './pages/admin/AdminSetting.tsx'
 
@@ -76,10 +77,12 @@ function App() {
             <Route path="/home/manage" element={<ManageLockingSeats/>} />
 
             <Route path="/reserved" element={<ReservedManange/>} />
+            <Route path="/reservedAdd" element={<ReservedAdd/>} />
             <Route path="/onsite" element={<OnsiteManage/>} />
             <Route path="/setting" element={<AdminSetting/>} />
 
             <Route path="/survey" element={<SurveyLink/>} />
+
           </Routes>
       </AnimatePresence>
 
