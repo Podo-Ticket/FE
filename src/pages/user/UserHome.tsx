@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate, createSearchParams } from 'react-router-dom';
 
 import MediumBtn from '../../components/button/MediumBtn.tsx';
 import MoreDetailBtn from '../../components/button/SmallMoreBtn.tsx';
@@ -17,13 +18,22 @@ import goBackIcon from '../../assets/images/left_arrow.png'
 import { fetchPlayInfo } from '../../api/user/UserHomeApi';
 import { slideUp } from '../../styles/animation/DefaultAnimation.ts'
 import { BASE_PERFORMANCE_INFO, DETAILED_PERFORMANCE_INFO } from '../../constants/text/playInfo/24th_seoulnationalUniv_riveract.ts' // 해당 공연에 맞는 상수값 적용 필요
-import { DateUtil } from '../../utils/DateUtil';
+import { DateUtil, getClosestDateTime } from '../../utils/DateUtil';
 import { toggleModal } from '../../utils/ModalUtil.ts'
 import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts';
 import { useNavigateTo } from '../../utils/NavigateUtil.ts';
 
 const UserHome: React.FC = () => {
+  const navigate = useNavigate();
   const navigateTo = useNavigateTo();
+
+  // const handleMoveOnsiteReserve = () => {
+  //   const params = { manage: isLocking ? "lock" : "unlock" };
+  //   navigate({
+  //     pathname: "/home/manage",
+  //     search: `?${createSearchParams(params)}`, // Query Parameters 추가
+  //   });
+  // };
 
   const [playInfo, setPlayInfo] = useState(null);
   const [scheduleId, setScheduleId] = useState<number | 0>(0);
@@ -50,7 +60,7 @@ const UserHome: React.FC = () => {
         setPlayInfo(data.play);
         setScheduleId(data.schedule.id);
         localStorage.setItem("scheduleId", data.schedule.id);
-        setPerformanceSession(data.schedule.date_time);
+        setPerformanceSession(getClosestDateTime(data.schedule));
       } catch (error) {
         console.error('Failed to load play info:', error);
       }

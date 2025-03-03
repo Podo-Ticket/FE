@@ -27,7 +27,7 @@ export const BASE_PERFORMANCE_INFO = [
     },
     {
         category: "장소",
-        content: ["서울대학교 인문소극장(14동) B1층"],
+        content: ["서울대학교 인문소극장"],
     },
 ];
 

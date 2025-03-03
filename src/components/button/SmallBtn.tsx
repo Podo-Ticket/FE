@@ -27,8 +27,8 @@ display: flex;
 justify-content: center;
 align-items: center;
 
-width: 9.375rem;
-height: 2.875rem;
+width: 10.6875rem; 
+height: 3.4375rem;
 
 padding: 11px 0;
 border-radius: 10px;
@@ -37,7 +37,8 @@ border: none;
 
 gap: 10px;
 
-color: ${({ isAvailable, isGray }) => isGray ? 'var(--grey-6)' : (isAvailable ? 'var(--ect-white)' : 'var(--ect-white)')};
+color: ${({ isAvailable, isGray }) =>isGray && !isAvailable ? 'var(--grey-4)' : isGray
+    ? 'var(--grey-6)': isAvailable? 'var(--ect-white)': 'var(--ect-white)'};
 text-align: center;
 
 transition: background 0.3s ease-in-out, color 0.3s ease-in-out;

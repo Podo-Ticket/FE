@@ -13,6 +13,7 @@ import LargeBtn from '../../components/button/LargeBtn';
 import ErrorModal from '../../components/error/DefaultErrorModal';
 import Loading from '../../components/loading/Loading.tsx';
 
+
 import goBackIcon from '../../assets/images/left_arrow.png';
 import { DateUtil } from '../../utils/DateUtil';
 import { fadeIn } from '../../styles/animation/DefaultAnimation.ts';
@@ -21,6 +22,7 @@ import {
     submitReservation,
     ReservationRequest
 } from '../../api/user/OnSiteReserveApi';
+import NoticeModal from '../../components/modal/NoticeModal.tsx';
 
 // Define the schema for form validation using Zod
 const reservationSchema = z.object({
@@ -46,12 +48,13 @@ type ReservationFormData = z.infer<typeof reservationSchema>;
 function OnSiteReserve() {
     const navigate = useNavigate();
 
-    const [performanceSchedules, setPerformanceSchedules] = useState<Array<{ id: string; date_time: string; available_seats: number }>>([]);
+    const [performanceSchedules, setPerformanceSchedules] = useState<Array<{ id: number; date_time: string; free_seats: number }>>([]);
 
-    const [currentUserId, setCurrentUserId] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false); // 승인 대기 로딩 상태
 
+    const [isRejectedModalOpen, setIsRejectedModalOpen] = useState(false);
     const [isDuplicatePhoneModalOpen, setIsDuplicatePhoneModalOpen] = useState(false);
+    const [isMaximumPersonModalOpen, setIsMaximumPersonModalOpen] = useState(false);
 
     // React Hook Form setup with Zod resolver
     const {
@@ -73,7 +76,7 @@ function OnSiteReserve() {
     useEffect(() => {
         const loadSchedules = async () => {
             try {
-                const schedules = await fetchPerformanceSchedules(1);
+                const schedules = await fetchPerformanceSchedules(2);
                 setPerformanceSchedules(schedules);
             } catch (error) {
                 console.error('Failed to load schedules:', error);
@@ -85,58 +88,65 @@ function OnSiteReserve() {
     // 현장 예매 신청 처리 함수
     const handleReservationSubmit = async (data: ReservationRequest) => {
         try {
-          // 예매 신청 API 호출
-          const response = await submitReservation(data);
-      
-          console.log("response: ", response);
-      
-          if (response.success) {
-            console.log("Reservation request sent successfully.");
-            console.log("current user id: ", response.userId);
-            setIsLoading(true); // 로딩 상태 활성화
-      
-            const userId = response.userId; // 예매 신청한 사용자 ID
-      
-            // 기존 리스너 제거 (중복 방지)
-            socket.off(`user:${userId}`);
-            socket.off("error");
-            socket.off("disconnect");
-      
-            // WebSocket 이벤트 리스너 등록
-            socket.on(`user:${userId}`, (messageData) => {
-              console.log(`Message received for user ${userId}:`, messageData);
-      
-              if (messageData.type === "approval") {
-                console.log("Reservation approved");
+            // 예매 신청 API 호출
+            const response = await submitReservation(data);
+
+            console.log("response: ", response);
+
+            if (response.success) {
+                console.log("Reservation request sent successfully.");
+                console.log("current user id: ", response.userId);
+                setIsLoading(true); // 로딩 상태 활성화
+
+                const userId = response.userId; // 예매 신청한 사용자 ID
+
+                // 기존 리스너 제거 (중복 방지)
+                socket.off(`user:${userId}`);
+                socket.off("error");
+                socket.off("disconnect");
+
+                // WebSocket 이벤트 리스너 등록
+                socket.on(`user:${userId}`, (messageData) => {
+                    console.log(`Message received for user ${userId}:`, messageData);
+
+                    if (messageData.type === "approval") {
+                        console.log("Reservation approved");
+                        localStorage.setItem("scheduleId", data.scheduleId.toString());
+                        setIsLoading(false);
+                        navigate("/select"); // 성공 시 이동
+                    } else if (messageData.type === "reject") {
+                        console.log("Reservation rejected");
+                        setIsLoading(false);
+                        setIsRejectedModalOpen(true);
+                    } else {
+                        console.warn("Unknown message type:", messageData.type);
+                    }
+                });
+
+                socket.on("error", (error) => {
+                    console.error("WebSocket error occurred:", error);
+                    setIsLoading(false); // 로딩 상태 해제
+                });
+
+                socket.on("disconnect", () => {
+                    console.log("WebSocket connection closed");
+                    setIsLoading(false); // 로딩 상태 해제
+                });
+
+                console.log("Waiting for approval...");
+            } else {
                 setIsLoading(false);
-                navigate("/select"); // 성공 시 이동
-              } else if (messageData.type === "reject") {
-                console.log("Reservation rejected");
-                setIsLoading(false);
-              } else {
-                console.warn("Unknown message type:", messageData.type);
-              }
-            });
-      
-            socket.on("error", (error) => {
-              console.error("WebSocket error occurred:", error);
-              setIsLoading(false); // 로딩 상태 해제
-            });
-      
-            socket.on("disconnect", () => {
-              console.log("WebSocket connection closed");
-              setIsLoading(false); // 로딩 상태 해제
-            });
-      
-            console.log("Waiting for approval...");
-          } else {
-            console.error("Reservation submission failed:", response.error);
-          }
+                if (response.error === "이미 예약되었습니다.") {
+                    setIsDuplicatePhoneModalOpen(true);
+                } else if (response.error === "예약 가능 인원을 초과하였습니다.") {
+                    setIsMaximumPersonModalOpen(true);
+                }
+            }
         } catch (error) {
-          console.error("Error during reservation submission:", error);
-          setIsLoading(false); // 오류 발생 시 로딩 상태 해제
+            console.error("Error during reservation submission:", error);
+            setIsLoading(false); // 오류 발생 시 로딩 상태 해제
         }
-      };
+    };
 
     const lefter = {
         icon: goBackIcon,
@@ -208,7 +218,7 @@ function OnSiteReserve() {
                             isSelect={true}
                             options={performanceSchedules.map((schedule) => ({
                                 value: schedule.id,
-                                label: `${DateUtil.formatDate(schedule.date_time)} [여석: ${schedule.available_seats}]`,
+                                label: `${DateUtil.formatDate(schedule.date_time)} [여석: ${schedule.free_seats}]`,
                             }))}
                             value={field.value.toString()}
                             onChangeFunc={(e) => field.onChange(Number(e.target.value))}
@@ -228,6 +238,20 @@ function OnSiteReserve() {
                 errorMessage="이미 예매 신청이 완료된 연락처입니다."
                 onAcceptFunc={() => setIsDuplicatePhoneModalOpen(false)}
                 aboveButton={true}
+            />
+
+            <ErrorModal
+                showDefaultErrorModal={isMaximumPersonModalOpen}
+                errorMessage="예약 가능 인원을 초과하였습니다."
+                onAcceptFunc={() => setIsMaximumPersonModalOpen(false)}
+                aboveButton={true}
+            />
+
+            <NoticeModal
+                showNoticeModal={isRejectedModalOpen}
+                title="예매 거절"
+                description="예매가 거절되었습니다."
+                onAcceptFunc={() => setIsRejectedModalOpen(false)}
             />
         </OnSiteReserveContainer>
     );

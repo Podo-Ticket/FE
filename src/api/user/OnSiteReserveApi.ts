@@ -13,7 +13,7 @@ const api = axios.create({
 interface Schedule {
     id: number;
     date_time: string;
-    available_seats: number;
+    free_seats: number;
 }
 
 export interface ReservationRequest {

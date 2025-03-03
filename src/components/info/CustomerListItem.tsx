@@ -22,7 +22,7 @@ interface CustomerListItemProps {
   /* 아래는 Onsite reserve일 경우 사용 */
   canControll?: boolean;
   isExpanded?: boolean;
-  checkedItems?: Array<{ id: number }>;
+  checkedItems?: number[];
   onApprovalRequest?: (request: OnsiteApprovalRequest) => void;
   onCheckClick?: (userId: number) => void;
 }
@@ -120,7 +120,7 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
 
               {canControll && isExpanded && !approve && (
                 <CheckButton
-                  src={checkedItems.find((i) => i.id === user.id) ? Checked : Unchecked}
+                  src={checkedItems.includes(user.id) ? Checked : Unchecked}
                   alt="상태 이미지"
                   onClick={() => { onCheckClick?.(user.id); console.log("passed user.id: ", user.id) }}
                 />
@@ -270,7 +270,7 @@ const DeleteButton = styled.button`
     transition: background-color, color, ease-in-out, .2s
 `;
 
-const CheckButton = styled.img<CheckButtonProps>`
+const CheckButton = styled.img`
   width: 20px; /* 체크 버튼 이미지 크기 */
   height: 20px; /* 체크 버튼 이미지 크기 */
   margin-top: 5px; /* 마진 추가 */

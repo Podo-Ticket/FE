@@ -16,6 +16,7 @@ import { User, fetchReservedUserList, Schedule, fetchSchedules } from '../../api
 const ReservedManage = () => {
     const navigate = useNavigate();
 
+    const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
     const [schedules, setSchedules] = useState<Schedule[]>([]);
     const [selectedSession, setSelectedSession] = useState<string>("");
     const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) => setSelectedSession(event.target.value);
@@ -42,6 +43,7 @@ const ReservedManage = () => {
 
         loadSchedules();
     }, []);
+    const triggerRefresh = () => setIsRefreshed((prev) => !prev);
 
     const [search, setSearch] = useState('');
     const [filter, setFilter] = useState('전체');
@@ -68,7 +70,7 @@ const ReservedManage = () => {
         };
 
         loadUserList();
-    }, [selectedSession]);
+    }, [selectedSession, isRefreshed]);
 
     // Top navigation 요소 정의
     const navItem = {

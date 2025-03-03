@@ -11,59 +11,73 @@ import ActOnsite from "../../assets/images/admin/purple_plus_list.png";
 import Setting from "../../assets/images/admin/grey_setting.png"
 import ActSetting from "../../assets/images/admin/purple_setting.png"
 
+import { UserWithApproval, fetchOnsiteUserList } from '../../api/admin/OnsiteManageApi';
+
 interface FooterNavProps {
+  isGroupAllow?: boolean;
+  groupAllowCnt?: number;
+  isApproveClick?: (isApprove: boolean) => void;
+  isDeleteClick?: (isApprove: boolean) => void;
 }
 
-const FotterNav: React.FC<FooterNavProps> = () => {
+const FotterNav: React.FC<FooterNavProps> = ({ isGroupAllow = false, groupAllowCnt = 0, isApproveClick, isDeleteClick }) => {
   const location = useLocation(); // 현재 경로를 가져옴
 
   return (
-    <Nav className="Podo-Ticket-Body-B7">
+    <Nav className="Podo-Ticket-Body-B7" isGroupAllow={isGroupAllow}>
 
-      <>
-        <NavItem className={location.pathname.startsWith("/home") ? "active" : ""}>
-          <NavLink to="/home">
-            <IconHome src={location.pathname.startsWith("/home") ? ActHome : Home} />
-            <p>홈</p>
-          </NavLink>
-        </NavItem>
-        <NavItem
-          className={location.pathname.startsWith("/reserved") ? "active" : ""}
-        >
-          <NavLink to="/reserved">
-            <IconReserved
-              src={location.pathname.startsWith("/reserved") ? ActReserved : Reserved}
-            />
-            <p>발권 명단 관리</p>
-          </NavLink>
-        </NavItem>
-        <NavItem className={location.pathname.startsWith("/onsite") ? "active" : ""}>
-          <NavLink to="/onsite">
-            <IconOnsite
-              src={location.pathname.startsWith("/onsite") ? ActOnsite : Onsite}
-            />
-            <p>현장 예매 관리</p>
-          </NavLink>
-        </NavItem>
-        <NavItem className={location.pathname.startsWith("/setting") ? "active" : ""}>
-          <NavLink to="/setting">
-            <IconSetting
-              src={location.pathname.startsWith("/setting") ? ActSetting : Setting}
-            />
-            <p>설정</p>
-          </NavLink>
-        </NavItem>
-      </>
-
-
-
+      {!(isGroupAllow) ?
+        <>
+          <NavItem className={location.pathname.startsWith("/home") ? "active" : ""}>
+            <NavLink to="/home">
+              <IconHome src={location.pathname.startsWith("/home") ? ActHome : Home} />
+              <p>홈</p>
+            </NavLink>
+          </NavItem>
+          <NavItem
+            className={location.pathname.startsWith("/reserved") ? "active" : ""}
+          >
+            <NavLink to="/reserved">
+              <IconReserved
+                src={location.pathname.startsWith("/reserved") ? ActReserved : Reserved}
+              />
+              <p>발권 명단 관리</p>
+            </NavLink>
+          </NavItem>
+          <NavItem className={location.pathname.startsWith("/onsite") ? "active" : ""}>
+            <NavLink to="/onsite">
+              <IconOnsite
+                src={location.pathname.startsWith("/onsite") ? ActOnsite : Onsite}
+              />
+              <p>현장 예매 관리</p>
+            </NavLink>
+          </NavItem>
+          <NavItem className={location.pathname.startsWith("/setting") ? "active" : ""}>
+            <NavLink to="/setting">
+              <IconSetting
+                src={location.pathname.startsWith("/setting") ? ActSetting : Setting}
+              />
+              <p>설정</p>
+            </NavLink>
+          </NavItem>
+        </>
+        :
+        <>
+          <AllowItem className="Podo-Ticket-Headline-H4" isActive={groupAllowCnt !== 0} onClick={isApproveClick} disabled={groupAllowCnt === 0}>
+            수락
+          </AllowItem>
+          <DeleteItem className="Podo-Ticket-Headline-H4" isActive={groupAllowCnt !== 0} onClick={isDeleteClick} disabled={groupAllowCnt === 0}>
+            삭제
+          </DeleteItem>
+        </>
+      }
     </Nav>
   );
 };
 
 export default FotterNav;
 
-const Nav = styled.nav`
+const Nav = styled.nav<{ isGroupAllow: boolean }>`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -72,7 +86,7 @@ const Nav = styled.nav`
   left: 0;
   right: 0;
 
-  height: 86px;
+  height: ${({ isGroupAllow }) => (!isGroupAllow ? "86px" : "60px")};
   background: var(--ect-white);
   border: none;
   border-top: 1px solid var(--grey-3);
@@ -155,4 +169,51 @@ const IconSetting = styled.img`
 
   margin-top: 18px;
   margin-bottom: 6px;
+`;
+
+const AllowItem = styled.button<{ isActive: boolean }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 80%;
+  height: 100%;
+  border: none;
+  background: var(--grey-1);
+  border-right: 1px solid var(--grey-3);
+  border-radius: 20px 0px 0px 0px;
+
+  text-align: center;
+  color: ${({ isActive }) => (isActive ? "var(--purple-4)" : "var(--purple-8)")};
+
+  transition: color 0.3s ease-in-out;
+
+  user-select: none; /* 텍스트 선택 방지 */
+  -webkit-user-select: none; /* Safari에서 드래그 방지 */
+  -moz-user-select: none; /* Firefox에서 드래그 방지 */
+  -ms-user-select: none;
+`;
+
+const DeleteItem = styled.button<{ isActive: boolean }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 80%;
+  height: 100%;
+  border: none;
+  background: var(--grey-1);
+  border-radius: 0px 20px 0px 0px;
+
+  text-align: center;
+  color: ${({ isActive }) => (isActive ? "var(--grey-7)" : "var(--grey-4)")};
+
+  transition: color 0.3s ease-in-out;
+
+  user-select: none; /* 텍스트 선택 방지 */
+  -webkit-user-select: none; /* Safari에서 드래그 방지 */
+  -moz-user-select: none; /* Firefox에서 드래그 방지 */
+  -ms-user-select: none;
 `;

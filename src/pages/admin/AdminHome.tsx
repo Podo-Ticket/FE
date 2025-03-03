@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation,createSearchParams } from "react-router-dom";
 
 import {
   fetchAdminEnter,
@@ -45,6 +46,15 @@ const AdminHome = () => {
 
     loadPerformanceData();
   }, []);
+  
+   const handleMoveLockingPage = (isLocking: boolean) => {
+        const params = { manage: isLocking ? "lock" : "unlock" };
+        navigate({
+            pathname: "/home/manage",
+            search: `?${createSearchParams(params)}`, // Query Parameters 추가
+        });
+    };
+
 
   // 공연시작시간 계산
   const getMinutesUntilShowtime = (dateTime: string): number => {
@@ -56,6 +66,7 @@ const AdminHome = () => {
 
     return diffMinutes;
   };
+  
 
   if (!performance) {
     return null;
@@ -124,7 +135,7 @@ const AdminHome = () => {
             title="좌석 잠금"
             description="이용 제한이 필요한 좌석을 빠르게 관리해보세요!"
             onClick={() => {
-              navigate("lock");
+              handleMoveLockingPage(true)
             }}
           />
           <SeatLockButton
@@ -132,10 +143,11 @@ const AdminHome = () => {
             title="좌석 잠금 해제"
             description="좌석 이용을 다시 활성화할 수 있어요!"
             onClick={() => {
-              navigate("lock");
+              handleMoveLockingPage(false)
             }}
           />
         </LockButtonDiv>
+
 
         {/* 발권진행률 */}
         <TicketingStatusDiv>
