@@ -22,6 +22,7 @@ interface Play {
   play: {
     title: string;
     poster: string;
+    location: string;
   };
 }
 
@@ -51,7 +52,7 @@ export const fetchTicketingInfo = async (): Promise<TicketInfo> => {
       title: playInfo.play.title,
       date: playInfo.date_time,
       poster: playInfo.play.poster,
-      location: "서울대학교 인문소극장(14동) B1층",
+      location: playInfo.play.location,
       seats,
     };
   } catch (error) {

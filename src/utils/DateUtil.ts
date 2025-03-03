@@ -46,3 +46,24 @@ export function splitDateTime(input: string): { date: string; time: string } | n
   // 형식이 맞지 않는 경우 null 반환
   return null;
 }
+
+interface Schedule {
+  id: number;
+  date_time: string;
+}
+
+export const getClosestDateTime = (schedule: Schedule) => {
+  const now = new Date(); // 현재 시간
+
+  // 스케줄 중 가장 가까운 시간을 계산
+  const closest = schedule.reduce((prev, curr) => {
+    const prevTime = new Date(prev.date_time).getTime();
+    const currTime = new Date(curr.date_time).getTime();
+    const nowTime = now.getTime();
+
+    // 현재 시간과의 차이를 비교하여 더 가까운 시간을 선택
+    return Math.abs(currTime - nowTime) < Math.abs(prevTime - nowTime) ? curr : prev;
+  });
+
+  return closest.date_time; // 가장 가까운 스케줄의 date_time 반환
+};

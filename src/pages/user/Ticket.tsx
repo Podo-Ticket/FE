@@ -18,6 +18,7 @@ interface Ticket {
     location: string;
     dateTime: string;
     seat: string;
+    runningTime: number;
     image: string;
 }
 

@@ -11,9 +11,10 @@ interface DefaultModalProps {
   description: string;
   onAcceptFunc: () => void;
   onUnacceptFunc: () => void;
+  noOverlay?: boolean;
 }
 
-const DefaultModal: React.FC<DefaultModalProps> = ({ showDefaultModal, title, description, onAcceptFunc, onUnacceptFunc }) => {
+const DefaultModal: React.FC<DefaultModalProps> = ({ showDefaultModal, title, description, onAcceptFunc, onUnacceptFunc, noOverlay = false }) => {
   const [isClosing, setIsClosing] = useState(false);
 
   if (!showDefaultModal) return null;
@@ -35,7 +36,7 @@ const DefaultModal: React.FC<DefaultModalProps> = ({ showDefaultModal, title, de
   };
 
   return (
-    <Overlay>
+    <Overlay noOverlay={noOverlay}>
       <Content isClosing={isClosing} isExpand={description === ''}>
         <Title className='Podo-Ticket-Headline-H3'>{title}</Title>
         {description === '' ? undefined :
@@ -63,13 +64,14 @@ const DefaultModal: React.FC<DefaultModalProps> = ({ showDefaultModal, title, de
 
 export default DefaultModal;
 
-const Overlay = styled.div`
+const Overlay = styled.div<{ noOverlay: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: ${({ noOverlay }) => (noOverlay ? 'rgba(0, 0, 0, 0.0)' : 'rgba(0, 0, 0, 0.6)')};
+
   display: flex;
   justify-content: center;
   align-items: center;

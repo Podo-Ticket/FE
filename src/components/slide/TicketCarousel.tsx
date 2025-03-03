@@ -15,6 +15,7 @@ interface Ticket {
   location: string;
   dateTime: string;
   seat: string;
+  runningTime: number;
   image: string;
 }
 
@@ -86,7 +87,7 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({ ticketCount, onActiveIn
                   </ContentItem>
                   <ContentItem>
                     <Category>관람 시간</Category>
-                    <Description>100분</Description>
+                    <Description>{currentTicketInfo.runningTime}분</Description>
                   </ContentItem>
                 </MiddleRightContent>
               </MiddleContent>
@@ -224,7 +225,7 @@ display: flex;
 
 padding: 20px;
 
-gap: 0px;
+gap: 20px;
 `;
 
 const MiddleLeftContent = styled.div`
