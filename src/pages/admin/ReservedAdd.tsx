@@ -210,7 +210,7 @@ function OnSiteReserve() {
 
       <ButtonContainer>
         <LargeBtn
-          content="예매 신청"
+          content="추가"
           onClick={handleSubmit(handleReservationSubmit)}
           isAvailable={isDirty && isValid}
         />
