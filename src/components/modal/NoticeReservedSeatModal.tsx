@@ -5,17 +5,39 @@ import ModalSmallBtn from '../button/ModalSmallBtn.tsx';
 
 import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
 
+// 개별 예약된 좌석 정보
+export interface ReservedSeat {
+  row: string; // 좌석 행 (예: "나2")
+  number: string; // 좌석 번호 (예: "8")
+  dateTime: string; // 공연 날짜 및 시간 (예: "2025-03-12 19:00:00")
+}
+
 interface NoticeReservedSeatModalProps {
   showNoticeReservedSeatModal: boolean;
+  reservedList: ReservedSeat[];
   onAcceptFunc: () => void;
   onUnacceptFunc: () => void;
+  
   noOverlay?: boolean;
 }
 
-const NoticeReservedSeatModal: React.FC<NoticeReservedSeatModalProps> = ({ showNoticeReservedSeatModal, onAcceptFunc, onUnacceptFunc, noOverlay = false }) => {
+const NoticeReservedSeatModal: React.FC<NoticeReservedSeatModalProps> = ({ showNoticeReservedSeatModal, reservedList, onAcceptFunc, onUnacceptFunc, noOverlay = false }) => {
   const [isClosing, setIsClosing] = useState(false);
 
   if (!showNoticeReservedSeatModal) return null;
+
+  // reservedList를 dateTime 기준으로 그룹화
+  const groupedReservedSeats = reservedList.reduce((acc, seat) => {
+    const { dateTime, row, number } = seat;
+
+    if (!acc[dateTime]) {
+      acc[dateTime] = []; // 해당 dateTime이 없으면 초기화
+    }
+
+    acc[dateTime].push(`${row}${number}`); // 좌석 정보를 추가
+
+    return acc;
+  }, {} as Record<string, string[]>); // dateTime을 키로, 좌석 배열을 값으로 갖는 객체 생성
 
   const handleUnacceptClick = () => {
     setIsClosing(true); // 페이드아웃 애니메이션 시작
@@ -44,16 +66,24 @@ const NoticeReservedSeatModal: React.FC<NoticeReservedSeatModalProps> = ({ showN
         <DescriptioncContainer>
           <Description className='Podo-Ticket-Body-B5'>이미 발권된 좌석 정보를 확인해보세요.</Description>
           <ReservedSeatsContainer>
-            <SessionReservedSeats>
-              <SessionInfo>
-                <CategoryContainer><Category>시간</Category></CategoryContainer>
-                <Detail>2024.10.09 (일) 17:00</Detail>
-              </SessionInfo>
-              <SessionInfo>
-              <CategoryContainer><Category>좌석</Category></CategoryContainer>
-                <Detail>다8, 다9, 다10</Detail>
-              </SessionInfo>
-            </SessionReservedSeats>
+
+            {Object.entries(groupedReservedSeats).map(([dateTime, seats], index) => (
+              <SessionReservedSeats key={index}>
+                <SessionInfo>
+                  <CategoryContainer>
+                    <Category>시간</Category>
+                  </CategoryContainer>
+                  <Detail>{dateTime}</Detail>
+                </SessionInfo>
+                <SessionInfo>
+                  <CategoryContainer>
+                    <Category>좌석</Category>
+                  </CategoryContainer>
+                  <Detail>{seats.join(", ")}</Detail>
+                </SessionInfo>
+              </SessionReservedSeats>
+            ))}
+
           </ReservedSeatsContainer>
         </DescriptioncContainer>
 

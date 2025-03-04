@@ -1,8 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-
-
+import { useNavigate, useLocation } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +9,8 @@ import TopNav from "../../components/nav/TopNav";
 import DefaultInput from "../../components/inputField/DefaultInput";
 import LargeBtn from "../../components/button/LargeBtn";
 import ErrorModal from "../../components/error/DefaultErrorModal";
-
+import MoreSmallBtn from "../../components/button/MoreSmallBtn.tsx";
+import MoreMediumBtn from "../../components/button/MoreMediumBtn.tsx";
 import goBackIcon from "../../assets/images/left_arrow.png";
 import { DateUtil } from "../../utils/DateUtil";
 import { fadeIn } from "../../styles/animation/DefaultAnimation.ts";
@@ -23,8 +22,8 @@ import { fadeIn } from "../../styles/animation/DefaultAnimation.ts";
 import {
   fetchSchedules,
   Schedule,
-  addReservation,
-  ReservationRequest,
+  editReservation,
+  EditRequest,
 } from "../../api/admin/ReservedManageApi.ts";
 
 import NoticeModal from "../../components/modal/NoticeModal.tsx";
@@ -46,23 +45,31 @@ const reservationSchema = z.object({
 // Define the TypeScript type for form data
 type ReservationFormData = z.infer<typeof reservationSchema>;
 
-
-function ReservedAdd() {
-
+function ReservedEdit() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { userId, name, phone_number, head_count, schedule_id } =
+    location.state || {}; // 바로 state에서 추출
 
   const [performanceSchedules, setPerformanceSchedules] = useState<Schedule[]>(
     []
   );
-  const [isLoading, setIsLoading] = useState(false); // 승인 대기 로딩 상태
 
   const [isRejectedModalOpen, setIsRejectedModalOpen] = useState(false);
-  const [isDuplicatePhoneModalOpen, setIsDuplicatePhoneModalOpen] =
+  const [isAdministratorRightsModalOpen, setIsAdministratorRightsModalOpen] =
     useState(false);
   const [isMaximumPersonModalOpen, setIsMaximumPersonModalOpen] =
     useState(false);
 
   const [isInvalidPhoneModalOpen, setIsInvalidPhoneModalOpen] = useState(false); // 추가된 상태
+  const [isIncorrectInfo, setIsIncorrectInfo] = useState(false); // 추가된 상태
+
+  console.log("Received state:", location.state);
+  console.log("Extracted userId:", userId);
+  console.log("Extracted name:", name);
+  console.log("Extracted phone_number:", phone_number);
+  console.log("Extracted head_count:", head_count);
+  console.log("Extracted date_time:", schedule_id);
 
   // React Hook Form setup with Zod resolver
   const {
@@ -73,10 +80,10 @@ function ReservedAdd() {
     resolver: zodResolver(reservationSchema),
     mode: "onChange",
     defaultValues: {
-      name: "",
-      phoneNumber: "",
-      headCount: 0,
-      scheduleId: 0,
+      name: name || "",
+      phoneNumber: phone_number || "",
+      headCount: head_count || 0,
+      scheduleId: schedule_id || 0,
     },
   });
 
@@ -93,31 +100,39 @@ function ReservedAdd() {
     loadSchedules();
   }, []);
 
-  // 예매 명단 추가 처리 함수
-  const handleReservationSubmit = async (data: ReservationRequest) => {
+  // 예매 수정 처리 함수
+  const handleReservationSubmit = async (data: ReservationFormData) => {
     try {
       if (!data.phoneNumber.startsWith("010")) {
         setIsInvalidPhoneModalOpen(true);
         return;
       }
-      // 예매 신청 API 호출
-      const response = await addReservation(data);
+
+      const requestData: EditRequest = {
+        userId: userId, // 🔥 userId 추가!
+        name: data.name,
+        phoneNumber: data.phoneNumber,
+        headCount: data.headCount,
+        scheduleId: data.scheduleId,
+      };
+      // 예매 수정 API 호출
+      const response = await editReservation(requestData);
 
       console.log("response: ", response);
 
       if (response.success) {
         navigate("/reserved");
       } else {
-        setIsLoading(false);
-        if (response.error === "이미 예약되었습니다.") {
-          setIsDuplicatePhoneModalOpen(true);
+        if (response.error === "관리자 권한이 필요합니다.") {
+          setIsAdministratorRightsModalOpen(true);
         } else if (response.error === "예약 가능 인원을 초과하였습니다.") {
           setIsMaximumPersonModalOpen(true);
+        } else if (response.error === "올바르지 않은 변경 정보") {
+          setIsIncorrectInfo(true);
         }
       }
     } catch (error) {
       console.error("Error during reservation submission:", error);
-      setIsLoading(false); // 오류 발생 시 로딩 상태 해제
     }
   };
 
@@ -125,7 +140,7 @@ function ReservedAdd() {
     icon: goBackIcon,
     iconWidth: 13,
     iconHeight: 20,
-    text: "예매 명단 추가",
+    text: "예매 명단 확인",
     clickFunc: () => navigate("/reserved"),
   };
 
@@ -210,17 +225,31 @@ function ReservedAdd() {
       </InputContainer>
 
       <ButtonContainer>
-        <LargeBtn
-          content="추가"
+        <MoreSmallBtn
+          content="취소"
+          onClick={() => {
+            navigate("/reserved/check", {
+              state: {
+                scheduleId: schedule_id, // 현재 선택된 공연 회차 ID
+                userId, // 선택한 사용자 ID
+              },
+            });
+          }}
+          isAvailable={true}
+          isGray={true}
+        />
+
+        <MoreMediumBtn
+          content="수정 완료"
           onClick={handleSubmit(handleReservationSubmit)}
           isAvailable={isDirty && isValid}
         />
       </ButtonContainer>
 
       <ErrorModal
-        showDefaultErrorModal={isDuplicatePhoneModalOpen}
-        errorMessage="이미 예매 신청이 완료된 연락처입니다."
-        onAcceptFunc={() => setIsDuplicatePhoneModalOpen(false)}
+        showDefaultErrorModal={isAdministratorRightsModalOpen}
+        errorMessage="관리자 권한이 필요합니다."
+        onAcceptFunc={() => setIsAdministratorRightsModalOpen(false)}
         aboveButton={true}
       />
 
@@ -236,6 +265,12 @@ function ReservedAdd() {
         onAcceptFunc={() => setIsInvalidPhoneModalOpen(false)}
         aboveButton={true}
       />
+      <ErrorModal
+        showDefaultErrorModal={isIncorrectInfo}
+        errorMessage="올바르지 않은 변경 정보입니다."
+        onAcceptFunc={() => setIsIncorrectInfo(false)}
+        aboveButton={true}
+      />
 
       <NoticeModal
         showNoticeModal={isRejectedModalOpen}
@@ -247,8 +282,7 @@ function ReservedAdd() {
   );
 }
 
-export default ReservedAdd;
-
+export default ReservedEdit;
 
 const OnSiteReserveContainer = styled.div``;
 
@@ -266,4 +300,5 @@ const ButtonContainer = styled.div`
   align-items: center;
   margin-top: 75px;
   animation: ${fadeIn} 0.5s ease-in-out;
+  gap: 10px;
 `;

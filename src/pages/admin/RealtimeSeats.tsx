@@ -18,7 +18,7 @@ const RealtimeSeats = () => {
     const navigate = useNavigate();
 
     // 공연 회차 선택 관리
-    const [isRefreshed, setIsRefreshed] = useState<boolean>(false); 
+    const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
     const [schedules, setSchedules] = useState<Schedule[]>([]);
     const [selectedSession, setSelectedSession] = useState<string>("");
     // 공연 회차 선택 핸들러
@@ -55,13 +55,15 @@ const RealtimeSeats = () => {
     // Top navigation 요소 정의
     const navItem = {
         icon: backIcon,
-        width: 1,
-        height: 1,
+        iconWidth: 9, // 아이콘 너비 (px 단위)
+        iconHeight: 16, // 아이콘 높이 (px 단위)
         text: "실시간 좌석",
         clickFunc: () => { navigate(-1); }
     }
     const righter = {
         icon: refreshIcon,
+        iconWidth: 17, // 아이콘 너비 (px 단위)
+        iconHeight: 17, // 아이콘 높이 (px 단위)
         clickFunc: triggerRefresh
     }
 
@@ -75,6 +77,7 @@ const RealtimeSeats = () => {
                     schedules={schedules}
                     selectedSession={selectedSession}
                     onContentChange={handleSessionChange}
+                    isRounded={true}
                 />
 
                 <SeatMapContainer>

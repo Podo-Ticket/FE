@@ -306,28 +306,28 @@ const SeatMap: React.FC<SeatMapProps> = ({ disabled, scheduleId, isRealTime, man
             </SeatColumn>
           ))}
         </SeatRow>
+
+        <SeatInfoContainer isRealTime={isRealTime}>
+          <SeatCategoryContainer>
+            <SeatCategory>
+              <SeatImage src={availableSeatImage} />
+              <SeatDescription>발권 가능</SeatDescription>
+            </SeatCategory>
+
+            <SeatCategory>
+              <SeatImage src={reservedSeatImage} />
+              <SeatDescription>발권 완료</SeatDescription>
+            </SeatCategory>
+
+            <SeatCategory>
+              <SeatImage src={lockImage} />
+              <SeatDescription>잠금 좌석</SeatDescription>
+            </SeatCategory>
+          </SeatCategoryContainer>
+
+          <RemainingSeat>여석 {remainingSeatsCount}석</RemainingSeat>
+        </SeatInfoContainer>
       </SeatMapContent>
-
-      <SeatInfoContainer>
-        <SeatCategoryContainer>
-          <SeatCategory>
-            <SeatImage src={availableSeatImage} />
-            <SeatDescription>발권 가능</SeatDescription>
-          </SeatCategory>
-
-          <SeatCategory>
-            <SeatImage src={reservedSeatImage} />
-            <SeatDescription>발권 완료</SeatDescription>
-          </SeatCategory>
-
-          <SeatCategory>
-            <SeatImage src={lockImage} />
-            <SeatDescription>잠금 좌석</SeatDescription>
-          </SeatCategory>
-        </SeatCategoryContainer>
-
-        <RemainingSeat>여석 {remainingSeatsCount}석</RemainingSeat>
-      </SeatInfoContainer>
 
     </SeatMapContainer >
   );
@@ -345,6 +345,7 @@ height: 100%;
 
 gap: 15px;
 padding: 15px;
+padding-bottom: 50px;
 
 overflow: scroll;
 `;
@@ -445,9 +446,9 @@ height: 65%;
 background: var(--grey-3);
 `;
 
-const SeatInfoContainer = styled.div`
+const SeatInfoContainer = styled.div<{ isRealTime: boolean }>`
 position: absolute;
-top: 88%;
+top: ${({ isRealTime }) => isRealTime ? '88' : '81'}%;
 
 display: flex;
 flex-direction: row;

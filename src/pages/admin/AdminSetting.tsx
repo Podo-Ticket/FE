@@ -74,6 +74,7 @@ const AdminSetting = () => {
             <TheaterInfoModal
                 showTheaterInfoModal={isTheaterInfoModalOpen}
                 onAcceptFunc={closeTheaterInfoModal}
+                pageMode={true}
             />
 
             <FooterNav />

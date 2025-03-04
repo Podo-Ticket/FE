@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import TopNav from '../nav/TopNav';
 import SeatMap from '../../assets/images/seatMap/seoul_national_durae.png';
 import VenueMap from '../../assets/images/venue_map.png';
 import CloseBtn from '../button/SmallBtn';
+import backIcon from '../../assets/images/left_arrow.png'
 
 import { PERFORMANCE_NOTICE } from '../../constants/text/playInfo/24th_seoulNationalUniv_riveract.ts'
 import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
@@ -13,9 +15,12 @@ import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
 interface TheaterInfoModalProps {
   showTheaterInfoModal: boolean; // 모달 열림 여부
   onAcceptFunc: () => void;
+  pageMode?: boolean;
 }
 
-const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({ showTheaterInfoModal, onAcceptFunc }) => {
+const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({ showTheaterInfoModal, onAcceptFunc, pageMode = false }) => {
+  const navigate = useNavigate();
+
   const [isClosing, setIsClosing] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('1'); // 활성화된 탭 상태
 
@@ -56,10 +61,18 @@ const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({ showTheaterInfoModa
     }
   };
 
+  const lefter = {
+    icon: backIcon,
+    iconWidth: 13,
+    iconHeight: 20,
+    text: "실시간 좌석",
+    clickFunc: onAcceptFunc
+  }
+
   return (
-    <ModalOverlay>
-      <ModalContent isClosing={isClosing}>
-        <TopNav lefter={null} center={{ text: "공연장 정보" }} righter={null} customStyles={{
+    <ModalOverlay pageMode={pageMode}>
+      <ModalContent isClosing={isClosing} pageMode={pageMode}>
+        <TopNav lefter={pageMode? lefter : null} center={{ text: "공연장 정보" }} righter={null} customStyles={{
           borderRadius: "20px 20px 0px 0px",
           background: "transparent",
           height: "60px"
@@ -83,7 +96,7 @@ const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({ showTheaterInfoModa
           {renderContent()}
         </RenderedContentContainer>
 
-        <CloseBtn content="닫기" onClick={handleAcceptClick} isAvailable={true} />
+        {pageMode ? undefined : <CloseBtn content="닫기" onClick={handleAcceptClick} isAvailable={true} />}
       </ModalContent>
     </ModalOverlay>
   );
@@ -91,13 +104,13 @@ const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({ showTheaterInfoModa
 
 export default TheaterInfoModal;
 
-const ModalOverlay = styled.div`
+const ModalOverlay = styled.div<{ pageMode: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: ${({ pageMode }) => (pageMode ? 'var(--ect-white)' : 'rgba(0, 0, 0, 0.6)')};
 
   display: flex;
   justify-content: center;
@@ -106,14 +119,15 @@ const ModalOverlay = styled.div`
   z-index: 10000;
 `;
 
-const ModalContent = styled.div<{ isClosing: boolean }>`
+const ModalContent = styled.div<{ isClosing: boolean, pageMode: boolean }>`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  ${({ pageMode }) => (pageMode ? '' : 'justify-content: center')};
+  
   align-items: center;
 
-  width: 90%;
-  height: 90%;
+  width: ${({ pageMode }) => (pageMode ? '100%' : '90%')};
+  height: ${({ pageMode }) => (pageMode ? '100%' : '90%')};
   background-color: var(--ect-white);
   border-radius: 10px;
   
