@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 
+
+
 import { AnimatePresence } from "framer-motion";
 
 import PageWrapper from "./styles/animation/PageWrapper.tsx";
@@ -28,6 +30,7 @@ import OnsiteManage from "./pages/admin/OnsiteManage.tsx";
 import AdminSetting from "./pages/admin/AdminSetting.tsx";
         
 import OnboardingModal from './components/modal/OnboardingModal.tsx';
+
 
 const GlobalStyle = createGlobalStyle`
     * {
@@ -122,6 +125,7 @@ function App() {
     setIsDontShowAgainChecked(false); // 체크박스 초기화
   };
 
+
   return (
     <>
       <GlobalStyle />
@@ -166,6 +170,7 @@ function App() {
 
           <Route path="/survey" element={<SurveyLink />} />
         </Routes>
+
       </AnimatePresence>
 
       {pageType !== null && (
@@ -183,4 +188,6 @@ function App() {
   );
 }
 
+
 export default App;
+

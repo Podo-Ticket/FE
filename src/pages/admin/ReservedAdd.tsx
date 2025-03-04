@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
+
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,7 +46,9 @@ const reservationSchema = z.object({
 // Define the TypeScript type for form data
 type ReservationFormData = z.infer<typeof reservationSchema>;
 
+
 function ReservedAdd() {
+
   const navigate = useNavigate();
 
   const [performanceSchedules, setPerformanceSchedules] = useState<Schedule[]>(
@@ -245,6 +248,7 @@ function ReservedAdd() {
 }
 
 export default ReservedAdd;
+
 
 const OnSiteReserveContainer = styled.div``;
 

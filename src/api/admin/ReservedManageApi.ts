@@ -52,6 +52,7 @@ interface FetchSchedulesResponse {
 
 // 공연 회차 가져오기
 export const fetchSchedules = async (): Promise<Schedule[]> => {
+
   try {
     const response = await api.get<FetchSchedulesResponse>("/user/schedule");
     return response.data.schedules; // 공연 회차 데이터 반환
@@ -166,4 +167,5 @@ export const editReservation = async (
     console.error("Error EditReservation:", error);
     throw new Error(error.response?.data?.error || "Failed to reserve ticket");
   }
+
 };

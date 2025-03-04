@@ -35,12 +35,8 @@ const AdminHome = () => {
         await verifyAdminCode("kwdc"); // ✅ 세션 생성 (먼저 실행)
         console.log("🔄 어드민 메인 데이터 가져오기...");
         const data = await fetchAdminEnter();
-
-        if (!data || !data.info) {
-          throw new Error("공연정보가 없습니다.");
-        }
         setPerformance(data.info);
-        console.log(data);
+        console.log(performance);
       } catch (error) {
         console.error("데이터를 불러오는 중 오류 발생", error);
       } finally {
@@ -70,14 +66,12 @@ const AdminHome = () => {
     return diffMinutes;
   };
 
-  if (!performance) {
-    return null;
-  }
-  const minutesLeft = getMinutesUntilShowtime(performance.date_time);
-  const issuedTickets = performance.available_seats - performance.free_seats; // 발권된 티켓 수 };
-  const issuingProgress = Math.round(
-    (issuedTickets / performance.available_seats) * 100
-  ); // 진행률 (%)
+  const minutesLeft = getMinutesUntilShowtime(performance?.date_time ?? "");
+  const issuedTickets =
+    (performance?.available_seats ?? 0) - (performance?.free_seats ?? 0); // 발권된 티켓 수 };
+  const issuingProgress = performance?.available_seats
+    ? Math.round((issuedTickets / performance.available_seats) * 100)
+    : 0;
 
   return (
     <ViewContainer>
