@@ -35,13 +35,13 @@ export const verifyAdminCode = async (
 export interface PerformanceInfo {
   id: number;
   date_time: string;
-  available_seats: number;
-  free_seats: number;
+  user: number;
+  booked: number;
 }
 
 // 다음 공연이 여부에 따른 구분
 export interface AdminEnterResponse {
-  info: PerformanceInfo | null;
+  info: PerformanceInfo[] | null;
 }
 
 // 어드민 메인화면 API

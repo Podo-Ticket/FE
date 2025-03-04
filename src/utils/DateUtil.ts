@@ -52,7 +52,7 @@ interface Schedule {
   date_time: string;
 }
 
-export const getClosestDateTime = (schedule: Schedule) => {
+export const getClosestDateTime = (schedule: Schedule[]) => {
   const now = new Date(); // 현재 시간
 
   // 스케줄 중 가장 가까운 시간을 계산
