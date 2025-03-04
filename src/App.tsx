@@ -107,6 +107,19 @@ function App() {
     setIsDontShowAgainChecked(false); // 체크박스 초기화
   };
 
+  // 온보딩 모달 출현시 외부 스크롤 금지
+  useEffect(() => {
+    if (showOnboardingModal) {
+      document.body.style.overflow = "hidden"; // 스크롤 비활성화
+    } else {
+      document.body.style.overflow = "auto"; // 스크롤 활성화
+    }
+
+    return () => {
+      document.body.style.overflow = "auto"; // 컴포넌트 언마운트 시 복구
+    };
+  }, [showOnboardingModal]);
+
   // 스플래시 설정
   const [showSplash, setShowSplash] = useState(() => {
     return !localStorage.getItem("hasVisited");
