@@ -121,6 +121,7 @@ const Ticket = () => {
                 imgStatus="success"
                 title="발권 완료"
                 description="바로 입장해주시면 됩니다!"
+                buttonContent = "확인"
                 onAcceptFunc={closeFinishTicketingModal}
             />
 

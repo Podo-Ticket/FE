@@ -57,9 +57,23 @@ const UserHome: React.FC = () => {
       try {
         const playId = 2; // 추후에 다이나믹하게 변경
         const data = await fetchPlayInfo(playId);
+
+        console.log("제발좀: ", data);
+
+        // 가장 가까운 스케줄의 date_time 계산
+        const closestDateTime = getClosestDateTime(data.schedule);
+
+        // 가장 가까운 스케줄의 id 찾기
+        const closestSchedule = data.schedule.find(
+          (schedule) => schedule.date_time === closestDateTime
+        );
+
+        if (closestSchedule) {
+          setScheduleId(closestSchedule.id); // 가장 가까운 스케줄의 id 설정
+          localStorage.setItem("scheduleId", closestSchedule.id); // 로컬스토리지에 저장
+        }
+
         setPlayInfo(data.play);
-        setScheduleId(data.schedule.id);
-        localStorage.setItem("scheduleId", data.schedule.id);
         setPerformanceSession(getClosestDateTime(data.schedule));
       } catch (error) {
         console.error('Failed to load play info:', error);
@@ -101,6 +115,10 @@ const UserHome: React.FC = () => {
       navigateTo('/select');
     }, 1000)
   }
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    e.stopPropagation(); // 이벤트 전파 방지
+  };
 
   return (
     <MainContainer backgroundImage={poster}>
@@ -196,7 +214,7 @@ const UserHome: React.FC = () => {
                 height: "60px"
               }} />
 
-            <BackDetailScroll>
+            <BackDetailScroll onScroll={handleScroll}>
               <BackDetailContainer>
                 {DETAILED_PERFORMANCE_INFO.map((item, index) => (
                   <FrontCardInfoItem key={index}>
@@ -464,6 +482,8 @@ const CardBack = styled.div`
   z-index: 1;
   transform-style: preserve-3d;
   transform: rotateY(180deg);
+
+  overflow: hidden;
 `;
 
 const NavBar = styled(TopNav)`
@@ -471,9 +491,12 @@ const NavBar = styled(TopNav)`
 `;
 
 const BackDetailScroll = styled.div`
+max-height: 330px;
 height: 330px;
 
 overflow-y: auto;
+
+-webkit-overflow-scrolling: touch;
 `;
 
 const BackDetailContainer = styled.div`

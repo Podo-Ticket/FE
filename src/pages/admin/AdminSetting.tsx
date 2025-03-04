@@ -9,7 +9,7 @@ import TopNav from '../../components/nav/TopNav.tsx';
 import downloadImage from '../../assets/images/admin/purple_downbox.png'
 import theaterInfoImage from '../../assets/images/admin/purple_performance.png'
 import versionImage from '../../assets/images/admin/purple_circled_info.png'
-import DefaultModal from '../../components/modal/DefaultModal.tsx';
+import PWAInstallModal from '../../components/modal/PWAInstallModal.tsx';
 
 const AdminSetting = () => {
     const navigate = useNavigate();
@@ -63,12 +63,9 @@ const AdminSetting = () => {
                 </Category>
             </SettingContainer>
 
-            <DefaultModal
-                showDefaultModal={isDownloadModalOpen}
-                title="앱을 설치하겠습니까?"
-                description="iOS는 추후 구현 예정입니다."
-                onAcceptFunc={closeDownloadModal }
-                onUnacceptFunc={closeDownloadModal}
+            <PWAInstallModal
+                showModal={isDownloadModalOpen}
+                onClose={() => setIsDownloadModalOpen(false)}
             />
 
             <TheaterInfoModal

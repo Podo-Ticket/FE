@@ -116,7 +116,7 @@ export interface CheckingLockSeatsRequest {
 export const checkReservedSeats = async (request: CheckingLockSeatsRequest): Promise<LockSeatsResponse> => {
   try {
     const response = await api.post("/seat/check", request);
-    console.log("response.dataresponse.data:", response.data);
+    console.log("response.data   ddd     response.data:", response.data);
     return response.data as LockSeatsResponse;
   } catch (error) {
     console.error("Error checking reserved seats:", error);

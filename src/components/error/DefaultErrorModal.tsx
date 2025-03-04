@@ -71,7 +71,7 @@ const Content = styled.div <{ isClosing: boolean, isSuccess: boolean }>`
   box-shadow: 0px 0px 30px 0px rgba(255, 255, 255, 0.30);
 
   gap: 9px;
-  padding: 4px 0;
+  padding: 9px 0;
 
   text-align: center;
   color: var(--red-1);
@@ -80,10 +80,16 @@ const Content = styled.div <{ isClosing: boolean, isSuccess: boolean }>`
 `;
 
 const ContentIcon = styled.img`
-width: 14px;
-weight: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 14px;
+  weight: 14px;
 `;
 
 const ContentText = styled.div`
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

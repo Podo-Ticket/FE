@@ -43,6 +43,7 @@ const SingleSeat: React.FC<SingleSeatProps> = ({
         >
             {content}
             <LockImage
+                isAdmin={isAdmin}
                 isLocked={isLocked}
                 isUnlocking={isUnlocking}
             />
@@ -151,7 +152,7 @@ const SingleSeatContainer = styled.button<{
    }
 `;
 
-const LockImage = styled.div<{ isLocked: boolean, isUnlocking: boolean }>`
+const LockImage = styled.div<{ isLocked: boolean, isUnlocking: boolean, isAdmin: boolean }>`
       content: ${({ isLocked, isUnlocking }) => (isLocked || isUnlocking ? '""' : 'none')}; /* 잠금 상태일 때만 표시 */
       position: absolute;
       top: -3px; /* 버튼의 오른쪽 위로 이동 */
@@ -160,8 +161,8 @@ const LockImage = styled.div<{ isLocked: boolean, isUnlocking: boolean }>`
       width: 12px;
       height: 16px;
       border: none;
-      background-image: ${({ isLocked }) =>
-        isLocked ? `url(${lockIcon})` : "none"}; /* 동적으로 이미지 설정 */
+      background-image: ${({ isLocked, isAdmin }) =>
+        !isAdmin ? "none" : isLocked ? `url(${lockIcon})` : "none"};
       background-size: cover; /* 이미지 크기 설정 */
       background-repeat: no-repeat; /* 이미지 반복 방지 */
       background-color: transparent;

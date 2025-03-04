@@ -319,12 +319,13 @@ const ManageLockingSeats = () => {
                     console.log("예약된 좌석이 없습니다.");
                     setShowMultipleAcceptModal(true); // 일반 모달 표시
                 }
+                else {
+                    console.log("이미 예약된 좌석 목록:", result.reservedList);
+                    setReservedList(result.reservedList); // 예약된 좌석 목록 저장
+                    setShowMultipleWarningAcceptModal(true); // 경고 모달 표시
+                }
             }
-            else {
-                console.log("이미 예약된 좌석 목록:", result.reservedList);
-                setReservedList(result.reservedList); // 예약된 좌석 목록 저장
-                setShowMultipleWarningAcceptModal(true); // 경고 모달 표시
-            }
+            
         } catch (error) {
             console.error("좌석 확인 중 오류 발생:", error);
         }
@@ -379,6 +380,7 @@ const ManageLockingSeats = () => {
                 showNoticeModal={showEntryModal}
                 title={entryModalTitle}
                 description={entryModalSubtitle}
+                buttonContent = "확인"
                 onAcceptFunc={() => { setShowEntryModal(false) }}
             />
 

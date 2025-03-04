@@ -30,6 +30,7 @@ export const checkPhoneNumber = async (phoneNumber: string, scheduleId: number) 
       params: { phoneNumber, scheduleId },
       withCredentials: true,
     });
+
     return response.data;
   } catch (error) {
     console.error('Error checking phone number:', error);

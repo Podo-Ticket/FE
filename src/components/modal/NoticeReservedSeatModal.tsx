@@ -27,7 +27,7 @@ const NoticeReservedSeatModal: React.FC<NoticeReservedSeatModalProps> = ({ showN
   if (!showNoticeReservedSeatModal) return null;
 
   // reservedList를 dateTime 기준으로 그룹화
-  const groupedReservedSeats = reservedList.reduce((acc, seat) => {
+  const groupedReservedSeats = (reservedList || []).reduce((acc, seat) => {
     const { dateTime, row, number } = seat;
 
     if (!acc[dateTime]) {
