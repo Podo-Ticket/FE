@@ -291,7 +291,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ disabled, scheduleId, isRealTime, man
                 return (
                   <SingleSeat
                     key={seatId}
-                    isAdmin={false}
+                    isAdmin={true}
                     content={`${row}${seat}`}
                     onClick={() => handleSeatClick(seatId)}
                     isAvailable={isAvailable}

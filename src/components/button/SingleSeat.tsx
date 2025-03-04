@@ -99,7 +99,7 @@ const SingleSeatContainer = styled.button<{
         isUnlocking
     }) => {
         if (isUnlocking) return "var(--purple-9)";
-        if (isLocked) { return isAdmin ? "var(--red-1)" : "var(--grey-6)" };
+        if (isLocked) return "var(--grey-6)";
         if (isSelectedAudience) return "var(--purple-9)";
         if (isReserved) return "var(--grey-6)";
         if (isLocking) return "var(--purple-9)";

@@ -134,20 +134,13 @@ const ManageLockingSeats = () => {
         try {
             // 좌석 잠금 API 호출
             const response = await lockSeats({
-                scheduleId: Number(selectedSession),
+                scheduleId: [Number(selectedSession)],
                 seats: encodedSeats,
             });
 
             // 응답 처리
             if (response.success) {
                 console.log("좌석 잠금 성공");
-
-                if (response.reservedList.length === 0) {
-                    console.log("예약된 좌석이 없습니다.");
-                    console.log("예약된 좌석이 없을 때 결과: ", response);
-                } else {
-                    console.log("이미 예약된 좌석 목록:", response.reservedList);
-                }
 
                 setNewLockedSeats([]); // 상태 초기화
                 triggerRefresh(); // 새로고침 트리거
@@ -213,7 +206,7 @@ const ManageLockingSeats = () => {
         try {
             // 모든 회차에 대해 좌석 잠금 요청을 병렬로 처리
             const lockPromises = schedules.map((schedule) =>
-                lockSeats({ scheduleId: schedule.id, seats: encodedSeats })
+                lockSeats({ scheduleId: [schedule.id], seats: encodedSeats })
             );
 
             const results: LockSeatsResponses = await Promise.all(lockPromises); // 모든 요청 완료 대기
@@ -241,6 +234,7 @@ const ManageLockingSeats = () => {
                 setNewLockedSeats([]); // 상태 초기화
                 triggerRefresh(); // 새로고침 트리거
                 setShowMultipleAcceptModal(false); // 모달 닫기
+                setShowMultipleWarningAcceptModal(false);
             } else {
                 console.error("일부 회차에서 좌석 잠금 실패");
             }
@@ -282,6 +276,7 @@ const ManageLockingSeats = () => {
                 setNewUnlockedSeats([]); // 상태 초기화
                 triggerRefresh(); // 새로고침 트리거
                 setShowMultipleAcceptModal(false); // 모달 닫기
+                setShowMultipleWarningAcceptModal(false);
             } else {
                 console.error("일부 회차에서 좌석 잠금 해제 실패");
             }
@@ -306,8 +301,10 @@ const ManageLockingSeats = () => {
             console.log("selectedSession: ", selectedSession);
             console.log("encodedSeats: ", encodedSeats);
 
+            const ids = schedules.map((schedule) => schedule.id);
+
             const request: CheckingLockSeatsRequest = {
-                scheduleId: Number(selectedSession), // 공연 ID
+                scheduleId: ids, // 공연 ID
                 seats: encodedSeats,
             };
 
@@ -315,7 +312,7 @@ const ManageLockingSeats = () => {
             console.log("예약된 좌석 확인 결과:", result);
 
             if (result.success) {
-                if (!result.reservedList) {
+                if (result.reservedList.length === 0) {
                     console.log("예약된 좌석이 없습니다.");
                     setShowMultipleAcceptModal(true); // 일반 모달 표시
                 }
@@ -325,7 +322,7 @@ const ManageLockingSeats = () => {
                     setShowMultipleWarningAcceptModal(true); // 경고 모달 표시
                 }
             }
-            
+
         } catch (error) {
             console.error("좌석 확인 중 오류 발생:", error);
         }
@@ -380,7 +377,7 @@ const ManageLockingSeats = () => {
                 showNoticeModal={showEntryModal}
                 title={entryModalTitle}
                 description={entryModalSubtitle}
-                buttonContent = "확인"
+                buttonContent="확인"
                 onAcceptFunc={() => { setShowEntryModal(false) }}
             />
 
@@ -402,7 +399,8 @@ const ManageLockingSeats = () => {
 
             <NoticeReservedSeatModal
                 showNoticeReservedSeatModal={showMultipleWarningAcceptModal}
-                onAcceptFunc={null}
+                reservedList={reservedList}
+                onAcceptFunc={handleLockSeatsForAllSchedules}
                 onUnacceptFunc={() => { setShowMultipleWarningAcceptModal(false) }}
             />
 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import ModalSmallBtn from '../button/ModalSmallBtn.tsx';
 
+import { DateUtil } from '../../utils/DateUtil';
 import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
 
 // 개별 예약된 좌석 정보
@@ -17,7 +18,7 @@ interface NoticeReservedSeatModalProps {
   reservedList: ReservedSeat[];
   onAcceptFunc: () => void;
   onUnacceptFunc: () => void;
-  
+
   noOverlay?: boolean;
 }
 
@@ -67,23 +68,26 @@ const NoticeReservedSeatModal: React.FC<NoticeReservedSeatModalProps> = ({ showN
           <Description className='Podo-Ticket-Body-B5'>이미 발권된 좌석 정보를 확인해보세요.</Description>
           <ReservedSeatsContainer>
 
-            {Object.entries(groupedReservedSeats).map(([dateTime, seats], index) => (
-              <SessionReservedSeats key={index}>
-                <SessionInfo>
-                  <CategoryContainer>
-                    <Category>시간</Category>
-                  </CategoryContainer>
-                  <Detail>{dateTime}</Detail>
-                </SessionInfo>
-                <SessionInfo>
-                  <CategoryContainer>
-                    <Category>좌석</Category>
-                  </CategoryContainer>
-                  <Detail>{seats.join(", ")}</Detail>
-                </SessionInfo>
-              </SessionReservedSeats>
-            ))}
+            {Object.entries(groupedReservedSeats).map(([dateTime, seats], index, array) => (
+              <SessionReservedSeatsContainer>
+                <SessionReservedSeats key={index}>
+                  <SessionInfo>
+                    <CategoryContainer>
+                      <Category>시간</Category>
+                    </CategoryContainer>
+                    <Detail>{DateUtil.formatDate(dateTime)}</Detail>
+                  </SessionInfo>
+                  <SessionInfo>
+                    <CategoryContainer>
+                      <Category>좌석</Category>
+                    </CategoryContainer>
+                    <Detail>{seats.join(", ")}</Detail>
+                  </SessionInfo>
+                </SessionReservedSeats>
 
+                {index < array.length - 1 && <Divider />}
+              </SessionReservedSeatsContainer>
+            ))}
           </ReservedSeatsContainer>
         </DescriptioncContainer>
 
@@ -173,11 +177,15 @@ const DescriptioncContainer = styled.div`
 
 const ReservedSeatsContainer = styled.div`
   display: flex;
+  flex-direction: column;
 
+  max-height: 150px;
   border-radius: 10px;
   background: var(--grey-2);
 
   padding: 10px;
+
+  overflow: auto;
 `;
 
 const SessionReservedSeats = styled.div`
@@ -215,4 +223,19 @@ color: var(--grey-6);
 
 const Detail = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })`
 color: var(--grey-7);
+`;
+
+const SessionReservedSeatsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Divider = styled.div`
+width: 100%;
+height: 0.5px;
+
+background: var(--grey-3);
+
+margin: 10px 0;
+padding: 0 20px;
 `;
