@@ -83,9 +83,9 @@ const OnsiteManage = () => {
             const response = await approveOnsite(userIds, scheduleId, check);
 
             if (response.accept) {
-                console.log("Approval request sent successfully.");
+                triggerRefresh(); // accepted
             } else {
-                alert(response.error);
+                triggerRefresh(); // rejected
             }
         } catch (error: any) {
             alert(error.message);

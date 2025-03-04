@@ -55,13 +55,15 @@ const RealtimeSeats = () => {
     // Top navigation 요소 정의
     const navItem = {
         icon: backIcon,
-        width: 1,
-        height: 1,
+        iconWidth: 9, // 아이콘 너비 (px 단위)
+        iconHeight: 16, // 아이콘 높이 (px 단위)
         text: "실시간 좌석",
         clickFunc: () => { navigate(-1); }
     }
     const righter = {
         icon: refreshIcon,
+        iconWidth: 17, // 아이콘 너비 (px 단위)
+        iconHeight: 17, // 아이콘 높이 (px 단위)
         clickFunc: triggerRefresh
     }
 

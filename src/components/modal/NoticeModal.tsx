@@ -14,9 +14,10 @@ interface NoticeModalProps {
   title: string;
   description: string;
   onAcceptFunc: () => void;
+  buttonContent?: string;
 }
 
-const NoticeModal: React.FC<NoticeModalProps> = ({ showNoticeModal, imgStatus, title, description, onAcceptFunc }) => {
+const NoticeModal: React.FC<NoticeModalProps> = ({ showNoticeModal, imgStatus, title, description, onAcceptFunc, buttonContent = "" }) => {
   const [isClosing, setIsClosing] = useState(false);
 
   if (!showNoticeModal && !isClosing) return null;
@@ -50,7 +51,7 @@ const NoticeModal: React.FC<NoticeModalProps> = ({ showNoticeModal, imgStatus, t
         <Description className='Podo-Ticket-Body-B5'>{description}</Description>
         <ButtonContainer>
           <SmallBtn
-            content="다음"
+            content={buttonContent}
             onClick={onAcceptFunc}
             isAvailable={true}
             isGray={true}

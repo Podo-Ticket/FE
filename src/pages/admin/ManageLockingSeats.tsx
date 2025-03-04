@@ -79,12 +79,16 @@ const ManageLockingSeats = () => {
     // Top navigation 요소 정의
     const navItem = {
         icon: backIcon,
+        iconWidth: 9, // 아이콘 너비 (px 단위)
+        iconHeight: 16, // 아이콘 높이 (px 단위)
         text: navCenterTitle,
         clickFunc: () => { navigate(-1); }
     }
 
     const righter = {
         icon: refreshIcon,
+        iconWidth: 17, // 아이콘 너비 (px 단위)
+        iconHeight: 17, // 아이콘 높이 (px 단위)
         clickFunc: triggerRefresh
     }
 
@@ -299,13 +303,15 @@ const ManageLockingSeats = () => {
 
             const encodedSeats = encodeURIComponent(JSON.stringify(lockedSeats));
 
+            console.log("selectedSession: ", selectedSession);
+            console.log("encodedSeats: ", encodedSeats);
+
             const request: CheckingLockSeatsRequest = {
                 scheduleId: Number(selectedSession), // 공연 ID
                 seats: encodedSeats,
             };
 
             const result = await checkReservedSeats(request);
-
             console.log("예약된 좌석 확인 결과:", result);
 
             if (result.success) {
