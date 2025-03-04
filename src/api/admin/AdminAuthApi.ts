@@ -51,7 +51,7 @@ export const fetchAdminEnter = async (): Promise<AdminEnterResponse> => {
 
     return response.data; // 성공 시 응답 데이터 반환
   } catch (error: any) {
-    console.error("🚨 서버 내부 오류 발생:", error); // ❗ 여기에 에러 로그 남김
+    console.error("🚨 서버 내부 오류 발생:", error);
     if (error.response && error.response.data.error) {
       throw new Error(error.response.data.error); // 서버에서 반환한 에러 메시지
     } else {
