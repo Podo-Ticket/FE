@@ -28,7 +28,7 @@ import ReservedEdit from "./pages/admin/ReservedEdit.tsx";
 import ReservedCheck from "./pages/admin/ReservedCheck.tsx";
 import OnsiteManage from "./pages/admin/OnsiteManage.tsx";
 import AdminSetting from "./pages/admin/AdminSetting.tsx";
-        
+
 import OnboardingModal from './components/modal/OnboardingModal.tsx';
 
 
@@ -48,24 +48,6 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   const location = useLocation();
-
-  // 스플래시 설정
-  const [showSplash, setShowSplash] = useState(() => {
-    return !localStorage.getItem("hasVisited");
-  });
-
-  useEffect(() => {
-    if (!showSplash) return;
-    localStorage.setItem("hasVisited", "true");
-    const timer = setTimeout(() => setShowSplash(false), 5000);
-    return () => clearTimeout(timer);
-  }, [showSplash]);
-
-  const handleSplashFinish = () => setShowSplash(false); // Splash 종료 핸들러
-
-  if (showSplash) {
-    return <Splash onFinish={handleSplashFinish} />; // Splash 화면 렌더링
-  }
 
   // 경로에 따른 온보딩 pageType 설정
   const [showOnboardingModal, setShowOnboardingModal] = useState<boolean>(false);
@@ -125,6 +107,23 @@ function App() {
     setIsDontShowAgainChecked(false); // 체크박스 초기화
   };
 
+  // 스플래시 설정
+  const [showSplash, setShowSplash] = useState(() => {
+    return !localStorage.getItem("hasVisited");
+  });
+
+  useEffect(() => {
+    if (!showSplash) return;
+    localStorage.setItem("hasVisited", "true");
+    const timer = setTimeout(() => setShowSplash(false), 5000);
+    return () => clearTimeout(timer);
+  }, [showSplash]);
+
+  const handleSplashFinish = () => setShowSplash(false); // Splash 종료 핸들러
+
+  if (showSplash) {
+    return <Splash onFinish={handleSplashFinish} />; // Splash 화면 렌더링
+  }
 
   return (
     <>
