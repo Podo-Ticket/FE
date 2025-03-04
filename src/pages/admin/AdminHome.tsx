@@ -20,7 +20,9 @@ import character from "../../assets/images/admin/character.png";
 import character_100 from "../../assets/images/admin/100_character.png";
 
 const AdminHome = () => {
-  const [performance, setPerformance] = useState<PerformanceInfo | null>(null);
+  const [performance, setPerformance] = useState<PerformanceInfo[] | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ const AdminHome = () => {
         console.log("🔄 어드민 메인 데이터 가져오기...");
         const data = await fetchAdminEnter();
         setPerformance(data.info);
-        console.log(performance);
+        console.log(data);
       } catch (error) {
         console.error("데이터를 불러오는 중 오류 발생", error);
       } finally {
@@ -55,23 +57,78 @@ const AdminHome = () => {
     });
   };
 
-  // 공연시작시간 계산
-  const getMinutesUntilShowtime = (dateTime: string): number => {
-    const now = new Date(); // 현재 시간
-    const showTime = new Date(dateTime); // 공연 시작 시간
+  /**
+   * 현재 시간과 가장 가까운 공연을 찾는 함수
+   */
+  const getClosestPerformance = (
+    performances: PerformanceInfo[]
+  ): PerformanceInfo | null => {
+    if (performances.length === 0) return null;
 
-    const diffMs = showTime.getTime() - now.getTime(); // 밀리초 단위 차이
-    const diffMinutes = Math.floor(diffMs / (1000 * 60)); // 분 단위 변환
+    const now = new Date().getTime(); // 현재 시간
 
-    return diffMinutes;
+    return performances.reduce((closest, current) => {
+      const closestTimeDiff = Math.abs(
+        new Date(closest.date_time).getTime() - now
+      );
+      const currentTimeDiff = Math.abs(
+        new Date(current.date_time).getTime() - now
+      );
+
+      return currentTimeDiff < closestTimeDiff ? current : closest;
+    });
   };
 
-  const minutesLeft = getMinutesUntilShowtime(performance?.date_time ?? "");
-  const issuedTickets =
-    (performance?.available_seats ?? 0) - (performance?.free_seats ?? 0); // 발권된 티켓 수 };
-  const issuingProgress = performance?.available_seats
-    ? Math.round((issuedTickets / performance.available_seats) * 100)
+  // 가장 가까운 공연 정보 가져오기
+  const nextPerformance =
+    performance && Array.isArray(performance) && performance.length > 0
+      ? getClosestPerformance(performance)
+      : null;
+
+  const isLastPerformance =
+    performance && nextPerformance
+      ? performance[performance.length - 1].id === nextPerformance.id
+      : false;
+
+  // 공연 시작까지 남은 시간 계산
+  const getMinutesUntilShowtime = (
+    dateTime: string,
+    isLastPerformance: boolean
+  ): string | null => {
+    const now = new Date();
+    const showTime = new Date(dateTime);
+
+    const minutesLeft = Math.floor(
+      (showTime.getTime() - now.getTime()) / (1000 * 60)
+    );
+
+    // 60분 이상일 경우 "X시간 Y분" 형식으로 변환
+    if (minutesLeft >= 60) {
+      const hours = Math.floor(minutesLeft / 60);
+      const minutes = minutesLeft % 60;
+      return `${hours}시간 ${minutes}`;
+    }
+
+    console.log(isLastPerformance);
+
+    // 만약 마지막 공연이라면 -30분이 지나면 null 반환
+    if (isLastPerformance && minutesLeft < -30) {
+      return null;
+    }
+
+    return `${Math.max(0, minutesLeft)}`;
+  };
+
+  const minutesLeft = nextPerformance
+    ? getMinutesUntilShowtime(nextPerformance.date_time, isLastPerformance)
     : 0;
+  const issuedTickets = nextPerformance ? nextPerformance.booked : 0;
+  const totalTickets = nextPerformance ? nextPerformance.user : 0;
+  const issuingProgress = totalTickets
+    ? Math.round((issuedTickets / totalTickets) * 100)
+    : 0;
+
+  console.log(minutesLeft);
 
   return (
     <ViewContainer>
@@ -82,7 +139,7 @@ const AdminHome = () => {
 
       <MainContainer>
         <TextContainer>
-          {performance === null ? (
+          {performance === null || minutesLeft === null ? (
             <p
               className="Podo-Ticket-Body-B1"
               style={{
@@ -158,7 +215,7 @@ const AdminHome = () => {
               ) : (
                 <>
                   <Highlight className="Podo-Ticket-Headline-H3">
-                    {performance?.free_seats}건
+                    {minutesLeft === null ? 0 : totalTickets - issuedTickets}건
                   </Highlight>
                   의 미발권이 남았어요!
                 </>
@@ -205,7 +262,7 @@ const AdminHome = () => {
                   fontWeight: "600",
                 }}
               >
-                {issuingProgress}%
+                {minutesLeft === null ? 0 : issuingProgress}%
               </span>
             </TicketingPercent>
           </TopMenu>
