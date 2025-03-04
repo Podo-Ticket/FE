@@ -1,27 +1,32 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
-import { AnimatePresence } from 'framer-motion';
 
-import PageWrapper from './styles/animation/PageWrapper.tsx';
-import PWABadge from './PWABadge.tsx'
+import { AnimatePresence } from "framer-motion";
 
-import Splash from './pages/Splash.tsx';
+import PageWrapper from "./styles/animation/PageWrapper.tsx";
+import PWABadge from "./PWABadge.tsx";
 
-import UserHome from './pages/user/UserHome.tsx';
-import OnSiteReserve from './pages/user/OnSiteReserve.tsx';
-import SelectSeats from './pages/user/SelectSeats.tsx';
-import TicketConfirmation from './pages/user/TicketConfirmation.tsx';
-import TicketScreen from './pages/user/Ticket.tsx';
-import SurveyLink from './pages/user/SurveyLink.tsx';
+import Splash from "./pages/Splash.tsx";
 
-import AdminAuth from './pages/admin/AdminAuth.tsx'
-import AdminHome from './pages/admin/AdminHome.tsx'
-import ManageLockingSeats from './pages/admin/ManageLockingSeats.tsx';
-import RealtimeSeats from './pages/admin/RealtimeSeats.tsx'
-import ReservedManange from './pages/admin/ReservedManage.tsx'
-import OnsiteManage from './pages/admin/OnsiteManage.tsx'
-import AdminSetting from './pages/admin/AdminSetting.tsx'
+import UserHome from "./pages/user/UserHome.tsx";
+import OnSiteReserve from "./pages/user/OnSiteReserve.tsx";
+import SelectSeats from "./pages/user/SelectSeats.tsx";
+import TicketConfirmation from "./pages/user/TicketConfirmation.tsx";
+import TicketScreen from "./pages/user/Ticket.tsx";
+import SurveyLink from "./pages/user/SurveyLink.tsx";
+
+import AdminAuth from "./pages/admin/AdminAuth.tsx";
+import AdminHome from "./pages/admin/AdminHome.tsx";
+import ManageLockingSeats from "./pages/admin/ManageLockingSeats.tsx";
+import RealtimeSeats from "./pages/admin/RealtimeSeats.tsx";
+import ReservedManange from "./pages/admin/ReservedManage.tsx";
+import ReservedAdd from "./pages/admin/ReservedAdd.tsx";
+import ReservedEdit from "./pages/admin/ReservedEdit.tsx";
+import ReservedCheck from "./pages/admin/ReservedCheck.tsx";
+import OnsiteManage from "./pages/admin/OnsiteManage.tsx";
+import AdminSetting from "./pages/admin/AdminSetting.tsx";
+        
 import OnboardingModal from './components/modal/OnboardingModal.tsx';
 
 const GlobalStyle = createGlobalStyle`
@@ -43,12 +48,12 @@ function App() {
 
   // 스플래시 설정
   const [showSplash, setShowSplash] = useState(() => {
-    return !localStorage.getItem('hasVisited');
+    return !localStorage.getItem("hasVisited");
   });
 
   useEffect(() => {
     if (!showSplash) return;
-    localStorage.setItem('hasVisited', 'true');
+    localStorage.setItem("hasVisited", "true");
     const timer = setTimeout(() => setShowSplash(false), 5000);
     return () => clearTimeout(timer);
   }, [showSplash]);
@@ -125,8 +130,24 @@ function App() {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<UserHome />} />
           <Route path="/reserve" element={<OnSiteReserve />} />
-          <Route path="/select" element={<PageWrapper slideDirection="right"> <SelectSeats /> </PageWrapper>} />
-          <Route path="/confirm" element={<PageWrapper slideDirection="left"> <TicketConfirmation /> </PageWrapper>} />
+          <Route
+            path="/select"
+            element={
+              <PageWrapper slideDirection="right">
+                {" "}
+                <SelectSeats />{" "}
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/confirm"
+            element={
+              <PageWrapper slideDirection="left">
+                {" "}
+                <TicketConfirmation />{" "}
+              </PageWrapper>
+            }
+          />
           <Route path="/ticket" element={<TicketScreen />} />
 
           <Route path="/adminAuth" element={<AdminAuth />} />
@@ -136,6 +157,10 @@ function App() {
           <Route path="/home/manage" element={<ManageLockingSeats />} />
 
           <Route path="/reserved" element={<ReservedManange />} />
+          <Route path="/reserved/add" element={<ReservedAdd />} />
+          <Route path="/reserved/check" element={<ReservedCheck />} />
+          <Route path="/reserved/check/edit" element={<ReservedEdit />} />
+
           <Route path="/onsite" element={<OnsiteManage />} />
           <Route path="/setting" element={<AdminSetting />} />
 
@@ -155,7 +180,7 @@ function App() {
 
       <PWABadge />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
