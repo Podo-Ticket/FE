@@ -105,14 +105,14 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
                                 {selectedRating1}/5 (
                                 <span className='Podo-Ticket-Body-B7'>
                                     {selectedRating1 === 1
-                                        ? "진짜 별로에요"
+                                        ? "진짜 별로예요"
                                         : selectedRating1 === 2
                                             ? "좀 아쉬워요"
                                             : selectedRating1 === 3
-                                                ? "흠"
+                                                ? "흠.."
                                                 : selectedRating1 === 4
                                                     ? "쓸만해요"
-                                                    : "최고에요"}
+                                                    : "최고예요"}
                                 </span>
                                 )</RatingDescription>
                         </StarRatingContainer>
