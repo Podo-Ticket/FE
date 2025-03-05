@@ -1,194 +1,242 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import StarRatings from 'react-star-ratings';
+import React, { useState } from "react";
+import styled from "styled-components";
+import StarRatings from "react-star-ratings";
 
-import thanksIcon from '../../assets/images/check_icon.png';
-import surveyImage1 from '../../assets/images/admin/landing_character_1.png'
-import surveyImage2 from '../../assets/images/admin/landing_character_2.png'
+import thanksIcon from "../../assets/images/check_icon.png";
+import surveyImage1 from "../../assets/images/admin/landing_character_1.png";
+import surveyImage2 from "../../assets/images/admin/landing_character_2.png";
 
-import { submitEvaluation, submitRecommand } from '../../api/user/TicketApi'; // API 호출 함수 가져오기
-import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
-import SmallBtn from '../button/ModalSmallBtn.tsx';
-import TopNav from '../nav/TopNav.tsx';
-import LargeBtn from '../button/LargeBtn.tsx';
+import { submitEvaluation, submitRecommand } from "../../api/user/TicketApi"; // API 호출 함수 가져오기
+import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
+import SmallBtn from "../button/ModalSmallBtn.tsx";
+import TopNav from "../nav/TopNav.tsx";
+import LargeBtn from "../button/LargeBtn.tsx";
 
 interface SurveyModalProps {
-    showSurveyModal: boolean;
-    onAcceptFunc: () => void; // 모달 닫기 함수
+  showSurveyModal: boolean;
+  onAcceptFunc: () => void; // 모달 닫기 함수
 }
 
+const SurveyModal: React.FC<SurveyModalProps> = ({
+  showSurveyModal,
+  onAcceptFunc,
+}) => {
+  const [isClosing] = useState(false);
 
-const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc }) => {
-    const [isClosing] = useState(false);
+  const center = {
+    text: "포도티켓 서비스 평가",
+  };
 
-    const center = {
-        text: '포도티켓 서비스 평가',
-    };
+  const [activeTab, setActiveTab] = useState<string>("1");
+  const [selectedRating1, setSelectedRating1] = useState<number | 0>(0); // 첫 번째 별점
+  const [selectedRating2, setSelectedRating2] = useState<number | 0>(0); // 초기값 설정
 
-    const [activeTab, setActiveTab] = useState<string>('1');
-    const [selectedRating1, setSelectedRating1] = useState<number | 0>(0); // 첫 번째 별점
-    const [selectedRating2, setSelectedRating2] = useState<number | 0>(0); // 초기값 설정
+  const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedRating2(Number(event.target.value));
+  };
 
-    const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedRating2(Number(event.target.value));
-    };
+  const handleNext = () => {
+    setActiveTab((prevTab) => {
+      const nextTab = (parseInt(prevTab) + 1).toString(); // 현재 탭 + 1
+      return nextTab;
+    });
+  };
 
-    const handleNext = () => {
-        setActiveTab((prevTab) => {
-            const nextTab = (parseInt(prevTab) + 1).toString(); // 현재 탭 + 1
-            return nextTab;
-        });
-    };
+  const handleClose = () => {
+    setActiveTab((prevTab) => {
+      const nextTab = (parseInt(prevTab) - 1).toString(); // 현재 탭 + 1
+      return nextTab;
+    });
+  };
 
-    const handleClose = () => {
-        setActiveTab((prevTab) => {
-            const nextTab = (parseInt(prevTab) - 1).toString(); // 현재 탭 + 1
-            return nextTab;
-        });
-    };
+  const handleSubmit1 = async () => {
+    try {
+      if (selectedRating1 !== 0) {
+        const result = await submitEvaluation(selectedRating1); // API 호출
+        console.log("응답 성공:", result);
+        handleNext(); // 다음 단계로 이동
+      }
+    } catch (error: any) {
+      console.error("응답 실패:", error.message);
+    }
+  };
 
-    const handleSubmit1 = async () => {
-        try {
-            if (selectedRating1 !== 0) {
-                const result = await submitEvaluation(selectedRating1); // API 호출
-                console.log('응답 성공:', result);
-                handleNext(); // 다음 단계로 이동
-            }
-        } catch (error: any) {
-            console.error('응답 실패:', error.message);
-        }
-    };
+  const handleSubmit2 = async () => {
+    try {
+      if (selectedRating1 !== 0) {
+        const result = await submitRecommand(selectedRating2); // API 호출
+        console.log("응답 성공:", result);
+        handleNext(); // 다음 단계로 이동
+      }
+    } catch (error: any) {
+      console.error("응답 실패:", error.message);
+    }
+  };
 
-    const handleSubmit2 = async () => {
-        try {
-            if (selectedRating1 !== 0) {
-                const result = await submitRecommand(selectedRating2); // API 호출
-                console.log('응답 성공:', result);
-                handleNext(); // 다음 단계로 이동
-            }
-        } catch (error: any) {
-            console.error('응답 실패:', error.message);
-        }
-    };
+  if (!showSurveyModal) return null;
 
-    if (!showSurveyModal) return null;
+  const renderContent = () => {
+    switch (activeTab) {
+      case "1": // 두 번째 설문: 첫 번째 별점 선택
+        return (
+          <StarContent>
+            <StarContentHeader>
+              <ContentIndex className="Podo-Ticket-Headline-H4">
+                <span
+                  className="Podo-Ticket-Headline-H2"
+                  style={{ color: "var(--purple-4)" }}
+                >
+                  1
+                </span>
+                /2
+              </ContentIndex>
+              <ContentImage src={surveyImage1} />
+              <StarEvaluationTitle className="Podo-Ticket-Headline-H3">
+                <span style={{ color: "var(--purple-4)" }}>
+                  포도티켓의 전반적인 만족도
+                </span>
+                가<br />
+                어땠는지 알려주세요!
+              </StarEvaluationTitle>
+            </StarContentHeader>
 
-    const renderContent = () => {
-        switch (activeTab) {
-            case '1': // 두 번째 설문: 첫 번째 별점 선택
-                return (
-                    <StarContent>
+            <StarRatingContainer>
+              <StarRatings
+                rating={selectedRating1} // 현재 별점 값
+                starRatedColor="#B489FF" // --purple-7
+                starHoverColor="#B489FF" // --purple-7
+                changeRating={(newRating) => setSelectedRating1(newRating)}
+                numberOfStars={5} // 전체 별의 개수
+                name="rating1" // 별점 컴포넌트의 이름
+                starDimension="41px" // 각 별의 크기
+                starSpacing="9px" // 별 사이의 간격
+              />
+              <RatingDescription>
+                {selectedRating1}/5 (
+                <span className="Podo-Ticket-Body-B7">
+                  {selectedRating1 === 1
+                    ? "진짜 별로예요"
+                    : selectedRating1 === 2
+                    ? "좀 아쉬워요"
+                    : selectedRating1 === 3
+                    ? "흠.."
+                    : selectedRating1 === 4
+                    ? "쓸만해요"
+                    : selectedRating1 === 5
+                    ? "최고예요"
+                    : "🙂"}
+                </span>
+                )
+              </RatingDescription>
+            </StarRatingContainer>
 
-                        <StarContentHeader>
-                            <ContentIndex className='Podo-Ticket-Headline-H4'>
-                                <span className='Podo-Ticket-Headline-H2' style={{ color: 'var(--purple-4)' }}>1</span>
-                                /2
-                            </ContentIndex>
-                            <ContentImage src={surveyImage1} />
-                            <StarEvaluationTitle className="Podo-Ticket-Headline-H3">
-                                <span style={{ color: 'var(--purple-4)' }}>포도티켓의 전반적인 만족도</span>는<br />어땠는지 알려주세요!
-                            </StarEvaluationTitle>
-                        </StarContentHeader>
+            <ButtonContainer>
+              <LargeBtn
+                content="다음"
+                onClick={handleSubmit1}
+                isAvailable={selectedRating1 !== 0}
+              />
+            </ButtonContainer>
+          </StarContent>
+        );
 
-                        <StarRatingContainer>
-                            <StarRatings
-                                rating={selectedRating1}                     // 현재 별점 값
-                                starRatedColor="#B489FF"                     // --purple-7               
-                                starHoverColor="#B489FF"                     // --purple-7 
-                                changeRating={(newRating) => setSelectedRating1(newRating)}
-                                numberOfStars={5}                   // 전체 별의 개수
-                                name="rating1"                       // 별점 컴포넌트의 이름
-                                starDimension="41px"                // 각 별의 크기
-                                starSpacing="9px"                   // 별 사이의 간격
-                            />
-                            <RatingDescription>
-                                {selectedRating1}/5 (
-                                <span className='Podo-Ticket-Body-B7'>
-                                    {selectedRating1 === 1
-                                        ? "진짜 별로예요"
-                                        : selectedRating1 === 2
-                                            ? "좀 아쉬워요"
-                                            : selectedRating1 === 3
-                                                ? "흠.."
-                                                : selectedRating1 === 4
-                                                    ? "쓸만해요"
-                                                    : "최고예요"}
-                                </span>
-                                )</RatingDescription>
-                        </StarRatingContainer>
+      case "2": // 세 번째 설문: 두 번째 별점 선택
+        return (
+          <SliderContent>
+            <StarContentHeader>
+              <ContentIndex className="Podo-Ticket-Headline-H4">
+                <span
+                  className="Podo-Ticket-Headline-H2"
+                  style={{ color: "var(--purple-4)" }}
+                >
+                  2
+                </span>
+                /2
+              </ContentIndex>
+              <ContentImage src={surveyImage2} />
+              <StarEvaluationTitle className="Podo-Ticket-Headline-H3">
+                <span style={{ color: "var(--purple-4)" }}>
+                  포도티켓을 주변에 추천한다면
+                </span>
+                <br />
+                0~10점 중 몇 점을 주시겠어요?
+              </StarEvaluationTitle>
+            </StarContentHeader>
 
-                        <ButtonContainer>
-                            <LargeBtn content="다음" onClick={handleSubmit1} isAvailable={selectedRating1 !== 0} />
-                        </ButtonContainer>
-                    </StarContent>
-                );
+            <SliderContainer>
+              <SliderInput
+                type="range"
+                min="0"
+                max="10"
+                value={selectedRating2}
+                onChange={handleSliderChange}
+              />
+              <SliderLabels>
+                {Array.from({ length: 11 }, (_, index) => (
+                  <Label key={index} isActive={index === selectedRating2}>
+                    {index}
+                  </Label>
+                ))}
+              </SliderLabels>
+            </SliderContainer>
 
-            case '2': // 세 번째 설문: 두 번째 별점 선택
-                return (
-                    <SliderContent>
-                        <StarContentHeader>
-                            <ContentIndex className='Podo-Ticket-Headline-H4'>
-                                <span className='Podo-Ticket-Headline-H2' style={{ color: 'var(--purple-4)' }}>2</span>
-                                /2
-                            </ContentIndex>
-                            <ContentImage src={surveyImage2} />
-                            <StarEvaluationTitle className="Podo-Ticket-Headline-H3">
-                                친구나 동료에게 <span style={{ color: 'var(--purple-4)' }}>추천할 의향</span>이<br />얼마나 있는지 알려주세요!
-                            </StarEvaluationTitle>
-                        </StarContentHeader>
+            <ButtonContainer>
+              <SmallBtn
+                content="이전"
+                onClick={handleClose}
+                isAvailable={true}
+                isDarkblue={true}
+              />
+              <SmallBtn
+                content="완료"
+                onClick={handleSubmit2}
+                isAvailable={selectedRating2 !== 0}
+              />
+            </ButtonContainer>
+          </SliderContent>
+        );
 
-                        <SliderContainer>
-                            <SliderInput
-                                type="range"
-                                min="0"
-                                max="10"
-                                value={selectedRating2}
-                                onChange={handleSliderChange}
-                            />
-                            <SliderLabels>
-                                {Array.from({ length: 11 }, (_, index) => (
-                                    <Label key={index} isActive={index === selectedRating2}>
-                                        {index}
-                                    </Label>
-                                ))}
-                            </SliderLabels>
-                        </SliderContainer>
+      case "3": // 마지막 단계: 감사 메시지 표시
+        return (
+          <Content isClosing={isClosing} isThanksContent={true}>
+            <ThanksContentContainer>
+              <ThanksImage src={thanksIcon} alt="감사 아이콘" />
+              <ThankYouMessageContainer>
+                <ThankYouMessage className="Podo-Ticket-Headline-H3">
+                  서비스 평가에 응해주셔서 감사합니다!
+                </ThankYouMessage>
+                <ThankYouMessage className="Podo-Ticket-Headline-H3">
+                  더 나은 서비스로 보답하겠습니다!
+                </ThankYouMessage>
+              </ThankYouMessageContainer>
+            </ThanksContentContainer>
 
-                        <ButtonContainer>
-                            <SmallBtn content="이전" onClick={handleClose} isAvailable={true} isDarkblue={true} />
-                            <SmallBtn content="완료" onClick={handleSubmit2} isAvailable={selectedRating2 !== 0} />
-                        </ButtonContainer>
-                    </SliderContent>
-                );
+            <ButtonContainer>
+              <LargeBtn
+                content="처음으로"
+                onClick={() => {
+                  onAcceptFunc();
+                  setActiveTab("1");
+                  setSelectedRating1(0);
+                  setSelectedRating2(0);
+                }}
+                isAvailable={true}
+              />
+            </ButtonContainer>
+          </Content>
+        );
 
-            case '3': // 마지막 단계: 감사 메시지 표시
-                return (
-                    <Content isClosing={isClosing} isThanksContent={true}>
-                        <ThanksContentContainer>
-                            <ThanksImage src={thanksIcon} alt="감사 아이콘" />
-                            <ThankYouMessageContainer>
-                                <ThankYouMessage className='Podo-Ticket-Headline-H3'>서비스 평가에 응해주셔서 감사합니다!</ThankYouMessage>
-                                <ThankYouMessage className='Podo-Ticket-Headline-H3'>더 나은 서비스로 보답하겠습니다!</ThankYouMessage>
-                            </ThankYouMessageContainer>
-                        </ThanksContentContainer>
+      default:
+        return null;
+    }
+  };
 
-                        <ButtonContainer>
-                            <LargeBtn content="처음으로" onClick={() => { onAcceptFunc(); setActiveTab('1'); setSelectedRating1(0); setSelectedRating2(0); }} isAvailable={true} />
-                        </ButtonContainer>
-                    </Content>
-                );
-
-            default:
-                return null;
-        }
-    };
-
-    return (
-        <Overlay>
-            <TopNav lefter={undefined} center={center} righter={undefined} />
-            {renderContent()}
-        </Overlay>
-    );
+  return (
+    <Overlay>
+      <TopNav lefter={undefined} center={center} righter={undefined} />
+      {renderContent()}
+    </Overlay>
+  );
 };
 
 export default SurveyModal;
@@ -208,7 +256,7 @@ const Overlay = styled.div`
   z-index: 10000;
 `;
 
-const Content = styled.div <{ isClosing: boolean, isThanksContent: boolean }>`
+const Content = styled.div<{ isClosing: boolean; isThanksContent: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -219,7 +267,15 @@ const Content = styled.div <{ isClosing: boolean, isThanksContent: boolean }>`
 
   text-align: center;
 
-  animation: ${({ isClosing, isThanksContent }) => isThanksContent ? isClosing ? fadeOut : 'none' : isClosing ? fadeOut : fadeIn} 0.4s ease-in-out;
+  animation: ${({ isClosing, isThanksContent }) =>
+      isThanksContent
+        ? isClosing
+          ? fadeOut
+          : "none"
+        : isClosing
+        ? fadeOut
+        : fadeIn}
+    0.4s ease-in-out;
 `;
 
 const StarContent = styled.div`
@@ -240,8 +296,8 @@ const StarContent = styled.div`
 `;
 
 const ContentImage = styled.img`
-width: 200px;
-height: 200px;
+  width: 200px;
+  height: 200px;
 `;
 
 const ThanksContentContainer = styled.div`
@@ -249,15 +305,15 @@ const ThanksContentContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-    
+
   flex-grow: 1;
 
   gap: 40px;
 `;
 
 const ThanksImage = styled.img`
-width: 121px;
-height: 121px;
+  width: 121px;
+  height: 121px;
 `;
 
 const ThankYouMessageContainer = styled.div`
@@ -265,11 +321,11 @@ const ThankYouMessageContainer = styled.div`
   flex-direction: column;
   align-items: center;
 
-gap: 5px;
+  gap: 5px;
 `;
 
 const ThankYouMessage = styled.div`
-color: var(--grey-7);
+  color: var(--grey-7);
 `;
 
 const StarContentHeader = styled.div`
@@ -281,19 +337,19 @@ const StarContentHeader = styled.div`
 `;
 
 const StarEvaluationTitle = styled.div`
-color: var(--grey-7);
-white-space: pre-line;
+  color: var(--grey-7);
+  white-space: pre-line;
 `;
 
 const ContentIndex = styled.div`
-margin-bottom: 14px;
+  margin-bottom: 14px;
 `;
 
 const StarRatingContainer = styled.div`
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-gap: 5px;
+  gap: 5px;
 `;
 
 const SliderContent = styled.div`
@@ -324,21 +380,22 @@ const SliderContainer = styled.div`
 `;
 
 interface SliderProps {
-    value: number; // value는 숫자 타입
+  value: number; // value는 숫자 타입
 }
 
 const SliderInput = styled.input.attrs<SliderProps>(() => ({
-    type: 'range', // input의 기본 속성을 설정
+  type: "range", // input의 기본 속성을 설정
 }))`
   -webkit-appearance: none; /* 기본 브라우저 스타일 제거 */
-  
+
   width: 100%;
   height: 19px;
   background: linear-gradient(
     to right,
-    #f5f4ff 0%, /* 그라디언트 시작 색상 */
-    #dfcdff ${props => props.value * 10}%, /* 채워진 부분 끝 */
-    var(--grey-2) ${props => props.value * 10}% /* 비활성화된 부분 시작 */
+    #f5f4ff 0%,
+    /* 그라디언트 시작 색상 */ #dfcdff ${(props) => props.value * 10}%,
+    /* 채워진 부분 끝 */ var(--grey-2) ${(props) => props.value * 10}%
+      /* 비활성화된 부분 시작 */
   );
   border-radius: 13px;
 
@@ -384,15 +441,18 @@ const SliderLabels = styled.div`
   padding-right: 1px;
 `;
 
-
-const Label = styled.span.attrs<{ isActive?: boolean }>(props => ({ className: props.isActive ? 'Podo-Ticket-Headline-H5' : 'Podo-Ticket-Headline-H6', }))
-    <{ isActive?: boolean }>`
-  color: ${props => (props.isActive ? 'var(--purple-4)' : 'var(--grey-5)')};
+const Label = styled.span.attrs<{ isActive?: boolean }>((props) => ({
+  className: props.isActive
+    ? "Podo-Ticket-Headline-H5"
+    : "Podo-Ticket-Headline-H6",
+}))<{ isActive?: boolean }>`
+  color: ${(props) => (props.isActive ? "var(--purple-4)" : "var(--grey-5)")};
 `;
 
-
-const RatingDescription = styled.div.attrs({ className: 'Podo-Ticket-Headline-H6' })`
-color: var(--grey-5);
+const RatingDescription = styled.div.attrs({
+  className: "Podo-Ticket-Headline-H6",
+})`
+  color: var(--grey-5);
 `;
 
 const ButtonContainer = styled.div`
