@@ -23,6 +23,10 @@ const MediumBtn: React.FC<MediumBtnProps>  = ({ content, onClick, isAvailable })
 export default MediumBtn;
 
 const MediumBtnContainer = styled.button<{ isAvailable: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: 16.3125rem;
   height: 3.4375rem;
 

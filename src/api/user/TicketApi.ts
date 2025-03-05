@@ -45,7 +45,19 @@ export const fetchTickets = async () => {
 // 평가 데이터를 서버에 전송 API
 export const submitEvaluation = async (rating: number): Promise<boolean> => {
   try {
-    const response = await api.post(`/survey`, { answer: rating });
+    const response = await api.post(`/survey/question1`, { answer: rating });
+
+    return response.data.success;
+  } catch (error: any) {
+    console.error('Error submitting evaluation:', error);
+    throw error.response?.data?.error || '예기치 않은 오류가 발생했습니다.';
+  }
+};
+
+// 추천 의향 데이터를 서버에 전송 API
+export const submitRecommand = async (rating: number): Promise<boolean> => {
+  try {
+    const response = await api.post(`/survey/question2`, { answer: rating });
 
     return response.data.success;
   } catch (error: any) {

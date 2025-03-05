@@ -15,12 +15,12 @@ const Splash: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
         const playerTimer = setTimeout(() => {
             setShowPlayer(false);
             setShowLogo(true);
-        }, 2500);
+        }, 1800);
 
         // 5초 후 Splash 화면 종료
         const logoTimer = setTimeout(() => {
             onFinish();
-        }, 5000);
+        }, 3500);
 
         return () => {
             clearTimeout(playerTimer);
@@ -58,7 +58,7 @@ const AnimatedPlayer = styled(Player)`
   width: 350px;
   height: 350px;
 
-  animation: ${fadeIn} 1s ease-in-out, ${fadeOut} 1s ease-in-out 1.7s; /* FadeIn 후 FadeOut */
+  animation: ${fadeIn} 1s ease-in-out, ${fadeOut} 1s ease-in-out 1s; /* FadeIn 후 FadeOut */
 `;
 
 const AnimatedLogo = styled.img`
@@ -72,5 +72,5 @@ const AnimatedLogo = styled.img`
 
   z-index: 5;
 
-  animation: ${fadeIn} 1.5s ease-in-out; /* FadeIn */
+  animation: ${fadeIn} 1s ease-in-out; /* FadeIn */
 `;

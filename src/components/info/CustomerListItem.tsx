@@ -17,6 +17,7 @@ interface OnsiteApprovalRequest {
 
 interface CustomerListItemProps {
   data: any[];
+  scheduleId: number;
   onBtnClick?: (item: User) => void;
   isOnsite: boolean;
   /* 아래는 Onsite reserve일 경우 사용 */
@@ -32,6 +33,7 @@ import Unchecked from "../../assets/images/onsite_unckecked.png"; // 체크 해�
 
 const CustomerListItem: React.FC<CustomerListItemProps> = ({
   data,
+  scheduleId,
   onBtnClick,
   isOnsite,
   canControll,
@@ -45,7 +47,7 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
       // 요청 데이터 생성
       const request: OnsiteApprovalRequest = {
         userIds: [userId], // 단일 사용자 ID를 배열로 전달
-        scheduleId: 1, // 예시로 사용되는 공연 일정 ID
+        scheduleId: scheduleId, // 예시로 사용되는 공연 일정 ID
         check: true, // 승인 여부
       };
 
@@ -61,7 +63,7 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
       // 요청 데이터 생성
       const request: OnsiteApprovalRequest = {
         userIds: [userId], // 단일 사용자 ID를 배열로 전달
-        scheduleId: 1, // 예시로 사용되는 공연 일정 ID
+        scheduleId: scheduleId, // 예시로 사용되는 공연 일정 ID
         check: false, // 승인 여부
       };
 

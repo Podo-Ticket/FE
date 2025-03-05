@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 
-
+import ProtectedRoute from "./utils/ProtectedRoute.tsx";
 
 import { AnimatePresence } from "framer-motion";
 
@@ -28,9 +28,8 @@ import ReservedEdit from "./pages/admin/ReservedEdit.tsx";
 import ReservedCheck from "./pages/admin/ReservedCheck.tsx";
 import OnsiteManage from "./pages/admin/OnsiteManage.tsx";
 import AdminSetting from "./pages/admin/AdminSetting.tsx";
-        
-import OnboardingModal from './components/modal/OnboardingModal.tsx';
 
+import OnboardingModal from './components/modal/OnboardingModal.tsx';
 
 const GlobalStyle = createGlobalStyle`
     * {
@@ -48,24 +47,6 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   const location = useLocation();
-
-  // 스플래시 설정
-  const [showSplash, setShowSplash] = useState(() => {
-    return !localStorage.getItem("hasVisited");
-  });
-
-  useEffect(() => {
-    if (!showSplash) return;
-    localStorage.setItem("hasVisited", "true");
-    const timer = setTimeout(() => setShowSplash(false), 5000);
-    return () => clearTimeout(timer);
-  }, [showSplash]);
-
-  const handleSplashFinish = () => setShowSplash(false); // Splash 종료 핸들러
-
-  if (showSplash) {
-    return <Splash onFinish={handleSplashFinish} />; // Splash 화면 렌더링
-  }
 
   // 경로에 따른 온보딩 pageType 설정
   const [showOnboardingModal, setShowOnboardingModal] = useState<boolean>(false);
@@ -125,6 +106,36 @@ function App() {
     setIsDontShowAgainChecked(false); // 체크박스 초기화
   };
 
+  // 온보딩 모달 출현시 외부 스크롤 금지
+  useEffect(() => {
+    if (showOnboardingModal) {
+      document.body.style.overflow = "hidden"; // 스크롤 비활성화
+    } else {
+      document.body.style.overflow = "auto"; // 스크롤 활성화
+    }
+
+    return () => {
+      document.body.style.overflow = "auto"; // 컴포넌트 언마운트 시 복구
+    };
+  }, [showOnboardingModal]);
+
+  // 스플래시 설정
+  const [showSplash, setShowSplash] = useState(() => {
+    return !localStorage.getItem("hasVisited");
+  });
+
+  useEffect(() => {
+    if (!showSplash) return;
+    localStorage.setItem("hasVisited", "true");
+    const timer = setTimeout(() => setShowSplash(false), 5000);
+    return () => clearTimeout(timer);
+  }, [showSplash]);
+
+  const handleSplashFinish = () => setShowSplash(false); // Splash 종료 핸들러
+
+  if (showSplash) {
+    return <Splash onFinish={handleSplashFinish} />; // Splash 화면 렌더링
+  }
 
   return (
     <>
@@ -132,6 +143,7 @@ function App() {
 
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
+          {/* User Routes */}
           <Route path="/" element={<UserHome />} />
           <Route path="/reserve" element={<OnSiteReserve />} />
           <Route
@@ -154,19 +166,76 @@ function App() {
           />
           <Route path="/ticket" element={<TicketScreen />} />
 
+
+          {/* Admin Routes */}
           <Route path="/adminAuth" element={<AdminAuth />} />
 
-          <Route path="/home" element={<AdminHome />} />
-          <Route path="/home/realtime" element={<RealtimeSeats />} />
-          <Route path="/home/manage" element={<ManageLockingSeats />} />
+          <Route path="/home"
+            element={
+              <ProtectedRoute>
+                <AdminHome />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/home/realtime"
+            element={
+              <ProtectedRoute>
+                <RealtimeSeats />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/home/manage"
+            element={
+              <ProtectedRoute>
+                <ManageLockingSeats />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/reserved" element={<ReservedManange />} />
-          <Route path="/reserved/add" element={<ReservedAdd />} />
-          <Route path="/reserved/check" element={<ReservedCheck />} />
-          <Route path="/reserved/check/edit" element={<ReservedEdit />} />
+          {/* Reserved Routes */}
+          <Route path="/reserved"
+            element={
+              <ProtectedRoute>
+                <ReservedManange />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/reserved/add"
+            element={
+              <ProtectedRoute>
+                <ReservedAdd />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/reserved/check"
+            element={
+              <ProtectedRoute>
+                <ReservedCheck />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/reserved/check/edit"
+            element={
+              <ProtectedRoute>
+                <ReservedEdit />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/onsite" element={<OnsiteManage />} />
-          <Route path="/setting" element={<AdminSetting />} />
+          <Route path="/onsite"
+            element={
+              <ProtectedRoute>
+                <OnsiteManage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/setting"
+            element={
+              <ProtectedRoute>
+                <AdminSetting />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="/survey" element={<SurveyLink />} />
         </Routes>

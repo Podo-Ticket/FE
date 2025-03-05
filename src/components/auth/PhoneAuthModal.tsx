@@ -42,6 +42,10 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, schedul
   const openInvalidPhoneError = () => setInvalidPhoneError(true);
   const closeInvalidPhoneError = () => setInvalidPhoneError(false);
 
+  const [waitingForReservationError, setWaitingForReservationError] = useState(false);
+  const openWaitingForReservationError = () => setWaitingForReservationError(true);
+  const closeWaitingForReservationError = () => setWaitingForReservationError(false);
+
   if (!showPhoneModal) return null;
 
   const handleUnacceptClick = () => {
@@ -92,6 +96,8 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, schedul
         openInvalidPhoneError(); // 에러 모달 표시
       } else if (result.data === '이미 발권한 사용자') {
         navigateTo('/ticket'); // 티켓 페이지로 이동
+      } else if (result.data === '현장 예매 수락 대기 중') {
+        openWaitingForReservationError();
       } else {
         onAcceptFunc();
       }
@@ -151,6 +157,13 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, schedul
         showDefaultErrorModal={invalidPhoneError}
         errorMessage="예매내역을 확인할 수 없습니다."
         onAcceptFunc={closeInvalidPhoneError}
+        OnTopSide={true}
+      />
+
+      <ErrorModal
+        showDefaultErrorModal={waitingForReservationError}
+        errorMessage="현장 예매 수락 대기 중 입니다."
+        onAcceptFunc={closeWaitingForReservationError}
         OnTopSide={true}
       />
 

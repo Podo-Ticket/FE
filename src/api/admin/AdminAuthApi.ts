@@ -12,9 +12,7 @@ const api = axios.create({
 });
 
 // 어드민 인증 코드 확인 API
-export const verifyAdminCode = async (
-  adminCode: string
-): Promise<{ success: boolean }> => {
+export const verifyAdminCode = async (adminCode: string): Promise<{ success: boolean }> => {
   try {
     const response = await api.get(`/admin`, {
       params: {
@@ -56,6 +54,21 @@ export const fetchAdminEnter = async (): Promise<AdminEnterResponse> => {
       throw new Error(error.response.data.error); // 서버에서 반환한 에러 메시지
     } else {
       throw new Error("어드민 메인 API 호출 중 오류가 발생했습니다."); // 일반적인 에러 메시지
+    }
+  }
+};
+
+// 어드민 세션 인증 가능 유무 확인 API
+export const verifyAdminSession = async (): Promise<{ session: boolean }> => {
+  try {
+    const response = await api.get(`/admin/check`);
+
+    return response.data; // 성공 시 응답 데이터 반환
+  } catch (error: any) {
+    if (error.response && error.response.data.error) {
+      throw new Error(error.response.data); // 서버에서 반환한 에러 메시지
+    } else {
+      throw new Error("API 호출 중 오류가 발생했습니다."); // 일반적인 에러 메시지
     }
   }
 };

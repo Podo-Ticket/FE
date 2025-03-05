@@ -12,51 +12,50 @@ import closeImage from '../../assets/images/admin/white_x.png';
 import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
 
 interface OnboardingModalProps {
-    showOnboardingModal: boolean;
-    pageType: number;
-    onDismissFunc: () => void;
-    isDontShowAgainChecked: boolean;
-    setIsDontShowAgainChecked: (checked: boolean) => void;
+  showOnboardingModal: boolean;
+  pageType: number;
+  onDismissFunc: () => void;
+  isDontShowAgainChecked: boolean;
+  setIsDontShowAgainChecked: (checked: boolean) => void;
 }
 
 const OnboardingModal: React.FC<OnboardingModalProps> = ({ showOnboardingModal, pageType,
-    onDismissFunc, isDontShowAgainChecked, setIsDontShowAgainChecked, }) => {
-    const [isClosing, setIsClosing] = useState(false);
+  onDismissFunc, isDontShowAgainChecked, setIsDontShowAgainChecked, }) => {
+  const [isClosing, setIsClosing] = useState(false);
 
-    if (!showOnboardingModal && !isClosing) return null;
+  if (!showOnboardingModal && !isClosing) return null;
 
-    const imageMap: Record<number, string> = {
-        0: onboardingHomeImage,
-        1: onboardingOnsiteImage,
-        2: onboardingRealtimeImage,
-        3: onboardingReservedImage,
-    };
+  const imageMap: Record<number, string> = {
+    0: onboardingHomeImage,
+    1: onboardingOnsiteImage,
+    2: onboardingRealtimeImage,
+    3: onboardingReservedImage,
+  };
 
-    const getImageSrc = () => imageMap[pageType] || ''; // 기본값 처리
+  const getImageSrc = () => imageMap[pageType] || ''; // 기본값 처리
 
-    const handleCheckboxClick = () => {
-        setIsDontShowAgainChecked(!isDontShowAgainChecked); // 체크 상태 토글
-    };
+  const handleCheckboxClick = () => {
+    setIsDontShowAgainChecked(!isDontShowAgainChecked); // 체크 상태 토글
+  };
 
+  return (
+    <Overlay>
+      <Content isClosing={isClosing}>
+        <PageTypeImage src={getImageSrc()} />
 
-    return (
-        <Overlay>
-            <Content isClosing={isClosing}>
-                <PageTypeImage src={getImageSrc()} />
-
-                <CheckBoxContainer>
-                    <CheckBoxContent>
-                        <AgreementText>
-                            <HiddenCheckbox checked={isDontShowAgainChecked} onChange={(e) => setIsDontShowAgainChecked(e.target.checked)} />
-                            <CustomCheckbox checked={isDontShowAgainChecked} onClick={handleCheckboxClick} />
-                            <span onClick={handleCheckboxClick} className='Podo-Ticket-Headline-H5'>다시 보지 않기</span>
-                        </AgreementText>
-                    </CheckBoxContent>
-                    <CloseButton src={closeImage} onClick={onDismissFunc} />
-                </CheckBoxContainer>
-            </Content>
-        </Overlay>
-    );
+        <CheckBoxContainer>
+          <CheckBoxContent>
+            <AgreementText>
+              <HiddenCheckbox checked={isDontShowAgainChecked} onChange={(e) => setIsDontShowAgainChecked(e.target.checked)} />
+              <CustomCheckbox checked={isDontShowAgainChecked} onClick={handleCheckboxClick} />
+              <span onClick={handleCheckboxClick} className='Podo-Ticket-Headline-H5'>다시 보지 않기</span>
+            </AgreementText>
+          </CheckBoxContent>
+          <CloseButton src={closeImage} onClick={onDismissFunc} />
+        </CheckBoxContainer>
+      </Content>
+    </Overlay>
+  );
 };
 
 export default OnboardingModal;
@@ -73,9 +72,13 @@ const Overlay = styled.div`
   align-items: center;
 
   z-index: 10000;
+
+  pointer-events: auto;
 `;
 
 const Content = styled.div <{ isClosing: boolean }>`
+  position: relative;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -137,8 +140,8 @@ const CustomCheckbox = styled.div <{ checked: boolean }>`
   height: 14px; 
   margin-right: 3px;
   background-image: ${props => props.checked ?
-        `url(${dontpresentChecked})` :
-        `url(${dontpresentUnchecked})`};
+    `url(${dontpresentChecked})` :
+    `url(${dontpresentUnchecked})`};
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
