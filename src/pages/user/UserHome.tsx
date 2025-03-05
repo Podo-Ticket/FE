@@ -562,7 +562,6 @@ const BackDetailContainer = styled.div`
   padding: 20px 36px;
 
   gap: 13px;
-  border: 1px solid #ddd;
 
   overflow-y: auto;
   overscroll-behavior: contain; // iOS 및 기타 브라우저 스크롤 동작 제어
