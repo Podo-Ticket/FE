@@ -29,7 +29,7 @@ import ReservedCheck from "./pages/admin/ReservedCheck.tsx";
 import OnsiteManage from "./pages/admin/OnsiteManage.tsx";
 import AdminSetting from "./pages/admin/AdminSetting.tsx";
 
-import OnboardingModal from "./components/modal/OnboardingModal.tsx";
+import OnboardingModal from './components/modal/OnboardingModal.tsx';
 
 const GlobalStyle = createGlobalStyle`
     * {
@@ -39,10 +39,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
-<<<<<<< HEAD
-=======
        
->>>>>>> eae279f (✨feat: setting pwa download)
         font-family: Pretendard;
         height: 100%;
     }
@@ -52,10 +49,8 @@ function App() {
   const location = useLocation();
 
   // 경로에 따른 온보딩 pageType 설정
-  const [showOnboardingModal, setShowOnboardingModal] =
-    useState<boolean>(false);
-  const [isDontShowAgainChecked, setIsDontShowAgainChecked] =
-    useState<boolean>(false);
+  const [showOnboardingModal, setShowOnboardingModal] = useState<boolean>(false);
+  const [isDontShowAgainChecked, setIsDontShowAgainChecked] = useState<boolean>(false);
 
   const getPageType = (pathname: string): number | null => {
     switch (pathname) {
@@ -171,27 +166,25 @@ function App() {
           />
           <Route path="/ticket" element={<TicketScreen />} />
 
+
           {/* Admin Routes */}
           <Route path="/adminAuth" element={<AdminAuth />} />
 
-          <Route
-            path="/home"
+          <Route path="/home"
             element={
               <ProtectedRoute>
                 <AdminHome />
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/home/realtime"
+          <Route path="/home/realtime"
             element={
               <ProtectedRoute>
                 <RealtimeSeats />
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/home/manage"
+          <Route path="/home/manage"
             element={
               <ProtectedRoute>
                 <ManageLockingSeats />
@@ -200,32 +193,28 @@ function App() {
           />
 
           {/* Reserved Routes */}
-          <Route
-            path="/reserved"
+          <Route path="/reserved"
             element={
               <ProtectedRoute>
                 <ReservedManange />
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/reserved/add"
+          <Route path="/reserved/add"
             element={
               <ProtectedRoute>
                 <ReservedAdd />
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/reserved/check"
+          <Route path="/reserved/check"
             element={
               <ProtectedRoute>
                 <ReservedCheck />
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/reserved/check/edit"
+          <Route path="/reserved/check/edit"
             element={
               <ProtectedRoute>
                 <ReservedEdit />
@@ -233,16 +222,14 @@ function App() {
             }
           />
 
-          <Route
-            path="/onsite"
+          <Route path="/onsite"
             element={
               <ProtectedRoute>
                 <OnsiteManage />
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/setting"
+          <Route path="/setting"
             element={
               <ProtectedRoute>
                 <AdminSetting />
@@ -252,6 +239,7 @@ function App() {
 
           <Route path="/survey" element={<SurveyLink />} />
         </Routes>
+
       </AnimatePresence>
 
       {pageType !== null && (
@@ -269,4 +257,6 @@ function App() {
   );
 }
 
+
 export default App;
+
