@@ -150,7 +150,7 @@ const ReservedManage = () => {
         schedules={schedules}
         selectedSession={selectedSession}
         onContentChange={handleSessionChange}
-        isRounded={true}
+        isRounded={false}
       />
 
       <SearchFilterBar
@@ -162,6 +162,7 @@ const ReservedManage = () => {
         acceptCount={acceptCount}
         unacceptCount={unacceptCount}
         handleFilterClick={handleFilterClick}
+        isReserved={true}
       />
 
       <ListContainer>

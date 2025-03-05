@@ -3,8 +3,6 @@ import styled from "styled-components";
 
 import magnifier from '../../assets/images/admin/magnifier.png'
 
-import { DateUtil } from '../../utils/DateUtil';
-
 // SearchBar Props 타입 정의
 interface SearchFilterBarProps {
   search: string;
@@ -15,6 +13,7 @@ interface SearchFilterBarProps {
   unacceptCount: number;
   acceptCount: number;
   handleFilterClick: (filterType: string) => void;
+  isReserved?: boolean;
 }
 
 const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
@@ -26,6 +25,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
   unacceptCount,
   acceptCount,
   handleFilterClick,
+  isReserved = false
 }) => {
   return (
     <ViewContainer>
@@ -56,13 +56,13 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
             isActive={filter === "미 수락"}
             onClick={() => handleFilterClick("미 수락")}
           >
-            미 수락 {unacceptCount}건
+            {isReserved ? '미 발권': '미 수락'} {unacceptCount}건
           </FilterButton>
           <FilterButton
             isActive={filter === "수락 완료"}
             onClick={() => handleFilterClick("수락 완료")}
           >
-            수락 {acceptCount}건
+            {isReserved ? '발권 완료': '수락'} {acceptCount}건
           </FilterButton>
         </FilterButtons>
       </FilterButtonsContainer>

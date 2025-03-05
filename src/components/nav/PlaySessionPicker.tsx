@@ -86,7 +86,7 @@ const SessionPickerContainer = styled.div<{ isEllipse?: boolean, isRounded: bool
   width: ${({ isEllipse }) => (isEllipse ? "90%" : "100%")};
   border-radius: ${({ isEllipse, isRounded }) => (isEllipse || isRounded ? "10px" : "0")};
   border: 1px solid var(--grey-3);
-  background: var(--ect-white);
+  background: var(--background-1);
   box-shadow: ${({ isRounded }) => (isRounded ? "0px 0px 5px 3px rgba(0, 0, 0, 0.02)" : "none")};
 
   user-select: none; /* 텍스트 선택 방지 */
@@ -121,9 +121,14 @@ const SessionSelector = styled.select`
   
   width: 100%;
   border: none;
+  background: transparent;
 
   padding: 8px;
 
+  color: var(--grey-7);
+
+  -webkit-appearance: none; /* Safari 기본 스타일 제거 */
+  -moz-appearance: none; /* Firefox 기본 스타일 제거 */
 
   &:focus {
     outline: none; /* 포커스 상태에서 아웃라인 제거 */

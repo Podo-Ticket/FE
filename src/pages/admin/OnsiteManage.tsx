@@ -204,6 +204,7 @@ const OnsiteManage = () => {
             <ListContainer>
                 <CustomerListItem
                     data={filteredData}
+                    scheduleId={Number(selectedSession)}
                     onBtnClick={undefined}
                     isOnsite={true}
                     canControll={true}
