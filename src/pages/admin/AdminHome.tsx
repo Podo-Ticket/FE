@@ -33,8 +33,6 @@ const AdminHome = () => {
 
     const loadPerformanceData = async () => {
       try {
-        console.log("🔄 관리자 세션 생성 시작...");
-        await verifyAdminCode("kwdc"); // ✅ 세션 생성 (먼저 실행)
         console.log("🔄 어드민 메인 데이터 가져오기...");
         const data = await fetchAdminEnter();
         setPerformance(data.info);
