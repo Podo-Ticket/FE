@@ -28,7 +28,10 @@ function SelectSeats() {
   const [headCount, setHeadCount] = useState(0); // headCount
 
   const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
-  const triggerRefresh = () => setIsRefreshed((prev) => !prev);
+  const triggerRefresh = () => {
+    setIsRefreshed((prev) => !prev);
+    setSelectedSeats([]);
+  }
 
   // 예매 인원 수 확인 Api (인원 수만 확인함)
   useEffect(() => {

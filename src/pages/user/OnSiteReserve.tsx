@@ -305,12 +305,13 @@ function OnSiteReserve() {
 
       <Loading showLoading={isLoading} isOnSiteReserve={true} />
 
-      <PrivacyPolicyModal
-        showTextModal={showPrivacyModal}
-        onAcceptFunc={closePrivacyModal}
-        title="개인정보 수집 동의 약관"
-        description={AGREE_CONTENT}
-      />
+            <PrivacyPolicyModal
+                showTextModal={showPrivacyModal}
+                onAcceptFunc={closePrivacyModal}
+                title='개인정보 수집 동의 약관'
+                description={AGREE_CONTENT}
+                overlaied={true}
+            />
 
       <ErrorModal
         showDefaultErrorModal={isDuplicatePhoneModalOpen}

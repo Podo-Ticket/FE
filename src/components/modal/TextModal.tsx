@@ -10,9 +10,10 @@ interface TextModalProps {
   onAcceptFunc: () => void;
   title: string;
   description: string;
+  overlaied?: boolean;
 }
 
-const TextModal: React.FC<TextModalProps> = ({ showTextModal, onAcceptFunc, title, description }) => {
+const TextModal: React.FC<TextModalProps> = ({ showTextModal, onAcceptFunc, title, description, overlaied = false }) => {
   const [isClosing, setIsClosing] = useState(false);
 
   if (!showTextModal) return null;
@@ -26,7 +27,7 @@ const TextModal: React.FC<TextModalProps> = ({ showTextModal, onAcceptFunc, titl
   };
 
   return (
-    <ModalOverlay>
+    <ModalOverlay overlaied={overlaied}>
       <ModalContent isClosing={isClosing}>
         <HeadText className='Podo-Ticket-Headline-H2'>{title}</HeadText>
         <ContentPrivacy className='Podo-Ticket-Body-B8'>{description}</ContentPrivacy>
@@ -38,7 +39,7 @@ const TextModal: React.FC<TextModalProps> = ({ showTextModal, onAcceptFunc, titl
 
 export default TextModal;
 
-const ModalOverlay = styled.div`
+const ModalOverlay = styled.div<{ overlaied: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -46,9 +47,11 @@ const ModalOverlay = styled.div`
   align-items: center;
   justify-content: center;
 
+  z-index: 1000;
+
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.0);
+  background: ${({ overlaied }) => (overlaied ? 'rgba(0, 0, 0, 0.6)' : 'rgba(0, 0, 0, 0.0)')};
 `;
 
 const ModalContent = styled.div<{ isClosing: boolean }>`

@@ -330,8 +330,8 @@ const SeatMap: React.FC<SeatMapProps> = ({
                 const isAvailable = isRealTime
                   ? true
                   : manageMode
-                  ? !unclickableSeats.includes(seatId)
-                  : isLocked;
+                    ? !unclickableSeats.includes(seatId)
+                    : isLocked;
 
                 return (
                   <SingleSeat
@@ -501,6 +501,19 @@ const SeatInfoContainer = styled.div<{ isRealTime: boolean }>`
   flex-direction: row;
 
   width: 80%;
+
+  @media (max-height: 932px) {
+    top: ${({ isRealTime }) => (isRealTime ? "93%" : "80%")};
+  }
+
+  @media (max-height: 900px) {
+    top: ${({ isRealTime }) => (isRealTime ? "95%" : "85%")};
+  }
+
+  @media (max-height: 630px) {
+    top: ${({ isRealTime }) => (isRealTime ? "95%" : "90%")};
+  }
+
 `;
 
 const SeatCategoryContainer = styled.div`
