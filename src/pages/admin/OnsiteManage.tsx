@@ -1,111 +1,143 @@
-import React, { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import TopNav from "../../components/nav/TopNav.tsx";
-import PlaySessionPicker from "../../components/nav/PlaySessionPicker.tsx";
-import SearchFilterBar from "../../components/nav/SearchFilterBar.tsx";
-import CustomerListItem from "../../components/info/CustomerListItem.tsx";
-import FooterNav from "../../components/nav/FooterNav.tsx";
+import TopNav from '../../components/nav/TopNav.tsx';
+import PlaySessionPicker from '../../components/nav/PlaySessionPicker.tsx';
+import SearchFilterBar from '../../components/nav/SearchFilterBar.tsx';
+import CustomerListItem from '../../components/info/CustomerListItem.tsx';
+import FooterNav from '../../components/nav/FooterNav.tsx'
 
-import { fadeIn } from "../../styles/animation/DefaultAnimation.ts";
-import {
-  UserWithApproval,
-  approveOnsite,
-  Schedule,
-  fetchOnsiteUserList,
-  fetchSchedules,
-} from "../../api/admin/OnsiteManageApi";
+import { fadeIn } from '../../styles/animation/DefaultAnimation.ts';
+import { UserWithApproval, approveOnsite, Schedule, fetchOnsiteUserList, fetchSchedules } from '../../api/admin/OnsiteManageApi';
 
 interface OnsiteApprovalRequest {
-  userIds: number[];
-  scheduleId: number;
-  check: boolean;
+    userIds: number[];
+    scheduleId: number;
+    check: boolean;
 }
 
 const OnsiteManage = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
-  const [selectedSession, setSelectedSession] = useState<string>("");
-  // 공연 회차 선택 핸들러
-  const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
-    setSelectedSession(event.target.value);
-  useEffect(() => {
-    // 공연 회차 데이터 가져오기 처리
-    const loadSchedules = async () => {
-      try {
-        const data = await fetchSchedules(); // 공연 회차 데이터 가져오기
-        setSchedules(data);
+    const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
+    const [schedules, setSchedules] = useState<Schedule[]>([]);
+    const [selectedSession, setSelectedSession] = useState<string>("");
+    // 공연 회차 선택 핸들러
+    const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) => setSelectedSession(event.target.value);
+    useEffect(() => {       // 공연 회차 데이터 가져오기 처리
+        const loadSchedules = async () => {
+            try {
+                const data = await fetchSchedules(); // 공연 회차 데이터 가져오기
+                setSchedules(data);
 
-        // 로컬스토리지에서 currentScheduleId 가져오기
-        const currentScheduleId = localStorage.getItem("currentScheduleId");
+                // 로컬스토리지에서 currentScheduleId 가져오기
+                const currentScheduleId = localStorage.getItem("currentScheduleId");
 
-        if (currentScheduleId) {
-          // 로컬스토리지에 저장된 ID가 유효한 경우
-          setSelectedSession(currentScheduleId);
-        } else {
-          // 데이터가 있는 경우 첫 번째 회차 선택
-          setSelectedSession(data[0].id.toString());
+                if (currentScheduleId) {
+                    // 로컬스토리지에 저장된 ID가 유효한 경우
+                    setSelectedSession(currentScheduleId);
+                } else {
+                    // 데이터가 있는 경우 첫 번째 회차 선택
+                    setSelectedSession(data[0].id.toString());
+                }
+            } catch (error) {
+                console.error("Error loading schedules:", error);
+            }
+        };
+
+        loadSchedules();
+    }, []);
+    const triggerRefresh = () => setIsRefreshed((prev) => !prev);
+
+    const [search, setSearch] = useState('');
+    const [filter, setFilter] = useState('전체');
+    const handleSearch = (e) => setSearch(e.target.value);
+    const handleSearchButtonClick = () => setSearch(''); // 검색어 초기화
+
+    // 현장 예매자 리스트 데이터 가져오기
+    const [data, setData] = useState<UserWithApproval[]>([]);
+    useEffect(() => {
+        if (!selectedSession) return;
+
+        localStorage.setItem("currentScheduleId", selectedSession);
+        console.log("Saved to localStorage:", selectedSession);
+
+        const loadUserList = async () => {
+            try {
+                const data = await fetchOnsiteUserList(Number(selectedSession)); // 사용자 리스트 가져오기
+                setData(data.users);
+            } catch (error) {
+                console.error("Error loading user list:", error);
+            }
+        };
+
+        loadUserList();
+    }, [selectedSession, isRefreshed]);
+    // 현장 예매자 발권 승인, 거절 처리
+    const handleApproveClick = async (request: OnsiteApprovalRequest) => {
+        try {
+            // 승인 요청 API 호출
+            const { userIds, scheduleId, check } = request; // request 객체에서 데이터 추출
+
+            const response = await approveOnsite(userIds, scheduleId, check);
+
+            if (response.accept) {
+                triggerRefresh(); // accepted
+            } else {
+                triggerRefresh(); // rejected
+            }
+        } catch (error: any) {
+            alert(error.message);
         }
-      } catch (error) {
-        console.error("Error loading schedules:", error);
-      }
     };
+    // 현장 예매자 일괄 승인/삭제 처리
+    const handleGroupApproveClick = async (isApprove: boolean) => {
+        const request: OnsiteApprovalRequest = {
+            userIds: checkedItems, // 단일 사용자 ID를 배열로 전달
+            scheduleId: Number(selectedSession), // 예시로 사용되는 공연 일정 ID
+            check: isApprove, // 승인 여부
+        };
 
-    loadSchedules();
-  }, []);
-  const triggerRefresh = () => setIsRefreshed((prev) => !prev);
+        try {
+            const result = await handleApproveClick(request); // 결과 저장
 
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("전체");
-  const handleSearch = (e) => setSearch(e.target.value);
-  const handleSearchButtonClick = () => setSearch(""); // 검색어 초기화
+            setIsManaging(false);
+            setCheckedItems([]);
+            toggleExpand();
+            triggerRefresh();
 
-  // 현장 예매자 리스트 데이터 가져오기
-  const [data, setData] = useState<UserWithApproval[]>([]);
-  useEffect(() => {
-    if (!selectedSession) return;
-
-    localStorage.setItem("currentScheduleId", selectedSession);
-    console.log("Saved to localStorage:", selectedSession);
-
-    const loadUserList = async () => {
-      try {
-        const data = await fetchOnsiteUserList(Number(selectedSession)); // 사용자 리스트 가져오기
-        setData(data.users);
-      } catch (error) {
-        console.error("Error loading user list:", error);
-      }
-    };
-
-    loadUserList();
-  }, [selectedSession, isRefreshed]);
-
-  // 현장 예매자 발권 승인, 거절 처리
-  const handleApproveClick = async (request: OnsiteApprovalRequest) => {
-    try {
-      // 승인 요청 API 호출
-      const { userIds, scheduleId, check } = request; // request 객체에서 데이터 추출
-
-      const response = await approveOnsite(userIds, scheduleId, check);
-
-      if (response.accept) {
-        triggerRefresh(); // accepted
-      } else {
-        triggerRefresh(); // rejected
-      }
-    } catch (error: any) {
-      alert(error.message);
+        } catch (error: any) {
+            console.error("Error during group approval:", error.message);
+        }
     }
-  };
-  // 현장 예매자 일괄 승인/삭제 처리
-  const handleGroupApproveClick = async (isApprove: boolean) => {
-    const request: OnsiteApprovalRequest = {
-      userIds: checkedItems, // 단일 사용자 ID를 배열로 전달
-      scheduleId: Number(selectedSession), // 예시로 사용되는 공연 일정 ID
-      check: isApprove, // 승인 여부
+
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [isManaging, setIsManaging] = useState(false);
+    const [checkedItems, setCheckedItems] = useState<number[]>([]);
+    const toggleExpand = () => setIsExpanded(!isExpanded);
+    const handleManageClick = () => {
+        setIsManaging(!isManaging); // 상태 토글
+        toggleExpand();
+    };
+    // 체크 박스 클릭 시 토글 기능 처리
+    const handleCheckClick = (id: number) => {
+        setCheckedItems((prev) => {
+            // 해당 ID가 이미 있는지 확인
+            const isAlreadyChecked = prev.includes(id);
+
+            if (isAlreadyChecked) {
+                // 이미 체크된 경우: 제거
+                const updatedItems = prev.filter((item) => item !== id);
+                console.log("Updated checkedItems after removing:", updatedItems);
+                return updatedItems;
+            } else {
+                // 체크되지 않은 경우: 추가
+                const updatedItems = [...prev, id];
+                console.log("Updated checkedItems after adding:", updatedItems);
+                return updatedItems;
+            }
+        });
     };
 
     // Navigation 중앙, 우측부 처리
@@ -195,8 +227,9 @@ const ViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
 `;
 
 const ListContainer = styled.div`
-  animation: ${fadeIn} 0.3s ease-in-out;
+animation: ${fadeIn} 0.3s ease-in-out;
 `;
