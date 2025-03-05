@@ -6,7 +6,7 @@ import thanksIcon from '../../assets/images/check_icon.png';
 import surveyImage1 from '../../assets/images/admin/landing_character_1.png'
 import surveyImage2 from '../../assets/images/admin/landing_character_2.png'
 
-import { submitEvaluation } from '../../api/user/TicketApi'; // API 호출 함수 가져오기
+import { submitEvaluation, submitRecommand } from '../../api/user/TicketApi'; // API 호출 함수 가져오기
 import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
 import SmallBtn from '../button/ModalSmallBtn.tsx';
 import TopNav from '../nav/TopNav.tsx';
@@ -47,20 +47,29 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
         });
     };
 
-    // 서베이 모달 자동 닫기 처리
-    useEffect(() => {
-        if (activeTab === '4') {
-            const delayTimer = setTimeout(() => {
-                setIsClosing(true);
-                const fadeOutTimer = setTimeout(() => {
-                    onAcceptFunc();
-                    setActiveTab('0');
-                }, 400);
-                return () => clearTimeout(fadeOutTimer);
-            }, 600);
-            return () => clearTimeout(delayTimer);
+    const handleSubmit1 = async () => {
+        try {
+            if (selectedRating1 !== 0) {
+                const result = await submitEvaluation(selectedRating1); // API 호출
+                console.log('응답 성공:', result);
+                handleNext(); // 다음 단계로 이동
+            }
+        } catch (error) {
+            console.error('응답 실패:', error.message);
         }
-    }, [activeTab, onAcceptFunc]);
+    };
+
+    const handleSubmit2 = async () => {
+        try {
+            if (selectedRating1 !== 0) {
+                const result = await submitRecommand(selectedRating2); // API 호출
+                console.log('응답 성공:', result);
+                handleNext(); // 다음 단계로 이동
+            }
+        } catch (error) {
+            console.error('응답 실패:', error.message);
+        }
+    };
 
     if (!showSurveyModal) return null;
 
@@ -109,7 +118,7 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
                         </StarRatingContainer>
 
                         <ButtonContainer>
-                            <LargeBtn content="다음" onClick={handleNext} isAvailable={selectedRating1 !== 0} />
+                            <LargeBtn content="다음" onClick={handleSubmit1} isAvailable={selectedRating1 !== 0} />
                         </ButtonContainer>
                     </StarContent>
                 );
@@ -147,7 +156,7 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
 
                         <ButtonContainer>
                             <SmallBtn content="이전" onClick={handleClose} isAvailable={true} isDarkblue={true} />
-                            <SmallBtn content="완료" onClick={handleNext} isAvailable={selectedRating2 !== 0} />
+                            <SmallBtn content="완료" onClick={handleSubmit2} isAvailable={selectedRating2 !== 0} />
                         </ButtonContainer>
                     </SliderContent>
                 );
