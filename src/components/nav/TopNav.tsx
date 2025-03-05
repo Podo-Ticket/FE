@@ -8,12 +8,25 @@ interface lefter {
     iconHeight?: number; // 아이콘 높이 (px 단위)
     text: string;
     clickFunc: () => void;
+   
 }
 */
 
-const TopNav = ({ lefter, center, righter, isGrey = false, isUnderlined = false, customStyles = {}}) => {
+const TopNav = ({
+  lefter,
+  center,
+  righter,
+  isGrey = false,
+  isUnderlined = false,
+  customStyles = {},
+  font = "Podo-Ticket-Headline-H3",
+}) => {
   return (
-    <NavContainer isGrey={isGrey} isUnderlined={isUnderlined} style={customStyles}>
+    <NavContainer
+      isGrey={isGrey}
+      isUnderlined={isUnderlined}
+      style={customStyles}
+    >
       <ImageContainer onClick={lefter ? lefter.clickFunc : undefined}>
         {lefter ? (
           lefter.icon ? (
@@ -24,12 +37,17 @@ const TopNav = ({ lefter, center, righter, isGrey = false, isUnderlined = false,
               height={lefter.iconHeight}
             />
           ) : lefter.text ? (
-            <span className="Podo-Ticket-Body-B6" style={{color: 'var(--grey-7)'}}>{lefter ? lefter.text : undefined}</span>
+            <span
+              className="Podo-Ticket-Body-B6"
+              style={{ color: "var(--grey-7)" }}
+            >
+              {lefter ? lefter.text : undefined}
+            </span>
           ) : null
         ) : undefined}
       </ImageContainer>
 
-      <CenterContent className=" Podo-Ticket-Headline-H3">
+      <CenterContent className={font}>
         {center ? center.text : null}
       </CenterContent>
 
@@ -43,7 +61,12 @@ const TopNav = ({ lefter, center, righter, isGrey = false, isUnderlined = false,
               height={righter.iconHeight}
             />
           ) : righter.text ? (
-            <span className="Podo-Ticket-Body-B6" style={{color: 'var(--grey-7)'}}>{righter ? righter.text : undefined}</span>
+            <span
+              className="Podo-Ticket-Body-B6"
+              style={{ color: "var(--grey-7)" }}
+            >
+              {righter ? righter.text : undefined}
+            </span>
           ) : null
         ) : undefined}
       </ImageContainer>
@@ -53,7 +76,7 @@ const TopNav = ({ lefter, center, righter, isGrey = false, isUnderlined = false,
 
 export default TopNav;
 
-const NavContainer = styled.nav<{ isGrey: boolean, isUnderlined: boolean }>`
+const NavContainer = styled.nav<{ isGrey: boolean; isUnderlined: boolean }>`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -62,8 +85,10 @@ const NavContainer = styled.nav<{ isGrey: boolean, isUnderlined: boolean }>`
   position: sticky;
   top: 0;
   height: 82px;
-  background: ${({ isGrey }) => isGrey ? "var(--background-1)" : "var(--ect-white)"};
-  border-bottom: ${({ isUnderlined }) => isUnderlined ? "0.5px solid var(--grey-4)" : "none"};
+  background: ${({ isGrey }) =>
+    isGrey ? "var(--background-1)" : "var(--ect-white)"};
+  border-bottom: ${({ isUnderlined }) =>
+    isUnderlined ? "0.5px solid var(--grey-4)" : "none"};
 
   user-select: none; /* 텍스트 선택 방지 */
   -webkit-user-select: none; /* Safari에서 드래그 방지 */
