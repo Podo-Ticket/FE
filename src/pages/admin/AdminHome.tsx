@@ -178,7 +178,12 @@ const AdminHome = () => {
                 />
               </ButtonText>
             ) : (
-              <ButtonText className="Podo-Ticket-Headline-H5">
+              <ButtonText
+                className="Podo-Ticket-Headline-H5"
+                onClick={() => {
+                  navigate("realtime");
+                }}
+              >
                 실시간 좌석 현황{" "}
                 <img
                   style={{ width: "7px", height: "12px" }}
