@@ -556,12 +556,13 @@ const BackDetailContainer = styled.div`
   flex-direction: column;
   z-index: 2;
 
-  height: calc(100% - 300px);
+  height: 100%;
 
   width: 100%;
   padding: 20px 36px;
 
   gap: 13px;
+  border: 1px solid #ddd;
 
   overflow-y: auto;
   overscroll-behavior: contain; // iOS 및 기타 브라우저 스크롤 동작 제어
