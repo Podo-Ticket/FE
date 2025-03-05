@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate, createSearchParams } from "react-router-dom";
 
@@ -53,6 +53,7 @@ const UserHome: React.FC = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isPopupClosing, setIsPopupClosing] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null); // 팝업 요소를 참조하는 ref
 
   // 현재 공연 정보 반영
   useEffect(() => {
@@ -109,6 +110,30 @@ const UserHome: React.FC = () => {
       setIsPopupClosing(false); // Ensure it's not in closing state
     }
   };
+
+  // 팝업 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
+        setIsPopupClosing(true);
+        setTimeout(() => {
+          setIsPopupVisible(false);
+          setIsPopupClosing(false);
+        }, 250);
+      }
+    };
+
+    if (isPopupVisible) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isPopupVisible]);
 
   // 휴대폰 번호 인증 성공 처리
   const handleAuthModalAccept = () => {
@@ -180,7 +205,10 @@ const UserHome: React.FC = () => {
                               isUnderlined={true}
                             />
                             {isPopupVisible && (
-                              <SpeechBubble isClosing={isPopupClosing}>
+                              <SpeechBubble
+                                ref={popupRef}
+                                isClosing={isPopupClosing}
+                              >
                                 <div>박도현, 박세웅, 오지우, 윤가은</div>
                                 <div>이윤하</div>
                               </SpeechBubble>
@@ -235,14 +263,16 @@ const UserHome: React.FC = () => {
                   </InfoCategory>
                   <BackInfoContent className="Podo-Ticket-Body-B7">
                     {Array.isArray(item.content)
-                      ? item.content.map((name, nameIndex) => (
+                      ? item.content.map((name, nameIndex, arr) => (
                           <span key={nameIndex}>
                             {name}
                             {(nameIndex + 1) % 5 === 0 &&
                             nameIndex !== item.content.length - 1 ? (
                               <br />
-                            ) : (
+                            ) : nameIndex !== arr.length - 1 ? (
                               ", "
+                            ) : (
+                              ""
                             )}
                           </span>
                         ))
@@ -478,7 +508,7 @@ const DetailBtnContainer = styled.div`
 
   bottom: 30px; /* 하단에서 30px 위로 위치 */
   width: 100%;
-  
+
   display: flex;
   flex-direction: column;
   justify-content: center;
