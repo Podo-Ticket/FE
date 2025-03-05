@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
@@ -92,7 +93,7 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({ ticketCount, onActiveIn
                 </MiddleRightContent>
               </MiddleContent>
 
-              <DummyContent/>
+              <DummyContent />
 
               <BottomContent>
                 <Category>좌석 번호</Category>
