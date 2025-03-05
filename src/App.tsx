@@ -39,6 +39,10 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
+<<<<<<< HEAD
+=======
+       
+>>>>>>> eae279f (✨feat: setting pwa download)
         font-family: Pretendard;
         height: 100%;
     }

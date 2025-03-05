@@ -8,9 +8,9 @@ export default defineConfig({
     strategies: 'injectManifest',
     srcDir: 'src',
     filename: 'sw.ts',
-    registerType: 'prompt',
+    registerType: 'autoUpdate',
     injectRegister: 'auto',
-
+    includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
     manifest: {
       name: 'Podo-Ticket',
       short_name: 'Podo-Ticket',
@@ -18,19 +18,19 @@ export default defineConfig({
       theme_color: '#ffffff',
 
       icons: [{
-        src: 'favicon.ico',
+        src: 'pwa-64x64.png',
         sizes: '64x64',
         type: 'image/png',
       }, {
-        src: 'favicon.ico',
+        src: 'pwa-192x192.png',
         sizes: '192x192',
         type: 'image/png',
       }, {
-        src: 'favicon.ico',
+        src: 'pwa-512x512.png',
         sizes: '512x512',
         type: 'image/png',
       }, {
-        src: 'favicon.ico',
+        src: 'maskable-icon-512x512.png',
         sizes: '512x512',
         type: 'image/png',
         purpose: 'maskable',
@@ -38,7 +38,7 @@ export default defineConfig({
     },
 
     injectManifest: {
-      globPatterns: ['**/*.{js,mjs,css,scss,html,svg,png,ico,json,webmanifest}'],
+      globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
     },
 
     devOptions: {
