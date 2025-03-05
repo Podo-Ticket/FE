@@ -93,7 +93,7 @@ function OnSiteReserve() {
   useEffect(() => {
     const loadSchedules = async () => {
       try {
-        const schedules = await fetchPerformanceSchedules(2);
+        const schedules = await fetchPerformanceSchedules(1);
         console.log("schedules: ", schedules);
         setPerformanceSchedules(schedules);
       } catch (error) {
@@ -106,13 +106,12 @@ function OnSiteReserve() {
   useEffect(() => {
     const storedScheduleId = localStorage.getItem("scheduleId");
     if (storedScheduleId) {
-      
       setValue(Number(storedScheduleId)); // React Hook Form의 setValue 사용
-      console.log(storedScheduleId,"andand",value);
+      console.log(storedScheduleId, "andand", value);
     }
 
     console.log(performanceSchedules);
-      console.log(performanceSchedules);
+    console.log(performanceSchedules);
   }, [setValue]);
 
   // 현장 예매 신청 처리 함수
@@ -136,7 +135,7 @@ function OnSiteReserve() {
         socket.off("disconnect");
 
         // WebSocket 이벤트 리스너 등록
-        socket.on(`user:${userId}`, (messageData: { type: string; }) => {
+        socket.on(`user:${userId}`, (messageData: { type: string }) => {
           console.log(`Message received for user ${userId}:`, messageData);
 
           if (messageData.type === "approval") {
@@ -311,13 +310,13 @@ function OnSiteReserve() {
 
       <Loading showLoading={isLoading} isOnSiteReserve={true} />
 
-            <PrivacyPolicyModal
-                showTextModal={showPrivacyModal}
-                onAcceptFunc={closePrivacyModal}
-                title='개인정보 수집 동의 약관'
-                description={AGREE_CONTENT}
-                overlaied={true}
-            />
+      <PrivacyPolicyModal
+        showTextModal={showPrivacyModal}
+        onAcceptFunc={closePrivacyModal}
+        title="개인정보 수집 동의 약관"
+        description={AGREE_CONTENT}
+        overlaied={true}
+      />
 
       <ErrorModal
         showDefaultErrorModal={isDuplicatePhoneModalOpen}

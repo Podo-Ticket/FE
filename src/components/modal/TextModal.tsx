@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
-import OkayBtn from '../button/SmallBtn'
+import OkayBtn from "../button/SmallBtn";
 
-import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
+import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
 
 interface TextModalProps {
   showTextModal: boolean;
@@ -13,10 +13,29 @@ interface TextModalProps {
   overlaied?: boolean;
 }
 
-const TextModal: React.FC<TextModalProps> = ({ showTextModal, onAcceptFunc, title, description, overlaied = false }) => {
+const TextModal: React.FC<TextModalProps> = ({
+  showTextModal,
+  onAcceptFunc,
+  title,
+  description,
+  overlaied = false,
+}) => {
   const [isClosing, setIsClosing] = useState(false);
 
-  if (!showTextModal) return null;
+  // useEffect를 최상단에 두고, 모달이 열릴 때만 실행되도록 함.
+  useEffect(() => {
+    if (showTextModal) {
+      document.body.style.overflow = "hidden"; // 스크롤 방지
+    } else {
+      document.body.style.overflow = ""; // 원래 상태로 복구
+    }
+
+    return () => {
+      document.body.style.overflow = ""; // 언마운트 또는 모달 닫힐 때 복구
+    };
+  }, [showTextModal]); // showTextModal 상태가 변경될 때 실행됨
+
+  if (!showTextModal && !isClosing) return null; // useEffect 이후로 이동
 
   const handleAcceptClick = () => {
     setIsClosing(true); // 페이드아웃 애니메이션 시작
@@ -29,9 +48,15 @@ const TextModal: React.FC<TextModalProps> = ({ showTextModal, onAcceptFunc, titl
   return (
     <ModalOverlay overlaied={overlaied}>
       <ModalContent isClosing={isClosing}>
-        <HeadText className='Podo-Ticket-Headline-H2'>{title}</HeadText>
-        <ContentPrivacy className='Podo-Ticket-Body-B8'>{description}</ContentPrivacy>
-        <OkayBtn content="확인" onClick={handleAcceptClick} isAvailable={true} />
+        <HeadText className="Podo-Ticket-Headline-H2">{title}</HeadText>
+        <ContentPrivacy className="Podo-Ticket-Body-B8">
+          {description}
+        </ContentPrivacy>
+        <OkayBtn
+          content="확인"
+          onClick={handleAcceptClick}
+          isAvailable={true}
+        />
       </ModalContent>
     </ModalOverlay>
   );
@@ -51,7 +76,8 @@ const ModalOverlay = styled.div<{ overlaied: boolean }>`
 
   width: 100%;
   height: 100%;
-  background: ${({ overlaied }) => (overlaied ? 'rgba(0, 0, 0, 0.6)' : 'rgba(0, 0, 0, 0.0)')};
+  background: ${({ overlaied }) =>
+    overlaied ? "rgba(0, 0, 0, 0.6)" : "rgba(0, 0, 0, 0.0)"};
 `;
 
 const ModalContent = styled.div<{ isClosing: boolean }>`
@@ -68,7 +94,8 @@ const ModalContent = styled.div<{ isClosing: boolean }>`
 
   text-align: center;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
+  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s
+    ease-in-out;
 `;
 
 const HeadText = styled.span`
@@ -88,9 +115,8 @@ const ContentPrivacy = styled.div`
   margin-bottom: 23px;
   padding: 10px;
   padding-right: 20px;
-  
+
   color: var(--grey-6);
 
   overflow-y: auto;
 `;
-

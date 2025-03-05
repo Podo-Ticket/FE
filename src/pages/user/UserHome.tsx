@@ -25,6 +25,8 @@ import { toggleModal } from "../../utils/ModalUtil.ts";
 import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
 import { useNavigateTo } from "../../utils/NavigateUtil.ts";
 
+const itemsPerPage = 8; // 한 페이지당 보여줄 개수
+
 const UserHome: React.FC = () => {
   const navigateTo = useNavigateTo();
 
@@ -35,23 +37,23 @@ const UserHome: React.FC = () => {
   //     search: `?${createSearchParams(params)}`, // Query Parameters 추가
   //   });
   // };
-
+  const [currentPage, setCurrentPage] = useState(0);
   const [playInfo, setPlayInfo] = useState<any>(null);
   const [scheduleId, setScheduleId] = useState<number | 0>(0);
   const [performanceSession, setPerformanceSession] = useState<string | "">("");
-
   const [modals, setModals] = useState<{ [key: string]: boolean }>({
     authModal: false,
     reserveWayModal: false,
     loading: false,
     success: false,
   });
-
   // 애니메이션 모달 선언 부
   const [isFlipped, setIsFlipped] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isPopupClosing, setIsPopupClosing] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null); // 팝업 요소를 참조하는 ref
+
+  const totalPages = Math.ceil(DETAILED_PERFORMANCE_INFO.length / itemsPerPage);
 
   // 현재 공연 정보 반영
   useEffect(() => {
@@ -65,7 +67,8 @@ const UserHome: React.FC = () => {
 
         // 가장 가까운 스케줄의 id 찾기
         const closestSchedule = data.schedule.find(
-          (schedule: { date_time: string; }) => schedule.date_time === closestDateTime
+          (schedule: { date_time: string }) =>
+            schedule.date_time === closestDateTime
         );
 
         if (closestSchedule) {
@@ -140,6 +143,18 @@ const UserHome: React.FC = () => {
     }, 1000);
   };
 
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
   return (
     <MainContainer backgroundImage={poster}>
       <MainTitle className="Podo-Ticket-Headline-H3">
@@ -184,12 +199,13 @@ const UserHome: React.FC = () => {
                           .map((contentItem, contentIndex, arr) => (
                             <span key={contentIndex}>
                               {contentItem}
-                              {contentIndex !== arr.length - 1 && ", "}
+                              {contentIndex !== arr.length - 1 && <>,&nbsp;</>}
                             </span>
                           ))}
                         {/* Show "More" button if content has more than 4 items */}
                         {item.content.length > 4 && (
                           <div style={{ position: "relative" }}>
+                            ..
                             <MoreBtn
                               content="더보기" // 버튼 안 내용
                               isAvailable={true} // 버튼 동작 여부
@@ -249,31 +265,39 @@ const UserHome: React.FC = () => {
             />
 
             <BackDetailContainer>
-              {DETAILED_PERFORMANCE_INFO.map((item, index) => (
+              {DETAILED_PERFORMANCE_INFO.slice(
+                currentPage * itemsPerPage,
+                (currentPage + 1) * itemsPerPage
+              ).map((item, index) => (
                 <FrontCardInfoItem key={index}>
-                  <InfoCategory className="Podo-Ticket-Body-B9">
+                  <InfoCategory className="Podo-Ticket-Body-B9 ">
                     {item.category}
                   </InfoCategory>
-                  <BackInfoContent className="Podo-Ticket-Body-B7">
+                  <BackInfoContent className=" Podo-Ticket-Body-B7">
                     {Array.isArray(item.content)
-                      ? item.content.map((name, nameIndex, arr) => (
-                        <span key={nameIndex}>
-                          {name}
-                          {(nameIndex + 1) % 5 === 0 &&
-                            nameIndex !== item.content.length - 1 ? (
-                            <br />
-                          ) : nameIndex !== arr.length - 1 ? (
-                            ", "
-                          ) : (
-                            ""
-                          )}
-                        </span>
-                      ))
+                      ? item.content.join(", ")
                       : item.content}
                   </BackInfoContent>
                 </FrontCardInfoItem>
               ))}
             </BackDetailContainer>
+            <PaginationContainer>
+              <PaginationButton
+                onClick={handlePrevPage}
+                disabled={currentPage === 0}
+              >
+                ◀
+              </PaginationButton>
+              <PageIndicator className="Podo-Ticket-Body-B7 ">
+                {currentPage + 1} / {totalPages}
+              </PageIndicator>
+              <PaginationButton
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages - 1}
+              >
+                ▶
+              </PaginationButton>
+            </PaginationContainer>
           </CardBack>
         </Card>
       </PosterDetailsContainer>
@@ -545,7 +569,6 @@ const BackDetailContainer = styled.div`
   -webkit-overflow-scrolling: touch; /* iOS에서 부드러운 스크롤 */
 `;
 
-
 const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
   isClosing: boolean;
 }>`
@@ -582,4 +605,36 @@ const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
     border-style: solid;
     border-color: transparent transparent white transparent;
   }
+`;
+
+const PaginationContainer = styled.div`
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  top: 45%;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  z-index: 10;
+`;
+
+const PaginationButton = styled.button`
+  padding: 8px 12px;
+  border: none;
+  background-color: var(--purple-9);
+  color: var(--grey-6);
+
+  border-radius: 4px;
+  cursor: pointer;
+
+  z-index: 10;
+  &:disabled {
+    background-color: #fff;
+    cursor: not-allowed;
+  }
+`;
+
+const PageIndicator = styled.span`
+  color: var(--grey-7);
 `;
