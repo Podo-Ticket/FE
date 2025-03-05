@@ -475,9 +475,10 @@ const MoreDetailBtnContainer = styled.div`
 
 const DetailBtnContainer = styled.div`
   position: absolute;
-  left: 9%; // 화면 중앙 고정
-  bottom: 30px; /* 하단에서 30px 위로 위치 */
 
+  bottom: 30px; /* 하단에서 30px 위로 위치 */
+  width: 100%;
+  
   display: flex;
   flex-direction: column;
   justify-content: center;
