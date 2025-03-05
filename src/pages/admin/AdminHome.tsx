@@ -140,16 +140,18 @@ const AdminHome = () => {
       <MainContainer>
         <TextContainer>
           {performance === null || minutesLeft === null ? (
-            <p
+            <div
               className="Podo-Ticket-Body-B1"
               style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "6px",
                 color: "var(--grey-7)",
               }}
             >
-              예정된 공연이 없어요!
-              <br />
-              새로운 공연을 등록하세요!
-            </p>
+              <p>예정된 공연이 없어요!</p>
+              <p> 새로운 공연을 등록하세요!</p>
+            </div>
           ) : (
             <>
               <MainText className="Podo-Ticket-Body-B1">
@@ -165,17 +167,26 @@ const AdminHome = () => {
             </>
           )}
 
-          <LiveSeatButton
-            onClick={() => {
-              navigate("realtime");
-            }}
-          >
-            <p className="Podo-Ticket-Headline-H5">실시간 좌석 현황</p>
-            <img
-              style={{ width: "7px", height: "12px" }}
-              src={rightArror}
-              alt="화살표 아이콘"
-            />
+          <LiveSeatButton>
+            {performance === null || minutesLeft === null ? (
+              <ButtonText className="Podo-Ticket-Headline-H5">
+                새로운 공연 등록
+                <img
+                  style={{ width: "7px", height: "12px" }}
+                  src={rightArror}
+                  alt="화살표 아이콘"
+                />
+              </ButtonText>
+            ) : (
+              <ButtonText className="Podo-Ticket-Headline-H5">
+                실시간 좌석 현황{" "}
+                <img
+                  style={{ width: "7px", height: "12px" }}
+                  src={rightArror}
+                  alt="화살표 아이콘"
+                />
+              </ButtonText>
+            )}
           </LiveSeatButton>
         </TextContainer>
         <CharacterImg src={character} alt=""></CharacterImg>
@@ -297,8 +308,7 @@ export default AdminHome;
 const ViewContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  margin: 0 auto;
   width: 100vw; /* 전체 너비 */
   height: 100vh; /* 전체 높이 */
   background: #f5f4ff; /* 배경색 적용 */
@@ -306,9 +316,12 @@ const ViewContainer = styled.div`
 
 const AppTitle = styled.div`
   display: flex;
-  gap: 6px;
+  max-width: calc(100vw - 50px); /* 정확하게 양쪽 25px씩 띄우기 */
+  width: 100%;
+  margin: 0 auto;
   align-items: center; // 세로 배열 가운데 정렬
-  margin-left: 25px;
+  gap: 6px;
+
   margin-top: 15px;
 `;
 const MainName = styled.h1`
@@ -322,18 +335,22 @@ const MainName = styled.h1`
 
 const MainContainer = styled.div`
   display: flex;
+  position: relative; /* 내부 요소를 상대적으로 배치할 수 있도록 설정 */
   align-items: center; // 세로 배열 가운데 정렬
   justify-content: space-between;
-  width: 100%;
+  width: 100vw;
+  margin: 0 auto;
   padding-left: 30px;
-
-  //   border: 1px solid var(--grey-7);
+  height: 225px;
+  // border: 1px solid var(--grey-7);
 `;
 
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  // border: 1px solid var(--grey-7);
 `;
 
 const MainText = styled.div`
@@ -348,28 +365,34 @@ const Highlight = styled.span`
 
 const CharacterImg = styled.img`
   height: 215px;
-  //   border: 1px solid var(--grey-7);
+  position: absolute;
+  right: 0; /* 화면 오른쪽 끝에 붙이기 */
+
+  // border: 1px solid var(--grey-7);
 `;
 
 const LiveSeatButton = styled.button`
-  display: inline-flex;
-  width: auto; /* 버튼 크기가 내용에 맞게 조정됨 */
   border-radius: 50px;
-  padding: 7px 17px;
+  padding: 0px;
+
   justify-content: center;
   align-items: center;
   gap: 9px;
   background: var(--purple-4);
   border: none;
 
+  width: 148px;
+  height: 40px;
+
   color: var(--ect-white);
-  text-align: center;
 `;
 
 const MenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 25px;
+  max-width: calc(100vw - 50px); /* 정확하게 양쪽 25px씩 띄우기 */
+  width: 100%;
+  margin: 0 auto;
   gap: 20px;
 `;
 const LockButtonDiv = styled.div`
@@ -445,4 +468,11 @@ const BottomMenu = styled.div`
   align-items: center; // 세로 배열 가운데 정렬
   justify-content: right;
   gap: 10px;
+`;
+
+const ButtonText = styled.div`
+  display: flex;
+  align-items: center; // 세로 배열 가운데 정렬
+  justify-content: center;
+  gap: 8px;
 `;

@@ -146,12 +146,12 @@ const ReservedManage = () => {
         isUnderlined={true}
       />
 
-            <PlaySessionPicker
-                schedules={schedules}
-                selectedSession={selectedSession}
-                onContentChange={handleSessionChange}
-                isRounded={true}
-            />
+      <PlaySessionPicker
+        schedules={schedules}
+        selectedSession={selectedSession}
+        onContentChange={handleSessionChange}
+        isRounded={true}
+      />
 
       <SearchFilterBar
         search={search}
