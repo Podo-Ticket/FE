@@ -23,9 +23,11 @@ function SelectSeats() {
   const currentScheduleId = Number(localStorage.getItem("scheduleId")) || 0;
 
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const [unclickableSeats, setUnclickableSeats] = useState([]);
   const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] = useState(false);
   const [headCount, setHeadCount] = useState(0); // headCount
+
+  const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
+  const triggerRefresh = () => setIsRefreshed((prev) => !prev);
 
   // 예매 인원 수 확인 Api (인원 수만 확인함)
   useEffect(() => {
@@ -60,8 +62,6 @@ function SelectSeats() {
     }
   };
 
-  // 좌석 선택란 새로고침
-  const handleRefresh = () => window.location.reload();
   // 발권 버튼 텍스트
   const buttonText = `선택 완료 ${selectedSeats.length} / ${headCount}`;
 
@@ -70,7 +70,7 @@ function SelectSeats() {
     iconWidth: 17, // 아이콘 너비 (px 단위)
     iconHeight: 17, // 아이콘 높이 (px 단위)
     text: "좌석을 선택해주세요",
-    clickFunc: handleRefresh
+    clickFunc: triggerRefresh
   }
 
   return (
@@ -84,6 +84,7 @@ function SelectSeats() {
         <SeatMapContainer>
           <RiveractSeatMap
             isRealTime={false}
+            isRefreshed={isRefreshed}
             scheduleId={5}
             headCount={headCount}
             disabled={false}

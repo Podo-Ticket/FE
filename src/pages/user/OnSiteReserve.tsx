@@ -134,6 +134,14 @@ function OnSiteReserve() {
                 });
 
                 console.log("Waiting for approval...");
+
+                const timeoutId = setTimeout(() => {
+                    console.warn("Timeout reached: Closing loading and WebSocket.");
+                    setIsLoading(false); // 로딩 상태 해제
+                    socket.off(`user:${userId}`); // 소켓 리스너 제거
+                    socket.disconnect(); // 소켓 연결 닫기
+                }, 300000); // 5분 = 300,000ms
+
             } else {
                 setIsLoading(false);
                 if (response.error === "이미 예약되었습니다.") {

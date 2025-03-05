@@ -8,7 +8,7 @@ import nameImage from '../../../assets/images/admin/grey_person.png'
 import phoneImage from '../../../assets/images/admin/grey_home_phone.png'
 import headCountImage from '../../../assets/images/admin/grey_sofa.png'
 import availableSeatImage from '../../../assets/images/admin/lightgrey_block.png'
-import reservedSeatImage from '../../../assets/images/admin/grey_block.png'
+import reservedSeatImage from '../../../assets/images/xed_grey_block.png'
 import lockImage from '../../../assets/images/admin/purple_lock.png'
 import {
   HUMANITIES_SMALL_THEATER as theater

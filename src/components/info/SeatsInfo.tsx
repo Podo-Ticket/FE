@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import availableSeat from '../../assets/images/purple_rectangle.png'
 import selectedSeat from '../../assets/images/lightgrey_rectangle.png'
-import disabledSeat from '../../assets/images/purple_rectangle.png'
+import disabledSeat from '../../assets/images/xed_grey_block.png'
 
 interface SeatsInfoInfoProps {
 

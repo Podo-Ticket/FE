@@ -12,6 +12,7 @@ import { fetchSeats } from '../../../api/user/SelectSeatsApi';
 
 interface SeatMapProps {
   isRealTime: boolean; // 실시간 모드 여부
+  isRefreshed: boolean;
   scheduleId: number | null; // 스케줄 ID
   headCount: number; // 선택 가능한 좌석 수 제한
   currentSelectedSeats: string[]; // 선택된 좌석 배열
@@ -32,7 +33,7 @@ interface SeatMapProps {
 
 const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelectedSeats,
 
-  showErrorModal,
+  showErrorModal, isRefreshed,
   disabled, scheduleId, headCount, isRealTime, onSeatClick, bookingInfo, onSeatEdit
   , newLockedSeats, setNewLockedSeats, newUnlockedSeats, setNewUnlockedSeats, setCurrentLockedSeatsInfo
   , setIsLockAvailable, setIsUnlockAvailable }) => {
@@ -106,13 +107,11 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
 
   // 실시간 좌석 정보 가져오기 (지연 실행으로 null값 피하기)
   useEffect(() => {
-    if (isRealTime) {
-      const timer = setTimeout(() => {
-        loadSeatMapSeats(true); // 실시간 좌석 정보 가져오기
-      }, 100); // 100ms의 지연 후 실행
-      return () => clearTimeout(timer); // cleanup
-    }
-  }, [isRealTime, scheduleId]); // scheduleId와 isRealTime이 변경될 때마다 실행
+    const timer = setTimeout(() => {
+      loadSeatMapSeats(true); // 실시간 좌석 정보 가져오기
+    }, 100); // 100ms의 지연 후 실행
+    return () => clearTimeout(timer); // cleanup
+  }, [isRealTime, scheduleId, isRefreshed]); // scheduleId와 isRealTime이 변경될 때마다 실행
 
   useEffect(() => {
     if (!bookingInfo) {
