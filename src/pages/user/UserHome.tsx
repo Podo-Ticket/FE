@@ -59,7 +59,7 @@ const UserHome: React.FC = () => {
   useEffect(() => {
     const loadPlayInfo = async () => {
       try {
-        const playId = 2; // 추후에 다이나믹하게 변경
+        const playId = 1; // 추후에 다이나믹하게 변경
         const data = await fetchPlayInfo(playId);
 
         // 가장 가까운 스케줄의 date_time 계산
@@ -533,14 +533,14 @@ const CardBack = styled.div`
 const NavBar = styled(TopNav)``;
 
 const BackDetailContainer = styled.div`
-  position: relative; 
+  position: relative;
   display: flex;
   flex-direction: column;
   z-index: 2;
 
   height: calc(100% - 300px);
 
-  width: 100%; 
+  width: 100%;
   padding: 20px 36px;
 
   gap: 13px;
@@ -550,7 +550,6 @@ const BackDetailContainer = styled.div`
 
   -webkit-overflow-scrolling: touch; /* iOS에서 부드러운 스크롤 */
 `;
-
 
 const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
   isClosing: boolean;
