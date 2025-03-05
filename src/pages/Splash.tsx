@@ -52,6 +52,7 @@ const SplashContainer = styled.div`
 
   width: 100%;
   height: 100vh;
+  background: var(--lightpurple-2);
 `;
 
 const AnimatedPlayer = styled(Player)`

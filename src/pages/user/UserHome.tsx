@@ -189,10 +189,10 @@ const UserHome: React.FC = () => {
                         {/* Show only the first 4 items */}
                         {item.content
                           .slice(0, 4)
-                          .map((contentItem, contentIndex) => (
+                          .map((contentItem, contentIndex, arr) => (
                             <span key={contentIndex}>
                               {contentItem}
-                              {contentIndex !== 3 && ", "}
+                              {contentIndex !== arr.length - 1 && ", "}
                             </span>
                           ))}
                         {/* Show "More" button if content has more than 4 items */}
@@ -264,6 +264,7 @@ const UserHome: React.FC = () => {
                   <BackInfoContent className="Podo-Ticket-Body-B7">
                     {Array.isArray(item.content)
                       ? item.content.map((name, nameIndex, arr) => (
+
                           <span key={nameIndex}>
                             {name}
                             {(nameIndex + 1) % 5 === 0 &&
@@ -276,6 +277,7 @@ const UserHome: React.FC = () => {
                             )}
                           </span>
                         ))
+
                       : item.content}
                   </BackInfoContent>
                 </FrontCardInfoItem>
@@ -570,7 +572,7 @@ const BackDetailContainer = styled.div`
 //   gap: 13px;
 // `;
 
-const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
+const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" }) <{
   isClosing: boolean;
 }>`
   position: absolute;
