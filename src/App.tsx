@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 
-
+import ProtectedRoute from "./utils/ProtectedRoute.tsx";
 
 import { AnimatePresence } from "framer-motion";
 
@@ -30,8 +30,6 @@ import OnsiteManage from "./pages/admin/OnsiteManage.tsx";
 import AdminSetting from "./pages/admin/AdminSetting.tsx";
 
 import OnboardingModal from './components/modal/OnboardingModal.tsx';
-import ProtectedRoute from "./utils/\bProtectedRoute.tsx";
-
 
 const GlobalStyle = createGlobalStyle`
     * {
