@@ -6,6 +6,7 @@ import GetTicketBtn from "../../components/button/LargeBtn";
 import TicketConfirmCard from "../../components/info/TicketConfirmCard";
 import Loading from "../../components/loading/Loading";
 import Success from "../../components/loading/Success";
+import NoticeModal from "../../components/modal/NoticeModal";
 
 import poster from "../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg";
 import confirmIcon from "../../assets/images/confirm_icon.png";
@@ -30,6 +31,8 @@ const TicketConfirmation = () => {
 
     const [ticketInfo, setTicketInfo] = useState<TicketInfo>(undefined);
     const selectedSeats = location.state ? location.state.selectedSeats : []; // 선택한 좌석
+
+    const [showTimeOutModal, setShowTimeOutModal] = useState<boolean>(false); // 모달 표시 여부
 
     // 티켓 정보 가져오기
     useEffect(() => {
@@ -111,6 +114,17 @@ const TicketConfirmation = () => {
         }
     };
 
+    // 타이머를 3분으로 설정
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowTimeOutModal(true); // 3분 후 모달을 띄움
+        }, 3 * 60 * 1000); // 3분 (3 * 60 * 1000ms)
+
+        return () => {
+            clearTimeout(timer); // 타이머 정리
+        };
+    }, []);
+
     return (
         <Container>
             {/* Header */}
@@ -149,6 +163,14 @@ const TicketConfirmation = () => {
                     />
                 </ButtonContainer>
             </BottomContent>
+
+            <NoticeModal
+                showNoticeModal={showTimeOutModal}
+                title="티켓 발권 시간이 만료되었습니다."
+                description="원하는 좌석을 다시 선택해주세요."
+                buttonContent="확인"
+                onAcceptFunc={() => { setShowTimeOutModal(false); navigate('/select'); }}
+            />
 
             <Loading showLoading={isLoading} />
             <Success showSuccess={isSuccess} />
