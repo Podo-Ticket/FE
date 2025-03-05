@@ -224,6 +224,7 @@ const UserHome: React.FC = () => {
                 background: "transparent",
                 height: "60px",
               }}
+              font="Podo-Ticket-Headline-H5"
             />
 
             <BackDetailContainer onScroll={handleScroll}>

@@ -34,13 +34,13 @@ const WhiteBoxBtn: React.FC<WhiteBoxBtnProps> = ({
             <Icon src={iconSrc} alt="아이콘" />
           </div>
 
-          <Title className="Podo-Ticket/Headline/H5">{title}</Title>
+          <Title className="Podo-Ticket-Headline-H5">{title}</Title>
         </LeftContent>
         <img
           src={greyRightArrow}
           alt="화살표"
           style={{ width: "7px", height: "12px" }}
-        ></img>
+        />
       </ButtonTitle>
       <Description>{description}</Description>
     </ButtonContainer>
@@ -66,14 +66,17 @@ const ButtonContainer = styled.button`
 const ButtonTitle = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  width: 100%;
 `;
 const LeftContent = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 6px;
+  width: 100%;
+  flex-glow: 1;
+  text-align: left;
 `;
 
 const Icon = styled.img`
