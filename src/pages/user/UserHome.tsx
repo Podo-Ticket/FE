@@ -223,6 +223,7 @@ const UserHome: React.FC = () => {
               <MoreDetailBtnContainer>
                 <MoreDetailBtn
                   content="자세히 보기"
+                  // onClick={() => toggleFlip()}
                   onClick={() => toggleFlip()}
                   isAvailable={true}
                 />
@@ -262,7 +263,6 @@ const UserHome: React.FC = () => {
                   <BackInfoContent className="Podo-Ticket-Body-B7">
                     {Array.isArray(item.content)
                       ? item.content.map((name, nameIndex, arr) => (
-
                           <span key={nameIndex}>
                             {name}
                             {(nameIndex + 1) % 5 === 0 &&
@@ -275,7 +275,6 @@ const UserHome: React.FC = () => {
                             )}
                           </span>
                         ))
-
                       : item.content}
                   </BackInfoContent>
                 </FrontCardInfoItem>
@@ -553,7 +552,7 @@ const BackDetailContainer = styled.div`
 `;
 
 
-const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" }) <{
+const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
   isClosing: boolean;
 }>`
   position: absolute;
