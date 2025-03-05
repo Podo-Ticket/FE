@@ -1,27 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { useNavigate, createSearchParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { useNavigate, createSearchParams } from "react-router-dom";
 
-import MediumBtn from '../../components/button/MediumBtn.tsx';
-import MoreDetailBtn from '../../components/button/SmallMoreBtn.tsx';
-import MoreBtn from '../../components/button/SmallMoreBtn.tsx';
-import ReserveWayModal from '../../components/modal/ChoiceModal.tsx';
-import AuthModal from '../../components/auth/PhoneAuthModal.tsx';
-import Loading from '../../components/loading/Loading.tsx';
-import Success from '../../components/loading/Success.tsx';
-import TopNav from '../../components/nav/TopNav.tsx';
+import MediumBtn from "../../components/button/MediumBtn.tsx";
+import MoreDetailBtn from "../../components/button/SmallMoreBtn.tsx";
+import MoreBtn from "../../components/button/SmallMoreBtn.tsx";
+import ReserveWayModal from "../../components/modal/ChoiceModal.tsx";
+import AuthModal from "../../components/auth/PhoneAuthModal.tsx";
+import Loading from "../../components/loading/Loading.tsx";
+import Success from "../../components/loading/Success.tsx";
+import TopNav from "../../components/nav/TopNav.tsx";
 
-import poster from '../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg' // 해당 공연에 맞는 상수값 적용 필요
-import homeTicket from '../../assets/images/home_ticket.png'
-import goBackIcon from '../../assets/images/left_arrow.png'
+import poster from "../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg"; // 해당 공연에 맞는 상수값 적용 필요
+import homeTicket from "../../assets/images/home_ticket.png";
+import goBackIcon from "../../assets/images/left_arrow.png";
 
-import { fetchPlayInfo } from '../../api/user/UserHomeApi';
-import { slideUp } from '../../styles/animation/DefaultAnimation.ts'
-import { BASE_PERFORMANCE_INFO, DETAILED_PERFORMANCE_INFO } from '../../constants/text/playInfo/24th_seoulnationalUniv_riveract.ts' // 해당 공연에 맞는 상수값 적용 필요
-import { DateUtil, getClosestDateTime } from '../../utils/DateUtil';
-import { toggleModal } from '../../utils/ModalUtil.ts'
-import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts';
-import { useNavigateTo } from '../../utils/NavigateUtil.ts';
+import { fetchPlayInfo } from "../../api/user/UserHomeApi";
+import { slideUp } from "../../styles/animation/DefaultAnimation.ts";
+import {
+  BASE_PERFORMANCE_INFO,
+  DETAILED_PERFORMANCE_INFO,
+} from "../../constants/text/playInfo/24th_seoulnationalUniv_riveract.ts"; // 해당 공연에 맞는 상수값 적용 필요
+import { DateUtil, getClosestDateTime } from "../../utils/DateUtil";
+import { toggleModal } from "../../utils/ModalUtil.ts";
+import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
+import { useNavigateTo } from "../../utils/NavigateUtil.ts";
 
 const UserHome: React.FC = () => {
   const navigate = useNavigate();
@@ -37,13 +40,13 @@ const UserHome: React.FC = () => {
 
   const [playInfo, setPlayInfo] = useState(null);
   const [scheduleId, setScheduleId] = useState<number | 0>(0);
-  const [performanceSession, setPerformanceSession] = useState<string | ''>('');
+  const [performanceSession, setPerformanceSession] = useState<string | "">("");
 
   const [modals, setModals] = useState<{ [key: string]: boolean }>({
     authModal: false,
     reserveWayModal: false,
     loading: false,
-    success: false
+    success: false,
   });
 
   // 애니메이션 모달 선언 부
@@ -76,7 +79,7 @@ const UserHome: React.FC = () => {
         setPlayInfo(data.play);
         setPerformanceSession(getClosestDateTime(data.schedule));
       } catch (error) {
-        console.error('Failed to load play info:', error);
+        console.error("Failed to load play info:", error);
       }
     };
 
@@ -88,7 +91,7 @@ const UserHome: React.FC = () => {
     icon: goBackIcon,
     iconWidth: 13,
     iconHeight: 20,
-    text: '상세 정보',
+    text: "상세 정보",
     clickFunc: () => toggleFlip(),
   };
 
@@ -109,12 +112,12 @@ const UserHome: React.FC = () => {
 
   // 휴대폰 번호 인증 성공 처리
   const handleAuthModalAccept = () => {
-    toggleModal('success', true, setModals);
+    toggleModal("success", true, setModals);
     setTimeout(() => {
-      toggleModal('success', false, setModals);
-      navigateTo('/select');
-    }, 1000)
-  }
+      toggleModal("success", false, setModals);
+      navigateTo("/select");
+    }, 1000);
+  };
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     e.stopPropagation(); // 이벤트 전파 방지
@@ -122,13 +125,14 @@ const UserHome: React.FC = () => {
 
   return (
     <MainContainer backgroundImage={poster}>
-      <MainTitle className='Podo-Ticket-Headline-H3'>공연 입장을 도와드릴게요!</MainTitle>
+      <MainTitle className="Podo-Ticket-Headline-H3">
+        공연 입장을 도와드릴게요!
+      </MainTitle>
 
       <PosterDetailsContainer>
         <Card isFlipped={isFlipped}>
           {/* Front Side */}
           <CardFront>
-
             <CardBackgroundImage src={homeTicket} alt="배경 이미지" />
 
             <TicketHeaderContainer>
@@ -137,9 +141,12 @@ const UserHome: React.FC = () => {
               <ShowDetails>
                 {playInfo && (
                   <>
-                    <ShowDetailsTitle className='Podo-Ticket-Headline-H1'>{playInfo.title}</ShowDetailsTitle>
-                    <ShowDetailsSubtitle className='Podo-Ticket-Body-B5'>
-                      {DateUtil.formatDate(performanceSession)}</ShowDetailsSubtitle>
+                    <ShowDetailsTitle className="Podo-Ticket-Headline-H1">
+                      {playInfo.title}
+                    </ShowDetailsTitle>
+                    <ShowDetailsSubtitle className="Podo-Ticket-Body-B5">
+                      {DateUtil.formatDate(performanceSession)}
+                    </ShowDetailsSubtitle>
                   </>
                 )}
               </ShowDetails>
@@ -155,12 +162,14 @@ const UserHome: React.FC = () => {
                     {Array.isArray(item.content) ? (
                       <>
                         {/* Show only the first 4 items */}
-                        {item.content.slice(0, 4).map((contentItem, contentIndex) => (
-                          <span key={contentIndex}>
-                            {contentItem}
-                            {contentIndex !== 3 && ', '}
-                          </span>
-                        ))}
+                        {item.content
+                          .slice(0, 4)
+                          .map((contentItem, contentIndex) => (
+                            <span key={contentIndex}>
+                              {contentItem}
+                              {contentIndex !== 3 && ", "}
+                            </span>
+                          ))}
                         {/* Show "More" button if content has more than 4 items */}
                         {item.content.length > 4 && (
                           <div style={{ position: "relative" }}>
@@ -168,7 +177,8 @@ const UserHome: React.FC = () => {
                               content="더보기" // 버튼 안 내용
                               isAvailable={true} // 버튼 동작 여부
                               onClick={togglePopup}
-                              isUnderlined={true} />
+                              isUnderlined={true}
+                            />
                             {isPopupVisible && (
                               <SpeechBubble isClosing={isPopupClosing}>
                                 <div>박도현, 박세웅, 오지우, 윤가은</div>
@@ -191,72 +201,78 @@ const UserHome: React.FC = () => {
                   isAvailable={true}
                 />
               </MoreDetailBtnContainer>
-
             </DetailContainer>
 
             <DetailBtnContainer>
               <GetTicketBtn
                 content="티켓 발권"
-                onClick={() => toggleModal('reserveWayModal', true, setModals)}
+                onClick={() => toggleModal("reserveWayModal", true, setModals)}
                 isAvailable={true}
               />
             </DetailBtnContainer>
-
           </CardFront>
 
           {/* Back Side */}
           <CardBack>
             <CardBackgroundImage src={homeTicket} alt="배경 이미지" />
-            <NavBar lefter={lefter} center={lefter} righter={null}
+            <NavBar
+              lefter={lefter}
+              center={lefter}
+              righter={null}
               customStyles={{
                 borderRadius: "20px 20px 0px 0px",
                 background: "transparent",
-                height: "60px"
-              }} />
+                height: "60px",
+              }}
+            />
 
-            <BackDetailScroll onScroll={handleScroll}>
-              <BackDetailContainer>
-                {DETAILED_PERFORMANCE_INFO.map((item, index) => (
-                  <FrontCardInfoItem key={index}>
-                    <InfoCategory className="Podo-Ticket-Body-B9">{item.category}</InfoCategory>
-                    <BackInfoContent className="Podo-Ticket-Body-B7">
-                      {Array.isArray(item.content) ? (
-                        item.content.map((name, nameIndex) => (
+            <BackDetailContainer onScroll={handleScroll}>
+              {DETAILED_PERFORMANCE_INFO.map((item, index) => (
+                <FrontCardInfoItem key={index}>
+                  <InfoCategory className="Podo-Ticket-Body-B9">
+                    {item.category}
+                  </InfoCategory>
+                  <BackInfoContent className="Podo-Ticket-Body-B7">
+                    {Array.isArray(item.content)
+                      ? item.content.map((name, nameIndex) => (
                           <span key={nameIndex}>
                             {name}
-                            {(nameIndex + 1) % 5 === 0 && nameIndex !== item.content.length - 1 ? <br /> : ', '}
+                            {(nameIndex + 1) % 5 === 0 &&
+                            nameIndex !== item.content.length - 1 ? (
+                              <br />
+                            ) : (
+                              ", "
+                            )}
                           </span>
                         ))
-                      ) : (item.content)}
-                    </BackInfoContent>
-                  </FrontCardInfoItem>
-                ))}
-              </BackDetailContainer>
-            </BackDetailScroll>
-
+                      : item.content}
+                  </BackInfoContent>
+                </FrontCardInfoItem>
+              ))}
+            </BackDetailContainer>
           </CardBack>
-
         </Card>
       </PosterDetailsContainer>
 
       <ReserveWayModal
         showChoiceModal={modals.reserveWayModal}
-        closeChoiceModal={() => toggleModal('reserveWayModal', false, setModals)}
-        onFirstItemClick={() => toggleModal('authModal', true, setModals)}
-        onSecondItemClick={() => navigateTo('/reserve')}
+        closeChoiceModal={() =>
+          toggleModal("reserveWayModal", false, setModals)
+        }
+        onFirstItemClick={() => toggleModal("authModal", true, setModals)}
+        onSecondItemClick={() => navigateTo("/reserve")}
       />
 
       <AuthModal
         showPhoneModal={modals.authModal}
         scheduleId={scheduleId}
         onAcceptFunc={handleAuthModalAccept}
-        onUnacceptFunc={() => toggleModal('authModal', false, setModals)}
+        onUnacceptFunc={() => toggleModal("authModal", false, setModals)}
       />
 
       <Loading showLoading={modals.loading} />
       <Success showSuccess={modals.success} />
-
-    </MainContainer >
+    </MainContainer>
   );
 };
 
@@ -277,7 +293,7 @@ const MainContainer = styled.div<{ backgroundImage: string }>`
   overflow: hidden;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -289,7 +305,7 @@ const MainContainer = styled.div<{ backgroundImage: string }>`
 
 const MainTitle = styled.h1`
   padding: 30px 0;
-  padding-top : 40px;
+  padding-top: 40px;
 
   z-index: 1;
 
@@ -313,11 +329,13 @@ const Card = styled.div<{ isFlipped?: boolean }>`
 
   width: 100%;
   height: 100%;
-  
+
   transform-style: preserve-3d;
   transition: transform 1s ease-in-out;
 
-  ${({ isFlipped }) => isFlipped && `
+  ${({ isFlipped }) =>
+    isFlipped &&
+    `
     transform: rotateY(180deg);
   `}
 `;
@@ -345,7 +363,7 @@ const CardBackgroundImage = styled.img`
   width: 100%;
   height: 110%;
   border-radius: 20px 20px 0px 0px;
- 
+
   z-index: 2;
 `;
 
@@ -391,68 +409,67 @@ const ShowDetails = styled.div`
 `;
 
 const ShowDetailsTitle = styled.div`
-white-space: nowrap;    // 줄 바꿈 방지
-text-align: center;
+  white-space: nowrap; // 줄 바꿈 방지
+  text-align: center;
 `;
 
 const ShowDetailsSubtitle = styled.div`
-white-space: nowrap;    // 줄 바꿈 방지
-text-align: center;
+  white-space: nowrap; // 줄 바꿈 방지
+  text-align: center;
 `;
 
 const DetailContainer = styled.div`
-position: relative;
-display: flex;
-flex-direction: column;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 
-padding-left : 36px;
-padding-top : 35px;
-padding-right: 0px;
-gap : 13px;
+  padding-left: 36px;
+  padding-top: 35px;
+  padding-right: 0px;
+  gap: 13px;
 
-z-index: 2;
+  z-index: 2;
 `;
 
 const FrontCardInfoItem = styled.div`
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
 
-gap: 16px;
+  gap: 16px;
 `;
 
 const InfoCategory = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-width: 59px;
-border-radius: 30px;
-border: 1px solid var(--purple-9);
-background: var(--ect-white);
+  width: 59px;
+  border-radius: 30px;
+  border: 1px solid var(--purple-9);
+  background: var(--ect-white);
 
-color: var(--grey-6);
+  color: var(--grey-6);
 `;
 
 const InfoContent = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-color: var(--grey-7);
+  color: var(--grey-7);
 `;
 
 const BackInfoContent = styled.div`
-color: var(--grey-7);
+  color: var(--grey-7);
 `;
 
 const MoreDetailBtnContainer = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-padding-right: 36px;
-margin-top: 26px;
-
+  padding-right: 36px;
+  margin-top: 26px;
 `;
 
 const DetailBtnContainer = styled.div`
@@ -469,53 +486,63 @@ const DetailBtnContainer = styled.div`
   z-index: 2;
 `;
 
-const GetTicketBtn = styled(MediumBtn)`
-
-`;
+const GetTicketBtn = styled(MediumBtn)``;
 
 const CardBack = styled.div`
-  position: absolute;
+  position: absolute; // 위치 고정
   width: 100%;
   height: 100%;
-  backface-visibility: hidden;
 
-  z-index: 1;
   transform-style: preserve-3d;
   transform: rotateY(180deg);
 
   overflow: hidden;
 `;
 
-const NavBar = styled(TopNav)`
-
-`;
-
-const BackDetailScroll = styled.div`
-max-height: 330px;
-height: 330px;
-
-overflow-y: auto;
-
--webkit-overflow-scrolling: touch;
-`;
+const NavBar = styled(TopNav)``;
 
 const BackDetailContainer = styled.div`
-position: relative;
-display: flex;
-flex-direction: column;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
 
-padding-left : 36px;
-padding-top : 10px;
-padding-right: 0px;
-gap : 13px;
+  height: calc(100% - 300px);
 
-z-index: 2;
+  width: 100%; /* 전체 뷰포트 너비에서 70px 빼기 */
+  padding: 20px 36px; // 좌우 패딩 추가
+
+  overflow-y: auto;
+  overscroll-behavior: contain; // iOS 및 기타 브라우저 스크롤 동작 제어
+
+  -webkit-overflow-scrolling: touch; /* iOS에서 부드러운 스크롤 */
+  gap: 13px;
 `;
 
+// const BackDetailContainer = styled.div`
+//   position: relative;
+//   display: flex;
+//   flex-direction: column;
 
-const SpeechBubble = styled.div.attrs({ className: 'Podo-Ticket-Body-B7' }) <{ isClosing: boolean }>`
+//   max-height: 326px; /* 최소 높이 설정 */
+//   height: auto;
+
+//   overflow-y: auto;
+//   border: 2px solid blue; /* 확인용 */
+//   pointer-events: auto; /* 마우스 스크롤 가능하도록 설정 */
+//   -webkit-overflow-scrolling: touch;
+
+//   // padding-left: 36px;
+//   // padding-top: 10px;
+//   // padding-right: 0px;
+//   gap: 13px;
+// `;
+
+const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
+  isClosing: boolean;
+}>`
   position: absolute;
-  top: 150%; 
+  top: 150%;
   left: -8%;
   transform: translateX(-50%);
 
@@ -534,10 +561,11 @@ const SpeechBubble = styled.div.attrs({ className: 'Podo-Ticket-Body-B7' }) <{ i
 
   z-index: 10;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.3s ease-in-out;
+  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.3s
+    ease-in-out;
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 100%;
     left: 75%;
