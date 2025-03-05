@@ -62,8 +62,6 @@ const UserHome: React.FC = () => {
         const playId = 2; // 추후에 다이나믹하게 변경
         const data = await fetchPlayInfo(playId);
 
-        console.log("제발좀: ", data);
-
         // 가장 가까운 스케줄의 date_time 계산
         const closestDateTime = getClosestDateTime(data.schedule);
 
@@ -255,7 +253,7 @@ const UserHome: React.FC = () => {
               font="Podo-Ticket-Headline-H5"
             />
 
-            <BackDetailContainer onScroll={handleScroll}>
+            <BackDetailContainer>
               {DETAILED_PERFORMANCE_INFO.map((item, index) => (
                 <FrontCardInfoItem key={index}>
                   <InfoCategory className="Podo-Ticket-Body-B9">
@@ -530,47 +528,30 @@ const CardBack = styled.div`
   transform-style: preserve-3d;
   transform: rotateY(180deg);
 
-  overflow: hidden;
+  overflow: visible;
 `;
 
 const NavBar = styled(TopNav)``;
 
 const BackDetailContainer = styled.div`
-  position: absolute;
+  position: relative; 
   display: flex;
   flex-direction: column;
   z-index: 2;
 
   height: calc(100% - 300px);
 
-  width: 100%; /* 전체 뷰포트 너비에서 70px 빼기 */
-  padding: 20px 36px; // 좌우 패딩 추가
+  width: 100%; 
+  padding: 20px 36px;
+
+  gap: 13px;
 
   overflow-y: auto;
   overscroll-behavior: contain; // iOS 및 기타 브라우저 스크롤 동작 제어
 
   -webkit-overflow-scrolling: touch; /* iOS에서 부드러운 스크롤 */
-  gap: 13px;
 `;
 
-// const BackDetailContainer = styled.div`
-//   position: relative;
-//   display: flex;
-//   flex-direction: column;
-
-//   max-height: 326px; /* 최소 높이 설정 */
-//   height: auto;
-
-//   overflow-y: auto;
-//   border: 2px solid blue; /* 확인용 */
-//   pointer-events: auto; /* 마우스 스크롤 가능하도록 설정 */
-//   -webkit-overflow-scrolling: touch;
-
-//   // padding-left: 36px;
-//   // padding-top: 10px;
-//   // padding-right: 0px;
-//   gap: 13px;
-// `;
 
 const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" }) <{
   isClosing: boolean;

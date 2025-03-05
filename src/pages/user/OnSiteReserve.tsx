@@ -71,7 +71,7 @@ function OnSiteReserve() {
   const [isMaximumPersonModalOpen, setIsMaximumPersonModalOpen] =
     useState(false);
 
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState<number>(0);
 
   // React Hook Form setup with Zod resolver
   const {
@@ -94,6 +94,7 @@ function OnSiteReserve() {
     const loadSchedules = async () => {
       try {
         const schedules = await fetchPerformanceSchedules(2);
+        console.log("schedules: ", schedules);
         setPerformanceSchedules(schedules);
       } catch (error) {
         console.error("Failed to load schedules:", error);
@@ -105,8 +106,17 @@ function OnSiteReserve() {
   useEffect(() => {
     const storedScheduleId = localStorage.getItem("scheduleId");
     if (storedScheduleId) {
+      
       setValue(Number(storedScheduleId)); // React Hook Form의 setValue 사용
+      console.log(storedScheduleId,"andand",value);
     }
+
+    const filteredSchedules = performanceSchedules.filter(
+        (schedule) => schedule.id === value
+      );
+
+    console.log(performanceSchedules);
+      console.log(performanceSchedules);
   }, [setValue]);
 
   // 현장 예매 신청 처리 함수

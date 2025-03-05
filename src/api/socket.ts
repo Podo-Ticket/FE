@@ -1,6 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 
-const socket: Socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:8080', {
+const socket: Socket = io(import.meta.env.VITE_API_URL || 'http://localhost:8080', {
   transports: ['websocket'], // WebSocket 전용으로 설정
   reconnection: true,
 });
