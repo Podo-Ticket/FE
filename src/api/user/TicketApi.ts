@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -9,7 +9,7 @@ const api = axios.create({
   baseURL: apiUrl, // Use environment variables
   timeout: 10000,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
   withCredentials: true,
 });
@@ -17,7 +17,7 @@ const api = axios.create({
 // 티켓 정보 가져오기 API
 export const fetchTickets = async () => {
   try {
-    const response = await api.get('/ticket/info');
+    const response = await api.get("/ticket/info");
 
     console.log("response : ", response);
 
@@ -32,9 +32,12 @@ export const fetchTickets = async () => {
       image: "https://via.placeholder.com/150", // 포스터 이미지 (임시 URL)
     }));
 
+    const isOnSite = response.data.onSite;
+
     return {
       tickets: formattedTickets,
       isSurveyed: response.data.isSurvey, // 설문 여부 반환
+      isOnSite,
     };
   } catch (error) {
     console.error("Error fetching tickets:", error);
@@ -49,8 +52,8 @@ export const submitEvaluation = async (rating: number): Promise<boolean> => {
 
     return response.data.success;
   } catch (error: any) {
-    console.error('Error submitting evaluation:', error);
-    throw error.response?.data?.error || '예기치 않은 오류가 발생했습니다.';
+    console.error("Error submitting evaluation:", error);
+    throw error.response?.data?.error || "예기치 않은 오류가 발생했습니다.";
   }
 };
 
@@ -61,7 +64,7 @@ export const submitRecommand = async (rating: number): Promise<boolean> => {
 
     return response.data.success;
   } catch (error: any) {
-    console.error('Error submitting evaluation:', error);
-    throw error.response?.data?.error || '예기치 않은 오류가 발생했습니다.';
+    console.error("Error submitting evaluation:", error);
+    throw error.response?.data?.error || "예기치 않은 오류가 발생했습니다.";
   }
 };
