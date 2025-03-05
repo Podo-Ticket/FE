@@ -149,6 +149,8 @@ const SeatMap: React.FC<SeatMapProps> = ({
       setNewLockedSeats([]);
       setNewUnlockedSeats([]);
       loadSeatMapSeats(true); // 실시간 좌석 정보 가져오기
+      setSelectedAudienceSeats([]);
+      setShowAudienceInfo(false);
     }, 100); // 100ms의 지연 후 실행
     return () => clearTimeout(timer); // cleanup
   }, [scheduleId, isRefreshed]); // scheduleId와 isRealTime이 변경될 때마다 실행
