@@ -30,6 +30,7 @@ import OnsiteManage from "./pages/admin/OnsiteManage.tsx";
 import AdminSetting from "./pages/admin/AdminSetting.tsx";
 
 import OnboardingModal from './components/modal/OnboardingModal.tsx';
+import ProtectedRoute from "./utils/\bProtectedRoute.tsx";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -144,6 +145,7 @@ function App() {
 
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
+          {/* User Routes */}
           <Route path="/" element={<UserHome />} />
           <Route path="/reserve" element={<OnSiteReserve />} />
           <Route
@@ -166,19 +168,76 @@ function App() {
           />
           <Route path="/ticket" element={<TicketScreen />} />
 
+
+          {/* Admin Routes */}
           <Route path="/adminAuth" element={<AdminAuth />} />
 
-          <Route path="/home" element={<AdminHome />} />
-          <Route path="/home/realtime" element={<RealtimeSeats />} />
-          <Route path="/home/manage" element={<ManageLockingSeats />} />
+          <Route path="/home"
+            element={
+              <ProtectedRoute>
+                <AdminHome />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/home/realtime"
+            element={
+              <ProtectedRoute>
+                <RealtimeSeats />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/home/manage"
+            element={
+              <ProtectedRoute>
+                <ManageLockingSeats />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/reserved" element={<ReservedManange />} />
-          <Route path="/reserved/add" element={<ReservedAdd />} />
-          <Route path="/reserved/check" element={<ReservedCheck />} />
-          <Route path="/reserved/check/edit" element={<ReservedEdit />} />
+          {/* Reserved Routes */}
+          <Route path="/reserved"
+            element={
+              <ProtectedRoute>
+                <ReservedManange />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/reserved/add"
+            element={
+              <ProtectedRoute>
+                <ReservedAdd />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/reserved/check"
+            element={
+              <ProtectedRoute>
+                <ReservedCheck />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/reserved/check/edit"
+            element={
+              <ProtectedRoute>
+                <ReservedEdit />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/onsite" element={<OnsiteManage />} />
-          <Route path="/setting" element={<AdminSetting />} />
+          <Route path="/onsite"
+            element={
+              <ProtectedRoute>
+                <OnsiteManage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/setting"
+            element={
+              <ProtectedRoute>
+                <AdminSetting />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="/survey" element={<SurveyLink />} />
         </Routes>
