@@ -1,190 +1,198 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useNavigate, useLocation } from "react-router-dom";
 
-import GetTicketBtn from '../../components/button/LargeBtn';
-import TicketConfirmCard from '../../components/info/TicketConfirmCard';
-import Loading from '../../components/loading/Loading';
-import Success from '../../components/loading/Success'
+import GetTicketBtn from "../../components/button/LargeBtn";
+import TicketConfirmCard from "../../components/info/TicketConfirmCard";
+import Loading from "../../components/loading/Loading";
+import Success from "../../components/loading/Success";
 
-import poster from '../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg'
-import confirmIcon from '../../assets/images/confirm_icon.png';
-import backIcon from '../../assets/images/left_arrow.png'
+import poster from "../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg";
+import confirmIcon from "../../assets/images/confirm_icon.png";
+import backIcon from "../../assets/images/left_arrow.png";
 
-import { DateUtil } from '../../utils/DateUtil';
-import { fetchTicketingInfo, handleTicketIssuance, TicketInfo, cancelSeatSelection } from '../../api/user/TicketConfirmationApi';
+import { DateUtil } from "../../utils/DateUtil";
+import {
+  fetchTicketingInfo,
+  handleTicketIssuance,
+  TicketInfo,
+  cancelSeatSelection,
+} from "../../api/user/TicketConfirmationApi";
 
 const TicketConfirmation = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
-    const [ticketInfo, setTicketInfo] = useState<TicketInfo>(undefined);
-    const selectedSeats = location.state ? location.state.selectedSeats : []; // 선택한 좌석
+  const [ticketInfo, setTicketInfo] = useState<TicketInfo>(undefined);
+  const selectedSeats = location.state ? location.state.selectedSeats : []; // 선택한 좌석
 
-    // 티켓 정보 가져오기
-    useEffect(() => {
-        const loadTicketingInfo = async () => {
-            try {
-                const info = await fetchTicketingInfo();
-                setTicketInfo(info);
-            } catch (error) {
-                console.error(error.message);
-            }
-        };
-
-        loadTicketingInfo();
-    }, []);
-
-    // 뒤로가기 처리
-    const handleBack = async () => {
-        try {
-            const success = await cancelSeatSelection(); // API 호출
-            if (success) {
-                navigate('/select', { state: { from: '/confirm' } }); // 성공 시 선택 페이지로 이동
-            } else {
-                console.log('이미 발권 신청이 완료되었습니다.'); // 실패 메시지 설정
-            }
-        } catch (error) {
-            console.error(error.message);
-            console.log('발권 신청을 취소하는 데 실패했습니다.'); // 오류 메시지 설정
-        }
+  // 티켓 정보 가져오기
+  useEffect(() => {
+    const loadTicketingInfo = async () => {
+      try {
+        const info = await fetchTicketingInfo();
+        setTicketInfo(info);
+      } catch (error) {
+        console.error(error.message);
+      }
     };
 
-    // 티켓 발권 처리
-    const handleIssuance = async () => {
-        setIsLoading(true);
-        await delay(500); // 로딩 애니메이션 시간
+    loadTicketingInfo();
+  }, []);
 
-        try {
-            const success = await handleTicketIssuance(selectedSeats);
-            if (success) {
-                setIsSuccess(true);
-                setTimeout(() => {
-                    setIsSuccess(false);
-                    navigate('/ticket');
-                }, 1000)
-            }
-        } catch (error) {
-            console.error(error.message);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+  // 뒤로가기 처리
+  const handleBack = async () => {
+    try {
+      const success = await cancelSeatSelection(); // API 호출
+      if (success) {
+        navigate("/select", { state: { from: "/confirm" } }); // 성공 시 선택 페이지로 이동
+      } else {
+        console.log("이미 발권 신청이 완료되었습니다."); // 실패 메시지 설정
+      }
+    } catch (error) {
+      console.error(error.message);
+      console.log("발권 신청을 취소하는 데 실패했습니다."); // 오류 메시지 설정
+    }
+  };
 
-    return (
-        <Container>
-            {/* Header */}
-            <Header>
-                <BackIcon src={backIcon} onClick={handleBack} />
-            </Header>
+  // 티켓 발권 처리
+  const handleIssuance = async () => {
+    setIsLoading(true);
+    await delay(500); // 로딩 애니메이션 시간
 
-            {/* Main Content */}
-            <TopContent>
-                <Icon src={confirmIcon} alt="확인 아이콘" />
-                <Title className='Podo-Ticket-Headline-H2'>선택한 좌석으로</Title>
-                <Title className='Podo-Ticket-Headline-H2'>티켓 발권 해드릴까요?</Title>
-                <Warning className='Podo-Ticket-Body-B6'>발권 이후 좌석 변경은 불가합니다.</Warning>
-            </TopContent>
+    try {
+      const success = await handleTicketIssuance(selectedSeats);
+      if (success) {
+        setIsSuccess(true);
+        setTimeout(() => {
+          setIsSuccess(false);
+          navigate("/ticket");
+        }, 1000);
+      }
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-            <Divider />
+  return (
+    <Container>
+      {/* Header */}
+      <Header>
+        <BackIcon src={backIcon} onClick={handleBack} />
+      </Header>
 
-            <BottomContent>
-                {ticketInfo && (
-                    <TicketConfirmCard
-                        title={ticketInfo.title}
-                        poster={poster}
-                        dateTime={DateUtil.formatDate(ticketInfo.date)}
-                        location={ticketInfo.location}
-                        seats={selectedSeats}
-                    />
-                )}
+      {/* Main Content */}
+      <TopContent>
+        <Icon src={confirmIcon} alt="확인 아이콘" />
+        <Title className="Podo-Ticket-Headline-H2">선택한 좌석으로</Title>
+        <Title className="Podo-Ticket-Headline-H2">티켓 발권 해드릴까요?</Title>
+        <Warning className="Podo-Ticket-Body-B6">
+          발권 이후 좌석 변경은 불가합니다.
+        </Warning>
+      </TopContent>
 
-                <ButtonContainer>
-                    <GetTicketBtn
-                        content="티켓 빌권"
-                        onClick={handleIssuance}
-                        isAvailable={true}
-                    />
-                </ButtonContainer>
-            </BottomContent>
+      <Divider />
 
-            <Loading showLoading={isLoading} />
-            <Success showSuccess={isSuccess} />
-        </Container >
-    );
+      <BottomContent>
+        {ticketInfo && (
+          <TicketConfirmCard
+            title={ticketInfo.title}
+            poster={poster}
+            dateTime={DateUtil.formatDate(ticketInfo.date)}
+            location={ticketInfo.location}
+            seats={selectedSeats}
+          />
+        )}
+
+        <ButtonContainer>
+          <GetTicketBtn
+            content="티켓 발권"
+            onClick={handleIssuance}
+            isAvailable={true}
+          />
+        </ButtonContainer>
+      </BottomContent>
+
+      <Loading showLoading={isLoading} />
+      <Success showSuccess={isSuccess} />
+    </Container>
+  );
 };
 
 export default TicketConfirmation;
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.div`
-    display: flex;
-    align-items: center;
-    margin-top: 40px;
-    margin-left: 37px;
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  margin-left: 37px;
 `;
 
 const BackIcon = styled.img`
-width: 13px;
-height: 20px;
+  width: 13px;
+  height: 20px;
 `;
 
 const TopContent = styled.div`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    padding: 0 15px;
+  padding: 0 15px;
 
-    align-items: center;
+  align-items: center;
 `;
 
 const BottomContent = styled.div`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    padding: 0 15px;
+  padding: 0 15px;
 
-    align-items: center;
+  align-items: center;
 `;
 
 const Icon = styled.img`
-    width: 57px;
-    height: 55px;
-    margin-bottom: 20px;
+  width: 57px;
+  height: 55px;
+  margin-bottom: 20px;
 `;
 
 const Title = styled.span`
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 
-    color: var(--charcoal-black);
-    text-align: center;
+  color: var(--charcoal-black);
+  text-align: center;
 `;
 
 const Warning = styled.span`
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 
-    color: var(--red-1);
+  color: var(--red-1);
 `;
 
 const Divider = styled.div`
-    width: 100%;
-    height: 12px;
+  width: 100%;
+  height: 12px;
 
-    margin-bottom: 30px;
-    background-color: var(--grey-2);
+  margin-bottom: 30px;
+  background-color: var(--grey-2);
 `;
 
 const ButtonContainer = styled.div`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    margin-top: 30px;
+  margin-top: 30px;
 `;
