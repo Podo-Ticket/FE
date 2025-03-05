@@ -1,7 +1,6 @@
-
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 import TicketCarousel from "../../components/slide/TicketCarousel.tsx";
 import TopNav from "../../components/nav/TopNav.tsx";
@@ -24,7 +23,6 @@ interface Ticket {
 }
 
 const Ticket = () => {
-
   const navigate = useNavigate();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 티켓 인덱스
@@ -51,39 +49,25 @@ const Ticket = () => {
       } catch (error) {
         console.error("Error loading tickets:", error);
       }
-         };
-        loadTickets(); // 티켓 데이터 가져오기
-        setIsFinishTicketingModalOpen(true); // 모달 열기
-    }, []);
-
-    // 티켓에서 뒤로가기를 누를 경우 '/'으로 리다이렉트
-    useEffect(() => {
-        const handlePopState = () => {
-            navigate('/');
-        };
-
-        // 뒤로가기 이벤트 리스너 추가
-        window.addEventListener("popstate", handlePopState);
-
-        // 컴포넌트 언마운트 시 리스너 제거
-        return () => {
-            window.removeEventListener("popstate", handlePopState);
-        };
-    }, [navigate]);
-
-    // 현재 티켓이 존재하는지 확인
-    const currentTicket = tickets[currentIndex];
-
-    const closeTheaterInfoModal = () => { setIsTheaterInfoModalOpen(false); };
-
-    const closeFinishTicketingModal = () => {
-        setIsFinishTicketingModalOpen(false); // Finish Ticketing Modal 닫기
-        togglePopup()
-
     };
     loadTickets(); // 티켓 데이터 가져오기
     setIsFinishTicketingModalOpen(true); // 모달 열기
   }, []);
+
+  // 티켓에서 뒤로가기를 누를 경우 '/'으로 리다이렉트
+  useEffect(() => {
+    const handlePopState = () => {
+      navigate("/");
+    };
+
+    // 뒤로가기 이벤트 리스너 추가
+    window.addEventListener("popstate", handlePopState);
+
+    // 컴포넌트 언마운트 시 리스너 제거
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [navigate]);
 
   // 현재 티켓이 존재하는지 확인
   const currentTicket = tickets[currentIndex];
@@ -109,7 +93,6 @@ const Ticket = () => {
         }, 350); // fade-out이 끝난 후 상태 초기화
       }, 3000); // 3000ms = 3초
     }
-
   };
 
   const righter = {
@@ -165,7 +148,6 @@ const Ticket = () => {
       />
     </ViewContainer>
   );
-
 };
 
 export default Ticket;

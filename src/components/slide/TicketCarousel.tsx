@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-
 
 import ticketBackground from "../../assets/images/ticket_image.png";
 import poster from "../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg";
