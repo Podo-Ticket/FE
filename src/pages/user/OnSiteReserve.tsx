@@ -12,9 +12,14 @@ import DefaultInput from '../../components/inputField/DefaultInput';
 import LargeBtn from '../../components/button/LargeBtn';
 import ErrorModal from '../../components/error/DefaultErrorModal';
 import Loading from '../../components/loading/Loading.tsx';
-
+import NoticeModal from '../../components/modal/NoticeModal.tsx';
+import PrivacyPolicyModal from '../../components/modal/TextModal.tsx'
 
 import goBackIcon from '../../assets/images/left_arrow.png';
+import CheckedIcon from '../../assets/images/privacy_checked.png'
+import UncheckedIcon from '../../assets/images/privacy_unchecked.png'
+import { AGREE_CONTENT } from '../../constants/text/InfoText.ts'
+
 import { DateUtil } from '../../utils/DateUtil';
 import { fadeIn } from '../../styles/animation/DefaultAnimation.ts';
 import {
@@ -22,7 +27,6 @@ import {
     submitReservation,
     ReservationRequest
 } from '../../api/user/OnSiteReserveApi';
-import NoticeModal from '../../components/modal/NoticeModal.tsx';
 
 // Define the schema for form validation using Zod
 const reservationSchema = z.object({
@@ -51,6 +55,13 @@ function OnSiteReserve() {
     const [performanceSchedules, setPerformanceSchedules] = useState<Array<{ id: number; date_time: string; free_seats: number }>>([]);
 
     const [isLoading, setIsLoading] = useState(false); // 승인 대기 로딩 상태
+
+    const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
+    const handleCheckboxChange = () => { setIsPrivacyChecked(prevChecked => !prevChecked); };
+    const handleCheckboxClick = () => { setIsPrivacyChecked(prevChecked => !prevChecked); };
+    const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+    const openPrivacyModal = () => setShowPrivacyModal(true);
+    const closePrivacyModal = () => setShowPrivacyModal(false);
 
     const [isRejectedModalOpen, setIsRejectedModalOpen] = useState(false);
     const [isDuplicatePhoneModalOpen, setIsDuplicatePhoneModalOpen] = useState(false);
@@ -236,10 +247,29 @@ function OnSiteReserve() {
             </InputContainer>
 
             <ButtonContainer>
-                <LargeBtn content="예매 신청" onClick={handleSubmit(handleReservationSubmit)} isAvailable={isDirty && isValid} />
+
+                <AgreementContainer className='Podo-Ticket-Body-B5'>
+
+                    <AgreementText isChecked={isPrivacyChecked}>
+                        <HiddenCheckbox checked={isPrivacyChecked} onChange={handleCheckboxChange} />
+                        <CustomCheckbox checked={isPrivacyChecked} onClick={handleCheckboxClick} ></CustomCheckbox>
+                        <span onClick={handleCheckboxClick} className='Podo-Ticket-Body-B5'>개인정보 수집 동의</span>
+                    </AgreementText>
+
+                    <AgreementModalLink href="#" className="Podo-Ticket-Body-B10" onClick={openPrivacyModal}>전문보기</AgreementModalLink>
+                </AgreementContainer>
+
+                <LargeBtn content="예매 신청" onClick={handleSubmit(handleReservationSubmit)} isAvailable={isDirty && isValid && isPrivacyChecked} />
             </ButtonContainer>
 
             <Loading showLoading={isLoading} isOnSiteReserve={true} />
+
+            <PrivacyPolicyModal
+                showTextModal={showPrivacyModal}
+                onAcceptFunc={closePrivacyModal}
+                title='개인정보 수집 동의 약관'
+                description={AGREE_CONTENT}
+            />
 
             <ErrorModal
                 showDefaultErrorModal={isDuplicatePhoneModalOpen}
@@ -280,8 +310,46 @@ const InputContainer = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 75px;
+
+  gap: 35px;
+  margin-top: 40px;
+
   animation: ${fadeIn} 0.5s ease-in-out;
+`;
+
+const AgreementContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+`;
+
+const AgreementText = styled.span<{ isChecked: boolean }>`
+  display: flex;
+  align-items: center;
+  color: ${({ isChecked }) => (isChecked ? 'var(--purple-5)' : 'var(--grey-6)')};
+`;
+
+const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+  display: none;
+`;
+
+const CustomCheckbox = styled.div <{ checked: boolean }>`
+  width: 14px;
+  height: 14px; 
+  margin-right: 3px;
+  background-image: ${props => props.checked ?
+        `url(${CheckedIcon})` :
+        `url(${UncheckedIcon})`};
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+`;
+
+const AgreementModalLink = styled.a`
+  color: var(--grey-6);
 `;
