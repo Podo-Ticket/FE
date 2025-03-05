@@ -1,8 +1,7 @@
-import { io, Socket } from 'socket.io-client';
+import io from "socket.io-client";
 
-const socket: Socket = io(import.meta.env.VITE_API_URL || 'http://localhost:8080', {
-  transports: ['websocket'], // WebSocket 전용으로 설정
-  reconnection: true,
+const socket = io(import.meta.env.VITE_API_URL || "http://localhost:8080", {
+  transports: ["websocket"], // 필요에 따라 추가
 });
 
 socket.on('connect', () => {
@@ -13,7 +12,7 @@ socket.on('disconnect', () => {
   console.log('Socket.IO connection closed');
 });
 
-socket.on('error', (error) => {
+socket.on('error', (error: any) => {
   console.error('Socket.IO error:', error);
 });
 

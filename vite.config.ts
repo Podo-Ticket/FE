@@ -9,7 +9,7 @@ export default defineConfig({
     srcDir: 'src',
     filename: 'sw.ts',
     registerType: 'prompt',
-    injectRegister: false,
+    injectRegister: 'auto',
 
     manifest: {
       name: 'Podo-Ticket',
@@ -18,19 +18,19 @@ export default defineConfig({
       theme_color: '#ffffff',
 
       icons: [{
-        src: 'pwa-64x64.png',
+        src: 'favicon.ico',
         sizes: '64x64',
         type: 'image/png',
       }, {
-        src: 'pwa-192x192.png',
+        src: 'favicon.ico',
         sizes: '192x192',
         type: 'image/png',
       }, {
-        src: 'pwa-512x512.png',
+        src: 'favicon.ico',
         sizes: '512x512',
         type: 'image/png',
       }, {
-        src: 'maskable-icon-512x512.png',
+        src: 'favicon.ico',
         sizes: '512x512',
         type: 'image/png',
         purpose: 'maskable',
@@ -38,7 +38,7 @@ export default defineConfig({
     },
 
     injectManifest: {
-      globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
+      globPatterns: ['**/*.{js,mjs,css,scss,html,svg,png,ico,json,webmanifest}'],
     },
 
     devOptions: {

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useLocation } from 'react-router-dom';
 
 import TopNav from '../../components/nav/TopNav.tsx';
 import PlaySessionPicker from '../../components/nav/PlaySessionPicker.tsx';
@@ -18,8 +17,6 @@ interface OnsiteApprovalRequest {
 }
 
 const OnsiteManage = () => {
-    const navigate = useNavigate();
-
     const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
     const [schedules, setSchedules] = useState<Schedule[]>([]);
     const [selectedSession, setSelectedSession] = useState<string>("");
@@ -52,7 +49,7 @@ const OnsiteManage = () => {
 
     const [search, setSearch] = useState('');
     const [filter, setFilter] = useState('전체');
-    const handleSearch = (e) => setSearch(e.target.value);
+    const handleSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => setSearch(e.target.value);
     const handleSearchButtonClick = () => setSearch(''); // 검색어 초기화
 
     // 현장 예매자 리스트 데이터 가져오기
@@ -92,15 +89,15 @@ const OnsiteManage = () => {
         }
     };
     // 현장 예매자 일괄 승인/삭제 처리
-    const handleGroupApproveClick = async (isApprove: boolean) => {
-        const request: OnsiteApprovalRequest = {
-            userIds: checkedItems, // 단일 사용자 ID를 배열로 전달
-            scheduleId: Number(selectedSession), // 예시로 사용되는 공연 일정 ID
-            check: isApprove, // 승인 여부
-        };
+    const handleGroupApproveClick = async () => {
+        // const request: OnsiteApprovalRequest = {
+        //     userIds: checkedItems, // 단일 사용자 ID를 배열로 전달
+        //     scheduleId: Number(selectedSession), // 예시로 사용되는 공연 일정 ID
+        //     check: isApprove, // 승인 여부
+        // };
 
         try {
-            const result = await handleApproveClick(request); // 결과 저장
+            // const result = await handleApproveClick(request); // 결과 저장
 
             setIsManaging(false);
             setCheckedItems([]);
@@ -173,7 +170,7 @@ const OnsiteManage = () => {
             // 3순위: ID의 오름차순 정렬
             return a.user.id - b.user.id; // ID로 오름차순 정렬
         });
-    const handleFilterClick = (newFilter) => setFilter(newFilter);
+    const handleFilterClick = (newFilter: React.SetStateAction<string>) => setFilter(newFilter);
 
     // 전체 데이터에서 발권 완료 및 미발권 건수 계산
     const totalCount = data.length;
@@ -182,7 +179,7 @@ const OnsiteManage = () => {
 
     return (
         <ViewContainer>
-            <TopNav lefter={null} center={center} righter={righter} isUnderlined={true} />
+            <TopNav lefter={undefined} center={center} righter={righter} isUnderlined={true} />
 
             <PlaySessionPicker
                 schedules={schedules}
@@ -216,7 +213,7 @@ const OnsiteManage = () => {
             </ListContainer>
 
 
-            <FooterNav isGroupAllow={isManaging} groupAllowCnt={checkedItems.length} isApproveClick={() => handleGroupApproveClick(true)} isDeleteClick={() => handleGroupApproveClick(false)} />
+            <FooterNav isGroupAllow={isManaging} groupAllowCnt={checkedItems.length} isApproveClick={() => handleGroupApproveClick()} isDeleteClick={() => handleGroupApproveClick()} />
         </ViewContainer >
     );
 };

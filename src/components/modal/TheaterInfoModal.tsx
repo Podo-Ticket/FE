@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import TopNav from '../nav/TopNav';
@@ -8,7 +7,7 @@ import VenueMap from '../../assets/images/venue_map.png';
 import CloseBtn from '../button/SmallBtn';
 import backIcon from '../../assets/images/left_arrow.png'
 
-import { PERFORMANCE_NOTICE } from '../../constants/text/playInfo/24th_seoulNationalUniv_riveract.ts'
+import { PERFORMANCE_NOTICE } from '../../constants/text/playInfo/24th_seoulnationalUniv_riveract.ts'
 import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
 
 // Props 타입 정의
@@ -19,8 +18,6 @@ interface TheaterInfoModalProps {
 }
 
 const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({ showTheaterInfoModal, onAcceptFunc, pageMode = false }) => {
-  const navigate = useNavigate();
-
   const [isClosing, setIsClosing] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('1'); // 활성화된 탭 상태
 
@@ -72,7 +69,7 @@ const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({ showTheaterInfoModa
   return (
     <ModalOverlay pageMode={pageMode}>
       <ModalContent isClosing={isClosing} pageMode={pageMode}>
-        <TopNav lefter={pageMode? lefter : null} center={{ text: "공연장 정보" }} righter={null} customStyles={{
+        <TopNav lefter={pageMode? lefter : undefined} center={{ text: "공연장 정보" }} righter={undefined} customStyles={{
           borderRadius: "20px 20px 0px 0px",
           background: "transparent",
           height: "60px"

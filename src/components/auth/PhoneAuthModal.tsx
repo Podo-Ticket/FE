@@ -56,7 +56,7 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, schedul
     }, 300); // 애니메이션 시간과 동일하게 설정
   };
 
-  const handlePhoneChange = (e) => {
+  const handlePhoneChange = (e: any) => {
     const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 남기기
     let formattedValue = '';
 

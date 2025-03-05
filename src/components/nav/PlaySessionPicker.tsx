@@ -7,10 +7,10 @@ import arrowDownIcon from "../../assets/images/admin/arrow_down.png";
 import { DateUtil } from '../../utils/DateUtil';
 
 // Schedule 타입 정의
-interface Schedule {
+export interface Schedule {
   id: number;
   date_time: string; // 공연 날짜 및 시간
-  available_seats: number; // 남은 좌석 수
+  free_seats: number; // 남은 좌석 수
 }
 
 // PlaySessionPicker Props 타입 정의

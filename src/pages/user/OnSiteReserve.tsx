@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import socket from "../../api/socket";
@@ -77,7 +77,7 @@ function OnSiteReserve() {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty, isValid },
+    formState: { isDirty, isValid },
   } = useForm<ReservationFormData>({
     resolver: zodResolver(reservationSchema),
     mode: "onChange",
@@ -111,10 +111,6 @@ function OnSiteReserve() {
       console.log(storedScheduleId,"andand",value);
     }
 
-    const filteredSchedules = performanceSchedules.filter(
-        (schedule) => schedule.id === value
-      );
-
     console.log(performanceSchedules);
       console.log(performanceSchedules);
   }, [setValue]);
@@ -140,7 +136,7 @@ function OnSiteReserve() {
         socket.off("disconnect");
 
         // WebSocket 이벤트 리스너 등록
-        socket.on(`user:${userId}`, (messageData) => {
+        socket.on(`user:${userId}`, (messageData: { type: string; }) => {
           console.log(`Message received for user ${userId}:`, messageData);
 
           if (messageData.type === "approval") {
@@ -157,7 +153,7 @@ function OnSiteReserve() {
           }
         });
 
-        socket.on("error", (error) => {
+        socket.on("error", (error: any) => {
           console.error("WebSocket error occurred:", error);
           setIsLoading(false); // 로딩 상태 해제
         });
@@ -169,12 +165,12 @@ function OnSiteReserve() {
 
         console.log("Waiting for approval...");
 
-        const timeoutId = setTimeout(() => {
-          console.warn("Timeout reached: Closing loading and WebSocket.");
-          setIsLoading(false); // 로딩 상태 해제
-          socket.off(`user:${userId}`); // 소켓 리스너 제거
-          socket.disconnect(); // 소켓 연결 닫기
-        }, 300000); // 5분 = 300,000ms
+        // const timeoutId = setTimeout(() => {
+        //   console.warn("Timeout reached: Closing loading and WebSocket.");
+        //   setIsLoading(false); // 로딩 상태 해제
+        //   socket.off(`user:${userId}`); // 소켓 리스너 제거
+        //   socket.disconnect(); // 소켓 연결 닫기
+        // }, 300000); // 5분 = 300,000ms
       } else {
         setIsLoading(false);
         if (response.error === "이미 예약되었습니다.") {
@@ -206,7 +202,7 @@ function OnSiteReserve() {
       <TopNav
         lefter={lefter}
         center={lefter}
-        righter={null}
+        righter={undefined}
         isUnderlined={true}
       />
 

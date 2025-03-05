@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import AccessAdminBtn from '../../components/button/LargeBtn'
 import DefaultErrorModal from '../../components/error/DefaultErrorModal';
@@ -15,7 +15,7 @@ const AdminAuth = () => {
     const navigate = useNavigate();
 
     const [adminCode, setAdminCode] = useState('');
-    const handleInputChange = (e) => setAdminCode(e.target.value);
+    const handleInputChange = (e: { target: { value: SetStateAction<string>; }; }) => setAdminCode(e.target.value);
     const handleAccessAdmin = async () => {
         try {
             const response = await verifyAdminCode(adminCode); // 유틸리티 함수 호출

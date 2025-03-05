@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import TopNav from "../../components/nav/TopNav";
 import DefaultInput from "../../components/inputField/DefaultInput";
-import LargeBtn from "../../components/button/LargeBtn";
 import ErrorModal from "../../components/error/DefaultErrorModal";
 import MoreSmallBtn from "../../components/button/MoreSmallBtn.tsx";
 import MoreMediumBtn from "../../components/button/MoreMediumBtn.tsx";
@@ -75,7 +74,7 @@ function ReservedEdit() {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty, isValid },
+    formState: { isDirty, isValid },
   } = useForm<ReservationFormData>({
     resolver: zodResolver(reservationSchema),
     mode: "onChange",
@@ -149,7 +148,7 @@ function ReservedEdit() {
       <TopNav
         lefter={lefter}
         center={lefter}
-        righter={null}
+        righter={undefined}
         isUnderlined={true}
       />
 

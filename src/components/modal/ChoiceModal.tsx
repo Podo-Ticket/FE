@@ -29,15 +29,6 @@ const ChoiceModal: React.FC<ChoiceModalProps> = ({ showChoiceModal, closeChoiceM
         }, 300); // 애니메이션 시간과 동일하게 설정
     };
 
-    const handleFirstItemClick = () => {
-        setIsClosing(true); // 페이드아웃 애니메이션 시작
-        setTimeout(() => {
-            setIsClosing(false); // 상태 초기화
-            onFirstItemClick(); // 애니메이션 종료 후 닫기 함수 호출
-            closeChoiceModal();
-        }, 300); // 애니메이션 시간과 동일하게 설정
-    };
-
     const handleSecondItemClick = () => {
         setIsClosing(true); // 페이드아웃 애니메이션 시작
         setTimeout(() => {

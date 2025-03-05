@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, createSearchParams } from "react-router-dom";
 
 import {
   fetchAdminEnter,
-  PerformanceInfo,
-  verifyAdminCode,
+  PerformanceInfo
 } from "../../api/admin/AdminAuthApi.ts";
 
 import FooterNav from "../../components/nav/FooterNav.tsx";
@@ -24,7 +23,7 @@ const AdminHome = () => {
   const [performance, setPerformance] = useState<PerformanceInfo[] | null>(
     null
   );
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   const navigate = useNavigate();
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { Player } from '@lottiefiles/react-lottie-player'; // Lottie Player import
 
 import logo from '../assets/images/splash.png';

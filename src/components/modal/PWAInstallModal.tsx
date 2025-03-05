@@ -13,19 +13,38 @@ interface PWAInstallModalProps {
     onClose: () => void; // 모달 닫기 콜백 함수
 }
 
+declare global {
+    interface BeforeInstallPromptEvent extends Event {
+        platforms: string[];
+        userChoice: Promise<any>;
+        prompt: () => void;
+    }
+
+    interface WindowEventMap {
+        'beforeinstallprompt': BeforeInstallPromptEvent;
+    }
+}
+
 const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ showModal, onClose }) => {
     const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
 
-    useEffect(() => {
-        const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
-            e.preventDefault(); // 기본 동작 방지
-            setDeferredPrompt(e); // 이벤트 저장
-        };
+    const handleBeforeInstallPrompt = async (e: BeforeInstallPromptEvent) => {
+        e.preventDefault();
+        const promptEvent = e;
 
-        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        // 비동기적으로 프롬프트를 실행
+        await promptEvent.prompt();
+    };
+
+    useEffect(() => {
+        const listener = (e: any) => handleBeforeInstallPrompt(e);
+
+        // beforeinstallprompt 이벤트 리스너 추가
+        window.addEventListener('beforeinstallprompt', listener);
 
         return () => {
-            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+            // 이벤트 리스너 제거
+            window.removeEventListener('beforeinstallprompt', listener);
         };
     }, []);
 

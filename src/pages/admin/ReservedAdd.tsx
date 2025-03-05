@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
@@ -54,7 +54,7 @@ function ReservedAdd() {
   const [performanceSchedules, setPerformanceSchedules] = useState<Schedule[]>(
     []
   );
-  const [isLoading, setIsLoading] = useState(false); // 승인 대기 로딩 상태
+  const [, setIsLoading] = useState(false); // 승인 대기 로딩 상태
 
   const [isRejectedModalOpen, setIsRejectedModalOpen] = useState(false);
   const [isDuplicatePhoneModalOpen, setIsDuplicatePhoneModalOpen] =
@@ -68,7 +68,7 @@ function ReservedAdd() {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty, isValid },
+    formState: { isDirty, isValid },
   } = useForm<ReservationFormData>({
     resolver: zodResolver(reservationSchema),
     mode: "onChange",
@@ -134,7 +134,7 @@ function ReservedAdd() {
       <TopNav
         lefter={lefter}
         center={lefter}
-        righter={null}
+        righter={undefined}
         isUnderlined={true}
       />
 

@@ -21,7 +21,7 @@ interface OnboardingModalProps {
 
 const OnboardingModal: React.FC<OnboardingModalProps> = ({ showOnboardingModal, pageType,
   onDismissFunc, isDontShowAgainChecked, setIsDontShowAgainChecked, }) => {
-  const [isClosing, setIsClosing] = useState(false);
+  const [isClosing] = useState(false);
 
   if (!showOnboardingModal && !isClosing) return null;
 

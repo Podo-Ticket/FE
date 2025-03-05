@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import StarRatings from 'react-star-ratings';
 
@@ -19,7 +19,7 @@ interface SurveyModalProps {
 
 
 const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc }) => {
-    const [isClosing, setIsClosing] = useState(false);
+    const [isClosing] = useState(false);
 
     const center = {
         text: '포도티켓 서비스 평가',
@@ -54,7 +54,7 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
                 console.log('응답 성공:', result);
                 handleNext(); // 다음 단계로 이동
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('응답 실패:', error.message);
         }
     };
@@ -66,7 +66,7 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
                 console.log('응답 성공:', result);
                 handleNext(); // 다음 단계로 이동
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('응답 실패:', error.message);
         }
     };
@@ -185,7 +185,7 @@ const SurveyModal: React.FC<SurveyModalProps> = ({ showSurveyModal, onAcceptFunc
 
     return (
         <Overlay>
-            <TopNav lefter={null} center={center} righter={null} />
+            <TopNav lefter={undefined} center={center} righter={undefined} />
             {renderContent()}
         </Overlay>
     );
@@ -272,10 +272,6 @@ const ThankYouMessage = styled.div`
 color: var(--grey-7);
 `;
 
-const EvaluationTitle = styled.div`
-color: var(--purple-4);
-`;
-
 const StarContentHeader = styled.div`
   display: flex;
   flex-direction: column;
@@ -331,7 +327,7 @@ interface SliderProps {
     value: number; // value는 숫자 타입
 }
 
-const SliderInput = styled.input.attrs<SliderProps>(props => ({
+const SliderInput = styled.input.attrs<SliderProps>(() => ({
     type: 'range', // input의 기본 속성을 설정
 }))`
   -webkit-appearance: none; /* 기본 브라우저 스타일 제거 */

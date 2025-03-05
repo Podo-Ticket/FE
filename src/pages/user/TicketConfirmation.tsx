@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -29,7 +29,7 @@ const TicketConfirmation = () => {
     const delay = (ms: number) =>
         new Promise((resolve) => setTimeout(resolve, ms));
 
-    const [ticketInfo, setTicketInfo] = useState<TicketInfo>(undefined);
+    const [ticketInfo, setTicketInfo] = useState<TicketInfo>();
     const selectedSeats = location.state ? location.state.selectedSeats : []; // 선택한 좌석
 
     const [showTimeOutModal, setShowTimeOutModal] = useState<boolean>(false); // 모달 표시 여부
@@ -40,7 +40,7 @@ const TicketConfirmation = () => {
             try {
                 const info = await fetchTicketingInfo();
                 setTicketInfo(info);
-            } catch (error) {
+            } catch (error: any) {
                 console.error(error.message);
             }
         };
@@ -87,7 +87,7 @@ const TicketConfirmation = () => {
             } else {
                 console.log("이미 발권 신청이 완료되었습니다."); // 실패 메시지 설정
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error(error.message);
             console.log("발권 신청을 취소하는 데 실패했습니다."); // 오류 메시지 설정
         }
@@ -107,7 +107,7 @@ const TicketConfirmation = () => {
                     navigate("/ticket");
                 }, 1000);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error(error.message);
         } finally {
             setIsLoading(false);

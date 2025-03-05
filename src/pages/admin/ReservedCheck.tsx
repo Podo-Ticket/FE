@@ -14,7 +14,6 @@ import {
   fetchReservationInfo,
   ReservationInfo,
   deleteReservation,
-  ReservationDelete,
 } from "../../api/admin/ReservedManageApi.ts";
 
 export default function ReservedCheck() {
@@ -32,7 +31,7 @@ export default function ReservedCheck() {
     const loadReservationInfo = async () => {
       try {
         if (!scheduleId || !userId) return;
-        const info = await fetchReservationInfo(
+        const info: any = await fetchReservationInfo(
           Number(scheduleId),
           BigInt(userId)
         );

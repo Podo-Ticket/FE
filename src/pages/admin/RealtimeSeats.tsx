@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import TopNav from "../../components/nav/TopNav";
 import PlaySessionPicker from "../../components/nav/PlaySessionPicker";

@@ -14,7 +14,7 @@ const api = axios.create({
 export interface Schedule {
   id: number;
   date_time: string; // 공연 날짜 및 시간
-  available_seats: number; // 남은 좌석 수
+  free_seats: number; // 남은 좌석 수
 }
 
 interface FetchSchedulesResponse {
@@ -53,7 +53,7 @@ export interface Seat {
 }
 
 interface LockSeatsRequest {
-  scheduleId: number;
+  scheduleId: number[];
   seats: string; // encodeURIComponent으로 문자열 화 고려.
 }
 
@@ -108,7 +108,7 @@ export const unlockSeats = async (request: UnlockSeatsRequest): Promise<UnlockSe
 };
 
 export interface CheckingLockSeatsRequest {
-  scheduleId: number;
+  scheduleId: number[];
   seats: string; // encodeURIComponent으로 문자열 화 고려.
 }
 

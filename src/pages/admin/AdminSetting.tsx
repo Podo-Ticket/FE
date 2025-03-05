@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useLocation } from 'react-router-dom';
 
 import FooterNav from '../../components/nav/FooterNav.tsx'
 import TheaterInfoModal from '../../components/modal/TheaterInfoModal.tsx';
@@ -12,13 +11,10 @@ import versionImage from '../../assets/images/admin/purple_circled_info.png'
 import PWAInstallModal from '../../components/modal/PWAInstallModal.tsx';
 
 const AdminSetting = () => {
-    const navigate = useNavigate();
-
     const [isTheaterInfoModalOpen, setIsTheaterInfoModalOpen] = useState(false);
     const closeTheaterInfoModal = () => { setIsTheaterInfoModalOpen(false); };
 
     const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
-    const closeDownloadModal = () => { setIsDownloadModalOpen(false); };
 
     const navItem = {
         icon: undefined,
@@ -28,7 +24,7 @@ const AdminSetting = () => {
 
     return (
         <ViewContainer>
-            <TopNav lefter={null} center={navItem} righter={null} isUnderlined={true} />
+            <TopNav lefter={undefined} center={navItem} righter={undefined} isUnderlined={true} />
 
             <SettingContainer>
                 <Category>

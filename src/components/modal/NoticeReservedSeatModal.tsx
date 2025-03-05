@@ -48,14 +48,6 @@ const NoticeReservedSeatModal: React.FC<NoticeReservedSeatModalProps> = ({ showN
     }, 300); // 애니메이션 시간과 동일하게 설정
   };
 
-  const handleAcceptClick = () => {
-    setIsClosing(true); // 페이드아웃 애니메이션 시작
-    setTimeout(() => {
-      setIsClosing(false); // 상태 초기화
-      onAcceptFunc(); // 애니메이션 종료 후 닫기 함수 호출
-    }, 300); // 애니메이션 시간과 동일하게 설정
-  };
-
   return (
     <Overlay noOverlay={noOverlay}>
       <Content isClosing={isClosing}>

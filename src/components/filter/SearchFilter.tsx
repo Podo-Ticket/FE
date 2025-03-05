@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import SearchIconImg from "../../assets/images/admin/magnifier.png";
@@ -17,16 +17,16 @@ interface SearchFilterProps {
 }
 
 const SearchFilter: React.FC<SearchFilterProps> = ({ search, setSearch, department, setDepartment, group, setGroup, title}) => {
-  const handleSearch = (event) => {
+  const handleSearch = (event: { target: { value: string; }; }) => {
     setSearch(event.target.value);
   };
 
-  const handleDepartmentChange = (event) => {
+  const handleDepartmentChange = (event: { target: { value: string; }; }) => {
     setDepartment(event.target.value);
     setGroup("default");   
   };
 
-  const handleGroupChange = (event) => setGroup(event.target.value);
+  const handleGroupChange = (event: { target: { value: string; }; }) => setGroup(event.target.value);
 
   const isGroupDisabled = department === "사업기획팀" || department === "그로스팀" || department === "CX팀";
 

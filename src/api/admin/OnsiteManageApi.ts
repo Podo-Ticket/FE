@@ -64,7 +64,7 @@ export const approveOnsite = async (userIds: number[], scheduleId: number, check
 export interface Schedule {
     id: number;
     date_time: string; // 공연 날짜 및 시간
-    available_seats: number; // 남은 좌석 수
+    free_seats: number; // 남은 좌석 수
 }
 
 interface FetchSchedulesResponse {

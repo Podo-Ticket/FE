@@ -1,14 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-interface User {
-  id: number; // 사용자 ID
-  name: string; // 사용자 이름
-  phone_number: string; // 연락처
-  head_count: number; // 좌석 수
-  state: boolean; // 발권 상태 (true: 발권 완료, false: 미발권)
-}
-
 interface OnsiteApprovalRequest {
   userIds: number[];
   scheduleId: number;
@@ -17,8 +9,8 @@ interface OnsiteApprovalRequest {
 
 interface CustomerListItemProps {
   data: any[];
-  scheduleId: number;
-  onBtnClick?: (item: User) => void;
+  scheduleId?: number;
+  onBtnClick?: any;
   isOnsite: boolean;
   /* 아래는 Onsite reserve일 경우 사용 */
   canControll?: boolean;
@@ -33,7 +25,7 @@ import Unchecked from "../../assets/images/onsite_unckecked.png"; // 체크 해�
 
 const CustomerListItem: React.FC<CustomerListItemProps> = ({
   data,
-  scheduleId,
+  scheduleId = 0,
   onBtnClick,
   isOnsite,
   canControll,

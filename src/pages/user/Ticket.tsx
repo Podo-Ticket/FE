@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +27,7 @@ const Ticket = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 티켓 인덱스
   const [isOnSite, setIsOnSite] = useState(false);
-  const [isSurveied, setIsSurveied] = useState(false);
+  const [, setIsSurveied] = useState(false);
   const [isFinshTicketingModalOpen, setIsFinishTicketingModalOpen] =
     useState(false);
 
@@ -70,7 +70,7 @@ const Ticket = () => {
   }, [navigate]);
 
   // 현재 티켓이 존재하는지 확인
-  const currentTicket = tickets[currentIndex];
+  const currentTicket: any = tickets[currentIndex];
 
   const closeTheaterInfoModal = () => {
     setIsTheaterInfoModalOpen(false);
@@ -111,7 +111,7 @@ const Ticket = () => {
   return (
     <ViewContainer>
       <TopNavContainer>
-        <TopNav lefter={null} center={righter} righter={righter} />
+        <TopNav lefter={undefined} center={righter} righter={righter} />
         {isPopupVisible && (
           <SpeechBubble isClosing={isPopupClosing}>
             <div>길을 못 찾겠다면?</div>

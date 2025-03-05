@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import { useNavigate, createSearchParams } from "react-router-dom";
 
 import MediumBtn from "../../components/button/MediumBtn.tsx";
 import MoreDetailBtn from "../../components/button/SmallMoreBtn.tsx";
@@ -27,7 +26,6 @@ import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
 import { useNavigateTo } from "../../utils/NavigateUtil.ts";
 
 const UserHome: React.FC = () => {
-  const navigate = useNavigate();
   const navigateTo = useNavigateTo();
 
   // const handleMoveOnsiteReserve = () => {
@@ -38,7 +36,7 @@ const UserHome: React.FC = () => {
   //   });
   // };
 
-  const [playInfo, setPlayInfo] = useState(null);
+  const [playInfo, setPlayInfo] = useState<any>(null);
   const [scheduleId, setScheduleId] = useState<number | 0>(0);
   const [performanceSession, setPerformanceSession] = useState<string | "">("");
 
@@ -67,7 +65,7 @@ const UserHome: React.FC = () => {
 
         // 가장 가까운 스케줄의 id 찾기
         const closestSchedule = data.schedule.find(
-          (schedule) => schedule.date_time === closestDateTime
+          (schedule: { date_time: string; }) => schedule.date_time === closestDateTime
         );
 
         if (closestSchedule) {
@@ -140,10 +138,6 @@ const UserHome: React.FC = () => {
       toggleModal("success", false, setModals);
       navigateTo("/select");
     }, 1000);
-  };
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    e.stopPropagation(); // 이벤트 전파 방지
   };
 
   return (
@@ -245,7 +239,7 @@ const UserHome: React.FC = () => {
             <NavBar
               lefter={lefter}
               center={lefter}
-              righter={null}
+              righter={undefined}
               customStyles={{
                 borderRadius: "20px 20px 0px 0px",
                 background: "transparent",
@@ -263,18 +257,18 @@ const UserHome: React.FC = () => {
                   <BackInfoContent className="Podo-Ticket-Body-B7">
                     {Array.isArray(item.content)
                       ? item.content.map((name, nameIndex, arr) => (
-                          <span key={nameIndex}>
-                            {name}
-                            {(nameIndex + 1) % 5 === 0 &&
+                        <span key={nameIndex}>
+                          {name}
+                          {(nameIndex + 1) % 5 === 0 &&
                             nameIndex !== item.content.length - 1 ? (
-                              <br />
-                            ) : nameIndex !== arr.length - 1 ? (
-                              ", "
-                            ) : (
-                              ""
-                            )}
-                          </span>
-                        ))
+                            <br />
+                          ) : nameIndex !== arr.length - 1 ? (
+                            ", "
+                          ) : (
+                            ""
+                          )}
+                        </span>
+                      ))
                       : item.content}
                   </BackInfoContent>
                 </FrontCardInfoItem>
@@ -550,6 +544,7 @@ const BackDetailContainer = styled.div`
 
   -webkit-overflow-scrolling: touch; /* iOS에서 부드러운 스크롤 */
 `;
+
 
 const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
   isClosing: boolean;

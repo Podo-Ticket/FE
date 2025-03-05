@@ -1,18 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 
-/* lefter, center, righter 모두 인터페이스 동일
-interface lefter {
-    icon: string;
-    iconWidth?: number; // 아이콘 너비 (px 단위)
-    iconHeight?: number; // 아이콘 높이 (px 단위)
-    text: string;
-    clickFunc: () => void;
-   
+interface navItem {
+  icon?: string;
+  iconWidth?: number; // 아이콘 너비 (px 단위)
+  iconHeight?: number; // 아이콘 높이 (px 단위)
+  text?: string;
+  clickFunc?: () => void;
 }
-*/
 
-const TopNav = ({
+interface TopNavProps {
+  lefter?: navItem,
+  center?: navItem,
+  righter?: navItem,
+  isGrey?: boolean,
+  isUnderlined?: boolean,
+  customStyles?: any,
+  font?: any
+}
+
+const TopNav: React.FC<TopNavProps> = ({
   lefter,
   center,
   righter,

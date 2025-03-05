@@ -34,13 +34,13 @@ interface SeatMapProps {
 const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelectedSeats,
 
   showErrorModal,
-  disabled, scheduleId, headCount, isRealTime, onSeatClick, bookingInfo, onSeatEdit
+  disabled, scheduleId, headCount, isRealTime, bookingInfo, onSeatEdit
   , newLockedSeats, setNewLockedSeats, newUnlockedSeats, setNewUnlockedSeats, setCurrentLockedSeatsInfo
   , setIsLockAvailable, setIsUnlockAvailable }) => {
 
   const seatMapRef = useRef(null);
-  const [lockedSeatsInfo, setLockedSeatsInfo] = useState([]);
-  const [bookedSeatsInfo, setbookedSeatsInfo] = useState([]);
+  const [lockedSeatsInfo, setLockedSeatsInfo] = useState<any>([]);
+  const [bookedSeatsInfo, setbookedSeatsInfo] = useState<any>([]);
 
   const [unclickableSeats, setUnclickableSeats] = useState<string[]>([]);
   const [reservedSeats, setReservedSeats] = useState<string[]>([]);
@@ -49,7 +49,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
 
 
   // 좌석 정보 가져오기
-  const loadSeatMapSeats = async (isRealTime) => {
+  const loadSeatMapSeats = async (isRealTime: boolean) => {
     if (!scheduleId) {
       console.error("scheduleId가 없습니다.");
       return;
@@ -60,7 +60,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
       const data = await fetchSeats(0 | Number(localStorage.getItem("scheduleId")));
 
       // 선택 불가 좌석 배열 생성
-      const unclickable = data.seats.map(seat => `${seat.row}${seat.number}`);
+      const unclickable = data.seats.map((seat: { row: string; number: number; }) => `${seat.row}${seat.number}`);
       console.log("unclickable: ", unclickable);
 
       // 예매된 좌석 Id 배열 생성
@@ -134,7 +134,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
     console.log("temporarySelectedSeats:", temporarySelectedSeats);
   }, [temporarySelectedSeats]);
 
-  const handleSeatClick = (seatId) => {
+  const handleSeatClick = (seatId: string) => {
     if (disabled) return;
 
     // 좌석 클릭 시 예매 정보 API 호출
@@ -213,14 +213,14 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
 
         console.log("bookedSeatsInfo : ", bookedSeatsInfo);
 
-        const bookedSeatIndex = bookedSeatsInfo.findIndex(seat => `${seat.row}${seat.number}` === seatId);
+        const bookedSeatIndex = bookedSeatsInfo.findIndex((seat: { row: string; number: number; }) => `${seat.row}${seat.number}` === seatId);
         console.log("bookedSeatIndex : ", bookedSeatIndex);
         console.log("bookedSeatIndex : ", bookedSeatIndex);
 
         if (bookedSeatIndex !== -1) {
-          const bookedSeatInfo = bookedSeatsInfo[bookedSeatIndex];
-          const bookedSeatId = bookedSeatInfo.id;
-          onSeatClick(bookedSeatId);
+          // const bookedSeatInfo = bookedSeatsInfo[bookedSeatIndex];
+          // const bookedSeatId = bookedSeatInfo.id;
+          // onSeatClick(bookedSeatId);
 
           // 좌석 클릭 시 해당 좌석을 temporarySelectedSeats에 추가
           const userSeats = bookingInfo ? bookingInfo.seats.map(seat => `${seat.row}${seat.number}`) : [];
@@ -231,7 +231,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
     } else {
       // 일반 좌석 선택 로직
       console.log(seatId);
-      console.log("으아앙아ㅏㅇ아");
+
       if (unclickableSeats.includes(seatId)) {
         showErrorModal(true);
       } else if (currentSelectedSeats.includes(seatId)) {

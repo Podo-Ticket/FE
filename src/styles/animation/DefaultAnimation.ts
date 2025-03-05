@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import { keyframes } from 'styled-components';
 
 export const fadeIn = keyframes`
   from {

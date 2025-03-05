@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import styled, { createGlobalStyle } from "styled-components";
+import { useState, useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { createGlobalStyle } from "styled-components";
 
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
 

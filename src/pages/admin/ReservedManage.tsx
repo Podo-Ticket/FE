@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import FooterNav from "../../components/nav/FooterNav.tsx";
 import PlaySessionPicker from "../../components/nav/PlaySessionPicker.tsx";
@@ -21,7 +21,7 @@ import {
 const ReservedManage = () => {
   const navigate = useNavigate();
 
-  const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
+  const [isRefreshed] = useState<boolean>(false);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [selectedSession, setSelectedSession] = useState<string>("");
   const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
@@ -50,11 +50,10 @@ const ReservedManage = () => {
 
     loadSchedules();
   }, []);
-  const triggerRefresh = () => setIsRefreshed((prev) => !prev);
 
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("전체");
-  const handleSearch = (e) => setSearch(e.target.value);
+  const handleSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => setSearch(e.target.value);
   const handleSearchButtonClick = () => setSearch(""); // 검색어 초기화
 
   // 예매자 리스트 데이터 가져오기
@@ -122,11 +121,11 @@ const ReservedManage = () => {
   const totalCount = data.length;
   const acceptCount = data.filter((item) => item.state === true).length;
   const unacceptCount = data.filter((item) => item.state === false).length;
-  const handleFilterClick = (newFilter) => {
+  const handleFilterClick = (newFilter: React.SetStateAction<string>) => {
     setFilter(newFilter);
   };
 
-  const handleListItemlick = (item) => {
+  const handleListItemlick = (item: { scheduleId: string; id: any; }) => {
     item.scheduleId = selectedSession;
 
     navigate("/reserved/check", {
@@ -140,7 +139,7 @@ const ReservedManage = () => {
   return (
     <ViewContainer>
       <TopNav
-        lefter={null}
+        lefter={undefined}
         center={navItem}
         righter={navItem}
         isUnderlined={true}

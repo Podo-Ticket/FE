@@ -14,10 +14,7 @@ import ActSetting from "../../assets/images/admin/purple_setting.png";
 import RedCirclePng from "../../assets/images/admin/redCircle.png";
 import {
   UserWithApproval,
-  approveOnsite,
-  Schedule,
-  fetchOnsiteUserList,
-  fetchSchedules,
+  fetchOnsiteUserList
 } from "../../api/admin/OnsiteManageApi";
 
 interface FooterNavProps {
@@ -36,7 +33,7 @@ const FotterNav: React.FC<FooterNavProps> = ({
   const location = useLocation(); // 현재 경로를 가져옴
 
   const [hasPendingApproval, setHasPendingApproval] = useState(false);
-  const [data, setData] = useState<UserWithApproval[]>([]);
+  const [, setData] = useState<UserWithApproval[]>([]);
 
   useEffect(() => {
     const loadUserList = async () => {
@@ -123,7 +120,7 @@ const FotterNav: React.FC<FooterNavProps> = ({
           <AllowItem
             className="Podo-Ticket-Headline-H4"
             isActive={groupAllowCnt !== 0}
-            onClick={isApproveClick}
+            onClick={() => isApproveClick ? isApproveClick(true) : null}
             disabled={groupAllowCnt === 0}
           >
             수락
@@ -131,7 +128,7 @@ const FotterNav: React.FC<FooterNavProps> = ({
           <DeleteItem
             className="Podo-Ticket-Headline-H4"
             isActive={groupAllowCnt !== 0}
-            onClick={isDeleteClick}
+            onClick={() => isDeleteClick ? isDeleteClick(false) : null}
             disabled={groupAllowCnt === 0}
           >
             삭제

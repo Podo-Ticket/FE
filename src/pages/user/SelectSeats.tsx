@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import TopNav from "../../components/nav/TopNav";
 import SelectSeatsInfo from "../../components/info/SeatsInfo";
@@ -18,11 +18,10 @@ import RiveractSeatMap from "../../components/button/SeatMap/UserSeatMap_Riverac
 
 function SelectSeats() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const currentScheduleId = Number(localStorage.getItem("scheduleId")) || 0;
 
-  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [selectedSeats, setSelectedSeats] = useState<any>([]);
   const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] =
     useState(false);
   const [headCount, setHeadCount] = useState(0); // headCount
@@ -40,7 +39,7 @@ function SelectSeats() {
         try {
           const data = await fetchSeats(currentScheduleId);
           setHeadCount(data.headCount);
-        } catch (error) {
+        } catch (error: any) {
           console.error(error.message);
         }
       };
@@ -79,7 +78,7 @@ function SelectSeats() {
       } else {
         setIsAlreadySelectedModalOpen(true); // 이미 선택된 좌석일 경우 모달 표시
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error.message);
     }
   };
@@ -97,7 +96,7 @@ function SelectSeats() {
 
   return (
     <SelectSeatsContainer>
-      <TopNav lefter={null} center={righter} righter={righter} isGrey={true} />
+      <TopNav lefter={undefined} center={righter} righter={righter} isGrey={true} />
 
       <SelectSeatsContentContainer>
         <SelectSeatsInfo />
@@ -111,16 +110,23 @@ function SelectSeats() {
             disabled={false}
             currentSelectedSeats={selectedSeats}
             setCurrentSelectedSeats={setSelectedSeats}
-            newLockedSeats={null}
-            newUnlockedSeats={null}
-            showErrorModal={setIsAlreadySelectedModalOpen}
-          />
+            showErrorModal={setIsAlreadySelectedModalOpen} newLockedSeats={[]} setNewLockedSeats={function (): void {
+              throw new Error("Function not implemented.");
+            }} newUnlockedSeats={[]} setNewUnlockedSeats={function (): void {
+              throw new Error("Function not implemented.");
+            }} setCurrentLockedSeatsInfo={function (): void {
+              throw new Error("Function not implemented.");
+            }} setIsLockAvailable={function (): void {
+              throw new Error("Function not implemented.");
+            }} setIsUnlockAvailable={function (): void {
+              throw new Error("Function not implemented.");
+            }} />
         </SeatMapContainer>
 
         <LargeBtn
           content={buttonText}
           onClick={handleTicketCheck}
-          isAvailable={!(selectedSeats.length < parseInt(headCount))}
+          isAvailable={!(selectedSeats.length < Number(headCount))}
         />
       </SelectSeatsContentContainer>
 

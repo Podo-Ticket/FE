@@ -91,7 +91,6 @@ const SingleSeatContainer = styled.button<{
   
   background-color: ${({
         isLocked,
-        isAdmin,
         isReserved,
         isSelected,
         isSelectedAudience,
