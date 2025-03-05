@@ -18,6 +18,7 @@ import unlockIcon from "../../assets/images/admin/unlock_icon.png";
 import greyRightArrow from "../../assets/images/admin/grey_right_arrow.png";
 import character from "../../assets/images/admin/character.png";
 import character_100 from "../../assets/images/admin/100_character.png";
+import plus_icon from "../../assets/images/admin/tabler_plus.png";
 
 const AdminHome = () => {
   const [performance, setPerformance] = useState<PerformanceInfo[] | null>(
@@ -172,9 +173,9 @@ const AdminHome = () => {
               <ButtonText className="Podo-Ticket-Headline-H5">
                 새로운 공연 등록
                 <img
-                  style={{ width: "7px", height: "12px" }}
-                  src={rightArror}
-                  alt="화살표 아이콘"
+                  style={{ width: "14px", height: "14px" }}
+                  src={plus_icon}
+                  alt="플러스 아이콘"
                 />
               </ButtonText>
             ) : (
