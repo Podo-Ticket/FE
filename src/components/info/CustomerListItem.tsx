@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 interface User {
   id: number; // 사용자 ID
@@ -40,7 +40,6 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
   onApprovalRequest = undefined,
   onCheckClick = undefined,
 }) => {
-
   const handleApproveClick = async (userId: number) => {
     try {
       // 요청 데이터 생성
@@ -51,7 +50,6 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
       };
 
       onApprovalRequest?.(request);
-
     } catch (error: any) {
       console.error("Error while sending approval request:", error);
       alert(error.message || "승인 요청 중 오류가 발생했습니다.");
@@ -68,12 +66,12 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
       };
 
       onApprovalRequest?.(request);
-
     } catch (error: any) {
       console.error("Error while sending approval request:", error);
       alert(error.message || "승인 요청 중 오류가 발생했습니다.");
     }
   };
+
 
   return (
     <ResultContent>
@@ -104,15 +102,23 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
               )}
 
               {canControll && approve && (
-                <Status completed={approve} className="Podo-Ticket-Body-B12">수락 완료</Status>
+                <Status completed={approve} className="Podo-Ticket-Body-B12">
+                  수락 완료
+                </Status>
               )}
-
+              {/* approve가 false인게 있으면 빨간원 */}
               {canControll && !isExpanded && !approve && (
                 <ActionButtons>
-                  <ApproveButton className="Podo-Ticket-Body-B9" onClick={() => handleApproveClick?.(user.id)}>
+                  <ApproveButton
+                    className="Podo-Ticket-Body-B9"
+                    onClick={() => handleApproveClick?.(user.id)}
+                  >
                     수락
                   </ApproveButton>
-                  <DeleteButton className="Podo-Ticket-Body-B9" onClick={() => handleRejectClick?.(user.id)}>
+                  <DeleteButton
+                    className="Podo-Ticket-Body-B9"
+                    onClick={() => handleRejectClick?.(user.id)}
+                  >
                     삭제
                   </DeleteButton>
                 </ActionButtons>
@@ -122,7 +128,10 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
                 <CheckButton
                   src={checkedItems.includes(user.id) ? Checked : Unchecked}
                   alt="상태 이미지"
-                  onClick={() => { onCheckClick?.(user.id); console.log("passed user.id: ", user.id) }}
+                  onClick={() => {
+                    onCheckClick?.(user.id);
+                    console.log("passed user.id: ", user.id);
+                  }}
                 />
               )}
             </PersonInfo>
@@ -142,7 +151,7 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
   );
 };
 
-export default CustomerListItem
+export default CustomerListItem;
 
 const ResultContent = styled.ul`
   display: flex;
@@ -165,7 +174,8 @@ const ResultContentItems = styled.li<ResultContentItemsProps>`
   flex-direction: column;
 
   width: 100%;
-  border: 0.5px solid ${({ completed }) => completed ? "var(--grey-4)" : "var(--purple-7)"};
+  border: 0.5px solid
+    ${({ completed }) => (completed ? "var(--grey-4)" : "var(--purple-7)")};
   border-radius: 10px;
   background-color: var(--ect-white);
 `;
@@ -214,14 +224,13 @@ const Status = styled.div<StatusProps>`
 
   border-radius: 30px;
   background: ${({ completed }) =>
-    completed ? "var(--grey-5)" : "var(--purple-4)"};;
+    completed ? "var(--grey-5)" : "var(--purple-4)"};
 `;
 
 const ActionButtons = styled.div`
   display: flex;
 
   gap: 5px;
-
 `;
 
 const ApproveButton = styled.button`
@@ -289,8 +298,7 @@ interface DividerProps {
 const Divider = styled.div<DividerProps>`
   width: 100%;
   border-bottom: 0.5px solid
-    ${({ completed }) =>
-    completed ? "var(--grey-4)" : "var(--purple-7)"};
+    ${({ completed }) => (completed ? "var(--grey-4)" : "var(--purple-7)")};
 `;
 
 interface SeatInfoProps {
@@ -312,12 +320,10 @@ const SeatInfo = styled.div<SeatInfoProps>`
   background: ${({ completed }) =>
     completed ? "var(--grey-2)" : "var(--lightpurple-2)"};
 
-  color: ${({ completed }) =>
-    completed ? "var(--grey-6)" : "var(--grey-7)"};
+  color: ${({ completed }) => (completed ? "var(--grey-6)" : "var(--grey-7)")};
 `;
 
-const SeatText = styled.div`
-`;
+const SeatText = styled.div``;
 
 const Seats = styled.div`
   text-align: right;
