@@ -16,7 +16,7 @@ export default defineConfig({
       short_name: 'Podo-Ticket',
       description: 'Podo ticket service',
       theme_color: '#ffffff',
-
+      start_url: '/adminAuth',
       icons: [{
         src: 'pwa-64x64.png',
         sizes: '64x64',
