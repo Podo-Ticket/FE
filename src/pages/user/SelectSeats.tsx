@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useNavigate, useLocation } from "react-router-dom";
 
-import TopNav from '../../components/nav/TopNav';
-import SelectSeatsInfo from '../../components/info/SeatsInfo';
-import LargeBtn from '../../components/button/LargeBtn';
-import ErrorModal from '../../components/error/DefaultErrorModal';
+import TopNav from "../../components/nav/TopNav";
+import SelectSeatsInfo from "../../components/info/SeatsInfo";
+import LargeBtn from "../../components/button/LargeBtn";
+import ErrorModal from "../../components/error/DefaultErrorModal";
 
-import { SELECT_FAIL } from '../../constants/text/ErrorMessage';
-import refreshIcon from '../../assets/images/refresh2_icon.png'
+import { SELECT_FAIL } from "../../constants/text/ErrorMessage";
+import refreshIcon from "../../assets/images/refresh2_icon.png";
 
-import { fetchSeats, checkSeats } from '../../api/user/SelectSeatsApi';
+import { fetchSeats, checkSeats } from "../../api/user/SelectSeatsApi";
 
 /* 각 극장에 맞는 SeatMap component로 설정 필요 */
-import RiveractSeatMap from '../../components/button/SeatMap/UserSeatMap_Riveract';
+import RiveractSeatMap from "../../components/button/SeatMap/UserSeatMap_Riveract";
 // import KwangwoonSeatMap from '../../components/button/SeatMap/UserSeatMap_Kwangwoon';
 
 function SelectSeats() {
@@ -23,7 +23,8 @@ function SelectSeats() {
   const currentScheduleId = Number(localStorage.getItem("scheduleId")) || 0;
 
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] = useState(false);
+  const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] =
+    useState(false);
   const [headCount, setHeadCount] = useState(0); // headCount
 
   const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
@@ -45,6 +46,24 @@ function SelectSeats() {
     }
   }, []);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      handleBack();
+    };
+
+    // 뒤로가기 이벤트 리스너 추가
+    window.addEventListener("popstate", handlePopState);
+
+    // 컴포넌트 언마운트 시 리스너 제거
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [navigate]);
+
+  const handleBack = async () => {
+    navigate("/"); // 성공 시 선택 페이지로 이동
+  };
+
   // 좌석 확인 및 발권 요청 함수
   const handleTicketCheck = async () => {
     if (!currentScheduleId) return;
@@ -53,7 +72,7 @@ function SelectSeats() {
       const response = await checkSeats(currentScheduleId, selectedSeats);
 
       if (response.success) {
-        navigate('/confirm', { state: { selectedSeats } }); // 선택한 좌석과 함께 확인 페이지로 이동
+        navigate("/confirm", { state: { selectedSeats } }); // 선택한 좌석과 함께 확인 페이지로 이동
       } else {
         setIsAlreadySelectedModalOpen(true); // 이미 선택된 좌석일 경우 모달 표시
       }
@@ -70,15 +89,14 @@ function SelectSeats() {
     iconWidth: 17, // 아이콘 너비 (px 단위)
     iconHeight: 17, // 아이콘 높이 (px 단위)
     text: "좌석을 선택해주세요",
-    clickFunc: triggerRefresh
-  }
+    clickFunc: triggerRefresh,
+  };
 
   return (
     <SelectSeatsContainer>
       <TopNav lefter={null} center={righter} righter={righter} isGrey={true} />
 
       <SelectSeatsContentContainer>
-
         <SelectSeatsInfo />
 
         <SeatMapContainer>
@@ -101,7 +119,6 @@ function SelectSeats() {
           onClick={handleTicketCheck}
           isAvailable={!(selectedSeats.length < parseInt(headCount))}
         />
-
       </SelectSeatsContentContainer>
 
       <ErrorModal
@@ -110,40 +127,36 @@ function SelectSeats() {
         onAcceptFunc={() => setIsAlreadySelectedModalOpen(false)}
         aboveButton={true}
       />
-
     </SelectSeatsContainer>
   );
-};
+}
 
 export default SelectSeats;
 
-const SelectSeatsContainer = styled.div`
-
-`;
+const SelectSeatsContainer = styled.div``;
 
 const SelectSeatsContentContainer = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-background: var(--background-1);
+  background: var(--background-1);
 
-gap: 15px;
-padding: 0 20px;
+  gap: 15px;
+  padding: 0 20px;
 `;
 
 const SeatMapContainer = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-width: 100%;
-height: 60vh;
+  width: 100%;
+  height: 60vh;
 
-border-radius: 10px;
-border: 1px solid var(--grey-3);
-background: var(--ect-white);
-box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
-
+  border-radius: 10px;
+  border: 1px solid var(--grey-3);
+  background: var(--ect-white);
+  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
 `;
