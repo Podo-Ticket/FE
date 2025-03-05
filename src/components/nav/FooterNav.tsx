@@ -40,11 +40,11 @@ const FotterNav: React.FC<FooterNavProps> = ({
 
   useEffect(() => {
     const loadUserList = async () => {
-      const currentScheduleId = localStorage.getItem("currentScheduleId");
-      if (!currentScheduleId) return;
+      const scheduleId = localStorage.getItem("scheduleId");
+      if (!scheduleId) return;
 
       try {
-        const response = await fetchOnsiteUserList(Number(currentScheduleId)); // 사용자 리스트 가져오기
+        const response = await fetchOnsiteUserList(Number(scheduleId)); // 사용자 리스트 가져오기
         setData(response.users);
 
         const hasFalseApprove = response.users.some((item) => !item.approve);
@@ -174,7 +174,6 @@ const NavItem = styled.div`
 
   color: var(--grey-5);
   text-align: center;
-
 
   &.active {
     color: var(--purple-4); /* 활성화된 텍스트 색상 */

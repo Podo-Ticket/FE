@@ -30,8 +30,6 @@ const AdminHome = () => {
 
   // 홈 화면 진입 시에
   useEffect(() => {
-    localStorage.setItem("currentScheduleId", "5"); // 홈 화면에서 로컬스토리지에 스케쥴 아이디 저장
-
     const loadPerformanceData = async () => {
       try {
         console.log("🔄 어드민 메인 데이터 가져오기...");

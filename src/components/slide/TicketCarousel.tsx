@@ -72,11 +72,26 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
             <TicketHeaderContainer>
               <Poster src={poster} alt="공연 포스터" />
               {isOnSite ? (
-                <ReservationTag className="Podo-Ticket-Body-B12">
+                <ReservationTag
+                  className="Podo-Ticket-Body-B12"
+                  style={{
+                    border: "1px solid var(--grey-1)",
+                    background: "var(--grey-5)",
+                    color: "var(--ect-white)",
+                  }}
+                >
                   현장 예매
                 </ReservationTag>
               ) : (
-                <ReservationTag className="Podo-Ticket-Body-B12">
+                <ReservationTag
+                  className="Podo-Ticket-Body-B12"
+                  style={{
+                    border: "1px solid var(--purple-7)",
+                    background:
+                      "var(--Podo-Ticket-chip-light-purple02, #F5F4FF)",
+                    color: "var(--purple-4-main)",
+                  }}
+                >
                   사전 예매
                 </ReservationTag>
               )}
@@ -286,13 +301,10 @@ const ReservationTag = styled.span`
   width: 2.875rem;
   height: 1.125rem;
   border-radius: 1.875rem;
-  border: 1px solid var(--purple-purple-7, #b489ff);
-  background: var(--Podo-Ticket-chip-light-purple02, #f5f4ff);
 
   right: 20px;
   top: 15px;
 
-  color: var(--purple-purple-4-main, #6a39c0);
   display: flex;
   align-items: center;
   justify-content: center;
