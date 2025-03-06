@@ -73,7 +73,12 @@ const RealtimeSeats = () => {
 
   return (
     <ViewContainer>
-      <TopNav lefter={navItem} center={navItem} righter={righter} />
+      <TopNav
+        lefter={navItem}
+        center={navItem}
+        righter={righter}
+        isGrey={true}
+      />
 
       <SelectSeatsContentContainer>
         <PlaySessionPicker
