@@ -9,8 +9,8 @@
 # protection
 .env
 
-# production
-/build
+# production (Vite)
+/dist
 
 # misc
 .DS_Store
