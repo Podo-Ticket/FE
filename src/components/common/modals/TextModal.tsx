@@ -96,11 +96,26 @@ const ModalContent = styled.div<{ isClosing: boolean }>`
 
   animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s
     ease-in-out;
+
+  @media (max-resolution: 2dppx) {
+    border-radius: 15px;
+    padding: 45px 33px;
+  }
+  @media (min-resolution: 3dppx) {
+    border-radius: 10px;
+    padding: 30px 22px;
+  }
 `;
 
 const HeadText = styled.span`
   margin-bottom: 20px;
   color: var(--charcoal-black);
+  @media (max-resolution: 2dppx) {
+    margin-bottom: 30px;
+  }
+  @media (min-resolution: 3dppx) {
+    margin-bottom: 20px;
+  }
 `;
 
 const ContentPrivacy = styled.div`
@@ -119,4 +134,19 @@ const ContentPrivacy = styled.div`
   color: var(--grey-6);
 
   overflow-y: auto;
+
+  @media (max-resolution: 2dppx) {
+    height: 217.5px;
+    border-radius: 15px;
+    margin-bottom: 34.5px;
+    padding: 15px;
+    padding-right: 30px;
+  }
+  @media (min-resolution: 3dppx) {
+    height: 145px;
+    border-radius: 10px;
+    margin-bottom: 23px;
+    padding: 10px;
+    padding-right: 20px;
+  }
 `;
