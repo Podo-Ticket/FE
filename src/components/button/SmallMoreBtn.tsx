@@ -1,26 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 
-import goFrontIcon from '../../assets/images/lightgrey_right_arrow.png'
+import goFrontIcon from "../../assets/images/lightgrey_right_arrow.png";
 
 interface SmallMoreBtnProps {
-    content: string;        // 버튼 안 내용
-    onClick: () => void;        // 온 클릭 함수
-    isAvailable: boolean;       // 버튼 동작 여부
-    isUnderlined?: boolean;       // 글자 밑줄 여부
+  content: string; // 버튼 안 내용
+  onClick: () => void; // 온 클릭 함수
+  isAvailable: boolean; // 버튼 동작 여부
+  isUnderlined?: boolean; // 글자 밑줄 여부
 }
 
-const SmallMoreBtn: React.FC<SmallMoreBtnProps> = ({ content, onClick, isAvailable, isUnderlined = false }) => {
-    return (
-        <SmallMoreBtnContainer
-            className={isUnderlined ? "Podo-Ticket-Body-B10" : "Podo-Ticket-Body-B7"}
-            onClick={onClick}
-            disabled={!isAvailable}
-        >
-            <>{content}</>
-            {isUnderlined ? undefined : <Icon src={goFrontIcon} alt="Go Front Icon" />}
-        </SmallMoreBtnContainer>
-    );
+const SmallMoreBtn: React.FC<SmallMoreBtnProps> = ({
+  content,
+  onClick,
+  isAvailable,
+  isUnderlined = false,
+}) => {
+  return (
+    <SmallMoreBtnContainer
+      className={isUnderlined ? "Podo-Ticket-Body-B10" : "Podo-Ticket-Body-B7"}
+      onClick={onClick}
+      disabled={!isAvailable}
+    >
+      <>{content}</>
+      {isUnderlined ? undefined : (
+        <Icon src={goFrontIcon} alt="Go Front Icon" />
+      )}
+    </SmallMoreBtnContainer>
+  );
 };
 
 export default SmallMoreBtn;
@@ -30,7 +37,6 @@ const SmallMoreBtnContainer = styled.button`
   align-items: center;
   justify-content: center;
 
-  width: 70px;
   border: none;
   background: transparent;
 

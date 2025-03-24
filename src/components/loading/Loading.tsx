@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
 import PulseLoader from "react-spinners/PulseLoader";
 import waitReserve from "../../assets/images/wait_reserve_icon.png";
@@ -9,7 +9,10 @@ interface LoadingModalProps {
   isOnSiteReserve?: boolean;
 }
 
-const Loading: React.FC<LoadingModalProps> = ({ showLoading, isOnSiteReserve = false }) => {
+const Loading: React.FC<LoadingModalProps> = ({
+  showLoading,
+  isOnSiteReserve = false,
+}) => {
   const [color] = useState<string>("#6A39C0");
 
   if (!showLoading) return null;
@@ -19,9 +22,15 @@ const Loading: React.FC<LoadingModalProps> = ({ showLoading, isOnSiteReserve = f
       <ModalOverlay>
         {isOnSiteReserve ? (
           <ModalContentReserve>
-            <img src={waitReserve} alt="대기 아이콘" className="modal-content-load-icon" />
-            <p className='Podo-Ticket-Headline-H3'>예매 수락 대기 중</p>
-            <span className='Podo-Ticket-Body-B5'>관리자가 내역을 확인 중입니다.</span>
+            <img
+              src={waitReserve}
+              alt="대기 아이콘"
+              className="modal-content-load-icon"
+            />
+            <p className="Podo-Ticket-Headline-H3">예매 수락 대기 중</p>
+            <span className="Podo-Ticket-Body-B5">
+              관리자가 내역을 확인 중입니다.
+            </span>
             <PulseLoader
               color={color}
               size={13}
@@ -38,7 +47,7 @@ const Loading: React.FC<LoadingModalProps> = ({ showLoading, isOnSiteReserve = f
               loading={showLoading}
               aria-label="Loading Spinner"
               data-testid="loader"
-              style={{ position:"absolute" }}
+              style={{ position: "absolute" }}
             />
           </ModalContentLoad>
         )}
@@ -71,6 +80,17 @@ const ModalContentLoad = styled.div`
   height: 140px;
   border-radius: 10px;
   background: var(--ect-white);
+
+  @media (max-resolution: 2dppx) {
+    width: 210px;
+    height: 210px;
+    border-radius: 15px;
+  }
+  @media (min-resolution: 3dppx) {
+    width: 140px;
+    height: 140px;
+    border-radius: 10px;
+  }
 `;
 
 const ModalContentReserve = styled.div`
@@ -85,21 +105,52 @@ const ModalContentReserve = styled.div`
   padding: 30px 35px;
   padding-bottom: 5px;
 
+  @media (max-resolution: 2dppx) {
+    border-radius: 15px;
+    padding: 45px 52.5px;
+    padding-bottom: 7.5px;
+  }
+  @media (min-resolution: 3dppx) {
+    border-radius: 10px;
+    padding: 30px 35px;
+    padding-bottom: 5px;
+  }
+
   img {
     width: 50px; /* 아이콘 크기 설정 */
     height: auto;
     margin-bottom: 20px;
+    @media (max-resolution: 2dppx) {
+      width: 75px; /* 아이콘 크기 설정 */
+      margin-bottom: 30px;
+    }
+    @media (min-resolution: 3dppx) {
+      width: 50px; /* 아이콘 크기 설정 */
+      margin-bottom: 20px;
+    }
   }
 
   p {
     margin-bottom: 5px;
 
     color: var(--grey-7);
+    @media (max-resolution: 2dppx) {
+      margin-bottom: 7.5px;
+    }
+    @media (min-resolution: 3dppx) {
+      margin-bottom: 5px;
+    }
   }
 
   span {
     margin-bottom: 30px;
 
     color: var(--grey-5);
+    @media (max-resolution: 2dppx) {
+      margin-bottom: 45px;
+    }
+    @media (min-resolution: 3dppx) {
+      margin-bottom: 30px;
+    }
   }
 `;

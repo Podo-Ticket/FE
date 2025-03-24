@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
-import SmallBtn from '../button/SmallBtn.tsx';
+import SmallBtn from "../button/SmallBtn.tsx";
 
-import successImage from '../../assets/images/check_icon.png';
-import dangerImage from '../../assets/images/purple_danger.png';
+import successImage from "../../assets/images/check_icon.png";
+import dangerImage from "../../assets/images/purple_danger.png";
 
-import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
+import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
 
 interface NoticeModalProps {
   showNoticeModal: boolean;
-  imgStatus?: 'success' | 'danger' | null;
+  imgStatus?: "success" | "danger" | null;
   title: string;
   description: string;
   onAcceptFunc: () => void;
   buttonContent?: string;
 }
 
-const NoticeModal: React.FC<NoticeModalProps> = ({ showNoticeModal, imgStatus, title, description, onAcceptFunc, buttonContent = "" }) => {
+const NoticeModal: React.FC<NoticeModalProps> = ({
+  showNoticeModal,
+  imgStatus,
+  title,
+  description,
+  onAcceptFunc,
+  buttonContent = "",
+}) => {
   const [isClosing, setIsClosing] = useState(false);
 
   if (!showNoticeModal && !isClosing) return null;
@@ -33,9 +40,9 @@ const NoticeModal: React.FC<NoticeModalProps> = ({ showNoticeModal, imgStatus, t
   // 이미지 경로 선택
   const getImageSrc = () => {
     switch (imgStatus) {
-      case 'success':
+      case "success":
         return successImage;
-      case 'danger':
+      case "danger":
         return dangerImage;
       default:
         return null;
@@ -46,9 +53,9 @@ const NoticeModal: React.FC<NoticeModalProps> = ({ showNoticeModal, imgStatus, t
   return (
     <Overlay onClick={handleOverlayClick}>
       <Content isClosing={isClosing}>
-        {imageSrc && <ContentImage src={imageSrc} alt={imgStatus || ''} />}
-        <Title className='Podo-Ticket-Headline-H3'>{title}</Title>
-        <Description className='Podo-Ticket-Body-B5'>{description}</Description>
+        {imageSrc && <ContentImage src={imageSrc} alt={imgStatus || ""} />}
+        <Title className="Podo-Ticket-Headline-H3">{title}</Title>
+        <Description className="Podo-Ticket-Body-B5">{description}</Description>
         <ButtonContainer>
           <SmallBtn
             content={buttonContent}
@@ -78,13 +85,13 @@ const Overlay = styled.div`
   z-index: 10000;
 `;
 
-const Content = styled.div <{ isClosing: boolean }>`
+const Content = styled.div<{ isClosing: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 90%;
 
-  width: 22.0625rem;
   background-color: var(--ect-white);
   border-radius: 10px;
 
@@ -93,14 +100,37 @@ const Content = styled.div <{ isClosing: boolean }>`
 
   text-align: center;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
+  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s
+    ease-in-out;
+
+  @media (max-resolution: 2dppx) {
+    border-radius: 15px;
+    gap: 7.55px;
+    padding: 37.5x;
+  }
+  @media (min-resolution: 3dppx) {
+    border-radius: 10px;
+    gap: 5px;
+    padding: 25px;
+  }
 `;
 
 const ContentImage = styled.img`
- width: 44px;
- height: 44px;
+  width: 44px;
+  height: 44px;
 
- margin-bottom: 10px;
+  margin-bottom: 10px;
+
+  @media (max-resolution: 2dppx) {
+    width: 66px;
+    height: 66px;
+    margin-bottom: 15px;
+  }
+  @media (min-resolution: 3dppx) {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 10px;
+  }
 `;
 
 const Title = styled.div`
@@ -109,8 +139,14 @@ const Title = styled.div`
 
 const Description = styled.span`
   margin-bottom: 11px;
-
   color: var(--grey-5);
+
+  @media (max-resolution: 2dppx) {
+    margin-bottom: 16.5px;
+  }
+  @media (min-resolution: 3dppx) {
+    margin-bottom: 16.5px;
+  }
 `;
 
 const ButtonContainer = styled.div`

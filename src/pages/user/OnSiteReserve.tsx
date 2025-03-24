@@ -353,6 +353,15 @@ const InputContainer = styled.div`
   gap: 30px;
   padding: 25px 30px;
   animation: ${fadeIn} 0.5s ease-in-out;
+
+  @media (max-resolution: 2dppx) {
+    gap: 45px;
+    padding: 37.5px 45px;
+  }
+  @media (min-resolution: 3dppx) {
+    gap: 30px;
+    padding: 25px 30px;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -365,6 +374,15 @@ const ButtonContainer = styled.div`
   margin-top: 40px;
 
   animation: ${fadeIn} 0.5s ease-in-out;
+
+  @media (max-resolution: 2dppx) {
+    gap: 52.5px;
+    margin-top: 60px;
+  }
+  @media (min-resolution: 3dppx) {
+    gap: 35px;
+    margin-top: 40px;
+  }
 `;
 
 const AgreementContainer = styled.div`
@@ -373,6 +391,13 @@ const AgreementContainer = styled.div`
   justify-content: center;
 
   gap: 6px;
+
+  @media (max-resolution: 2dppx) {
+    gap: 9px;
+  }
+  @media (min-resolution: 3dppx) {
+    gap: 6px;
+  }
 `;
 
 const AgreementText = styled.span<{ isChecked: boolean }>`
@@ -395,6 +420,17 @@ const CustomCheckbox = styled.div<{ checked: boolean }>`
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
+
+  @media (max-resolution: 2dppx) {
+    width: 21px;
+    height: 21px;
+    margin-right: 4.5px;
+  }
+  @media (min-resolution: 3dppx) {
+    width: 14px;
+    height: 14px;
+    margin-right: 3px;
+  }
 `;
 
 const AgreementModalLink = styled.a`

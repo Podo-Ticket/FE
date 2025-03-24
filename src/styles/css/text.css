@@ -1,125 +1,278 @@
 .Podo-Ticket-Headline-H1 {
+  font-family: Pretendard;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 31px;
+}
+
+.Podo-Ticket-Headline-H2 {
+  font-family: Pretendard;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.Podo-Ticket-Headline-H3 {
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.Podo-Ticket-Headline-H4 {
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.Podo-Ticket-Headline-H5 {
+  font-family: Pretendard;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.Podo-Ticket-Headline-H6 {
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.Podo-Ticket-Body-B1 {
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.Podo-Ticket-Body-B2 {
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 27px;
+}
+
+.Podo-Ticket-Body-B3 {
+  font-family: Pretendard;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.Podo-Ticket-Body-B4 {
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+}
+
+.Podo-Ticket-Body-B5 {
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.Podo-Ticket-Body-B6 {
+  font-family: Pretendard;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.26px;
+}
+
+.Podo-Ticket-Body-B7 {
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 14px;
+}
+
+.Podo-Ticket-Body-B8 {
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 14px;
+}
+
+.Podo-Ticket-Body-B9 {
+  font-family: Pretendard;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.Podo-Ticket-Body-B10 {
+  font-family: Pretendard;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+}
+
+.Podo-Ticket-Body-B11 {
+  font-family: Pretendard;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 12px;
+}
+
+.Podo-Ticket-Body-B12 {
+  font-family: Pretendard;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 11px;
+}
+
+/* 해상도가 3dppx 이상일 때 적용되는 스타일 */
+@media (min-resolution: 3dppx) {
+  .Podo-Ticket-Headline-H1 {
     font-family: Pretendard;
     font-size: 26px;
     font-style: normal;
     font-weight: 600;
     line-height: 31px;
-}
+  }
 
-.Podo-Ticket-Headline-H2 {
+  .Podo-Ticket-Headline-H2 {
     font-family: Pretendard;
     font-size: 22px;
     font-style: normal;
     font-weight: 600;
     line-height: 26px;
-}
+  }
 
-.Podo-Ticket-Headline-H3 {
+  .Podo-Ticket-Headline-H3 {
     font-family: Pretendard;
     font-size: 20px;
     font-style: normal;
     font-weight: 600;
     line-height: 24px;
-}
+  }
 
-.Podo-Ticket-Headline-H4 {
+  .Podo-Ticket-Headline-H4 {
     font-family: Pretendard;
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
     line-height: 26px;
-}
+  }
 
-.Podo-Ticket-Headline-H5 {
+  .Podo-Ticket-Headline-H5 {
     font-family: Pretendard;
     font-size: 15px;
     font-style: normal;
     font-weight: 600;
     line-height: 26px;
-}
+  }
 
-.Podo-Ticket-Headline-H6 {
+  .Podo-Ticket-Headline-H6 {
     font-family: Pretendard;
     font-size: 12px;
     font-style: normal;
     font-weight: 600;
     line-height: 20px;
-}
+  }
 
-.Podo-Ticket-Body-B1 {
+  .Podo-Ticket-Body-B1 {
     font-family: Pretendard;
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
     line-height: 24px;
-}
+  }
 
-.Podo-Ticket-Body-B2 {
+  .Podo-Ticket-Body-B2 {
     font-family: Pretendard;
     font-size: 18px;
     font-style: normal;
     font-weight: 600;
     line-height: 27px;
-}
+  }
 
-.Podo-Ticket-Body-B3 {
+  .Podo-Ticket-Body-B3 {
     font-family: Pretendard;
     font-size: 17px;
     font-style: normal;
     font-weight: 500;
     line-height: 20px;
-}
+  }
 
-.Podo-Ticket-Body-B4 {
+  .Podo-Ticket-Body-B4 {
     font-family: Pretendard;
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
     line-height: 26px;
-}
+  }
 
-.Podo-Ticket-Body-B5 {
+  .Podo-Ticket-Body-B5 {
     font-family: Pretendard;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 28px;
-}
+  }
 
-.Podo-Ticket-Body-B6 {
+  .Podo-Ticket-Body-B6 {
     font-family: Pretendard;
     font-size: 13px;
     font-style: normal;
     font-weight: 500;
     line-height: 16px;
     letter-spacing: 0.26px;
-}
+  }
 
-.Podo-Ticket-Body-B7 {
+  .Podo-Ticket-Body-B7 {
     font-family: Pretendard;
     font-size: 12px;
     font-style: normal;
     font-weight: 500;
     line-height: 14px;
-}
+  }
 
-.Podo-Ticket-Body-B8 {
+  .Podo-Ticket-Body-B8 {
     font-family: Pretendard;
     font-size: 12px;
     font-style: normal;
     font-weight: 300;
     line-height: 14px;
-}
+  }
 
-.Podo-Ticket-Body-B9 {
+  .Podo-Ticket-Body-B9 {
     font-family: Pretendard;
     font-size: 11px;
     font-style: normal;
     font-weight: 600;
     line-height: 20px;
-}
+  }
 
-.Podo-Ticket-Body-B10 {
+  .Podo-Ticket-Body-B10 {
     font-family: Pretendard;
     font-size: 11px;
     font-style: normal;
@@ -131,20 +284,115 @@
     text-decoration-thickness: auto;
     text-underline-offset: auto;
     text-underline-position: from-font;
-}
+  }
 
-.Podo-Ticket-Body-B11{
+  .Podo-Ticket-Body-B11 {
     font-family: Pretendard;
     font-size: 10px;
     font-style: normal;
     font-weight: 500;
     line-height: 12px;
-}
+  }
 
-.Podo-Ticket-Body-B12 {
+  .Podo-Ticket-Body-B12 {
     font-family: Pretendard;
     font-size: 9px;
     font-style: normal;
     font-weight: 700;
     line-height: 11px;
+  }
+}
+
+/* 해상도가 2dppx 이하일 때 적용되는 스타일 */
+@media (max-resolution: 2dppx) {
+  .Podo-Ticket-Headline-H1 {
+    font-size: 33.8px;
+    line-height: 40.3px;
+  }
+
+  .Podo-Ticket-Headline-H2 {
+    font-size: 28.6px;
+    line-height: 33.8px;
+  }
+
+  .Podo-Ticket-Headline-H3 {
+    font-size: 26px;
+    line-height: 31.2px;
+  }
+
+  .Podo-Ticket-Headline-H4 {
+    font-size: 20.8px;
+    line-height: 33.8px;
+  }
+
+  .Podo-Ticket-Headline-H5 {
+    font-size: 19.5px;
+    line-height: 33.8px;
+  }
+
+  .Podo-Ticket-Headline-H6 {
+    font-size: 15.6px;
+    line-height: 26px;
+  }
+
+  .Podo-Ticket-Body-B1 {
+    font-size: 26px;
+    line-height: 31.2px;
+  }
+
+  .Podo-Ticket-Body-B2 {
+    font-size: 23.4px;
+    line-height: 35.1px;
+  }
+
+  .Podo-Ticket-Body-B3 {
+    font-size: 22.1px;
+    line-height: 26px;
+  }
+
+  .Podo-Ticket-Body-B4 {
+    font-size: 20.8px;
+    line-height: 33.8px;
+  }
+
+  .Podo-Ticket-Body-B5 {
+    font-size: 18.2px;
+    line-height: 36.4px;
+  }
+
+  .Podo-Ticket-Body-B6 {
+    font-size: 16.9px;
+    line-height: 20.8px;
+    letter-spacing: 0.26px;
+  }
+
+  .Podo-Ticket-Body-B7 {
+    font-size: 15.6px;
+    line-height: 18.2px;
+  }
+
+  .Podo-Ticket-Body-B8 {
+    font-size: 15.6px;
+    line-height: 18.2px;
+  }
+
+  .Podo-Ticket-Body-B9 {
+    font-size: 14.3px;
+    line-height: 26px;
+  }
+
+  .Podo-Ticket-Body-B10 {
+    font-size: 14.3px;
+    line-height: 23.4px;
+  }
+
+  .Podo-Ticket-Body-B11 {
+    font-size: 13px;
+    line-height: 15.6px;
+  }
+
+  .Podo-Ticket-Body-B12 {
+    font-size: 11.7px;
+    line-height: 14.3px;
+  }
 }

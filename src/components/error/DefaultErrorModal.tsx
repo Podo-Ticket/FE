@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
-import errorIcon from '../../assets/images/circle_error.png'
-import successIcon from '../../assets/images/check_icon.png'
+import errorIcon from "../../assets/images/circle_error.png";
+import successIcon from "../../assets/images/check_icon.png";
 
-import { fadeIn, fadeOut } from '../../styles/animation/DefaultAnimation.ts'
+import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
 
 interface DefaultErrorModalProps {
   showDefaultErrorModal: boolean;
@@ -15,7 +15,14 @@ interface DefaultErrorModalProps {
   OnTopSide?: boolean;
 }
 
-const DefaultErrorModal: React.FC<DefaultErrorModalProps> = ({ showDefaultErrorModal, errorMessage, onAcceptFunc, aboveButton = false, isSuccess = false, OnTopSide = false }) => {
+const DefaultErrorModal: React.FC<DefaultErrorModalProps> = ({
+  showDefaultErrorModal,
+  errorMessage,
+  onAcceptFunc,
+  aboveButton = false,
+  isSuccess = false,
+  OnTopSide = false,
+}) => {
   const [isClosing, setIsClosing] = useState(false);
 
   if (!showDefaultErrorModal && !isClosing) return null;
@@ -30,13 +37,19 @@ const DefaultErrorModal: React.FC<DefaultErrorModalProps> = ({ showDefaultErrorM
 
   return (
     <Overlay onClick={handleOverlayClick} OnTopSide={OnTopSide}>
-      {OnTopSide ? undefined : <div style={{ height: '540px' }}></div>}
+      {OnTopSide ? undefined : <div style={{ height: "540px" }}></div>}
       <Content isClosing={isClosing} isSuccess={isSuccess}>
-        {isSuccess ? <ContentIcon src={successIcon} /> : <ContentIcon src={errorIcon} />}
-        <ContentText className='Podo-Ticket-Body-B6'>{errorMessage}</ContentText>
+        {isSuccess ? (
+          <ContentIcon src={successIcon} />
+        ) : (
+          <ContentIcon src={errorIcon} />
+        )}
+        <ContentText className="Podo-Ticket-Body-B6">
+          {errorMessage}
+        </ContentText>
       </Content>
-      {aboveButton ? <div style={{ height: '130px' }}></div> : undefined}
-      {OnTopSide ? <div style={{ height: '400px' }}></div> : undefined}
+      {aboveButton ? <div style={{ height: "130px" }}></div> : undefined}
+      {OnTopSide ? <div style={{ height: "400px" }}></div> : undefined}
     </Overlay>
   );
 };
@@ -58,7 +71,7 @@ const Overlay = styled.div<{ OnTopSide: boolean }>`
   z-index: 10000;
 `;
 
-const Content = styled.div <{ isClosing: boolean, isSuccess: boolean }>`
+const Content = styled.div<{ isClosing: boolean; isSuccess: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,8 +80,9 @@ const Content = styled.div <{ isClosing: boolean, isSuccess: boolean }>`
   width: 20.44rem;
   border-radius: 10px;
   border: 1px solid var(--red-2);
-  background: ${({ isSuccess }) => isSuccess ? "var(--purple-40)" : "var(--red-3)"};
-  box-shadow: 0px 0px 30px 0px rgba(255, 255, 255, 0.30);
+  background: ${({ isSuccess }) =>
+    isSuccess ? "var(--purple-40)" : "var(--red-3)"};
+  box-shadow: 0px 0px 30px 0px rgba(255, 255, 255, 0.3);
 
   gap: 9px;
   padding: 9px 0;
@@ -76,7 +90,21 @@ const Content = styled.div <{ isClosing: boolean, isSuccess: boolean }>`
   text-align: center;
   color: var(--red-1);
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.2s ease-in-out;
+  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.2s
+    ease-in-out;
+
+  @media (max-resolution: 2dppx) {
+    width: 30.66rem;
+    border-radius: 15px;
+    gap: 13.5px;
+    padding: 13.5px 0;
+  }
+  @media (min-resolution: 3dppx) {
+    width: 20.44rem;
+    border-radius: 10px;
+    gap: 9px;
+    padding: 9px 0;
+  }
 `;
 
 const ContentIcon = styled.img`
@@ -86,6 +114,15 @@ const ContentIcon = styled.img`
 
   width: 14px;
   weight: 14px;
+
+  @media (max-resolution: 2dppx) {
+    width: 21px;
+    weight: 21px;
+  }
+  @media (min-resolution: 3dppx) {
+    width: 14px;
+    weight: 14px;
+  }
 `;
 
 const ContentText = styled.div`

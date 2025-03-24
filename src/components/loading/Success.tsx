@@ -1,14 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import checkIcon from '../../assets/images/check_icon.png';
+import checkIcon from "../../assets/images/check_icon.png";
 
 interface LoadingModalProps {
   showSuccess: boolean;
 }
 
 const Loading: React.FC<LoadingModalProps> = ({ showSuccess }) => {
-
   if (!showSuccess) return null;
 
   return (
@@ -44,6 +43,17 @@ const CompleteModal = styled.div`
   height: 140px;
   border-radius: 10px;
   background: var(--ect-white);
+
+  @media (max-resolution: 2dppx) {
+    width: 210px;
+    height: 210px;
+    border-radius: 10px;
+  }
+  @media (min-resolution: 3dppx) {
+    width: 140px;
+    height: 140px;
+    border-radius: 10px;
+  }
 `;
 
 const CheckIcon = styled.img`
@@ -51,4 +61,13 @@ const CheckIcon = styled.img`
 
   width: 62px;
   height: 62px;
+
+  @media (max-resolution: 2dppx) {
+    width: 93px;
+    height: 93px;
+  }
+  @media (min-resolution: 3dppx) {
+    width: 62px;
+    height: 62px;
+  }
 `;

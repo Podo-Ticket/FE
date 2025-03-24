@@ -349,6 +349,13 @@ const MainContainer = styled.div<{ backgroundImage: string }>`
     bottom: 0;
     background: var(--background-gradient-1);
   }
+
+  @media (max-resolution: 2dppx) {
+    padding: 0px 45px;
+  }
+  @media (min-resolution: 3dppx) {
+    padding: 0px 30px;
+  }
 `;
 
 const MainTitle = styled.h1`
@@ -358,6 +365,15 @@ const MainTitle = styled.h1`
   z-index: 1;
 
   color: var(--ect-white);
+
+  @media (max-resolution: 2dppx) {
+    padding: 45px 0;
+    padding-top: 60px;
+  }
+  @media (min-resolution: 3dppx) {
+    padding: 30px 0;
+    padding-top: 40px;
+  }
 `;
 
 const PosterDetailsContainer = styled.div`
@@ -370,6 +386,15 @@ const PosterDetailsContainer = styled.div`
   perspective: 1000px;
 
   animation: ${slideUp} 0.5s ease-out;
+
+  @media (max-resolution: 2dppx) {
+    border-radius: 30px 30px 0px 0px;
+    perspective: 1500px;
+  }
+  @media (min-resolution: 3dppx) {
+    border-radius: 20px 20px 0px 0px;
+    perspective: 1000px;
+  }
 `;
 
 const Card = styled.div<{ isFlipped?: boolean }>`
@@ -413,6 +438,13 @@ const CardBackgroundImage = styled.img`
   border-radius: 20px 20px 0px 0px;
 
   z-index: 2;
+
+  @media (max-resolution: 2dppx) {
+    border-radius: 30px 30px 0px 0px;
+  }
+  @media (min-resolution: 3dppx) {
+    border-radius: 20px 20px 0px 0px;
+  }
 `;
 
 const TicketHeaderContainer = styled.div`
@@ -429,6 +461,13 @@ const Poster = styled.img`
   border-radius: 20px 20px 0px 0px;
   object-fit: cover;
   object-position: center;
+
+  @media (max-resolution: 2dppx) {
+    height: 225px;
+  }
+  @media (min-resolution: 3dppx) {
+    height: 150px;
+  }
 `;
 
 const ImageOverlay = styled.div`
@@ -477,13 +516,30 @@ const DetailContainer = styled.div`
   gap: 13px;
 
   z-index: 2;
+
+  @media (max-resolution: 2dppx) {
+    padding-left: 54px;
+    padding-top: 52.5px;
+    padding-right: 0px;
+  }
+  @media (min-resolution: 3dppx) {
+    padding-left: 36px;
+    padding-top: 35px;
+    padding-right: 0px;
+  }
 `;
 
 const FrontCardInfoItem = styled.div`
   display: flex;
   align-items: center;
-
   gap: 16px;
+
+  @media (max-resolution: 2dppx) {
+    gap: 24px;
+  }
+  @media (min-resolution: 3dppx) {
+    gap: 16px;
+  }
 `;
 
 const InfoCategory = styled.div`
@@ -495,8 +551,18 @@ const InfoCategory = styled.div`
   border-radius: 30px;
   border: 1px solid var(--purple-9);
   background: var(--ect-white);
-
+  white-space: nowrap;
   color: var(--grey-6);
+
+  @media (max-resolution: 2dppx) {
+    width: 88.5px;
+    border-radius: 45px;
+  }
+  @media (min-resolution: 3dppx) {
+    width: 59px;
+    border-radius: 30px;
+    // padding-top:10px;
+  }
 `;
 
 const InfoContent = styled.div`
@@ -505,6 +571,7 @@ const InfoContent = styled.div`
   align-items: center;
 
   color: var(--grey-7);
+  white-space: nowrap; // 줄 바꿈 방지
 `;
 
 const BackInfoContent = styled.div`
@@ -518,6 +585,15 @@ const MoreDetailBtnContainer = styled.div`
 
   padding-right: 36px;
   margin-top: 26px;
+
+  @media (max-resolution: 2dppx) {
+    padding-right: 54px;
+    margin-top: 39px;
+  }
+  @media (min-resolution: 3dppx) {
+    padding-right: 36px;
+    margin-top: 26px;
+  }
 `;
 
 const DetailBtnContainer = styled.div`
@@ -533,6 +609,13 @@ const DetailBtnContainer = styled.div`
   flex-grow: 1;
 
   z-index: 2;
+
+  @media (max-resolution: 2dppx) {
+    bottom: 45px; /* 하단에서 30px 위로 위치 */
+  }
+  @media (min-resolution: 3dppx) {
+    bottom: 30px; /* 하단에서 30px 위로 위치 */
+  }
 `;
 
 const GetTicketBtn = styled(MediumBtn)``;
@@ -559,14 +642,20 @@ const BackDetailContainer = styled.div`
   height: 100%;
 
   width: 100%;
-  padding: 20px 36px;
-
-  gap: 13px;
 
   overflow-y: auto;
   overscroll-behavior: contain; // iOS 및 기타 브라우저 스크롤 동작 제어
 
   -webkit-overflow-scrolling: touch; /* iOS에서 부드러운 스크롤 */
+
+  @media (max-resolution: 2dppx) {
+    padding: 30px 54px;
+    gap: 19.5px;
+  }
+  @media (min-resolution: 3dppx) {
+    padding: 20px 36px;
+    gap: 13px;
+  }
 `;
 
 const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
@@ -617,6 +706,13 @@ const PaginationContainer = styled.div`
   gap: 10px;
   width: 100%;
   z-index: 10;
+
+  @media (max-resolution: 2dppx) {
+    gap: 15px;
+  }
+  @media (min-resolution: 3dppx) {
+    gap: 10px;
+  }
 `;
 
 const PaginationButton = styled.button`
@@ -632,6 +728,15 @@ const PaginationButton = styled.button`
   &:disabled {
     background-color: #fff;
     cursor: not-allowed;
+  }
+
+  @media (max-resolution: 2dppx) {
+    padding: 12px 18px;
+    border-radius: 6px;
+  }
+  @media (min-resolution: 3dppx) {
+    padding: 8px 12px;
+    border-radius: 4px;
   }
 `;
 
