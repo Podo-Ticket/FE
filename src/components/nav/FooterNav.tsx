@@ -11,10 +11,11 @@ import ActOnsite from "../../assets/images/admin/purple_plus_list.png";
 import Setting from "../../assets/images/admin/grey_setting.png";
 import ActSetting from "../../assets/images/admin/purple_setting.png";
 
+import { pxToVw, pxToVh, pxToPercent } from "../../utils/unitConverter.ts"; // 경로는 실제 구조에 맞게!
 import RedCirclePng from "../../assets/images/admin/redCircle.png";
 import {
   UserWithApproval,
-  fetchOnsiteUserList
+  fetchOnsiteUserList,
 } from "../../api/admin/OnsiteManageApi";
 
 interface FooterNavProps {
@@ -88,15 +89,15 @@ const FotterNav: React.FC<FooterNavProps> = ({
             className={location.pathname.startsWith("/onsite") ? "active" : ""}
           >
             <NavLink to="/onsite">
-              <IconWrapper>
-                <IconOnsite
-                  src={
-                    location.pathname.startsWith("/onsite") ? ActOnsite : Onsite
-                  }
-                ></IconOnsite>
-                {hasPendingApproval && <RedCircle src={RedCirclePng} />}
-                {/* 승인 대기 시 빨간 원 표시 */}
-              </IconWrapper>
+              <IconOnsite
+                src={
+                  location.pathname.startsWith("/onsite") ? ActOnsite : Onsite
+                }
+              ></IconOnsite>
+              {true && <RedCircle src={RedCirclePng} />}
+              {/* {hasPendingApproval && <RedCircle src={RedCirclePng} />} */}
+              {/* 승인 대기 시 빨간 원 표시 */}
+
               <p>현장 예매 관리</p>
             </NavLink>
           </NavItem>
@@ -120,7 +121,7 @@ const FotterNav: React.FC<FooterNavProps> = ({
           <AllowItem
             className="Podo-Ticket-Headline-H4"
             isActive={groupAllowCnt !== 0}
-            onClick={() => isApproveClick ? isApproveClick(true) : null}
+            onClick={() => (isApproveClick ? isApproveClick(true) : null)}
             disabled={groupAllowCnt === 0}
           >
             수락
@@ -128,7 +129,7 @@ const FotterNav: React.FC<FooterNavProps> = ({
           <DeleteItem
             className="Podo-Ticket-Headline-H4"
             isActive={groupAllowCnt !== 0}
-            onClick={() => isDeleteClick ? isDeleteClick(false) : null}
+            onClick={() => (isDeleteClick ? isDeleteClick(false) : null)}
             disabled={groupAllowCnt === 0}
           >
             삭제
@@ -150,7 +151,8 @@ const Nav = styled.nav<{ isGroupAllow: boolean }>`
   left: 0;
   right: 0;
 
-  height: ${({ isGroupAllow }) => (!isGroupAllow ? "86px" : "60px")};
+  height: ${({ isGroupAllow }) =>
+    !isGroupAllow ? `${pxToPercent(86, 661)}` : `${pxToPercent(60, 661)}`};
   background: var(--ect-white);
   border: none;
   border-top: 1px solid var(--grey-3);
@@ -166,7 +168,7 @@ const NavItem = styled.div`
   align-items: center;
   justify-content: center;
 
-  width: 80%;
+  width: 100%;
   height: 100%;
 
   color: var(--grey-5);
@@ -182,57 +184,50 @@ const NavItem = styled.div`
   -webkit-user-select: none; /* Safari에서 드래그 방지 */
   -moz-user-select: none; /* Firefox에서 드래그 방지 */
   -ms-user-select: none;
+  border: 1px solid var(--grey-3);
 `;
 
 const NavLink = styled(Link)`
   display: flex;
   flex-direction: column;
+  position: relative;
   align-items: center;
-  justify-content: center;
   text-decoration: none;
   color: inherit;
-  width: inherit;
-  height: inherit;
+  width: ${pxToPercent(75, 98.25)};
+  height: ${pxToPercent(59, 86)};
 
   & > p {
     margin: 0;
     padding: 0;
   }
   p {
-    margin-bottom: 32px;
+    margin: ${pxToVh(5)} 0;
+    border: 1px solid var(--red-2);
   }
+
+  border: 1px solid var(--red-2);
 `;
 
 const IconHome = styled.img`
-  width: 24px;
-  height: 24px;
-
-  margin-top: 17px;
-  margin-bottom: 5px;
+  height: ${pxToPercent(24, 59)};
+  margin: ${pxToVh(5)} 0;
 `;
 
 const IconReserved = styled.img`
-  width: 25px;
-  height: 23px;
-
-  margin-top: 18px;
-  margin-bottom: 5px;
+  height: ${pxToPercent(24, 59)};
+  margin: ${pxToVh(5)} 0;
 `;
 
 const IconOnsite = styled.img`
-  width: 20px;
-  height: 19px;
-
-  margin-top: 20px;
-  margin-bottom: 7px;
+  height: ${pxToPercent(24, 59)};
+  margin: ${pxToVh(5)} 0;
+  border: 1px solid var(--red-2);
 `;
 
 const IconSetting = styled.img`
-  width: 22px;
-  height: 22px;
-
-  margin-top: 18px;
-  margin-bottom: 6px;
+  height: ${pxToPercent(24, 59)};
+  margin: ${pxToVh(5)} 0;
 `;
 
 const AllowItem = styled.button<{ isActive: boolean }>`
@@ -285,16 +280,7 @@ const DeleteItem = styled.button<{ isActive: boolean }>`
 
 const RedCircle = styled.img`
   position: absolute;
-  width: 7px;
-  height: 7px;
-  top: 15px;
-  right: -5px;
-`;
-
-const IconWrapper = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: px;
+  height: ${pxToPercent(7, 59)};
+  top: 0%;
+  right: 20%;
 `;
