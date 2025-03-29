@@ -71,7 +71,6 @@ const LeftContent = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-
   gap: ${pxToVw(6)};
   flex-glow: 1;
   text-align: left;

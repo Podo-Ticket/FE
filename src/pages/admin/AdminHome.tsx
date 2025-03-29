@@ -309,7 +309,6 @@ const ViewMainContainer = styled.div`
   flex-direction: column;
 
   margin: 0 auto;
-
 `;
 
 const AppTitle = styled.div`
@@ -334,7 +333,6 @@ const MainContainer = styled.div`
   display: flex;
   align-items: center;
   height: ${pxToPercent(255, 557)};
-
 `;
 
 const TextContainer = styled.div`
