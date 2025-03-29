@@ -71,7 +71,6 @@ const LeftContent = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-
   gap: ${pxToVw(6)};
   flex-glow: 1;
   text-align: left;
@@ -95,6 +94,7 @@ const Description = styled.p`
   line-height: normal;
 
   text-align: left;
+<<<<<<< HEAD
 `;
 
 const LeftIcon = styled.div`
@@ -107,13 +107,7 @@ const LeftIcon = styled.div`
   align-items: center;
   justify-content: center;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> 04350e6 (💄style: updated footer and button)
-=======
->>>>>>> 4519d25 (💄style: Delete border)
   @media (max-resolution: 2dppx) {
     width: 30px;
     height: 30px;

@@ -345,6 +345,7 @@ const TextContainer = styled.div`
   margin-left: ${pxToVw(5)};
 
   height: ${pxToPercent(115, 255)};
+
 `;
 
 const MainText = styled.div`
