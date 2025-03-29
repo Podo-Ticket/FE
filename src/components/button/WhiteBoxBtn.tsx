@@ -64,7 +64,6 @@ const ButtonTitle = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  border: 1px solid var(--red-2);
 `;
 const LeftContent = styled.div`
   width: 100%;
@@ -76,8 +75,6 @@ const LeftContent = styled.div`
   gap: ${pxToVw(6)};
   flex-glow: 1;
   text-align: left;
-
-  border: 1px solid var(--red-2);
 `;
 
 const Icon = styled.img`
