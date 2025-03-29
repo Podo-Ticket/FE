@@ -91,6 +91,8 @@ const NavContainer = styled.nav<{ isGrey: boolean; isUnderlined: boolean }>`
 
   position: sticky;
   top: 0;
+
+  width: 100%;
   height: 82px;
   background: ${({ isGrey }) =>
     isGrey ? "var(--background-1)" : "var(--ect-white)"};
