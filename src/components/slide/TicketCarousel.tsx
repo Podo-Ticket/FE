@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
-import ticketBackground from "../../assets/images/ticket_image.png";
+import TicketBackground from "../../assets/images/ticket_background.svg?react";
 import poster from "../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg";
 
 import { splitDateTime } from "../../utils/DateUtil";
@@ -36,9 +36,9 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleSlideChange = (swiper: any) => {
-    const newIndex = swiper.activeIndex; // Swiper의 active index 가져오기
-    setActiveIndex(newIndex); // 상태 업데이트
-    onActiveIndexChange(newIndex); // 부모 컴포넌트로 active index 전달
+    const newIndex = swiper.activeIndex;
+    setActiveIndex(newIndex);
+    onActiveIndexChange(newIndex);
   };
 
   if (!currentTicketInfo) return null;
@@ -64,10 +64,9 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
               index === activeIndex ? "active-slide" : "inactive-slide"
             }
           >
-            <TicketCellBackground
-              src={ticketBackground}
-              alt={`티켓 ${index + 1}`}
-            />
+            <TicketCellBackground>
+              <TicketBackground width="100%" height="100%" preserveAspectRatio="none"/>
+            </TicketCellBackground>
 
             <TicketHeaderContainer>
               <Poster src={poster} alt="공연 포스터" />
@@ -147,7 +146,7 @@ export default TicketCarousel;
 
 const TicketCarouselContainer = styled.div`
   width: 100%;
-  height: 475px;
+  height: 65svh;
   background: transparent;
 
   text-align: center;
@@ -183,19 +182,15 @@ const TicketSwiperSlide = styled(SwiperSlide)`
   height: 100%;
 `;
 
-const TicketCellBackground = styled.img`
+const TicketCellBackground = styled.div`
   position: absolute;
   top: 0px;
   left: 0px;
-
-  display: block;
-
+  
   width: 100%;
   height: 100%;
-  border-radius: inherit;
 
-  object-fit: contain;
-  object-position: center;
+  border-radius: inherit;
 
   transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
 
@@ -207,7 +202,7 @@ const TicketHeaderContainer = styled.div`
   display: flex;
 
   width: calc(100% - 3px);
-  border-bottom: 1px solid var(--grey-2);
+  
   overflow: hidden;
   z-index: 2;
 

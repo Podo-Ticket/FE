@@ -1,14 +1,12 @@
-import React, { useRef, useEffect, useState } from 'react';
-import styled from 'styled-components';
+import React, { useRef, useEffect, useState } from "react";
+import styled from "styled-components";
 
-import SingleSeat from '../SingleSeat';
+import SingleSeat from "../SingleSeat";
 
-import stage from '../../../assets/images/stage.png'
-import {
-  HUMANITIES_SMALL_THEATER as theater
-} from "../../../constants/venue/SeoulNationalUniv";
+import stage from "../../../assets/images/stage.png";
+import { HUMANITIES_SMALL_THEATER as theater } from "../../../constants/venue/SeoulNationalUniv";
 
-import { fetchSeats } from '../../../api/user/SelectSeatsApi';
+import { fetchSeats } from "../../../api/user/SelectSeatsApi";
 
 // 좌석 정보 인터페이스
 interface Seat {
@@ -38,25 +36,51 @@ interface SeatMapProps {
   setIsUnlockAvailable: React.Dispatch<React.SetStateAction<boolean>>; // 잠금 해제 가능 여부 업데이트 함수
 }
 
-const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelectedSeats,
+const SeatMap: React.FC<SeatMapProps> = ({
+  currentSelectedSeats,
+  setCurrentSelectedSeats,
 
-  showErrorModal, isRefreshed,
-  disabled, scheduleId, headCount, isRealTime, bookingInfo, onSeatEdit
-  , newLockedSeats, setNewLockedSeats, newUnlockedSeats, setNewUnlockedSeats, setCurrentLockedSeatsInfo
-  , setIsLockAvailable, setIsUnlockAvailable }) => {
-
+  showErrorModal,
+  isRefreshed,
+  disabled,
+  scheduleId,
+  headCount,
+  isRealTime,
+  bookingInfo,
+  onSeatEdit,
+  newLockedSeats,
+  setNewLockedSeats,
+  newUnlockedSeats,
+  setNewUnlockedSeats,
+  setCurrentLockedSeatsInfo,
+  setIsLockAvailable,
+  setIsUnlockAvailable,
+}) => {
   const seatMapRef = useRef(null);
+  const [seatMapWidth, setSeatMapWidth] = useState(0);
+
+  useEffect(() => {
+    // SeatMapContent의 너비를 가져옴
+    if (seatMapRef.current) {
+      const width = seatMapRef.current.getBoundingClientRect().width;
+      setSeatMapWidth(width);
+
+      console.log("seatMapwidth: ", width);
+    }
+  }, []);
+
   const [lockedSeatsInfo, setLockedSeatsInfo] = useState([]);
   const [bookedSeatsInfo, setbookedSeatsInfo] = useState<Seat[]>([]);
 
   const [unclickableSeats, setUnclickableSeats] = useState<string[]>([]);
   const [reservedSeats, setReservedSeats] = useState<string[]>([]);
-  const [temporarySelectedSeats, setTemporarySelectedSeats] = useState<string[]>([]); // 일시적으로 선택된 좌석
+  const [temporarySelectedSeats, setTemporarySelectedSeats] = useState<
+    string[]
+  >([]); // 일시적으로 선택된 좌석
   const [lockedSeats, setLockedSeats] = useState<string[]>([]); // 잠금된 좌석 배열 추가
 
-
   // 좌석 정보 가져오기
-  const loadSeatMapSeats = async (isRealTime : boolean) => {
+  const loadSeatMapSeats = async (isRealTime: boolean) => {
     if (!scheduleId) {
       console.error("scheduleId가 없습니다.");
       return;
@@ -64,24 +88,36 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
 
     try {
       // const endpoint = isRealTime ? `${SERVER_URL}/seat/realTime` : `${SERVER_URL}/seat`;
-      const data = await fetchSeats(0 | Number(localStorage.getItem("scheduleId")));
+      const data = await fetchSeats(
+        0 | Number(localStorage.getItem("scheduleId"))
+      );
 
       // 선택 불가 좌석 배열 생성
-      const unclickable = data.seats.map((seat: { row: string; number: number; }) => `${seat.row}${seat.number}`);
+      const unclickable = data.seats.map(
+        (seat: { row: string; number: number }) => `${seat.row}${seat.number}`
+      );
       console.log("unclickable: ", unclickable);
 
       // 예매된 좌석 Id 배열 생성
       const reserved = data.seats
-        .filter((seat: { lock: boolean; }) => seat.lock === false) // (lock == false) === 예매된 좌석
-        .map((seat: { row: string; number: number; }) => `${seat.row}${seat.number}`);
+        .filter((seat: { lock: boolean }) => seat.lock === false) // (lock == false) === 예매된 좌석
+        .map(
+          (seat: { row: string; number: number }) => `${seat.row}${seat.number}`
+        );
 
       // 잠금된 좌석 Id 배열 생성
       const locked = data.seats
-        .filter((seat: { lock: boolean; }) => seat.lock == true) // (lock == true) === 잠금된 좌석
-        .map((seat: { row: string; number: number; }) => `${seat.row}${seat.number}`);
+        .filter((seat: { lock: boolean }) => seat.lock == true) // (lock == true) === 잠금된 좌석
+        .map(
+          (seat: { row: string; number: number }) => `${seat.row}${seat.number}`
+        );
 
-      const bookedSeatInfo = data.seats.filter((seat: { lock: boolean; }) => seat.lock === false);
-      const lockedSeatInfo = data.seats.filter((seat: { lock: boolean; }) => seat.lock === true);
+      const bookedSeatInfo = data.seats.filter(
+        (seat: { lock: boolean }) => seat.lock === false
+      );
+      const lockedSeatInfo = data.seats.filter(
+        (seat: { lock: boolean }) => seat.lock === true
+      );
 
       setUnclickableSeats(unclickable); // 선택 불가 좌석
       setReservedSeats(reserved); // 예매된 좌석
@@ -129,7 +165,9 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
   // bookingInfo에서 userSeats를 가져와서 temporarySelectedSeats에 추가
   useEffect(() => {
     if (bookingInfo) {
-      const userSeats = bookingInfo.seats.map(seat => `${seat.row}${seat.number}`);
+      const userSeats = bookingInfo.seats.map(
+        (seat) => `${seat.row}${seat.number}`
+      );
       setTemporarySelectedSeats(userSeats); // userSeats를 일시적으로 선택된 좌석으로 설정
     }
   }, [bookingInfo]);
@@ -144,7 +182,6 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
 
     // 좌석 클릭 시 예매 정보 API 호출
     if (isRealTime) {
-
       if (onSeatEdit) {
         // newLockedSeats가 빈 배열인 경우에도 처리
         if (!newLockedSeats || newLockedSeats.length === 0) {
@@ -173,7 +210,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
               setIsLockAvailable(false);
               setIsUnlockAvailable(false);
             } else {
-              setNewLockedSeats(prev => prev.filter(id => id !== seatId));
+              setNewLockedSeats((prev) => prev.filter((id) => id !== seatId));
             }
           } else if (newUnlockedSeats.includes(seatId)) {
             // unlockedSeats에서 제거
@@ -184,7 +221,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
               setIsLockAvailable(false);
               setIsUnlockAvailable(false);
             } else {
-              setNewUnlockedSeats(prev => prev.filter(id => id !== seatId));
+              setNewUnlockedSeats((prev) => prev.filter((id) => id !== seatId));
             }
           } else {
             // 첫 번째 좌석이 locked인지 확인
@@ -192,7 +229,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
               // Locked seats만 선택 가능 --> lock 해제 logic
               if (lockedSeats.includes(seatId)) {
                 // 새로 선택한 좌석을 unlocked에 추가
-                setNewUnlockedSeats(prev => [...prev, seatId]);
+                setNewUnlockedSeats((prev) => [...prev, seatId]);
                 setIsUnlockAvailable(true);
                 setIsLockAvailable(false);
               }
@@ -200,7 +237,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
               // locking logic
               // lockedSeats에 새로 선택한 좌석 추가
               if (!lockedSeats.includes(seatId)) {
-                setNewLockedSeats(prev => [...prev, seatId]); // 기존 값에 추가
+                setNewLockedSeats((prev) => [...prev, seatId]); // 기존 값에 추가
                 setIsLockAvailable(true);
                 setIsUnlockAvailable(false);
               }
@@ -215,10 +252,11 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
         setCurrentLockedSeatsInfo(lockedSeatsInfo);
         console.log(lockedSeatsInfo);
       } else {
-
         console.log("bookedSeatsInfo : ", bookedSeatsInfo);
 
-        const bookedSeatIndex = bookedSeatsInfo.findIndex(seat => `${seat.row}${seat.number}` === seatId);
+        const bookedSeatIndex = bookedSeatsInfo.findIndex(
+          (seat) => `${seat.row}${seat.number}` === seatId
+        );
         console.log("bookedSeatIndex : ", bookedSeatIndex);
 
         if (bookedSeatIndex !== -1) {
@@ -227,7 +265,9 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
           // onSeatClick(bookedSeatId);
 
           // 좌석 클릭 시 해당 좌석을 temporarySelectedSeats에 추가
-          const userSeats = bookingInfo ? bookingInfo.seats.map(seat => `${seat.row}${seat.number}`) : [];
+          const userSeats = bookingInfo
+            ? bookingInfo.seats.map((seat) => `${seat.row}${seat.number}`)
+            : [];
           setTemporarySelectedSeats(userSeats); // userSeats를 일시적으로 선택된 좌석으로 설정
           return;
         }
@@ -240,7 +280,9 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
         showErrorModal(true);
       } else if (currentSelectedSeats.includes(seatId)) {
         // 이미 선택된 좌석을 클릭하면 선택 취소
-        setCurrentSelectedSeats(currentSelectedSeats.filter(id => id !== seatId));
+        setCurrentSelectedSeats(
+          currentSelectedSeats.filter((id) => id !== seatId)
+        );
         setTemporarySelectedSeats([]); // 선택 해제 시 원래 색으로 복원
       } else if (currentSelectedSeats.length < headCount) {
         // headCount에 따라 좌석 선택 제한
@@ -258,117 +300,144 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
       console.log("쨘");
     } else if (currentSelectedSeats.includes(seatId)) {
       // 이미 선택된 좌석을 클릭하면 선택 취소
-      setCurrentSelectedSeats(currentSelectedSeats.filter(id => id !== seatId));
+      setCurrentSelectedSeats(
+        currentSelectedSeats.filter((id) => id !== seatId)
+      );
       setTemporarySelectedSeats([]); // 선택 해제 시 원래 색으로 복원
     } else if (currentSelectedSeats.length < headCount) {
       // headCount에 따라 좌석 선택 제한
       setCurrentSelectedSeats([...currentSelectedSeats, seatId]);
       setTemporarySelectedSeats([]); // 이전 선택된 좌석의 색 복원
     }
-  }
+  };
 
   return (
-    <SeatMapContainer>
-      <StageContainer>
-        <img src={stage} />
-        <StageText className='Podo-Ticket-Headline-H4'>무대</StageText>
-      </StageContainer>
+    <SeatMapScroller>
+      <SeatMapContainer>
+        <StageContainer seatMapWidth={seatMapWidth}>
+          <StageImage stage={stage}>
+            <StageText className="Podo-Ticket-Headline-H4">무대</StageText>
+          </StageImage>
+        </StageContainer>
+        <SeatMapContent ref={seatMapRef}>
+          {/* Left section seats */}
+          <SeatRow>
+            {Object.keys(theater).map((row) => (
+              <SeatColumn key={row} seatCount={theater[row].length}>
+                {theater[row].map((seat) => {
+                  const seatId = `${row}${seat}`;
+                  const isReserved = reservedSeats.includes(seatId);
+                  const isLocked = lockedSeats.includes(seatId);
 
-      <SeatMapContent ref={seatMapRef}>
-        {/* Left section seats */}
-        <SeatRow>
-          {Object.keys(theater).map((row) => (
-            < SeatColumn key={row} seatCount={theater[row].length} >
-              {theater[row].map((seat) => {
-                const seatId = `${row}${seat}`;
-                const isReserved = reservedSeats.includes(seatId);
-                const isLocked = lockedSeats.includes(seatId);
-
-                return (
-                  <SingleSeat
-                    key={seatId}
-                    isAdmin={false}
-                    content={`${row}${seat}`}
-                    onClick={
-                      isRealTime
-                        ? () => handleSeatClick(seatId)
-                        : () => handleUserSeatClick(row, seat)
-                    }
-                    isAvailable={!disabled && !(onSeatEdit && isReserved) || true}
-                    isSelected={currentSelectedSeats.includes(seatId)}
-                    isReserved={isReserved}
-                    isLocked={isLocked}
-                  />
-                );
-              })}
-            </SeatColumn>
-          ))}
-        </SeatRow>
-      </SeatMapContent>
-
-    </SeatMapContainer>
+                  return (
+                    <SingleSeat
+                      key={seatId}
+                      isAdmin={false}
+                      content={`${row}${seat}`}
+                      onClick={
+                        isRealTime
+                          ? () => handleSeatClick(seatId)
+                          : () => handleUserSeatClick(row, seat)
+                      }
+                      isAvailable={
+                        (!disabled && !(onSeatEdit && isReserved)) || true
+                      }
+                      isSelected={currentSelectedSeats.includes(seatId)}
+                      isReserved={isReserved}
+                      isLocked={isLocked}
+                    />
+                  );
+                })}
+              </SeatColumn>
+            ))}
+          </SeatRow>
+        </SeatMapContent>
+      </SeatMapContainer>
+    </SeatMapScroller>
   );
 };
 
 export default SeatMap;
 
-const SeatMapContainer = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
+const SeatMapScroller = styled.div`
+  display: flex;
+  justify-content: center;
 
-width: 100%;
-height: 100%;
+  min-height: 300px;
 
-gap: 15px;
-padding: 15px;
+  overflow: scroll;
 
-overflow: scroll;
+  /* Chrome, Safari, Edge */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* Internet Explorer and older Edge */
+  -ms-overflow-style: none;
 `;
 
-const StageContainer = styled.div`
-position: relative;
-display: flex;
-justify-content: center;
-align-items: center;
+const SeatMapContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-width: 100%;
+  width: 100%;
+  height: 100%;
 
-transform: translate(28%, 0);
+  gap: 15px;
+  padding: 15px;
+`;
 
-img {
-display: block;
-width: 397px;
-height: auto;
-}
+const StageContainer = styled.div<{ seatMapWidth: number }>`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: ${({ seatMapWidth }) => `${seatMapWidth}px`};
+`;
+
+const StageImage = styled.div<{ stage: string }>`
+  position: relative;
+
+  background-image: url(${(props) => props.stage});
+  background-size: cover;
+  background-position: center;
+
+  width: 397px;
+  height: 42px;
 `;
 
 const StageText = styled.span`
-position: absolute;
-top: 10%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 
-color: var(--grey-4);
+  color: var(--grey-4);
 `;
 
 const SeatMapContent = styled.div`
-display: flex;
+  display: flex;
 
-gap: 5px;
+  gap: 5px;
 `;
 
 const SeatRow = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-gap: 2.5px;
+  gap: 2.5px;
 `;
 
 const SeatColumn = styled.div<{ seatCount: number }>`
-display: flex;
+  display: flex;
 
-width: ${({ seatCount }) => `${seatCount * 35}px`};
+  width: ${({ seatCount }) => `${seatCount * 35}px`};
 
-gap: 2.5px;
+  gap: 2.5px;
 `;

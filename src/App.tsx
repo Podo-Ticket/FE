@@ -119,6 +119,16 @@ function App() {
     };
   }, [showOnboardingModal]);
 
+  useEffect(() => {
+    // 화면 로드 시 스크롤 방지
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      // 컴포넌트 언마운트 시 스크롤 복원
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
   // 스플래시 설정
   const [showSplash, setShowSplash] = useState(() => {
     return !localStorage.getItem("hasVisited");
