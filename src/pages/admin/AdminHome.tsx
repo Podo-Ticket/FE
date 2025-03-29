@@ -182,11 +182,7 @@ const AdminHome = () => {
                   }}
                 >
                   실시간 좌석 현황{" "}
-                  <img
-                    style={{ width: "7px", height: "12px" }}
-                    src={rightArror}
-                    alt="화살표 아이콘"
-                  />
+                  <WhiteRightArrow src={rightArror} alt="화살표 아이콘" />
                 </ButtonText>
               )}
             </LiveSeatButton>
@@ -286,11 +282,7 @@ const AdminHome = () => {
               >
                 발권 명단 관리
               </span>
-              <img
-                src={greyRightArrow}
-                alt=">"
-                style={{ width: "7px", height: "12px", marginRight: "15px" }}
-              />
+              <ArrowImg src={greyRightArrow} alt=">" />
             </BottomMenu>
           </TicketingStatusDiv>
         </MenuContainer>
@@ -317,6 +309,7 @@ const ViewMainContainer = styled.div`
   flex-direction: column;
 
   margin: 0 auto;
+  border: 1px solid var(--red-2);
 `;
 
 const AppTitle = styled.div`
@@ -341,6 +334,7 @@ const MainContainer = styled.div`
   display: flex;
   align-items: center;
   height: ${pxToPercent(255, 557)};
+  border: 1px solid var(--red-2);
 `;
 
 const TextContainer = styled.div`
@@ -351,6 +345,7 @@ const TextContainer = styled.div`
   margin-left: ${pxToVw(5)};
 
   height: ${pxToPercent(115, 255)};
+  border: 1px solid var(--red-2);
 `;
 
 const MainText = styled.div`
@@ -369,7 +364,6 @@ const LiveSeatButton = styled.button`
   background: var(--purple-4);
   border: none;
   color: var(--ect-white);
-
 `;
 
 const ButtonText = styled.div`
