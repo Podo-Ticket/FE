@@ -309,7 +309,7 @@ const ViewMainContainer = styled.div`
   flex-direction: column;
 
   margin: 0 auto;
-  border: 1px solid var(--red-2);
+
 `;
 
 const AppTitle = styled.div`
@@ -334,7 +334,7 @@ const MainContainer = styled.div`
   display: flex;
   align-items: center;
   height: ${pxToPercent(255, 557)};
-  border: 1px solid var(--red-2);
+
 `;
 
 const TextContainer = styled.div`
@@ -345,7 +345,7 @@ const TextContainer = styled.div`
   margin-left: ${pxToVw(5)};
 
   height: ${pxToPercent(115, 255)};
-  border: 1px solid var(--red-2);
+
 `;
 
 const MainText = styled.div`
@@ -364,7 +364,7 @@ const LiveSeatButton = styled.button`
   background: var(--purple-4);
   border: none;
   color: var(--ect-white);
-  border: 1px solid var(--red-2);
+
 `;
 
 const ButtonText = styled.div`

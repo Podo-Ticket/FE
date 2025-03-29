@@ -14,7 +14,7 @@ import ActSetting from "@assets/images/admin/purple_setting.png";
 import RedCirclePng from "@assets/images/admin/redCircle.png";
 import {
   UserWithApproval,
-  fetchOnsiteUserList
+  fetchOnsiteUserList,
 } from "../../../api/admin/OnsiteManageApi";
 import { pxToPercent, pxToVh } from "src/utils/unitConverter";
 
@@ -184,7 +184,6 @@ const NavItem = styled.div`
   -webkit-user-select: none; /* Safari에서 드래그 방지 */
   -moz-user-select: none; /* Firefox에서 드래그 방지 */
   -ms-user-select: none;
-  border: 1px solid var(--grey-3);
 `;
 
 const NavLink = styled(Link)`
@@ -203,16 +202,7 @@ const NavLink = styled(Link)`
   }
   p {
     margin: ${pxToVh(5)} 0;
-<<<<<<< HEAD:src/components/layout/footers/FooterNav.tsx
-
   }
-
-=======
-    border: 1px solid var(--red-2);
-  }
-
-  border: 1px solid var(--red-2);
->>>>>>> 04350e6 (💄style: updated footer and button):src/components/nav/FooterNav.tsx
 `;
 
 const IconHome = styled.img`
@@ -228,11 +218,6 @@ const IconReserved = styled.img`
 const IconOnsite = styled.img`
   height: ${pxToPercent(24, 59)};
   margin: ${pxToVh(5)} 0;
-<<<<<<< HEAD:src/components/layout/footers/FooterNav.tsx
-
-=======
-  border: 1px solid var(--red-2);
->>>>>>> 04350e6 (💄style: updated footer and button):src/components/nav/FooterNav.tsx
 `;
 
 const IconSetting = styled.img`
