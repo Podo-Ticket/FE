@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, createSearchParams } from "react-router-dom";
-import { useMediaQuery } from "react-responsive";
 import { pxToVw, pxToVh, pxToPercent } from "../../utils/unitConverter.ts"; // 경로는 실제 구조에 맞게!
 import {
   fetchAdminEnter,
@@ -183,7 +182,11 @@ const AdminHome = () => {
                   }}
                 >
                   실시간 좌석 현황{" "}
-                  <WhiteRightArrow src={rightArror} alt="화살표 아이콘" />
+                  <img
+                    style={{ width: "7px", height: "12px" }}
+                    src={rightArror}
+                    alt="화살표 아이콘"
+                  />
                 </ButtonText>
               )}
             </LiveSeatButton>
@@ -283,7 +286,11 @@ const AdminHome = () => {
               >
                 발권 명단 관리
               </span>
-              <ArrowImg src={greyRightArrow} alt=">" />
+              <img
+                src={greyRightArrow}
+                alt=">"
+                style={{ width: "7px", height: "12px", marginRight: "15px" }}
+              />
             </BottomMenu>
           </TicketingStatusDiv>
         </MenuContainer>
@@ -310,7 +317,6 @@ const ViewMainContainer = styled.div`
   flex-direction: column;
 
   margin: 0 auto;
-
 `;
 
 const AppTitle = styled.div`
@@ -335,7 +341,6 @@ const MainContainer = styled.div`
   display: flex;
   align-items: center;
   height: ${pxToPercent(255, 557)};
-
 `;
 
 const TextContainer = styled.div`
@@ -346,26 +351,24 @@ const TextContainer = styled.div`
   margin-left: ${pxToVw(5)};
 
   height: ${pxToPercent(115, 255)};
-
 `;
 
 const MainText = styled.div`
   display: flex;
   flex-direction: column;
+  gap: ${pxToVh(5)};
 
   color: var(--grey-7);
 `;
-
 // 새로운 공연 등록 ||  실시간 좌석 현황 버튼
 const LiveSeatButton = styled.button`
-  min-height: ${pxToPercent(40, 115)};
+  height: 100%;
   width: ${pxToPercent(148, 205)};
-
+  max-height: ${pxToPercent(40, 115)};
   border-radius: 50px;
   background: var(--purple-4);
   border: none;
   color: var(--ect-white);
-
 `;
 
 const ButtonText = styled.div`
@@ -373,22 +376,12 @@ const ButtonText = styled.div`
   flex-direction: row;
   align-items: center; // 세로 배열 가운데 정렬
   justify-content: center;
-
+  width: 100%;
+  height: 100%;
   gap: ${pxToVw(8)};
+  border: 1px solid var(--grey-3);
 `;
 
-const WhiteRightArrow = styled.img`
-  width: 7px;
-  height: 12px;
-  @media (max-resolution: 2dppx) {
-    width: 10.5px;
-    height: 18px;
-  }
-  @media (min-resolution: 3dppx) {
-    width: 7px;
-    height: 12px;
-  }
-`;
 const CharacterImg = styled.img`
   position: absolute;
   right: 0; /* 화면 오른쪽 끝에 붙이기 */
@@ -402,22 +395,22 @@ const Highlight = styled.span`
 const MenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${pxToPercent(20, 262)};
-  height: ${pxToPercent(262, 575)};
+  gap: ${pxToVh(20)};
+  height: ${pxToPercent(282, 586)};
 `;
 
 const LockButtonDiv = styled.div`
   display: flex;
   flex-direction: row;
   gap: ${pxToVw(20)};
-  height: ${pxToPercent(87, 262)};
+  height: ${pxToPercent(87, 282)};
 `;
 
 const TicketingStatusDiv = styled.div`
   display: flex;
   flex-direction: column;
 
-  height: ${pxToPercent(155, 262)};
+  height: ${pxToPercent(155, 282)};
 
   border-radius: 10px;
   box-shadow: -1px 9px 20px 0px rgba(0, 0, 0, 0.08);
@@ -449,8 +442,8 @@ const BarContainer = styled.div`
   position: relative;
 
   width: ${pxToPercent(312, 343)};
-  height: ${pxToPercent(19, 83)};
-  margin: ${pxToVh(18)} auto ${pxToVh(4)};
+  height: ${pxToPercent(19, 87)};
+  margin: ${pxToVh(18)} auto ${pxToVh(8)};
 
   border-radius: 13px;
   background: var(--grey-2);
@@ -498,21 +491,4 @@ const TicketingPercent = styled.div`
   align-items: center;
   width: ${pxToPercent(315, 343)};
   margin: 0 auto;
-  // border: 1px solid var(--red-2);
-`;
-
-const ArrowImg = styled.img`
-  width: 7px;
-  height: 12px;
-  margin-right: 15px;
-  @media (max-resolution: 2dppx) {
-    width: 10.5px;
-    height: 18px;
-    margin-right: 22.5px;
-  }
-  @media (min-resolution: 3dppx) {
-    width: 7px;
-    height: 12px;
-    margin-right: 15px;
-  }
 `;
