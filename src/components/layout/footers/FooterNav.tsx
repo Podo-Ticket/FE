@@ -184,7 +184,6 @@ const NavItem = styled.div`
   -webkit-user-select: none; /* Safari에서 드래그 방지 */
   -moz-user-select: none; /* Firefox에서 드래그 방지 */
   -ms-user-select: none;
-  border: 1px solid var(--grey-3);
 `;
 
 const NavLink = styled(Link)`
