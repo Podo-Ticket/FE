@@ -20,19 +20,9 @@ const WhiteBoxBtn: React.FC<WhiteBoxBtnProps> = ({
       <ButtonContants>
         <ButtonTitle>
           <LeftContent>
-            <div
-              style={{
-                width: "20px",
-                height: "20px",
-                borderRadius: "50%",
-                boxShadow: "0px 5px 6px rgba(0, 0, 0, 0.06)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <LeftIcon>
               <Icon src={iconSrc} alt="아이콘" />
-            </div>
+            </LeftIcon>
 
             <Title className="Podo-Ticket-Headline-H5">{title}</Title>
           </LeftContent>
@@ -73,6 +63,7 @@ const ButtonTitle = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  border: 1px solid var(--red-2);
 `;
 const LeftContent = styled.div`
   width: 100%;
@@ -80,9 +71,12 @@ const LeftContent = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+
   gap: ${pxToVw(6)};
   flex-glow: 1;
   text-align: left;
+
+  border: 1px solid var(--red-2);
 `;
 
 const Icon = styled.img`
@@ -103,4 +97,25 @@ const Description = styled.p`
   line-height: normal;
 
   text-align: left;
+`;
+
+const LeftIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+
+  box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  @media (max-resolution: 2dppx) {
+    width: 30px;
+    height: 30px;
+  }
+  @media (min-resolution: 3dppx) {
+    width: 20px;
+    height: 20px;
+  }
 `;
