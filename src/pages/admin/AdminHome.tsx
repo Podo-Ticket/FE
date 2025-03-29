@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, createSearchParams } from "react-router-dom";
-
+import { useMediaQuery } from "react-responsive";
+import { pxToVw, pxToVh, pxToPercent } from "../../utils/unitConverter.ts"; // 경로는 실제 구조에 맞게!
 import {
   fetchAdminEnter,
-  PerformanceInfo
+  PerformanceInfo,
 } from "../../api/admin/AdminAuthApi.ts";
 
 import FooterNav from "../../components/nav/FooterNav.tsx";
@@ -128,122 +129,121 @@ const AdminHome = () => {
 
   return (
     <ViewContainer>
-      <AppTitle>
-        <img src={podoLogo} style={{ width: "18px" }} />
-        <MainName>포도티켓</MainName>
-      </AppTitle>
+      <ViewMainContainer>
+        <AppTitle>
+          <img src={podoLogo} style={{ height: `100%` }} />
+          <MainName>포도티켓</MainName>
+        </AppTitle>
 
-      <MainContainer>
-        <TextContainer>
-          {performance === null || minutesLeft === null ? (
-            <div
-              className="Podo-Ticket-Body-B1"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-                color: "var(--grey-7)",
-              }}
-            >
-              <p>예정된 공연이 없어요!</p>
-              <p> 새로운 공연을 등록하세요!</p>
-            </div>
-          ) : (
-            <>
-              <MainText className="Podo-Ticket-Body-B1">
-                다음 공연 시작까지
-                <br />
-                <div>
-                  <Highlight className="Podo-Ticket-Headline-H2">
-                    {minutesLeft}분
-                  </Highlight>{" "}
-                  남았어요!
-                </div>
-              </MainText>
-            </>
-          )}
-
-          <LiveSeatButton>
+        <MainContainer>
+          <TextContainer>
             {performance === null || minutesLeft === null ? (
-              <ButtonText className="Podo-Ticket-Headline-H5">
-                새로운 공연 등록
-                <img
-                  style={{ width: "14px", height: "14px" }}
-                  src={plus_icon}
-                  alt="플러스 아이콘"
-                />
-              </ButtonText>
-            ) : (
-              <ButtonText
-                className="Podo-Ticket-Headline-H5"
-                onClick={() => {
-                  navigate("realtime");
+              <MainText
+                className="Podo-Ticket-Body-B1"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: `${pxToVw(6)}`,
+                  color: "var(--grey-7)",
                 }}
               >
-                실시간 좌석 현황{" "}
-                <img
-                  style={{ width: "7px", height: "12px" }}
-                  src={rightArror}
-                  alt="화살표 아이콘"
-                />
-              </ButtonText>
+                <p>예정된 공연이 없어요!</p>
+                <p> 새로운 공연을 등록하세요!</p>
+              </MainText>
+            ) : (
+              <>
+                <MainText className="Podo-Ticket-Body-B1">
+                  다음 공연 시작까지
+                  <br />
+                  <div>
+                    <Highlight className="Podo-Ticket-Headline-H2">
+                      {minutesLeft}분
+                    </Highlight>{" "}
+                    남았어요!
+                  </div>
+                </MainText>
+              </>
             )}
-          </LiveSeatButton>
-        </TextContainer>
-        <CharacterImg src={character} alt=""></CharacterImg>
-      </MainContainer>
 
-      <MenuContainer>
-        <LockButtonDiv>
-          <SeatLockButton
-            iconSrc={lockIcon}
-            title="좌석 잠금"
-            description="이용 제한이 필요한 좌석을 빠르게 관리해보세요!"
-            onClick={() => {
-              handleMoveLockingPage(true);
-            }}
-          />
-          <SeatLockButton
-            iconSrc={unlockIcon}
-            title="좌석 잠금 해제"
-            description="좌석 이용을 다시 활성화할 수 있어요!"
-            onClick={() => {
-              handleMoveLockingPage(false);
-            }}
-          />
-        </LockButtonDiv>
-
-        {/* 발권진행률 */}
-        <TicketingStatusDiv>
-          <TopMenu>
-            <TicketingStatusTitle>
-              {issuingProgress === 100 ? (
-                <span
-                  className="Podo-Ticket-Headline-H5"
-                  style={{ color: "var(--grey-7)" }}
-                >
-                  발권이 모두 완료되었어요!
-                </span>
+            <LiveSeatButton>
+              {performance === null || minutesLeft === null ? (
+                <ButtonText>
+                  <p className="Podo-Ticket-Headline-H5">새로운 공연 등록</p>
+                  <img
+                    style={{ width: `${pxToPercent(14, 148)}` }}
+                    src={plus_icon}
+                    alt="플러스 아이콘"
+                  />
+                </ButtonText>
               ) : (
-                <>
-                  <Highlight className="Podo-Ticket-Headline-H3">
-                    {minutesLeft === null ? 0 : totalTickets - issuedTickets}건
-                  </Highlight>
-                  의 미발권이 남았어요!
-                </>
+                <ButtonText
+                  className="Podo-Ticket-Headline-H5"
+                  onClick={() => {
+                    navigate("realtime");
+                  }}
+                >
+                  실시간 좌석 현황{" "}
+                  <img
+                    style={{ width: "7px", height: "12px" }}
+                    src={rightArror}
+                    alt="화살표 아이콘"
+                  />
+                </ButtonText>
               )}
-            </TicketingStatusTitle>
-            <div style={{ position: "relative" }}>
+            </LiveSeatButton>
+          </TextContainer>
+          <CharacterImg src={character} alt=""></CharacterImg>
+        </MainContainer>
+        <MenuContainer>
+          <LockButtonDiv>
+            <SeatLockButton
+              iconSrc={lockIcon}
+              title="좌석 잠금"
+              description="이용 제한이 필요한 좌석을 빠르게 관리해보세요!"
+              onClick={() => {
+                handleMoveLockingPage(true);
+              }}
+            />
+            <SeatLockButton
+              iconSrc={unlockIcon}
+              title="좌석 잠금 해제"
+              description="좌석 이용을 다시 활성화할 수 있어요!"
+              onClick={() => {
+                handleMoveLockingPage(false);
+              }}
+            />
+          </LockButtonDiv>
+
+          {/* 발권진행률 */}
+          <TicketingStatusDiv>
+            <TopMenu>
+              <TicketingStatusTitle>
+                {issuingProgress === 100 ? (
+                  <span
+                    className="Podo-Ticket-Headline-H5"
+                    style={{ color: "var(--grey-7)" }}
+                  >
+                    발권이 모두 완료되었어요!
+                  </span>
+                ) : (
+                  <>
+                    <Highlight className="Podo-Ticket-Headline-H3">
+                      {minutesLeft === null ? 0 : totalTickets - issuedTickets}
+                      건
+                    </Highlight>
+                    의 미발권이 남았어요!
+                  </>
+                )}
+              </TicketingStatusTitle>
               {issuingProgress === 100 && (
                 <img
                   src={character_100}
                   alt="100% 완료 캐릭터"
                   style={{
                     position: "absolute",
-                    right: "20px", // 오른쪽 정렬
-                    top: "-45px", // BarContainer 위로 올리기
-
-                    height: "60px",
+                    right: `${pxToVw(50)}`, // 오른쪽 정렬
+                    top: `${pxToVh(460)}`, // BarContainer 위로 올리기
+                    height: `${pxToPercent(65, 575)}`,
                     zIndex: 10, // 바보다 위로 배치
                   }}
                 />
@@ -252,53 +252,50 @@ const AdminHome = () => {
                 <BarFill progress={issuingProgress} />
                 <Circle position={issuingProgress} />
               </BarContainer>
-            </div>
-            <TicketingPercent>
-              <p
-                className="Podo-Ticket-Body-B11"
-                style={{
-                  color: "var(--grey-6)",
-                  fontSize: "10px",
-                  fontWeight: "500",
-                }}
-              >
-                발권진행률
-              </p>
+
+              <TicketingPercent>
+                <p
+                  className="Podo-Ticket-Body-B11"
+                  style={{
+                    color: "var(--grey-6)",
+                  }}
+                >
+                  발권진행률
+                </p>
+                <span
+                  className="Podo-Ticket-Headline-H6"
+                  style={{
+                    color: "var(--purple-4)",
+                    textAlign: "right",
+                    display: "block",
+                  }}
+                >
+                  {minutesLeft === null ? 0 : issuingProgress}%
+                </span>
+              </TicketingPercent>
+            </TopMenu>
+            <BottomMenu
+              onClick={() => {
+                navigate("/reserved");
+              }}
+            >
               <span
                 className="Podo-Ticket-Headline-H6"
                 style={{
-                  color: "var(--purple-4)",
-                  textAlign: "right",
-                  display: "block",
-                  fontSize: "12px",
-                  fontWeight: "600",
+                  color: "var(--grey-7)",
                 }}
               >
-                {minutesLeft === null ? 0 : issuingProgress}%
+                발권 명단 관리
               </span>
-            </TicketingPercent>
-          </TopMenu>
-          <BottomMenu
-            onClick={() => {
-              navigate("/reserved");
-            }}
-          >
-            <span
-              className="Podo-Ticket-Headline-H6"
-              style={{
-                color: "var(--grey-7)",
-              }}
-            >
-              발권 명단 관리
-            </span>
-            <img
-              src={greyRightArrow}
-              alt=">"
-              style={{ width: "7px", height: "12px", marginRight: "15px" }}
-            />
-          </BottomMenu>
-        </TicketingStatusDiv>
-      </MenuContainer>
+              <img
+                src={greyRightArrow}
+                alt=">"
+                style={{ width: "7px", height: "12px", marginRight: "15px" }}
+              />
+            </BottomMenu>
+          </TicketingStatusDiv>
+        </MenuContainer>
+      </ViewMainContainer>
       <FooterNav />
     </ViewContainer>
   );
@@ -307,28 +304,35 @@ const AdminHome = () => {
 export default AdminHome;
 
 const ViewContainer = styled.div`
+  width: 100svw; /* 전체 너비 */
+  height: 100svh; /* 전체 높이 */
+  background: #f5f4ff; /* 배경색 적용 */
+`;
+
+const ViewMainContainer = styled.div`
+  height: ${pxToPercent(575, 661)}; // footer높이 제외
+  max-width: ${pxToPercent(343, 393)};
+  // max-width: calc(100vw - 50px); /* 정확하게 양쪽 25px씩 띄우기 */
+
   display: flex;
   flex-direction: column;
+
   margin: 0 auto;
-  width: 100vw; /* 전체 너비 */
-  height: 100vh; /* 전체 높이 */
-  background: #f5f4ff; /* 배경색 적용 */
 `;
 
 const AppTitle = styled.div`
   display: flex;
-  max-width: calc(100vw - 50px); /* 정확하게 양쪽 25px씩 띄우기 */
+  align-items: center;
+  gap: ${pxToVw(6)};
+  height: ${pxToVh(23)};
   width: 100%;
-  margin: 0 auto;
-  align-items: center; // 세로 배열 가운데 정렬
-  gap: 6px;
-
-  margin-top: 15px;
+  margin: ${pxToVw(15)} auto 0;
 `;
+
 const MainName = styled.h1`
   color: #6a39c0;
   font-family: "S-Core Dream";
-  font-size: 18px;
+  font-size: ${pxToVw(18)};
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -336,103 +340,120 @@ const MainName = styled.h1`
 
 const MainContainer = styled.div`
   display: flex;
-  position: relative; /* 내부 요소를 상대적으로 배치할 수 있도록 설정 */
-  align-items: center; // 세로 배열 가운데 정렬
-  justify-content: space-between;
-  width: 100vw;
-  margin: 0 auto;
-  padding-left: 30px;
-  height: 225px;
-  // border: 1px solid var(--grey-7);
+  align-items: center;
+  height: ${pxToPercent(255, 557)};
 `;
 
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  justify-content: center;
+  gap: ${pxToVh(20)};
+  margin-left: ${pxToVw(5)};
 
-  // border: 1px solid var(--grey-7);
+  height: ${pxToPercent(115, 255)};
 `;
 
 const MainText = styled.div`
   display: flex;
-  gap: 5px;
   flex-direction: column;
+  gap: ${pxToVh(5)};
+
   color: var(--grey-7);
 `;
-const Highlight = styled.span`
-  color: var(--purple-4);
+// 새로운 공연 등록 ||  실시간 좌석 현황 버튼
+const LiveSeatButton = styled.button`
+  height: 100%;
+  width: ${pxToPercent(148, 205)};
+  max-height: ${pxToPercent(40, 115)};
+  border-radius: 50px;
+  background: var(--purple-4);
+  border: none;
+  color: var(--ect-white);
+`;
+
+const ButtonText = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center; // 세로 배열 가운데 정렬
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  gap: ${pxToVw(8)};
+  border: 1px solid var(--grey-3);
 `;
 
 const CharacterImg = styled.img`
-  height: 215px;
   position: absolute;
   right: 0; /* 화면 오른쪽 끝에 붙이기 */
-
-  // border: 1px solid var(--grey-7);
+  max-height: ${pxToPercent(200, 557)};
 `;
 
-const LiveSeatButton = styled.button`
-  border-radius: 50px;
-  padding: 0px;
-
-  justify-content: center;
-  align-items: center;
-  gap: 9px;
-  background: var(--purple-4);
-  border: none;
-
-  width: 148px;
-  height: 40px;
-
-  color: var(--ect-white);
+const Highlight = styled.span`
+  color: var(--purple-4);
 `;
 
 const MenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: calc(100vw - 50px); /* 정확하게 양쪽 25px씩 띄우기 */
-  width: 100%;
-  margin: 0 auto;
-  gap: 20px;
+  gap: ${pxToVh(20)};
+  height: ${pxToPercent(282, 586)};
 `;
+
 const LockButtonDiv = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 19px;
+  gap: ${pxToVw(20)};
+  height: ${pxToPercent(87, 282)};
 `;
 
 const TicketingStatusDiv = styled.div`
-  width: 343px;
-  height: 155px;
-  flex-shrink: 0;
-  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
 
+  height: ${pxToPercent(155, 282)};
+
+  border-radius: 10px;
   box-shadow: -1px 9px 20px 0px rgba(0, 0, 0, 0.08);
 `;
 
 const TopMenu = styled.div`
+  height: ${pxToPercent(119, 155)};
+  padding: ${pxToVh(17)} 0 ${pxToVh(15)};
+
   background: var(--ect-white);
-  border-radius: 16px 16px 0 0;
-  padding-top: 17px;
-  padding-bottom: 15px;
+  border-radius: 10px 10px 0 0;
+`;
+
+const BottomMenu = styled.div`
+  display: flex;
+  align-items: center; // 세로 배열 가운데 정렬
+  justify-content: right;
+
+  height: ${pxToPercent(36, 155)};
+  gap: ${pxToVw(10)};
 `;
 
 const TicketingStatusTitle = styled.p`
-  margin-left: 18px;
+  width: ${pxToPercent(309, 343)};
+  margin: 0 auto;
 `;
+
 const BarContainer = styled.div`
   position: relative;
-  width: 306px;
-  height: 19px;
+
+  width: ${pxToPercent(312, 343)};
+  height: ${pxToPercent(19, 87)};
+  margin: ${pxToVh(18)} auto ${pxToVh(8)};
+
   border-radius: 13px;
   background: var(--grey-2);
-  margin: 18px 15px 0 16px;
 `;
 
 const BarFill = styled.div<{ progress: number }>`
   width: ${(props) => props.progress}%;
-  height: 19px;
+  max-width: 100%;
+  height: 100%;
   background: linear-gradient(90deg, #f5f4ff 0%, #dfcdff 100%);
   border-radius: 13px; /* 모서리 둥글게 */
 
@@ -457,23 +478,7 @@ const TicketingPercent = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-left: 18px;
-  margin-right: 10px;
-  margin-top: 8px;
-`;
-
-const BottomMenu = styled.div`
-  display: flex;
-  align-items: center; /* 수직 중앙 정렬 */
-  margin-top: 8px;
-  align-items: center; // 세로 배열 가운데 정렬
-  justify-content: right;
-  gap: 10px;
-`;
-
-const ButtonText = styled.div`
-  display: flex;
-  align-items: center; // 세로 배열 가운데 정렬
-  justify-content: center;
-  gap: 8px;
+  align-items: center;
+  width: ${pxToPercent(315, 343)};
+  margin: 0 auto;
 `;

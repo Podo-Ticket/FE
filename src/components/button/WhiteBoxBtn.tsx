@@ -2,7 +2,7 @@
 import React from "react";
 import styled from "styled-components";
 import greyRightArrow from "../../assets/images/admin/grey_right_arrow.png";
-
+import { pxToVw, pxToVh, pxToPercent } from "../../utils/unitConverter.ts";
 interface WhiteBoxBtnProps {
   iconSrc: string;
   title: string;
@@ -18,31 +18,33 @@ const WhiteBoxBtn: React.FC<WhiteBoxBtnProps> = ({
 }) => {
   return (
     <ButtonContainer onClick={onClick}>
-      <ButtonTitle>
-        <LeftContent>
-          <div
-            style={{
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
-              boxShadow: "0px 5px 6px rgba(0, 0, 0, 0.06)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Icon src={iconSrc} alt="아이콘" />
-          </div>
+      <ButtonContants>
+        <ButtonTitle>
+          <LeftContent>
+            <div
+              style={{
+                width: "20px",
+                height: "20px",
+                borderRadius: "50%",
+                boxShadow: "0px 5px 6px rgba(0, 0, 0, 0.06)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Icon src={iconSrc} alt="아이콘" />
+            </div>
 
-          <Title className="Podo-Ticket-Headline-H5">{title}</Title>
-        </LeftContent>
-        <img
-          src={greyRightArrow}
-          alt="화살표"
-          style={{ width: "7px", height: "12px" }}
-        />
-      </ButtonTitle>
-      <Description>{description}</Description>
+            <Title className="Podo-Ticket-Headline-H5">{title}</Title>
+          </LeftContent>
+          <img
+            src={greyRightArrow}
+            alt="화살표"
+            style={{ width: "7px", height: "12px" }}
+          />
+        </ButtonTitle>
+        <Description>{description}</Description>
+      </ButtonContants>
     </ButtonContainer>
   );
 };
@@ -51,30 +53,35 @@ export default WhiteBoxBtn;
 
 const ButtonContainer = styled.button`
   display: flex;
-  flex-direction: column;
-  width: 162px;
-  height: 87px;
-  border-radius: 10px;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+
   background: var(--ect-white, #fff);
   box-shadow: -1px 9px 20px 0px rgba(0, 0, 0, 0.08);
-  padding: 15px 14px;
+  border-radius: 10px;
   border: none;
-  text-align: left;
-  gap: 9px;
 `;
 
+const ButtonContants = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${pxToVh(9)};
+  margin: 0 ${pxToVw(14)};
+`;
 const ButtonTitle = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
 `;
 const LeftContent = styled.div`
+  width: 100%;
+
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  gap: 6px;
-  width: 100%;
+  gap: ${pxToVw(6)};
   flex-glow: 1;
   text-align: left;
 `;
@@ -86,13 +93,15 @@ const Icon = styled.img`
   border-radius: 50%; /* 원형 유지 */
 `;
 const Title = styled.h5`
-  color: var(--grey-grey7, #3c3c3c);
+  color: var(--grey7, #3c3c3c);
 `;
 const Description = styled.p`
-  color: var(--grey-grey-6, #777);
+  color: var(--grey-6, #777);
   font-family: Pretendard;
-  font-size: 11px;
+  font-size: ${pxToVw(11)};
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+
+  text-align: left;
 `;
