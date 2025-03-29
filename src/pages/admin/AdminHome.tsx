@@ -182,11 +182,7 @@ const AdminHome = () => {
                   }}
                 >
                   실시간 좌석 현황{" "}
-                  <img
-                    style={{ width: "7px", height: "12px" }}
-                    src={rightArror}
-                    alt="화살표 아이콘"
-                  />
+                  <WhiteRightArrow src={rightArror} alt="화살표 아이콘" />
                 </ButtonText>
               )}
             </LiveSeatButton>
@@ -286,11 +282,7 @@ const AdminHome = () => {
               >
                 발권 명단 관리
               </span>
-              <img
-                src={greyRightArrow}
-                alt=">"
-                style={{ width: "7px", height: "12px", marginRight: "15px" }}
-              />
+              <ArrowImg src={greyRightArrow} alt=">" />
             </BottomMenu>
           </TicketingStatusDiv>
         </MenuContainer>
@@ -317,6 +309,7 @@ const ViewMainContainer = styled.div`
   flex-direction: column;
 
   margin: 0 auto;
+  border: 1px solid var(--red-2);
 `;
 
 const AppTitle = styled.div`
@@ -341,6 +334,7 @@ const MainContainer = styled.div`
   display: flex;
   align-items: center;
   height: ${pxToPercent(255, 557)};
+  border: 1px solid var(--red-2);
 `;
 
 const TextContainer = styled.div`
@@ -351,24 +345,26 @@ const TextContainer = styled.div`
   margin-left: ${pxToVw(5)};
 
   height: ${pxToPercent(115, 255)};
+  border: 1px solid var(--red-2);
 `;
 
 const MainText = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${pxToVh(5)};
 
   color: var(--grey-7);
 `;
+
 // 새로운 공연 등록 ||  실시간 좌석 현황 버튼
 const LiveSeatButton = styled.button`
-  height: 100%;
+  min-height: ${pxToPercent(40, 115)};
   width: ${pxToPercent(148, 205)};
-  max-height: ${pxToPercent(40, 115)};
+
   border-radius: 50px;
   background: var(--purple-4);
   border: none;
   color: var(--ect-white);
+  border: 1px solid var(--red-2);
 `;
 
 const ButtonText = styled.div`
@@ -376,12 +372,22 @@ const ButtonText = styled.div`
   flex-direction: row;
   align-items: center; // 세로 배열 가운데 정렬
   justify-content: center;
-  width: 100%;
-  height: 100%;
+
   gap: ${pxToVw(8)};
-  border: 1px solid var(--grey-3);
 `;
 
+const WhiteRightArrow = styled.img`
+  width: 7px;
+  height: 12px;
+  @media (max-resolution: 2dppx) {
+    width: 10.5px;
+    height: 18px;
+  }
+  @media (min-resolution: 3dppx) {
+    width: 7px;
+    height: 12px;
+  }
+`;
 const CharacterImg = styled.img`
   position: absolute;
   right: 0; /* 화면 오른쪽 끝에 붙이기 */
@@ -395,22 +401,22 @@ const Highlight = styled.span`
 const MenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${pxToVh(20)};
-  height: ${pxToPercent(282, 586)};
+  gap: ${pxToPercent(20, 262)};
+  height: ${pxToPercent(262, 575)};
 `;
 
 const LockButtonDiv = styled.div`
   display: flex;
   flex-direction: row;
   gap: ${pxToVw(20)};
-  height: ${pxToPercent(87, 282)};
+  height: ${pxToPercent(87, 262)};
 `;
 
 const TicketingStatusDiv = styled.div`
   display: flex;
   flex-direction: column;
 
-  height: ${pxToPercent(155, 282)};
+  height: ${pxToPercent(155, 262)};
 
   border-radius: 10px;
   box-shadow: -1px 9px 20px 0px rgba(0, 0, 0, 0.08);
@@ -442,8 +448,8 @@ const BarContainer = styled.div`
   position: relative;
 
   width: ${pxToPercent(312, 343)};
-  height: ${pxToPercent(19, 87)};
-  margin: ${pxToVh(18)} auto ${pxToVh(8)};
+  height: ${pxToPercent(19, 83)};
+  margin: ${pxToVh(18)} auto ${pxToVh(4)};
 
   border-radius: 13px;
   background: var(--grey-2);
@@ -491,4 +497,21 @@ const TicketingPercent = styled.div`
   align-items: center;
   width: ${pxToPercent(315, 343)};
   margin: 0 auto;
+  // border: 1px solid var(--red-2);
+`;
+
+const ArrowImg = styled.img`
+  width: 7px;
+  height: 12px;
+  margin-right: 15px;
+  @media (max-resolution: 2dppx) {
+    width: 10.5px;
+    height: 18px;
+    margin-right: 22.5px;
+  }
+  @media (min-resolution: 3dppx) {
+    width: 7px;
+    height: 12px;
+    margin-right: 15px;
+  }
 `;
