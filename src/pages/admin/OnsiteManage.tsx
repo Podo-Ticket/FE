@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import TopNav from '../../components/nav/TopNav.tsx';
-import PlaySessionPicker from '../../components/nav/PlaySessionPicker.tsx';
-import SearchFilterBar from '../../components/nav/SearchFilterBar.tsx';
-import CustomerListItem from '../../components/info/CustomerListItem.tsx';
-import FooterNav from '../../components/nav/FooterNav.tsx'
+import TopNav from '@components/layout/headers/TopNav.tsx';
+import PlaySessionPicker from '@components/layout/headers/PlaySessionPicker.tsx';
+import SearchFilterBar from '@components/layout/headers/SearchFilterBar.tsx';
+import CustomerListItem from '@components/common/informations/CustomerListItem.tsx';
+import FooterNav from '@components/layout/footers/FooterNav.tsx'
 
 import { fadeIn } from '../../styles/animation/DefaultAnimation.ts';
 import { UserWithApproval, approveOnsite, Schedule, fetchOnsiteUserList, fetchSchedules } from '../../api/admin/OnsiteManageApi';
@@ -228,5 +228,8 @@ const ViewContainer = styled.div`
 `;
 
 const ListContainer = styled.div`
-animation: ${fadeIn} 0.3s ease-in-out;
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+
+  animation: ${fadeIn} 0.3s ease-in-out;
 `;

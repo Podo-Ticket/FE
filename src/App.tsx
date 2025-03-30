@@ -29,7 +29,7 @@ import ReservedCheck from "./pages/admin/ReservedCheck.tsx";
 import OnsiteManage from "./pages/admin/OnsiteManage.tsx";
 import AdminSetting from "./pages/admin/AdminSetting.tsx";
 
-import OnboardingModal from './components/modal/OnboardingModal.tsx';
+import OnboardingModal from './components/common/modals/OnboardingModal.tsx';
 
 const GlobalStyle = createGlobalStyle`
     * {

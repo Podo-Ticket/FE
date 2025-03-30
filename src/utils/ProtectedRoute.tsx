@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { verifyAdminSession } from "../api/admin/AdminAuthApi";
-import NoticeModal from "../components/modal/NoticeModal";
+
+import NoticeModal from "@components/common/modals/NoticeModal";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

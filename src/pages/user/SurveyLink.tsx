@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import SurveyModal from "../../components/modal/SurveyModal.tsx";
+import SurveyModal from "@components/pages/customer/surveyLink/SurveyModal.tsx";
 
 import ownerIcon from "../../assets/images/admin/podo_logo.png";
 import customerIcon from "../../assets/images/admin/riveract_logo.png";

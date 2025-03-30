@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import FooterNav from '../../components/nav/FooterNav.tsx'
-import TheaterInfoModal from '../../components/modal/TheaterInfoModal.tsx';
-import TopNav from '../../components/nav/TopNav.tsx';
+import FooterNav from '@components/layout/footers/FooterNav.tsx'
+import TheaterInfoModal from '@components/common/modals/TheaterInfoModal.tsx';
+import TopNav from '@components/layout/headers/TopNav.tsx';
+import PWAInstallModal from '@components/pages/admin/adminSetting/PWAInstallModal.tsx';
 
 import downloadImage from '../../assets/images/admin/purple_downbox.png'
 import theaterInfoImage from '../../assets/images/admin/purple_performance.png'
 import versionImage from '../../assets/images/admin/purple_circled_info.png'
-import PWAInstallModal from '../../components/modal/PWAInstallModal.tsx';
 
 const AdminSetting = () => {
     const [isTheaterInfoModalOpen, setIsTheaterInfoModalOpen] = useState(false);

@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import GetTicketBtn from "../../components/button/LargeBtn";
-import TicketConfirmCard from "../../components/info/TicketConfirmCard";
-import Loading from "../../components/loading/Loading";
-import Success from "../../components/loading/Success";
-import NoticeModal from "../../components/modal/NoticeModal";
+import GetTicketBtn from "@components/common/buttons/LargeBtn";
+import TicketConfirmCard from "@components/pages/customer/ticketConfirmation/TicketConfirmCard";
+import Loading from "@components/common/loadings/Loading";
+import Success from "@components/common/loadings/Success";
+import NoticeModal from "@components/common/modals/NoticeModal";
 
 import poster from "../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg";
 import confirmIcon from "../../assets/images/confirm_icon.png";

@@ -5,11 +5,13 @@ import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import TopNav from "../../components/nav/TopNav";
-import DefaultInput from "../../components/inputField/DefaultInput";
-import ErrorModal from "../../components/error/DefaultErrorModal";
-import MoreSmallBtn from "../../components/button/MoreSmallBtn.tsx";
-import MoreMediumBtn from "../../components/button/MoreMediumBtn.tsx";
+import TopNav from "@components/layout/headers/TopNav.tsx";
+import DefaultInput from "@components/common/inputs/DefaultInput";
+import ErrorModal from "@components/common/errors/DefaultErrorModal";
+import MoreSmallBtn from "@components/common/buttons/MoreSmallBtn.tsx";
+import MoreMediumBtn from "@components/common/buttons/MoreMediumBtn.tsx";
+import NoticeModal from "@components/common/modals/NoticeModal.tsx";
+
 import goBackIcon from "../../assets/images/left_arrow.png";
 import { DateUtil } from "../../utils/DateUtil";
 import { fadeIn } from "../../styles/animation/DefaultAnimation.ts";
@@ -24,8 +26,6 @@ import {
   editReservation,
   EditRequest,
 } from "../../api/admin/ReservedManageApi.ts";
-
-import NoticeModal from "../../components/modal/NoticeModal.tsx";
 
 // Define the schema for form validation using Zod
 const reservationSchema = z.object({

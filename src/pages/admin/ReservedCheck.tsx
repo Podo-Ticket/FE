@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-import TopNav from "../../components/nav/TopNav.tsx";
+import TopNav from "@components/layout/headers/TopNav.tsx";
+import MultipleAcceptModal from "@components/common/modals/DefaultModal";
 
 import leftArrow from "../../assets/images/left_arrow.png";
 import rightArrow from "../../assets/images/admin/lightGrey_rightArrow.png";
 import editIcon from "../../assets/images/admin/mynaui_pencil.png";
-
-import MultipleAcceptModal from "../../components/modal/DefaultModal";
 
 import {
   fetchReservationInfo,

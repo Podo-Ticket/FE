@@ -8,8 +8,8 @@ import {
   PerformanceInfo,
 } from "../../api/admin/AdminAuthApi.ts";
 
-import FooterNav from "../../components/nav/FooterNav.tsx";
-import SeatLockButton from "../../components/button/WhiteBoxBtn.tsx";
+import FooterNav from "@components/layout/footers/FooterNav.tsx";
+import SeatLockButton from "@components/common/buttons/WhiteBoxBtn.tsx";
 
 import podoLogo from "../../assets/images/admin/mainLogo.png";
 import rightArror from "../../assets/images/admin/white_right-arrow.png";
