@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import TicketCarousel from "../../components/slide/TicketCarousel.tsx";
-import TopNav from "../../components/nav/TopNav.tsx";
-import TheaterInfoModal from "../../components/modal/TheaterInfoModal.tsx";
-import FinishTicketingModal from "../../components/modal/NoticeModal.tsx";
+import TicketCarousel from "@components/pages/customer/tickets/TicketCarousel.tsx";
+import TopNav from "@components/layout/headers/TopNav.tsx";
+import TheaterInfoModal from "@components/common/modals/TheaterInfoModal.tsx";
+import FinishTicketingModal from "@components/common/modals/NoticeModal.tsx";
 
 import infoIcon from "../../assets/images/info_icon.png";
 

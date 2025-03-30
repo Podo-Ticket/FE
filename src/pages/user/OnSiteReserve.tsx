@@ -7,13 +7,13 @@ import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import TopNav from "../../components/nav/TopNav";
-import DefaultInput from "../../components/inputField/DefaultInput";
-import LargeBtn from "../../components/button/LargeBtn";
-import ErrorModal from "../../components/error/DefaultErrorModal";
-import Loading from "../../components/loading/Loading.tsx";
-import NoticeModal from "../../components/modal/NoticeModal.tsx";
-import PrivacyPolicyModal from "../../components/modal/TextModal.tsx";
+import TopNav from "@components/layout/headers/TopNav";
+import DefaultInput from "@components/common/inputs/DefaultInput";
+import LargeBtn from "@components/common/buttons/LargeBtn";
+import ErrorModal from "@components/common/errors/DefaultErrorModal";
+import Loading from "@components/common/loadings/Loading.tsx";
+import NoticeModal from "@components/common/modals/NoticeModal.tsx";
+import PrivacyPolicyModal from "@components/common/modals/TextModal.tsx";
 
 import goBackIcon from "../../assets/images/left_arrow.png";
 import CheckedIcon from "../../assets/images/privacy_checked.png";

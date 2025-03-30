@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from 'react-responsive'
 
-import TopNav from "../../components/nav/TopNav";
-import SelectSeatsInfo from "../../components/info/SeatsInfo";
-import LargeBtn from "../../components/button/LargeBtn";
-import ErrorModal from "../../components/error/DefaultErrorModal";
+import TopNav from "@components/layout/headers/TopNav";
+import SelectSeatsInfo from "@components/pages/customer/selectSeats/SeatsInfo";
+import LargeBtn from "@components/common/buttons/LargeBtn";
+import ErrorModal from "@components/common/errors/DefaultErrorModal";
 
 import { SELECT_FAIL } from "../../constants/text/ErrorMessage";
 import refreshIcon from "../../assets/images/refresh2_icon.png";
@@ -14,7 +14,7 @@ import refreshIcon from "../../assets/images/refresh2_icon.png";
 import { fetchSeats, checkSeats } from "../../api/user/SelectSeatsApi";
 
 /* 각 극장에 맞는 SeatMap component로 설정 필요 */
-import RiveractSeatMap from "../../components/button/SeatMap/UserSeatMap_Riveract";
+import RiveractSeatMap from "@components/common/buttons/SeatMap/UserSeatMap_Riveract";
 // import KwangwoonSeatMap from '../../components/button/SeatMap/UserSeatMap_Kwangwoon';
 
 function SelectSeats() {
@@ -86,10 +86,6 @@ function SelectSeats() {
 
   // 발권 버튼 텍스트
   const buttonText = `선택 완료 ${selectedSeats.length} / ${headCount}`;
-
-  const isSmallWidthDevice = useMediaQuery(
-    { maxDeviceWidth: 350 }
-  );
 
   const SmallWidthDevice = () => {
     const isSmallWidthDevice = useMediaQuery({ maxDeviceWidth: 370 })

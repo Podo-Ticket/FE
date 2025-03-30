@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 
-import MediumBtn from "../../components/button/MediumBtn.tsx";
-import MoreDetailBtn from "../../components/button/SmallMoreBtn.tsx";
-import MoreBtn from "../../components/button/SmallMoreBtn.tsx";
-import ReserveWayModal from "../../components/modal/ChoiceModal.tsx";
-import AuthModal from "../../components/auth/PhoneAuthModal.tsx";
-import Loading from "../../components/loading/Loading.tsx";
-import Success from "../../components/loading/Success.tsx";
-import TopNav from "../../components/nav/TopNav.tsx";
+import MediumBtn from "@components/common/buttons/MediumBtn.tsx";
+import MoreDetailBtn from "@components/common/buttons/SmallMoreBtn.tsx";
+import MoreBtn from "@components/common/buttons/SmallMoreBtn.tsx";
+import ReserveWayModal from "@components/pages/customer/userHome/ChoiceModal.tsx";
+import AuthModal from "@components/pages/customer/userHome/PhoneAuthModal.tsx";
+import Loading from "@components/common/loadings/Loading.tsx";
+import Success from "@components/common/loadings/Success.tsx";
+import TopNav from "@components/layout/headers/TopNav.tsx";
 
 import poster from "../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg"; // 해당 공연에 맞는 상수값 적용 필요
 import homeTicket from "../../assets/images/home_ticket.png";
