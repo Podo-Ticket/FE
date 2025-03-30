@@ -2,17 +2,23 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import TopNav from "../../components/nav/TopNav";
-import PlaySessionPicker from "../../components/nav/PlaySessionPicker";
+import TopNav from "@components/layout/headers/TopNav";
+import PlaySessionPicker from "@components/layout/headers/PlaySessionPicker";
+import AdminSeatInfo from "@components/common/informations/AdminSeatInfo";
+import AudienceInfo from "@components/pages/admin/realtimeSeats/AudienceInfo";
+import AdminSeatMap from "@components/common/buttons/SeatMap/AdminSeatMap_Riveract";
+// import AdminSeatMap from '../../components/button/SeatMap/AdminSeatMap_Kwangwoon';
 
-import backIcon from "../../assets/images/left_arrow.png";
-import refreshIcon from "../../assets/images/refresh2_icon.png";
+import backIcon from "@assets/images/left_arrow.png";
+import refreshIcon from "@assets/images/refresh2_icon.png";
 
 import { Schedule, fetchSchedules } from "../../api/admin/RealtimeSeatsApi";
 
-/* 각 극장에 맞는 SeatMap component로 설정 필요 */
-import AdminSeatMap from "../../components/button/SeatMap/AdminSeatMap_Riveract";
-// import AdminSeatMap from '../../components/button/SeatMap/AdminSeatMap_Kwangwoon';
+interface IAudienceInfo {
+  name: string;
+  phoneNumber: string;
+  headCount: number;
+}
 
 const RealtimeSeats = () => {
   const navigate = useNavigate();
@@ -54,6 +60,8 @@ const RealtimeSeats = () => {
   }, [selectedSession]);
   const triggerRefresh = () => setIsRefreshed((prev) => !prev);
 
+  const [audienceInfo, setAudienceInfo] = useState<IAudienceInfo>(undefined);
+  const [remainingSeats, setRemainingSeats] = useState<number>(0);
   // Top navigation 요소 정의
   const navItem = {
     icon: backIcon,
@@ -89,12 +97,25 @@ const RealtimeSeats = () => {
         />
 
         <SeatMapContainer>
+          {audienceInfo !== undefined ? (
+            <AudienceInfo
+              name={audienceInfo.name}
+              phoneNumber={audienceInfo.phoneNumber}
+              headCount={audienceInfo.headCount}
+            />
+          ) : undefined }
           <AdminSeatMap
             isRealTime={true}
             manageMode={false}
             isRefreshed={isRefreshed}
             scheduleId={Number(selectedSession)}
             disabled={false}
+            setAudienceInfo={setAudienceInfo}
+            setRemainingSeats={setRemainingSeats}
+          />
+          <AdminSeatInfo
+            isRealTime={true}
+            remainingSeatsCount={remainingSeats}
           />
         </SeatMapContainer>
       </SelectSeatsContentContainer>
@@ -107,7 +128,10 @@ export default RealtimeSeats;
 const ViewContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+
+  height: 100%;
+
+  background: var(--background-1);
 `;
 
 const SelectSeatsContentContainer = styled.div`
@@ -116,13 +140,12 @@ const SelectSeatsContentContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: var(--background-1);
-
   gap: 15px;
   padding: 0 20px;
 `;
 
 const SeatMapContainer = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from 'react-responsive'
 
-import TopNav from "../../components/nav/TopNav";
-import SelectSeatsInfo from "../../components/info/SeatsInfo";
-import LargeBtn from "../../components/button/LargeBtn";
-import ErrorModal from "../../components/error/DefaultErrorModal";
+import TopNav from "@components/layout/headers/TopNav";
+import SelectSeatsInfo from "@components/pages/customer/selectSeats/SeatsInfo";
+import LargeBtn from "@components/common/buttons/LargeBtn";
+import ErrorModal from "@components/common/errors/DefaultErrorModal";
 
 import { SELECT_FAIL } from "../../constants/text/ErrorMessage";
 import refreshIcon from "../../assets/images/refresh2_icon.png";
@@ -13,7 +14,7 @@ import refreshIcon from "../../assets/images/refresh2_icon.png";
 import { fetchSeats, checkSeats } from "../../api/user/SelectSeatsApi";
 
 /* 각 극장에 맞는 SeatMap component로 설정 필요 */
-import RiveractSeatMap from "../../components/button/SeatMap/UserSeatMap_Riveract";
+import RiveractSeatMap from "@components/common/buttons/SeatMap/UserSeatMap_Riveract";
 // import KwangwoonSeatMap from '../../components/button/SeatMap/UserSeatMap_Kwangwoon';
 
 function SelectSeats() {
@@ -86,11 +87,16 @@ function SelectSeats() {
   // 발권 버튼 텍스트
   const buttonText = `선택 완료 ${selectedSeats.length} / ${headCount}`;
 
+  const SmallWidthDevice = () => {
+    const isSmallWidthDevice = useMediaQuery({ maxDeviceWidth: 370 })
+    return isSmallWidthDevice ? "좌석 선택" : "좌석을 선택해주세요"
+  }
+
   const righter = {
     icon: refreshIcon,
     iconWidth: 17, // 아이콘 너비 (px 단위)
     iconHeight: 17, // 아이콘 높이 (px 단위)
-    text: "좌석을 선택해주세요",
+    text: SmallWidthDevice(),
     clickFunc: triggerRefresh,
   };
 
@@ -147,9 +153,9 @@ const SelectSeatsContainer = styled.div``;
 const SelectSeatsContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 
+  height: calc(100svh);
   background: var(--background-1);
 
   gap: 15px;
@@ -168,4 +174,6 @@ const SeatMapContainer = styled.div`
   border: 1px solid var(--grey-3);
   background: var(--ect-white);
   box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
+
+  overflow: scroll;
 `;

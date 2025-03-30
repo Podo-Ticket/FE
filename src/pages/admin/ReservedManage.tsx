@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import FooterNav from "../../components/nav/FooterNav.tsx";
-import PlaySessionPicker from "../../components/nav/PlaySessionPicker.tsx";
-import SearchFilterBar from "../../components/nav/SearchFilterBar.tsx";
-import CustomerListItem from "../../components/info/CustomerListItem.tsx";
-import TopNav from "../../components/nav/TopNav.tsx";
+import FooterNav from "@components/layout/footers/FooterNav.tsx";
+import PlaySessionPicker from "@components/layout/headers/PlaySessionPicker.tsx";
+import SearchFilterBar from "@components/layout/headers/SearchFilterBar.tsx";
+import CustomerListItem from "@components/common/informations/CustomerListItem.tsx";
+import TopNav from "@components/layout/headers/TopNav.tsx";
 
 import insertCustomer from "../../assets/images/admin/plus_user.png";
 
@@ -187,5 +187,8 @@ const ViewContainer = styled.div`
 `;
 
 const ListContainer = styled.div`
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+
   animation: ${fadeIn} 0.3s ease-in-out;
 `;

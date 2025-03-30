@@ -29,7 +29,7 @@ import ReservedCheck from "./pages/admin/ReservedCheck.tsx";
 import OnsiteManage from "./pages/admin/OnsiteManage.tsx";
 import AdminSetting from "./pages/admin/AdminSetting.tsx";
 
-import OnboardingModal from './components/modal/OnboardingModal.tsx';
+import OnboardingModal from './components/common/modals/OnboardingModal.tsx';
 
 const GlobalStyle = createGlobalStyle`
     * {
@@ -118,6 +118,16 @@ function App() {
       document.body.style.overflow = "auto"; // 컴포넌트 언마운트 시 복구
     };
   }, [showOnboardingModal]);
+
+  useEffect(() => {
+    // 화면 로드 시 스크롤 방지
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      // 컴포넌트 언마운트 시 스크롤 복원
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
   // 스플래시 설정
   const [showSplash, setShowSplash] = useState(() => {
