@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import greyRightArrow from "../../assets/images/admin/grey_right_arrow.png";
-import { pxToVw, pxToVh, pxToPercent } from "../../../utils/unitConverter.ts";
+
+import greyRightArrow from "@assets/images/admin/grey_right_arrow.png";
+import { pxToVh, pxToVw } from "src/utils/unitConverter";
+
 interface WhiteBoxBtnProps {
   iconSrc: string;
   title: string;

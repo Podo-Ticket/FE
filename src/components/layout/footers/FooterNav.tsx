@@ -11,12 +11,12 @@ import ActOnsite from "@assets/images/admin/purple_plus_list.png";
 import Setting from "@assets/images/admin/grey_setting.png";
 import ActSetting from "@assets/images/admin/purple_setting.png";
 
-import { pxToVw, pxToVh, pxToPercent } from "../../../utils/unitConverter.ts"; // 경로는 실제 구조에 맞게!
 import RedCirclePng from "@assets/images/admin/redCircle.png";
 import {
   UserWithApproval,
-  fetchOnsiteUserList,
+  fetchOnsiteUserList
 } from "../../../api/admin/OnsiteManageApi";
+import { pxToPercent, pxToVh } from "src/utils/unitConverter";
 
 interface FooterNavProps {
   isGroupAllow?: boolean;

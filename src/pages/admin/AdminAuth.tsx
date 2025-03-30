@@ -2,9 +2,9 @@ import { useState, useEffect, SetStateAction } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import AccessAdminBtn from "@components/common/buttons/LargeBtn";
-import DefaultErrorModal from "@components/common/errors/DefaultErrorModal";
-import AdminCodeInput from "@components/common/inputs/DefaultInput";
+import AccessAdminBtn from '@components/common/buttons/LargeBtn'
+import DefaultErrorModal from '@components/common/errors/DefaultErrorModal';
+import AdminCodeInput from '@components/common/inputs/DefaultInput';
 
 import podoIcon from "../../assets/images/podo_icon.png";
 
