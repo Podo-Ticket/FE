@@ -1,40 +1,56 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
-import BackBtn from '@components/common/buttons/SmallBtn'
-import NextBtn from '@components/common/buttons/SmallBtn'
-import PrivacyPolicyModal from '@components/common/modals/TextModal';
-import Loading from '@components/common/loadings/Loading.tsx';
-import ErrorModal from '@components/common/errors/DefaultErrorModal.tsx';
+import BackBtn from "@components/common/buttons/SmallBtn";
+import NextBtn from "@components/common/buttons/SmallBtn";
+import PrivacyPolicyModal from "@components/common/modals/TextModal";
+import Loading from "@components/common/loadings/Loading.tsx";
 
-import CheckedIcon from '@assets/images/privacy_checked.png'
-import UncheckedIcon from '@assets/images/privacy_unchecked.png'
+import ErrorModal from "@components/common/errors/DefaultErrorModal.tsx";
+import NoticeModal from "@components/common/modals/NoticeModal";
 
-import { useNavigateTo } from '../../../../utils/NavigateUtil.ts';
-import { checkPhoneNumber } from '../../../../api/user/UserHomeApi';
-import { AGREE_CONTENT } from '../../../../constants/text/InfoText.ts'
-import { fadeIn, fadeOut } from '../../../../styles/animation/DefaultAnimation.ts'
+import CheckedIcon from "@assets/images/privacy_checked.png";
+import UncheckedIcon from "@assets/images/privacy_unchecked.png";
+
+import { useNavigateTo } from "../../../../utils/NavigateUtil.ts";
+import { checkPhoneNumber } from "../../../../api/user/UserHomeApi";
+import { AGREE_CONTENT } from "../../../../constants/text/InfoText.ts";
+import {
+  fadeIn,
+  fadeOut,
+} from "../../../../styles/animation/DefaultAnimation.ts";
 
 interface PhoneAuthModalProps {
-  showPhoneModal: boolean;       // 버튼 동작 여부
+  showPhoneModal: boolean; // 버튼 동작 여부
   scheduleId: number;
   onAcceptFunc: () => void;
   onUnacceptFunc: () => void;
 }
 
-const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, scheduleId, onAcceptFunc, onUnacceptFunc }) => {
+const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
+  showPhoneModal,
+  scheduleId,
+  onAcceptFunc,
+  onUnacceptFunc,
+}) => {
   const navigateTo = useNavigateTo();
-  const [phone, setPhone] = useState(''); // 전화번호 상태 관리
+  const [phone, setPhone] = useState(""); // 전화번호 상태 관리
 
   const [isClosing, setIsClosing] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 관리
-  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
-  const [isChecked, setIsChecked] = useState(false); // 체크박스 상태 관리  
-  const handleCheckboxChange = () => { setIsChecked(prevChecked => !prevChecked); };
-  const handleCheckboxClick = () => { setIsChecked(prevChecked => !prevChecked); };
+  const [isChecked, setIsChecked] = useState(false); // 체크박스 상태 관리
+  const handleCheckboxChange = () => {
+    setIsChecked((prevChecked) => !prevChecked);
+  };
+  const handleCheckboxClick = () => {
+    setIsChecked((prevChecked) => !prevChecked);
+  };
 
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [showNoticeModal, setShowNoticeModal] = useState(false);
   const openPrivacyModal = () => setShowPrivacyModal(true);
   const closePrivacyModal = () => setShowPrivacyModal(false);
 
@@ -42,9 +58,12 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, schedul
   const openInvalidPhoneError = () => setInvalidPhoneError(true);
   const closeInvalidPhoneError = () => setInvalidPhoneError(false);
 
-  const [waitingForReservationError, setWaitingForReservationError] = useState(false);
-  const openWaitingForReservationError = () => setWaitingForReservationError(true);
-  const closeWaitingForReservationError = () => setWaitingForReservationError(false);
+  const [waitingForReservationError, setWaitingForReservationError] =
+    useState(false);
+  const openWaitingForReservationError = () =>
+    setWaitingForReservationError(true);
+  const closeWaitingForReservationError = () =>
+    setWaitingForReservationError(false);
 
   if (!showPhoneModal) return null;
 
@@ -57,18 +76,18 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, schedul
   };
 
   const handlePhoneChange = (e: any) => {
-    const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 남기기
-    let formattedValue = '';
+    const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 남기기
+    let formattedValue = "";
 
     // 전화번호 형식에 맞게 하이픈 추가
     if (value.length > 0) {
       formattedValue += value.slice(0, 3);
     }
     if (value.length > 3) {
-      formattedValue += '-' + value.slice(3, 7);
+      formattedValue += "-" + value.slice(3, 7);
     }
     if (value.length > 7) {
-      formattedValue += '-' + value.slice(7, 11);
+      formattedValue += "-" + value.slice(7, 11);
     }
 
     setPhone(formattedValue);
@@ -92,11 +111,11 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, schedul
       await delay(500); // 로딩 애니메이션 시간
       const result = await checkPhoneNumber(phone, scheduleId);
 
-      if (result.data === '예매 내역 확인 불가') {
-        openInvalidPhoneError(); // 에러 모달 표시
-      } else if (result.data === '이미 발권한 사용자') {
-        navigateTo('/ticket'); // 티켓 페이지로 이동
-      } else if (result.data === '현장 예매 수락 대기 중') {
+      if (result.data === "예매 내역 확인 불가") {
+        setShowNoticeModal(true);
+      } else if (result.data === "이미 발권한 사용자") {
+        navigateTo("/ticket"); // 티켓 페이지로 이동
+      } else if (result.data === "현장 예매 수락 대기 중") {
         openWaitingForReservationError();
       } else {
         onAcceptFunc();
@@ -109,49 +128,86 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, schedul
     }
   };
 
-
   return (
-
     <ModalOverlay>
       <ModalContent isClosing={isClosing}>
-
         <ModalTopContainer>
-
-          <HeadText className='Podo-Ticket-Headline-H2'>예매 내역 확인</HeadText>
+          <HeadText className="Podo-Ticket-Headline-H2">
+            예매 내역 확인
+          </HeadText>
 
           <PhoneInput
-            className='Podo-Ticket-Body-B1'
-            type="text" placeholder="전화번호를 입력해 주세요"
+            className="Podo-Ticket-Body-B1"
+            type="text"
+            placeholder="전화번호를 입력해 주세요"
             value={phone}
-            onChange={handlePhoneChange} />
+            onChange={handlePhoneChange}
+          />
 
-          <AgreementContainer className='Podo-Ticket-Body-B5'>
-
+          <AgreementContainer className="Podo-Ticket-Body-B5">
             <AgreementText isChecked={isChecked}>
-              <HiddenCheckbox checked={isChecked} onChange={handleCheckboxChange} />
-              <CustomCheckbox checked={isChecked} onClick={handleCheckboxClick} ></CustomCheckbox>
-              <span onClick={handleCheckboxClick} className='Podo-Ticket-Body-B5'>개인정보 수집 동의</span>
+              <HiddenCheckbox
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+              />
+              <CustomCheckbox
+                checked={isChecked}
+                onClick={handleCheckboxClick}
+              ></CustomCheckbox>
+              <span
+                onClick={handleCheckboxClick}
+                className="Podo-Ticket-Body-B5"
+              >
+                개인정보 수집 동의
+              </span>
             </AgreementText>
 
-            <AgreementModalLink href="#" className="Podo-Ticket-Body-B10" onClick={openPrivacyModal}>전문보기</AgreementModalLink>
+            <AgreementModalLink
+              href="#"
+              className="Podo-Ticket-Body-B10"
+              onClick={openPrivacyModal}
+            >
+              전문보기
+            </AgreementModalLink>
           </AgreementContainer>
-
         </ModalTopContainer>
 
         <PhoneModalBtns>
-          <BackBtn content="이전" onClick={handleUnacceptClick} isAvailable={true} isGray={true} />
-          <NextBtn content="다음" onClick={handleSubmit} isAvailable={isButtonEnabled} />
+          <BackBtn
+            content="이전"
+            onClick={handleUnacceptClick}
+            isAvailable={true}
+            isGray={true}
+          />
+          <NextBtn
+            content="다음"
+            onClick={handleSubmit}
+            isAvailable={isButtonEnabled}
+          />
         </PhoneModalBtns>
       </ModalContent>
 
       <PrivacyPolicyModal
         showTextModal={showPrivacyModal}
         onAcceptFunc={closePrivacyModal}
-        title='개인정보 수집 동의 약관'
+        title="개인정보 수집 동의 약관"
         description={AGREE_CONTENT}
       />
 
       <Loading showLoading={isLoading} />
+      {/* TODO check모달 */}
+
+      {/* TODO 예매 내역 없을 시 설명 모달*/}
+      <NoticeModal
+        showNoticeModal={showNoticeModal}
+        title="예약된 정보가 없습니다."
+        description="현장 예매 페이지로 이동합니다."
+        buttonContent="확인"
+        onAcceptFunc={() => {
+          setShowNoticeModal(false);
+          navigateTo("/reserve");
+        }}
+      />
 
       <ErrorModal
         showDefaultErrorModal={invalidPhoneError}
@@ -166,11 +222,9 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({ showPhoneModal, schedul
         onAcceptFunc={closeWaitingForReservationError}
         OnTopSide={true}
       />
-
     </ModalOverlay>
-
   );
-}
+};
 
 export default PhoneAuthModal;
 
@@ -205,7 +259,8 @@ const ModalContent = styled.div<{ isClosing: boolean }>`
 
   text-align: center;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
+  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s
+    ease-in-out;
 `;
 
 const ModalTopContainer = styled.div`
@@ -227,7 +282,7 @@ const PhoneInput = styled.input`
   border: none;
   border-bottom: 1px solid var(--grey-4);
   background: var(--ect-white);
-  
+
   padding: 8px 28px;
 
   text-align: center;
@@ -254,20 +309,20 @@ const AgreementContainer = styled.div`
 const AgreementText = styled.span<{ isChecked: boolean }>`
   display: flex;
   align-items: center;
-  color: ${({ isChecked }) => (isChecked ? 'var(--purple-5)' : 'var(--grey-6)')};
+  color: ${({ isChecked }) =>
+    isChecked ? "var(--purple-5)" : "var(--grey-6)"};
 `;
 
-const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
   display: none;
 `;
 
-const CustomCheckbox = styled.div <{ checked: boolean }>`
+const CustomCheckbox = styled.div<{ checked: boolean }>`
   width: 14px;
-  height: 14px; 
+  height: 14px;
   margin-right: 3px;
-  background-image: ${props => props.checked ?
-    `url(${CheckedIcon})` :
-    `url(${UncheckedIcon})`};
+  background-image: ${(props) =>
+    props.checked ? `url(${CheckedIcon})` : `url(${UncheckedIcon})`};
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
