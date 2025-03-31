@@ -4,7 +4,6 @@ import styled from "styled-components";
 import MediumBtn from "@components/common/buttons/MediumBtn.tsx";
 import MoreDetailBtn from "@components/common/buttons/SmallMoreBtn.tsx";
 import MoreBtn from "@components/common/buttons/SmallMoreBtn.tsx";
-import ReserveWayModal from "@components/pages/customer/userHome/ChoiceModal.tsx";
 import AuthModal from "@components/pages/customer/userHome/PhoneAuthModal.tsx";
 import Loading from "@components/common/loadings/Loading.tsx";
 import Success from "@components/common/loadings/Success.tsx";
@@ -134,7 +133,7 @@ const UserHome: React.FC = () => {
     };
   }, [isPopupVisible]);
 
-  // 휴대폰 번호 인증 성공 처리
+  // 휴대폰 번호 인증 성공 처리 -> 티켓 발권
   const handleAuthModalAccept = () => {
     toggleModal("success", true, setModals);
     setTimeout(() => {
@@ -243,7 +242,7 @@ const UserHome: React.FC = () => {
             <DetailBtnContainer>
               <GetTicketBtn
                 content="티켓 발권"
-                onClick={() => toggleModal("reserveWayModal", true, setModals)}
+                onClick={() => toggleModal("authModal", true, setModals)}
                 isAvailable={true}
               />
             </DetailBtnContainer>
@@ -301,15 +300,6 @@ const UserHome: React.FC = () => {
           </CardBack>
         </Card>
       </PosterDetailsContainer>
-
-      <ReserveWayModal
-        showChoiceModal={modals.reserveWayModal}
-        closeChoiceModal={() =>
-          toggleModal("reserveWayModal", false, setModals)
-        }
-        onFirstItemClick={() => toggleModal("authModal", true, setModals)}
-        onSecondItemClick={() => navigateTo("/reserve")}
-      />
 
       <AuthModal
         showPhoneModal={modals.authModal}
