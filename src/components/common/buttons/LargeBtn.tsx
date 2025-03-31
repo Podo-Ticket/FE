@@ -48,13 +48,11 @@ const LargeBtnContainer = styled.button<{ isAvailable: boolean }>`
   -ms-user-select: none;
 
   @media (max-resolution: 2dppx) {
-    width: 529.5px;
     gap: 9px;
     padding: 21px 0px;
     border-radius: 15px;
   }
   @media (min-resolution: 3dppx) {
-    width: 353px;
     gap: 6px;
     padding: 14px 0px;
     border-radius: 10px;
