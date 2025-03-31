@@ -10,6 +10,7 @@ import PageWrapper from "./styles/animation/PageWrapper.tsx";
 import PWABadge from "./PWABadge.tsx";
 
 import Splash from "./pages/Splash.tsx";
+import NotFoundPage from "./pages/NotFoundPage.tsx";
 
 import UserHome from "./pages/user/UserHome.tsx";
 import OnSiteReserve from "./pages/user/OnSiteReserve.tsx";
@@ -119,12 +120,10 @@ function App() {
     };
   }, [showOnboardingModal]);
 
+  // 화면 로드 시 스크롤 방지
   useEffect(() => {
-    // 화면 로드 시 스크롤 방지
     document.body.style.overflow = 'hidden';
-
     return () => {
-      // 컴포넌트 언마운트 시 스크롤 복원
       document.body.style.overflow = 'auto';
     };
   }, []);
@@ -248,8 +247,9 @@ function App() {
           />
 
           <Route path="/survey" element={<SurveyLink />} />
-        </Routes>
 
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </AnimatePresence>
 
       {pageType !== null && (
