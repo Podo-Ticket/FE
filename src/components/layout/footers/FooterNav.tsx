@@ -12,11 +12,20 @@ import Setting from "@assets/images/admin/grey_setting.png";
 import ActSetting from "@assets/images/admin/purple_setting.png";
 
 import RedCirclePng from "@assets/images/admin/redCircle.png";
-import { pxToVw, pxToVh, pxToPercent } from "../../../utils/unitConverter.ts";
+import { pxToVh, pxToPercent } from "../../../utils/unitConverter.ts";
 import {
   UserWithApproval,
-  fetchOnsiteUserList
+  fetchOnsiteUserList,
 } from "../../../api/admin/OnsiteManageApi";
+import { usePath } from "../../../utils/PathContext.tsx";
+
+const pathToIndex = (path: string) => {
+  if (path.startsWith("/home")) return 0;
+  if (path.startsWith("/reserved")) return 1;
+  if (path.startsWith("/onsite")) return 2;
+  if (path.startsWith("/setting")) return 3;
+  return 0;
+};
 
 interface FooterNavProps {
   isGroupAllow?: boolean;
@@ -31,10 +40,46 @@ const FotterNav: React.FC<FooterNavProps> = ({
   isApproveClick,
   isDeleteClick,
 }) => {
-  const location = useLocation(); // 현재 경로를 가져옴
-
+  const location = useLocation();
+  const { prevPath, setPrevPath } = usePath();
+  const [preveIndex, setPreveIndex] = useState(pathToIndex(location.pathname));
+  const prevIndex = pathToIndex(prevPath);
+  const [activeIndex, setActiveIndex] = useState(
+    pathToIndex(location.pathname)
+  );
+  const [direction, setDirection] = useState<"left" | "right">("right");
   const [hasPendingApproval, setHasPendingApproval] = useState(false);
   const [, setData] = useState<UserWithApproval[]>([]);
+  const [barX, setBarX] = useState(prevIndex * 100);
+
+  useEffect(() => {
+    const currentIndex = pathToIndex(location.pathname);
+    const prevesIndex = pathToIndex(prevPath);
+    console.log("🔵 현재 path:", location.pathname);
+    console.log("🟡 이전 path:", prevPath);
+    console.log("🔵 currentIndex:", currentIndex);
+    console.log("🔵 activeIndex:", activeIndex);
+    console.log("🟡 prevIndex:", prevesIndex);
+    console.log(
+      "➡️ 방향:",
+      currentIndex > prevesIndex
+        ? "오른쪽"
+        : currentIndex < prevesIndex
+        ? "왼쪽"
+        : "변화 없음"
+    );
+
+    console.log("📦 ActiveBar 이동 →", activeIndex * 100, "%");
+
+    if (currentIndex > prevesIndex) setDirection("right");
+    else if (currentIndex < prevesIndex) setDirection("left");
+
+    setPrevPath(location.pathname);
+    setPreveIndex(prevesIndex);
+    requestAnimationFrame(() => {
+      setBarX(currentIndex * 100);
+    });
+  }, [location.pathname]);
 
   useEffect(() => {
     const loadUserList = async () => {
@@ -42,11 +87,9 @@ const FotterNav: React.FC<FooterNavProps> = ({
       if (!scheduleId) return;
 
       try {
-        const response = await fetchOnsiteUserList(Number(scheduleId)); // 사용자 리스트 가져오기
+        const response = await fetchOnsiteUserList(Number(scheduleId));
         setData(response.users);
-
-        const hasFalseApprove = response.users.some((item) => !item.approve);
-        setHasPendingApproval(hasFalseApprove);
+        setHasPendingApproval(response.users.some((item) => !item.approve));
       } catch (error) {
         console.error("Error loading user list:", error);
       }
@@ -59,69 +102,43 @@ const FotterNav: React.FC<FooterNavProps> = ({
     <Nav className="Podo-Ticket-Body-B7" isGroupAllow={isGroupAllow}>
       {!isGroupAllow ? (
         <>
-          <NavItem
-            className={location.pathname.startsWith("/home") ? "active" : ""}
-          >
+          <NavItem className={activeIndex === 0 ? "active" : ""}>
             <NavLink to="/home">
-              <IconHome
-                src={location.pathname.startsWith("/home") ? ActHome : Home}
-              />
+              <IconHome src={activeIndex === 0 ? ActHome : Home} />
               <p>홈</p>
             </NavLink>
           </NavItem>
-          <NavItem
-            className={
-              location.pathname.startsWith("/reserved") ? "active" : ""
-            }
-          >
+          <NavItem className={activeIndex === 1 ? "active" : ""}>
             <NavLink to="/reserved">
-              <IconReserved
-                src={
-                  location.pathname.startsWith("/reserved")
-                    ? ActReserved
-                    : Reserved
-                }
-              />
+              <IconReserved src={activeIndex === 1 ? ActReserved : Reserved} />
               <p>발권 명단 관리</p>
             </NavLink>
           </NavItem>
-          <NavItem
-            className={location.pathname.startsWith("/onsite") ? "active" : ""}
-          >
+          <NavItem className={activeIndex === 2 ? "active" : ""}>
             <NavLink to="/onsite">
-              <IconOnsite
-                src={
-                  location.pathname.startsWith("/onsite") ? ActOnsite : Onsite
-                }
-              ></IconOnsite>
-              {true && <RedCircle src={RedCirclePng} />}
-              {/* {hasPendingApproval && <RedCircle src={RedCirclePng} />} */}
-              {/* 승인 대기 시 빨간 원 표시 */}
-
+              <IconOnsite src={activeIndex === 2 ? ActOnsite : Onsite} />
+              {hasPendingApproval && <RedCircle src={RedCirclePng} />}
               <p>현장 예매 관리</p>
             </NavLink>
           </NavItem>
-          <NavItem
-            className={location.pathname.startsWith("/setting") ? "active" : ""}
-          >
+          <NavItem className={activeIndex === 3 ? "active" : ""}>
             <NavLink to="/setting">
-              <IconSetting
-                src={
-                  location.pathname.startsWith("/setting")
-                    ? ActSetting
-                    : Setting
-                }
-              />
+              <IconSetting src={activeIndex === 3 ? ActSetting : Setting} />
               <p>설정</p>
             </NavLink>
           </NavItem>
+          <ActiveBar
+            x={barX ?? 0}
+            direction={direction}
+            hasTransition={barX !== null}
+          />
         </>
       ) : (
         <>
           <AllowItem
             className="Podo-Ticket-Headline-H4"
             isActive={groupAllowCnt !== 0}
-            onClick={() => (isApproveClick ? isApproveClick(true) : null)}
+            onClick={() => isApproveClick?.(true)}
             disabled={groupAllowCnt === 0}
           >
             수락
@@ -129,7 +146,7 @@ const FotterNav: React.FC<FooterNavProps> = ({
           <DeleteItem
             className="Podo-Ticket-Headline-H4"
             isActive={groupAllowCnt !== 0}
-            onClick={() => (isDeleteClick ? isDeleteClick(false) : null)}
+            onClick={() => isDeleteClick?.(false)}
             disabled={groupAllowCnt === 0}
           >
             삭제
@@ -150,15 +167,12 @@ const Nav = styled.nav<{ isGroupAllow: boolean }>`
   bottom: 0;
   left: 0;
   right: 0;
-
   height: ${({ isGroupAllow }) =>
     !isGroupAllow ? `${pxToPercent(86, 661)}` : `${pxToPercent(60, 661)}`};
   background: var(--ect-white);
-  border: none;
   border-top: 1px solid var(--grey-3);
   box-shadow: 0px 0px 9px 6px rgba(0, 0, 0, 0.03);
-  border-radius: 20px 20px 0px 0px;
-
+  border-radius: 20px 20px 0 0;
   z-index: 1000;
 `;
 
@@ -167,23 +181,15 @@ const NavItem = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   width: 100%;
   height: 100%;
-
   color: var(--grey-5);
   text-align: center;
-
   &.active {
-    color: var(--purple-4); /* 활성화된 텍스트 색상 */
+    color: var(--purple-4);
   }
-
   transition: color 0.3s ease-in-out;
-
-  user-select: none; /* 텍스트 선택 방지 */
-  -webkit-user-select: none; /* Safari에서 드래그 방지 */
-  -moz-user-select: none; /* Firefox에서 드래그 방지 */
-  -ms-user-select: none;
+  user-select: none;
 `;
 
 const NavLink = styled(Link)`
@@ -195,34 +201,23 @@ const NavLink = styled(Link)`
   color: inherit;
   width: ${pxToPercent(75, 98.25)};
   height: ${pxToPercent(59, 86)};
-
-  & > p {
-    margin: 0;
-    padding: 0;
-  }
   p {
     margin: ${pxToVh(5)} 0;
-
   }
-
 `;
 
 const IconHome = styled.img`
   height: ${pxToPercent(24, 59)};
   margin: ${pxToVh(5)} 0;
 `;
-
 const IconReserved = styled.img`
   height: ${pxToPercent(24, 59)};
   margin: ${pxToVh(5)} 0;
 `;
-
 const IconOnsite = styled.img`
   height: ${pxToPercent(24, 59)};
   margin: ${pxToVh(5)} 0;
-
 `;
-
 const IconSetting = styled.img`
   height: ${pxToPercent(24, 59)};
   margin: ${pxToVh(5)} 0;
@@ -233,24 +228,17 @@ const AllowItem = styled.button<{ isActive: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   width: 80%;
   height: 100%;
   border: none;
   background: var(--grey-1);
   border-right: 1px solid var(--grey-3);
-  border-radius: 20px 0px 0px 0px;
-
+  border-radius: 20px 0 0 0;
   text-align: center;
   color: ${({ isActive }) =>
     isActive ? "var(--purple-4)" : "var(--purple-8)"};
-
   transition: color 0.3s ease-in-out;
-
-  user-select: none; /* 텍스트 선택 방지 */
-  -webkit-user-select: none; /* Safari에서 드래그 방지 */
-  -moz-user-select: none; /* Firefox에서 드래그 방지 */
-  -ms-user-select: none;
+  user-select: none;
 `;
 
 const DeleteItem = styled.button<{ isActive: boolean }>`
@@ -258,22 +246,15 @@ const DeleteItem = styled.button<{ isActive: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   width: 80%;
   height: 100%;
   border: none;
   background: var(--grey-1);
-  border-radius: 0px 20px 0px 0px;
-
+  border-radius: 0 20px 0 0;
   text-align: center;
   color: ${({ isActive }) => (isActive ? "var(--grey-7)" : "var(--grey-4)")};
-
   transition: color 0.3s ease-in-out;
-
-  user-select: none; /* 텍스트 선택 방지 */
-  -webkit-user-select: none; /* Safari에서 드래그 방지 */
-  -moz-user-select: none; /* Firefox에서 드래그 방지 */
-  -ms-user-select: none;
+  user-select: none;
 `;
 
 const RedCircle = styled.img`
@@ -281,4 +262,23 @@ const RedCircle = styled.img`
   height: ${pxToPercent(7, 59)};
   top: 0%;
   right: 20%;
+`;
+
+const ActiveBar = styled.div<{
+  x: number;
+  direction: "left" | "right";
+  hasTransition: boolean;
+}>`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 25%;
+  height: 4px;
+  background-color: var(--purple-4);
+  transform: translateX(${({ x }) => `${x}%`});
+  transition: ${({ hasTransition, direction }) =>
+    hasTransition
+      ? `transform 0.3s ${direction === "right" ? "ease-out" : "ease-in"}`
+      : "none"};
+  will-change: transform;
 `;
