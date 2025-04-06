@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import styled from "styled-components";
 
 import SingleSeat from "@components/common/buttons/SingleSeat";
@@ -220,7 +221,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
           headCount: userInfo.head_count,
         });
       }
-      
+
       setShowAudienceInfo(true);
     } catch (error) {
       console.error("Error fetching booking info:", error);
@@ -330,43 +331,55 @@ const SeatMap: React.FC<SeatMapProps> = ({
       </StageContainer>
 
       <SeatMapContent ref={seatMapRef}>
-        <SeatRow>
-          {Object.keys(theater).map((row) => (
-            <SeatColumn key={row} seatCount={theater[row].length}>
-              {theater[row].map((seat) => {
-                const seatId = `${row}${seat}`;
-                const isReserved = reservedSeats.includes(seatId);
-                const isLocked = lockedSeats.includes(seatId);
-                const isShowSelectedAudience =
-                  selectedAudienceSeats.includes(seatId);
-                const isLocking = newLockedSeats.includes(seatId);
-                const isUnlocking = newUnlockedSeats.includes(seatId);
+        <TransformWrapper
+          initialScale={1} // 초기 확대 비율
+          minScale={1} // 최소 축소 비율
+          maxScale={5} // 최대 확대 비율
+          doubleClick={{ disabled: true }} // 더블 클릭 확대 비활성화
+          wheel={{ step: 0.1 }} // 마우스 휠 줌 속도( step: 0.1) (마우스 휠 줌 비활성화 -  disabled: true  )
+          pinch={{ step: 5 }} // 핀치 줌 감도
+          centerZoomedOut // 줌아웃 시 중앙 정렬
+        >
+          <TransformComponent>
+            <SeatRow>
+              {Object.keys(theater).map((row) => (
+                <SeatColumn key={row} seatCount={theater[row].length}>
+                  {theater[row].map((seat) => {
+                    const seatId = `${row}${seat}`;
+                    const isReserved = reservedSeats.includes(seatId);
+                    const isLocked = lockedSeats.includes(seatId);
+                    const isShowSelectedAudience =
+                      selectedAudienceSeats.includes(seatId);
+                    const isLocking = newLockedSeats.includes(seatId);
+                    const isUnlocking = newUnlockedSeats.includes(seatId);
 
-                // 클릭 가능 여부를 isRealTime, manageMode, 배열 상태에 따라 설정
-                const isAvailable = isRealTime
-                  ? true
-                  : manageMode
-                  ? !unclickableSeats.includes(seatId)
-                  : isLocked;
+                    // 클릭 가능 여부를 isRealTime, manageMode, 배열 상태에 따라 설정
+                    const isAvailable = isRealTime
+                      ? true
+                      : manageMode
+                      ? !unclickableSeats.includes(seatId)
+                      : isLocked;
 
-                return (
-                  <SingleSeat
-                    key={seatId}
-                    isAdmin={true}
-                    content={`${row}${seat}`}
-                    onClick={() => handleSeatClick(seatId)}
-                    isAvailable={isAvailable}
-                    isSelectedAudience={isShowSelectedAudience}
-                    isReserved={isReserved}
-                    isLocked={isLocked}
-                    isLocking={isLocking}
-                    isUnlocking={isUnlocking}
-                  />
-                );
-              })}
-            </SeatColumn>
-          ))}
-        </SeatRow>
+                    return (
+                      <SingleSeat
+                        key={seatId}
+                        isAdmin={true}
+                        content={`${row}${seat}`}
+                        onClick={() => handleSeatClick(seatId)}
+                        isAvailable={isAvailable}
+                        isSelectedAudience={isShowSelectedAudience}
+                        isReserved={isReserved}
+                        isLocked={isLocked}
+                        isLocking={isLocking}
+                        isUnlocking={isUnlocking}
+                      />
+                    );
+                  })}
+                </SeatColumn>
+              ))}
+            </SeatRow>
+          </TransformComponent>
+        </TransformWrapper>
       </SeatMapContent>
     </SeatMapContainer>
   );
