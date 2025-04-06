@@ -13,26 +13,30 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const [isSessionValid, setIsSessionValid] = useState(false); // 세션 유효성 상태
   const [showNoticeModal, setShowNoticeModal] = useState(false);
   const [redirect, setRedirect] = useState(false); // 확인 후 리다이렉트 여부
+  const [firstCheckDone, setFirstCheckDone] = useState(false); //  첫 체크 이후 모달 띄움
 
   useEffect(() => {
     const checkSession = async () => {
       try {
         const response = await verifyAdminSession(); // 세션 확인 API 호출
         setIsSessionValid(response.session); // 세션 유효성 설정
-        if (!response.session) {
+        if (!response.session && firstCheckDone) {
           setShowNoticeModal(true); // 세션 만료 시 모달 띄움
         }
       } catch (error) {
         console.error("세션 확인 중 오류 발생:", error);
         setIsSessionValid(false); // 세션이 유효하지 않음으로 설정
-        setShowNoticeModal(true);
+        if (firstCheckDone) {
+          setShowNoticeModal(true);
+        }
       } finally {
-        setIsLoading(false); // 로딩 완료
+        setIsLoading(false); // 로딩 완료'
+        setFirstCheckDone(true); // 첫 체크 완료 표시
       }
     };
 
     checkSession();
-  }, []);
+  }, [firstCheckDone]);
 
   if (isLoading) return <div />;
 
