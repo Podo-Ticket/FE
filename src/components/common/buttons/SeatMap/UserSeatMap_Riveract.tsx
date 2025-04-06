@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
-
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import SingleSeat from "../SingleSeat";
 
 import stage from "@assets/images/stage.png";
@@ -319,38 +319,51 @@ const SeatMap: React.FC<SeatMapProps> = ({
             <StageText className="Podo-Ticket-Headline-H4">무대</StageText>
           </StageImage>
         </StageContainer>
-        <SeatMapContent ref={seatMapRef}>
-          {/* Left section seats */}
-          <SeatRow>
-            {Object.keys(theater).map((row) => (
-              <SeatColumn key={row} seatCount={theater[row].length}>
-                {theater[row].map((seat) => {
-                  const seatId = `${row}${seat}`;
-                  const isReserved = reservedSeats.includes(seatId);
-                  const isLocked = lockedSeats.includes(seatId);
 
-                  return (
-                    <SingleSeat
-                      key={seatId}
-                      isAdmin={false}
-                      content={`${row}${seat}`}
-                      onClick={
-                        isRealTime
-                          ? () => handleSeatClick(seatId)
-                          : () => handleUserSeatClick(row, seat)
-                      }
-                      isAvailable={
-                        (!disabled && !(onSeatEdit && isReserved)) || true
-                      }
-                      isSelected={currentSelectedSeats.includes(seatId)}
-                      isReserved={isReserved}
-                      isLocked={isLocked}
-                    />
-                  );
-                })}
-              </SeatColumn>
-            ))}
-          </SeatRow>
+        <SeatMapContent ref={seatMapRef}>
+          <TransformWrapper
+            initialScale={1} // 초기 확대 비율
+            minScale={1} // 최소 축소 비율
+            maxScale={5} // 최대 확대 비율
+            doubleClick={{ disabled: true }} // 더블 클릭 확대 비활성화
+            wheel={{ step: 0.1 }} // 마우스 휠 줌 속도( step: 0.1) (마우스 휠 줌 비활성화 -  disabled: true  )
+            pinch={{ step: 5 }} // 핀치 줌 감도
+            centerZoomedOut // 줌아웃 시 중앙 정렬
+          >
+            <TransformComponent>
+              {/* Left section seats */}
+              <SeatRow>
+                {Object.keys(theater).map((row) => (
+                  <SeatColumn key={row} seatCount={theater[row].length}>
+                    {theater[row].map((seat) => {
+                      const seatId = `${row}${seat}`;
+                      const isReserved = reservedSeats.includes(seatId);
+                      const isLocked = lockedSeats.includes(seatId);
+
+                      return (
+                        <SingleSeat
+                          key={seatId}
+                          isAdmin={false}
+                          content={`${row}${seat}`}
+                          onClick={
+                            isRealTime
+                              ? () => handleSeatClick(seatId)
+                              : () => handleUserSeatClick(row, seat)
+                          }
+                          isAvailable={
+                            (!disabled && !(onSeatEdit && isReserved)) || true
+                          }
+                          isSelected={currentSelectedSeats.includes(seatId)}
+                          isReserved={isReserved}
+                          isLocked={isLocked}
+                        />
+                      );
+                    })}
+                  </SeatColumn>
+                ))}
+              </SeatRow>
+            </TransformComponent>
+          </TransformWrapper>
         </SeatMapContent>
       </SeatMapContainer>
     </SeatMapScroller>
