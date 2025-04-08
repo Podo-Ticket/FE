@@ -33,7 +33,7 @@ function SelectSeats() {
     setSelectedSeats([]);
   }
 
-  // 예매 인원 수 확인 Api (인원 수만 확인함)
+  // 예매 인원 수 확인 Api
   useEffect(() => {
     if (currentScheduleId) {
       const loadSeats = async () => {
@@ -53,11 +53,7 @@ function SelectSeats() {
     const handlePopState = () => {
       handleBack();
     };
-
-    // 뒤로가기 이벤트 리스너 추가
     window.addEventListener("popstate", handlePopState);
-
-    // 컴포넌트 언마운트 시 리스너 제거
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
@@ -67,7 +63,6 @@ function SelectSeats() {
     navigate("/"); // 성공 시 선택 페이지로 이동
   };
 
-  // 좌석 확인 및 발권 요청 함수
   const handleTicketCheck = async () => {
     if (!currentScheduleId) return;
 
@@ -75,16 +70,15 @@ function SelectSeats() {
       const response = await checkSeats(currentScheduleId, selectedSeats);
 
       if (response.success) {
-        navigate("/confirm", { state: { selectedSeats } }); // 선택한 좌석과 함께 확인 페이지로 이동
+        navigate("/confirm", { state: { selectedSeats } });
       } else {
-        setIsAlreadySelectedModalOpen(true); // 이미 선택된 좌석일 경우 모달 표시
+        setIsAlreadySelectedModalOpen(true); 
       }
     } catch (error: any) {
       console.error(error.message);
     }
   };
 
-  // 발권 버튼 텍스트
   const buttonText = `선택 완료 ${selectedSeats.length} / ${headCount}`;
 
   const SmallWidthDevice = () => {
@@ -94,8 +88,8 @@ function SelectSeats() {
 
   const righter = {
     icon: refreshIcon,
-    iconWidth: 17, // 아이콘 너비 (px 단위)
-    iconHeight: 17, // 아이콘 높이 (px 단위)
+    iconWidth: 17, 
+    iconHeight: 17, 
     text: SmallWidthDevice(),
     clickFunc: triggerRefresh,
   };
@@ -116,17 +110,8 @@ function SelectSeats() {
             disabled={false}
             currentSelectedSeats={selectedSeats}
             setCurrentSelectedSeats={setSelectedSeats}
-            showErrorModal={setIsAlreadySelectedModalOpen} newLockedSeats={[]} setNewLockedSeats={function (): void {
-              throw new Error("Function not implemented.");
-            }} newUnlockedSeats={[]} setNewUnlockedSeats={function (): void {
-              throw new Error("Function not implemented.");
-            }} setCurrentLockedSeatsInfo={function (): void {
-              throw new Error("Function not implemented.");
-            }} setIsLockAvailable={function (): void {
-              throw new Error("Function not implemented.");
-            }} setIsUnlockAvailable={function (): void {
-              throw new Error("Function not implemented.");
-            }} />
+            showErrorModal={setIsAlreadySelectedModalOpen} 
+            />
         </SeatMapContainer>
 
         <LargeBtn

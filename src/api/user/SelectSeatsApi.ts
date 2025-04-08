@@ -15,7 +15,7 @@ const api = axios.create({
 export const fetchSeats = async (scheduleId: number) => {
   try {
     const response = await api.get('/seat', {
-      params: { scheduleId }, // 스케줄 ID를 쿼리 파라미터로 전달
+      params: { scheduleId },
     });
     return response.data;
   } catch (error) {
@@ -34,12 +34,11 @@ export const checkSeats = async (scheduleId: number, selectedSeats: string[]) =>
         const column = parseInt(seat.slice(1));
         return { row, number: column }; // 객체 형식으로 변환
       }
-
       // 좌석의 row가 같은 문자인 경우 
       const row = seat.slice(0, 2); // 좌석 ID의 첫 두 문자를 행으로 설정
       const column = parseInt(seat.slice(2)); // 나머지 부분을 숫자로 변환하여 column으로 설정
 
-      return { row, number: column }; // 객체 형식으로 변환
+      return { row, number: column };
     });
 
     const encodedSeats = encodeURIComponent(JSON.stringify(seats));
@@ -54,6 +53,5 @@ export const checkSeats = async (scheduleId: number, selectedSeats: string[]) =>
     return response.data;
   } catch (error) {
     console.error('Error checking seats:', error);
-    throw new Error('좌석 확인에 실패했습니다.');
   }
 };
