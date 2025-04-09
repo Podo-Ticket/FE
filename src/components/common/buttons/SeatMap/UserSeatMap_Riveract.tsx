@@ -56,22 +56,26 @@ const SeatMap: React.FC<SeatMapProps> = ({
     }
 
     try {
-      const data = await fetchSeats( 0 | Number(localStorage.getItem("scheduleId")));
-      const unclickable = data.seats.map( (seat: { row: string; number: number }) => `${seat.row}${seat.number}`);
+      const data = await fetchSeats(
+        0 | Number(localStorage.getItem("scheduleId"))
+      );
+      const unclickable = data.seats.map(
+        (seat: { row: string; number: number }) => `${seat.row}${seat.number}`
+      );
       const reserved = data.seats
         .filter((seat: { lock: boolean }) => seat.lock === false)
         .map(
           (seat: { row: string; number: number }) => `${seat.row}${seat.number}`
         );
       const locked = data.seats
-        .filter((seat: { lock: boolean }) => seat.lock == true) 
+        .filter((seat: { lock: boolean }) => seat.lock == true)
         .map(
           (seat: { row: string; number: number }) => `${seat.row}${seat.number}`
         );
 
-      setUnclickableSeats(unclickable); 
-      setReservedSeats(reserved); 
-      setLockedSeats(locked); 
+      setUnclickableSeats(unclickable);
+      setReservedSeats(reserved);
+      setLockedSeats(locked);
     } catch (error) {
       console.error("Error fetching seats:", error);
     }
@@ -234,4 +238,3 @@ const SeatColumn = styled.div<{ seatCount: number }>`
 
   gap: 2.5px;
 `;
-

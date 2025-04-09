@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
-import socket from './api/socket';
+import socket from "./api/socket";
 
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
 
 import { AnimatePresence } from "framer-motion";
-import { useForceLogoutStore } from './store/useForceLogoutStore';
+import { useForceLogoutStore } from "./store/useForceLogoutStore";
 
 import PageWrapper from "./styles/animation/PageWrapper.tsx";
 import PWABadge from "./PWABadge.tsx";
@@ -40,6 +40,7 @@ const GlobalStyle = createGlobalStyle`
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        touch-action: manipulation;
     }
 
     body {
@@ -58,10 +59,10 @@ function App() {
       openModal(data.message);
     };
 
-    socket.on('forceLogout', handleForceLogout);
+    socket.on("forceLogout", handleForceLogout);
 
     return () => {
-      socket.off('forceLogout', handleForceLogout);
+      socket.off("forceLogout", handleForceLogout);
     };
   }, [openModal]);
 
@@ -81,7 +82,7 @@ function App() {
       case "/reserved":
         return 3;
       default:
-        return null; 
+        return null;
     }
   };
 

@@ -1,5 +1,4 @@
 import io from "socket.io-client";
-import { useForceLogoutStore } from "../store/useForceLogoutStore";
 
 const socket = io(import.meta.env.VITE_API_URL || "http://localhost:8080", {
   transports: ["websocket"],
