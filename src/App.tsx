@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
+import socket from "./api/socket";
 
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
 
 import { AnimatePresence } from "framer-motion";
+import { useForceLogoutStore } from "./store/useForceLogoutStore";
 
 import PageWrapper from "./styles/animation/PageWrapper.tsx";
 import PWABadge from "./PWABadge.tsx";
@@ -30,13 +32,15 @@ import ReservedCheck from "./pages/admin/ReservedCheck.tsx";
 import OnsiteManage from "./pages/admin/OnsiteManage.tsx";
 import AdminSetting from "./pages/admin/AdminSetting.tsx";
 
-import OnboardingModal from './components/common/modals/OnboardingModal.tsx';
+import OnboardingModal from "./components/common/modals/OnboardingModal.tsx";
+import ForceLogoutModal from "./components/pages/customer/userHome/ForceLogoutModal.tsx";
 
 const GlobalStyle = createGlobalStyle`
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        touch-action: manipulation;
     }
 
     body {
@@ -48,10 +52,24 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   const location = useLocation();
+  const { openModal } = useForceLogoutStore();
 
-  // 경로에 따른 온보딩 pageType 설정
-  const [showOnboardingModal, setShowOnboardingModal] = useState<boolean>(false);
-  const [isDontShowAgainChecked, setIsDontShowAgainChecked] = useState<boolean>(false);
+  useEffect(() => {
+    const handleForceLogout = (data: { message?: string }) => {
+      openModal(data.message);
+    };
+
+    socket.on("forceLogout", handleForceLogout);
+
+    return () => {
+      socket.off("forceLogout", handleForceLogout);
+    };
+  }, [openModal]);
+
+  const [showOnboardingModal, setShowOnboardingModal] =
+    useState<boolean>(false);
+  const [isDontShowAgainChecked, setIsDontShowAgainChecked] =
+    useState<boolean>(false);
 
   const getPageType = (pathname: string): number | null => {
     switch (pathname) {
@@ -64,7 +82,7 @@ function App() {
       case "/reserved":
         return 3;
       default:
-        return null; // OnboardingModal을 렌더링하지 않음
+        return null;
     }
   };
 
@@ -122,9 +140,9 @@ function App() {
 
   // 화면 로드 시 스크롤 방지
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, []);
 
@@ -175,25 +193,27 @@ function App() {
           />
           <Route path="/ticket" element={<TicketScreen />} />
 
-
           {/* Admin Routes */}
           <Route path="/adminAuth" element={<AdminAuth />} />
 
-          <Route path="/home"
+          <Route
+            path="/home"
             element={
               <ProtectedRoute>
                 <AdminHome />
               </ProtectedRoute>
             }
           />
-          <Route path="/home/realtime"
+          <Route
+            path="/home/realtime"
             element={
               <ProtectedRoute>
                 <RealtimeSeats />
               </ProtectedRoute>
             }
           />
-          <Route path="/home/manage"
+          <Route
+            path="/home/manage"
             element={
               <ProtectedRoute>
                 <ManageLockingSeats />
@@ -202,28 +222,32 @@ function App() {
           />
 
           {/* Reserved Routes */}
-          <Route path="/reserved"
+          <Route
+            path="/reserved"
             element={
               <ProtectedRoute>
                 <ReservedManange />
               </ProtectedRoute>
             }
           />
-          <Route path="/reserved/add"
+          <Route
+            path="/reserved/add"
             element={
               <ProtectedRoute>
                 <ReservedAdd />
               </ProtectedRoute>
             }
           />
-          <Route path="/reserved/check"
+          <Route
+            path="/reserved/check"
             element={
               <ProtectedRoute>
                 <ReservedCheck />
               </ProtectedRoute>
             }
           />
-          <Route path="/reserved/check/edit"
+          <Route
+            path="/reserved/check/edit"
             element={
               <ProtectedRoute>
                 <ReservedEdit />
@@ -231,14 +255,16 @@ function App() {
             }
           />
 
-          <Route path="/onsite"
+          <Route
+            path="/onsite"
             element={
               <ProtectedRoute>
                 <OnsiteManage />
               </ProtectedRoute>
             }
           />
-          <Route path="/setting"
+          <Route
+            path="/setting"
             element={
               <ProtectedRoute>
                 <AdminSetting />
@@ -262,11 +288,10 @@ function App() {
         />
       )}
 
+      <ForceLogoutModal />
       <PWABadge />
     </>
   );
 }
 
-
 export default App;
-

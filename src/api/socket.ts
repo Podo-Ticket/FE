@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
 const socket = io(import.meta.env.VITE_API_URL || "http://localhost:8080", {
-  transports: ["websocket"], // 필요에 따라 추가
+  transports: ["websocket"],
 });
 
 socket.on('connect', () => {

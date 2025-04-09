@@ -1,4 +1,5 @@
 import axios from 'axios';
+import socket from '../socket'
 const apiUrl = import.meta.env.VITE_API_URL;
 
 // Create an Axios instance with default configurations
@@ -14,8 +15,6 @@ const api = axios.create({
 export const fetchPlayInfo = async (playId: number) => {
   try {
     const response = await api.get(`/`, { params: { playId } });
-
-    console.log("response.data: ", response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching play info:', error);
@@ -26,8 +25,9 @@ export const fetchPlayInfo = async (playId: number) => {
 // 핸드폰 번호 체크 Api
 export const checkPhoneNumber = async (phoneNumber: string, scheduleId: number) => {
   try {
+    const socketId = socket.id;
     const response = await api.get(`/user/check`, {
-      params: { phoneNumber, scheduleId },
+      params: { phoneNumber, scheduleId, socketId },
       withCredentials: true,
     });
 

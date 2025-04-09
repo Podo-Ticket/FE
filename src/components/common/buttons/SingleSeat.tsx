@@ -64,6 +64,10 @@ const SingleSeatContainer = styled.button<{
     isLocking: boolean;
     isUnlocking: boolean;
 }>`
+  &::before, &::after {
+    pointer-events: none; /* 터치 이벤트 차단 해제 */
+  }
+
   width: 32px;
   height: 32px;
   border-radius: 5px;
@@ -124,7 +128,7 @@ const SingleSeatContainer = styled.button<{
   
   cursor: ${({ isAvailable }) => (isAvailable ? "pointer" : "not-allowed")};
     
-  transition: all .2s ease-in-out;
+  // transition: all .2s ease-in-out;
 
   position: relative; /* 가상 요소 배치를 위해 position 설정 */
 
@@ -154,7 +158,7 @@ const SingleSeatContainer = styled.button<{
 const LockImage = styled.div<{ isLocked: boolean, isUnlocking: boolean, isAdmin: boolean }>`
       content: ${({ isLocked, isUnlocking }) => (isLocked || isUnlocking ? '""' : 'none')}; /* 잠금 상태일 때만 표시 */
       position: absolute;
-      top: -3px; /* 버튼의 오른쪽 위로 이동 */
+      top: -3px;
       right: -3px;
 
       width: 12px;
@@ -162,9 +166,10 @@ const LockImage = styled.div<{ isLocked: boolean, isUnlocking: boolean, isAdmin:
       border: none;
       background-image: ${({ isLocked, isAdmin }) =>
         !isAdmin ? "none" : isLocked ? `url(${lockIcon})` : "none"};
-      background-size: cover; /* 이미지 크기 설정 */
-      background-repeat: no-repeat; /* 이미지 반복 방지 */
+      background-size: cover;
+      background-repeat: no-repeat;
       background-color: transparent;
 
       z-index: 2; /* 버튼 위에 표시되도록 설정 */
+      pointer-events: none;
 `;
