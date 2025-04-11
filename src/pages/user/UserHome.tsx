@@ -23,6 +23,7 @@ import { DateUtil, getClosestDateTime } from "../../utils/DateUtil";
 import { toggleModal } from "../../utils/ModalUtil.ts";
 import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
 import { useNavigateTo } from "../../utils/NavigateUtil.ts";
+import MultiLanguageHeader from "@components/layout/headers/MultiLanguageHeader.tsx";
 
 const itemsPerPage = 8; // 한 페이지당 보여줄 개수
 
@@ -156,9 +157,7 @@ const UserHome: React.FC = () => {
 
   return (
     <MainContainer backgroundImage={poster}>
-      <MainTitle className="Podo-Ticket-Headline-H3">
-        공연 입장을 도와드릴게요!
-      </MainTitle>
+      <MultiLanguageHeader clickLanguage={undefined}/>
 
       <PosterDetailsContainer>
         <Card isFlipped={isFlipped}>

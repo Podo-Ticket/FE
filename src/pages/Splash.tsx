@@ -1,42 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Player } from '@lottiefiles/react-lottie-player'; // Lottie Player import
+import { Player } from '@lottiefiles/react-lottie-player';
 
 import logo from '../assets/images/splash.png';
-import animationData from '../styles/animation/splashAnimation.json'; // Lottie JSON 파일
+// import animationData from '../styles/animation/splashAnimation.json';
 import { fadeIn, fadeOut } from '../styles/animation/DefaultAnimation.ts'
 
 const Splash: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
-    const [showPlayer, setShowPlayer] = useState(true); // Player 표시 여부
-    const [showLogo, setShowLogo] = useState(false); // Logo 표시 여부
+    // const [showPlayer, setShowPlayer] = useState(false);
+    const [showLogo, setShowLogo] = useState(true);
 
     useEffect(() => {
-        // 2.5초 후 Player를 숨기고 Logo를 표시
-        const playerTimer = setTimeout(() => {
-            setShowPlayer(false);
-            setShowLogo(true);
-        }, 1800);
-
-        // 5초 후 Splash 화면 종료
         const logoTimer = setTimeout(() => {
+            setShowLogo(false);
             onFinish();
-        }, 3500);
+        }, 1500);
 
         return () => {
-            clearTimeout(playerTimer);
             clearTimeout(logoTimer);
         };
     }, [onFinish]);
 
     return (
         <SplashContainer>
-            {showPlayer && (
+            {/* {showPlayer && (
                 <AnimatedPlayer
                     autoplay
                     loop
                     src={animationData}
                 />
-            )}
+            )} */}
             {showLogo && <AnimatedLogo src={logo} alt="로고" />}
         </SplashContainer>
     );
@@ -55,12 +48,12 @@ const SplashContainer = styled.div`
   background: var(--lightpurple-2);
 `;
 
-const AnimatedPlayer = styled(Player)`
-  width: 350px;
-  height: 350px;
-
-  animation: ${fadeIn} 1s ease-in-out, ${fadeOut} 1s ease-in-out 1s; /* FadeIn 후 FadeOut */
-`;
+// const AnimatedPlayer = styled(Player)`
+//   width: 350px;
+//   height: 350px;
+//
+//   animation: ${fadeIn} 1s ease-in-out, ${fadeOut} 1s ease-in-out 1s; /* FadeIn 후 FadeOut */
+// `;
 
 const AnimatedLogo = styled.img`
   position: absolute;

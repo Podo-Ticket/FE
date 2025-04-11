@@ -1,0 +1,68 @@
+import React from "react";
+import styled from "styled-components";
+
+import logoImage from "@assets/icons/ic_logo.svg";
+import languageImage from "@assets/icons/ic_multilingual.svg";
+
+interface MultiLanguageHeaderProps {
+  clickLanguage: () => void;
+}
+
+const MultiLanguageHeader: React.FC<MultiLanguageHeaderProps> = ({
+  clickLanguage,
+}) => {
+  return (
+    <HeaderContainer>
+      <LeftSide>
+        <LogoImage src={logoImage} />
+        <LogoName className="Podo-Ticket-Headline-H4">포도티켓</LogoName>
+      </LeftSide>
+
+      <LanguageImage src={languageImage} onClick={clickLanguage}/>
+    </HeaderContainer>
+  );
+};
+
+export default MultiLanguageHeader;
+
+const HeaderContainer = styled.nav`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+
+  position: sticky;
+  top: 0;
+
+  width: 100%;
+  height: 140px;
+
+  padding: 0 10px;
+
+  user-select: none; /* 텍스트 선택 방지 */
+  -webkit-user-select: none; /* Safari에서 드래그 방지 */
+  -moz-user-select: none; /* Firefox에서 드래그 방지 */
+  -ms-user-select: none;
+`;
+
+const LeftSide = styled.div`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+
+  gap: 8px;
+`;
+
+const LogoImage = styled.img`
+  width: 1.1875rem;
+  height: 1.625rem;
+`;
+
+const LogoName = styled.div`
+  color: var(--ect-white);
+`;
+
+const LanguageImage = styled.img`
+  width: 2rem;
+  height: 2rem;
+`;
