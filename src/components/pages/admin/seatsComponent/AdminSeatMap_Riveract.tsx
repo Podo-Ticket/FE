@@ -324,23 +324,23 @@ const SeatMap: React.FC<SeatMapProps> = ({
           </AudienceInfoWrapper>
         ) : null)}
 
-      <StageContainer seatMapWidth={seatMapWidth}>
-        <StageImage stage={stage}>
-          <StageText className="Podo-Ticket-Headline-H4">무대</StageText>
-        </StageImage>
-      </StageContainer>
+      <TransformWrapper
+        initialScale={1} // 초기 확대 비율
+        minScale={1} // 최소 축소 비율
+        maxScale={5} // 최대 확대 비율
+        doubleClick={{ disabled: true }} // 더블 클릭 확대 비활성화
+        wheel={{ step: 0.1 }} // 마우스 휠 줌 속도( step: 0.1) (마우스 휠 줌 비활성화 -  disabled: true  )
+        pinch={{ step: 5 }} // 핀치 줌 감도
+        centerZoomedOut // 줌아웃 시 중앙 정렬
+      >
+        <TransformComponent>
+          <StageContainer seatMapWidth={seatMapWidth}>
+            <StageImage stage={stage}>
+              <StageText className="Podo-Ticket-Headline-H4">무대</StageText>
+            </StageImage>
+          </StageContainer>
 
-      <SeatMapContent ref={seatMapRef}>
-        <TransformWrapper
-          initialScale={1} // 초기 확대 비율
-          minScale={1} // 최소 축소 비율
-          maxScale={5} // 최대 확대 비율
-          doubleClick={{ disabled: true }} // 더블 클릭 확대 비활성화
-          wheel={{ step: 0.1 }} // 마우스 휠 줌 속도( step: 0.1) (마우스 휠 줌 비활성화 -  disabled: true  )
-          pinch={{ step: 5 }} // 핀치 줌 감도
-          centerZoomedOut // 줌아웃 시 중앙 정렬
-        >
-          <TransformComponent>
+          <SeatMapContent ref={seatMapRef}>
             <SeatRow>
               {Object.keys(theater).map((row) => (
                 <SeatColumn key={row} seatCount={theater[row].length}>
@@ -378,9 +378,9 @@ const SeatMap: React.FC<SeatMapProps> = ({
                 </SeatColumn>
               ))}
             </SeatRow>
-          </TransformComponent>
-        </TransformWrapper>
-      </SeatMapContent>
+          </SeatMapContent>
+        </TransformComponent>
+      </TransformWrapper>
     </SeatMapContainer>
   );
 };
