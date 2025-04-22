@@ -57,6 +57,7 @@ function App() {
   useEffect(() => {
     const handleForceLogout = (data: { message?: string }) => {
       openModal(data.message);
+      localStorage.setItem("isForceLogout", "true");
     };
 
     socket.on("forceLogout", handleForceLogout);
@@ -110,59 +111,46 @@ function App() {
       const key = getLocalStorageKey(pageType);
       const isDismissed = localStorage.getItem(key || "") === "true";
 
-      if (!isDismissed) {
-        setShowOnboardingModal(true); // 모달 표시
-      }
+      if (!isDismissed) setShowOnboardingModal(true);
     }
   }, [pageType]);
-
   const handleDismissOnboarding = () => {
     const key = getLocalStorageKey(pageType);
     if (key && isDontShowAgainChecked) {
-      localStorage.setItem(key, "true"); // 체크된 경우 로컬스토리지에 저장
+      localStorage.setItem(key, "true");
     }
-    setShowOnboardingModal(false); // 모달 닫기
-    setIsDontShowAgainChecked(false); // 체크박스 초기화
+    setShowOnboardingModal(false);
+    setIsDontShowAgainChecked(false);
   };
-
-  // 온보딩 모달 출현시 외부 스크롤 금지
   useEffect(() => {
     if (showOnboardingModal) {
-      document.body.style.overflow = "hidden"; // 스크롤 비활성화
+      document.body.style.overflow = "hidden"; 
     } else {
-      document.body.style.overflow = "auto"; // 스크롤 활성화
+      document.body.style.overflow = "auto";
     }
-
-    return () => {
-      document.body.style.overflow = "auto"; // 컴포넌트 언마운트 시 복구
-    };
-  }, [showOnboardingModal]);
-
-  // 화면 로드 시 스크롤 방지
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, []);
+  }, [showOnboardingModal]);
 
-  // 스플래시 설정
   const [showSplash, setShowSplash] = useState(() => {
     return !localStorage.getItem("hasVisited");
   });
-
   useEffect(() => {
     if (!showSplash) return;
     localStorage.setItem("hasVisited", "true");
     const timer = setTimeout(() => setShowSplash(false), 5000);
     return () => clearTimeout(timer);
   }, [showSplash]);
-
-  const handleSplashFinish = () => setShowSplash(false); // Splash 종료 핸들러
-
-  if (showSplash) {
-    return <Splash onFinish={handleSplashFinish} />; // Splash 화면 렌더링
-  }
+  const handleSplashFinish = () => setShowSplash(false);
+  if (showSplash) return <Splash onFinish={handleSplashFinish} />;
+  
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
   return (
     <>

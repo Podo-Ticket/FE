@@ -111,7 +111,9 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
       await delay(500); // 로딩 애니메이션 시간
       const result = await checkPhoneNumber(phone, scheduleId);
 
-      if (result.data === "예매 내역 확인 불가") {
+      if (localStorage.getItem("isForceLogout") === "true") {
+        navigateTo("/confirm");
+      } else if (result.data === "예매 내역 확인 불가") {
         setShowNoticeModal(true);
       } else if (result.data === "이미 발권한 사용자") {
         navigateTo("/ticket"); // 티켓 페이지로 이동
@@ -121,7 +123,6 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
         onAcceptFunc();
       }
     } catch (error) {
-      console.error("전화번호 검증 실패:", error);
       openInvalidPhoneError(); // 에러 모달 표시
     } finally {
       setIsLoading(false);

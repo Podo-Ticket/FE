@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-import { chunkArray } from '../../../../utils/ParseUtil';
+import { chunkArray } from "../../../../utils/ParseUtil";
 
 interface TicketConfirmCardProps {
   poster: string;
   title: string;
   dateTime: string;
   location: string;
-  seats: string[];
+  seats: string[] | string;
 }
 
 const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
@@ -18,11 +18,7 @@ const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
   location,
   seats,
 }) => {
-  const modifiedSeats = seats.map((seat) =>
-    seat.replace(/([가-힣])[0-9]/, "$1")
-  );
-  const sortedSeats = modifiedSeats.sort((a, b) => a.localeCompare(b, "ko"));
-  const seatGroups = chunkArray(sortedSeats, 4);
+
 
   return (
     <TicketConfirmCardContainer>
@@ -43,13 +39,10 @@ const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
             <Label>장소</Label>
             <Text>{location}</Text>
           </DetailsRow>
-          {seatGroups.map((group, index) => (
-            <DetailsRow key={index}>
-              {index === 0 && <Label>좌석</Label>}
-              {index !== 0 && <div style={{ width: "37.5px" }}></div>}
-              <Text>{group.join(", ")}</Text>
+            <DetailsRow>
+              <Label>좌석</Label>
+              <Text>{seats}</Text>
             </DetailsRow>
-          ))}
         </Details>
       </CardContent>
     </TicketConfirmCardContainer>

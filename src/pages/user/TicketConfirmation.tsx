@@ -40,6 +40,7 @@ const TicketConfirmation = () => {
       try {
         const info = await fetchTicketingInfo();
         setTicketInfo(info);
+        localStorage.setItem("isForceLogout", "false");
       } catch (error: any) {
         console.error(error.message);
       }
@@ -80,23 +81,22 @@ const TicketConfirmation = () => {
 
   // 뒤로가기 처리
   const handleBack = async () => {
+    if (localStorage.getItem("isForceLogout") === "true") return;
+
     try {
       const success = await cancelSeatSelection(); // API 호출
       if (success) {
         navigate("/select", { state: { from: "/confirm" } }); // 성공 시 선택 페이지로 이동
       } else {
-        console.log("이미 발권 신청이 완료되었습니다."); // 실패 메시지 설정
       }
     } catch (error: any) {
-      console.error(error.message);
-      console.log("발권 신청을 취소하는 데 실패했습니다."); // 오류 메시지 설정
     }
   };
 
   // 티켓 발권 처리
   const handleIssuance = async () => {
     setIsLoading(true);
-    await delay(500); // 로딩 애니메이션 시간
+    await delay(500);
 
     try {
       const success = await handleTicketIssuance(selectedSeats);
@@ -151,7 +151,7 @@ const TicketConfirmation = () => {
             poster={poster}
             dateTime={DateUtil.formatDate(ticketInfo.date)}
             location={ticketInfo.location}
-            seats={selectedSeats}
+            seats={ticketInfo.seats}
           />
         )}
 

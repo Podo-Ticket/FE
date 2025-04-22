@@ -34,24 +34,23 @@ const Ticket = () => {
   const [isTheaterInfoModalOpen, setIsTheaterInfoModalOpen] = useState(false);
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [isPopupClosing, setIsPopupClosing] = useState(false); // fade-out 상태 추가
+  const [isPopupClosing, setIsPopupClosing] = useState(false);
 
   // 티켓 정보 가져오기
   useEffect(() => {
     const loadTickets = async () => {
       try {
-        const { tickets, isSurveyed, isOnSite } = await fetchTickets(); // 분리된 API 호출 함수 사용
-        console.log("현장예매면 false :", isOnSite);
-        setTickets(tickets); // 티켓 상태 업데이트
-        setIsSurveied(isSurveyed); // 설문 여부 상태 업데이트
+        const { tickets, isSurveyed, isOnSite } = await fetchTickets();
+        setTickets(tickets); 
+        setIsSurveied(isSurveyed); 
         setIsOnSite(isOnSite);
         console.log(tickets);
       } catch (error) {
         console.error("Error loading tickets:", error);
       }
     };
-    loadTickets(); // 티켓 데이터 가져오기
-    setIsFinishTicketingModalOpen(true); // 모달 열기
+    loadTickets();
+    setIsFinishTicketingModalOpen(true);
   }, []);
 
   // 티켓에서 뒤로가기를 누를 경우 '/'으로 리다이렉트
