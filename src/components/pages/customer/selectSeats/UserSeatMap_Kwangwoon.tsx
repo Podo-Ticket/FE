@@ -1,15 +1,15 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import SingleSeat from '../SingleSeat';
+import SingleSeat from '@components/common/buttons/SingleSeat';
 
 import stage from '../../../assets/images/stage.png'
 import {
   SAEBIT_LARGE_LECTURE_ROOM_LEFTSIDE as RowsLeft,
   SAEBIT_LARGE_LECTURE_ROOM_RIGHTSIDE as RowsRight
-} from "../../../../constants/venue/KwangwoonUniv";
+} from "@/constants/venue/KwangwoonUniv";
 
-import { fetchSeats } from '../../../../api/user/SelectSeatsApi';
+import { fetchSeats } from '@/api/user/SelectSeatsApi';
 
 interface SeatMapProps {
   isRealTime: boolean; // 실시간 모드 여부

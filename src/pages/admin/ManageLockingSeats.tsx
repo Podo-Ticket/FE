@@ -26,10 +26,10 @@ import {
 } from "../../api/admin/ManageLockingSeatsApi";
 
 /* 각 극장에 맞는 SeatMap component로 설정 필요 */
-import AdminSeatMap from "@components/common/buttons/SeatMap/AdminSeatMap_Riveract";
+import AdminSeatMap from "@components/pages/admin/seatsComponent/AdminSeatMap_Riveract";
 import NoticeReservedSeatModal from "@components/pages/admin/manageLockingSeats/NoticeReservedSeatModal";
 import AdminSeatInfo from "@components/common/informations/AdminSeatInfo";
-// import AdminSeatMap from '../../components/button/SeatMap/AdminSeatMap_Kwangwoon';
+// import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_Kwangwoon';
 
 const ManageLockingSeats = () => {
   const navigate = useNavigate();

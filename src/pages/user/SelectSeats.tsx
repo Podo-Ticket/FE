@@ -15,9 +15,8 @@ import { fetchSeats, checkSeats } from "../../api/user/SelectSeatsApi";
 import { useLanguage } from "../../hooks/useLanguage";
 import { SELECT_SEATS } from "../../constants/text/UIText.ts";
 
-/* 각 극장에 맞는 SeatMap component로 설정 필요 */
-import RiveractSeatMap from "@components/common/buttons/SeatMap/UserSeatMap_Riveract";
-// import KwangwoonSeatMap from '../../components/button/SeatMap/UserSeatMap_Kwangwoon';
+import RiveractSeatMap from "@components/pages/customer/selectSeats/UserSeatMap_Riveract.tsx";
+// import KwangwoonSeatMap from '@components/pages/customer/selectSeats/UserSeatMap_Kwangwoon';
 
 function SelectSeats() {
   const navigate = useNavigate();
