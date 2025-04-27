@@ -18,7 +18,6 @@ import PrivacyPolicyModal from "@components/common/modals/TextModal.tsx";
 import goBackIcon from "../../assets/images/left_arrow.png";
 import CheckedIcon from "../../assets/images/privacy_checked.png";
 import UncheckedIcon from "../../assets/images/privacy_unchecked.png";
-import { AGREE_CONTENT } from "../../constants/text/InfoText.ts";
 
 import { DateUtil } from "../../utils/DateUtil";
 import { fadeIn } from "../../styles/animation/DefaultAnimation.ts";
@@ -27,8 +26,8 @@ import {
   submitReservation,
   ReservationRequest,
 } from "../../api/user/OnSiteReserveApi";
+import { ONSITE_RESERVE, PERSONAL_INFORMATION_AGREE_CONTENT } from "@/constants/text/UIText.ts";
 
-// Define the schema for form validation using Zod
 const reservationSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요."),
   phoneNumber: z
@@ -42,17 +41,17 @@ const reservationSchema = z.object({
   scheduleId: z.number().min(1, "공연 회차를 선택해주세요."),
 });
 
-// Define the TypeScript type for form data
 type ReservationFormData = z.infer<typeof reservationSchema>;
 
 function OnSiteReserve() {
   const navigate = useNavigate();
+  const language = localStorage.getItem("language");
 
   const [performanceSchedules, setPerformanceSchedules] = useState<
     Array<{ id: number; date_time: string; free_seats: number }>
   >([]);
 
-  const [isLoading, setIsLoading] = useState(false); // 승인 대기 로딩 상태
+  const [isLoading, setIsLoading] = useState(false); 
 
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
   const handleCheckboxChange = () => {
@@ -73,7 +72,6 @@ function OnSiteReserve() {
 
   const [value, setValue] = useState<number>(0);
 
-  // React Hook Form setup with Zod resolver
   const {
     control,
     handleSubmit,
@@ -89,16 +87,12 @@ function OnSiteReserve() {
     },
   });
 
-  // 공연 일정 정보 반영
   useEffect(() => {
     const loadSchedules = async () => {
       try {
         const schedules = await fetchPerformanceSchedules(1);
-        console.log("schedules: ", schedules);
         setPerformanceSchedules(schedules);
-      } catch (error) {
-        console.error("Failed to load schedules:", error);
-      }
+      } catch (error: any) {}
     };
     loadSchedules();
   }, []);
@@ -106,7 +100,7 @@ function OnSiteReserve() {
   useEffect(() => {
     const storedScheduleId = localStorage.getItem("scheduleId");
     if (storedScheduleId) {
-      setValue(Number(storedScheduleId)); // React Hook Form의 setValue 사용
+      setValue(Number(storedScheduleId));
       console.log(storedScheduleId, "andand", value);
     }
 
@@ -114,7 +108,6 @@ function OnSiteReserve() {
     console.log(performanceSchedules);
   }, [setValue]);
 
-  // 현장 예매 신청 처리 함수
   const handleReservationSubmit = async (data: ReservationRequest) => {
     try {
       // 예매 신청 API 호출
@@ -129,12 +122,10 @@ function OnSiteReserve() {
 
         const userId = response.userId; // 예매 신청한 사용자 ID
 
-        // 기존 리스너 제거 (중복 방지)
         socket.off(`user:${userId}`);
         socket.off("error");
         socket.off("disconnect");
 
-        // WebSocket 이벤트 리스너 등록
         socket.on(`user:${userId}`, (messageData: { type: string }) => {
           console.log(`Message received for user ${userId}:`, messageData);
 
@@ -154,22 +145,15 @@ function OnSiteReserve() {
 
         socket.on("error", (error: any) => {
           console.error("WebSocket error occurred:", error);
-          setIsLoading(false); // 로딩 상태 해제
+          setIsLoading(false);
         });
 
         socket.on("disconnect", () => {
           console.log("WebSocket connection closed");
-          setIsLoading(false); // 로딩 상태 해제
+          setIsLoading(false);
         });
 
         console.log("Waiting for approval...");
-
-        // const timeoutId = setTimeout(() => {
-        //   console.warn("Timeout reached: Closing loading and WebSocket.");
-        //   setIsLoading(false); // 로딩 상태 해제
-        //   socket.off(`user:${userId}`); // 소켓 리스너 제거
-        //   socket.disconnect(); // 소켓 연결 닫기
-        // }, 300000); // 5분 = 300,000ms
       } else {
         setIsLoading(false);
         if (response.error === "이미 예약되었습니다.") {
@@ -180,15 +164,19 @@ function OnSiteReserve() {
       }
     } catch (error) {
       console.error("Error during reservation submission:", error);
-      setIsLoading(false); // 오류 발생 시 로딩 상태 해제
+      setIsLoading(false);
     }
   };
 
+  const navTitle =
+    language === "english"
+      ? ONSITE_RESERVE.english.pageTitle
+      : ONSITE_RESERVE.korean.pageTitle;
   const lefter = {
     icon: goBackIcon,
     iconWidth: 13,
     iconHeight: 20,
-    text: "현장 예매",
+    text: navTitle,
     clickFunc: () => navigate("/"),
   };
 
@@ -211,8 +199,16 @@ function OnSiteReserve() {
           control={control}
           render={({ field }) => (
             <DefaultInput
-              category="이름"
-              placeholder="이름을 입력해주세요."
+              category={
+                language === "english"
+                  ? ONSITE_RESERVE.english.firstInputName
+                  : ONSITE_RESERVE.korean.firstInputName
+              }
+              placeholder={
+                language === "english"
+                  ? ONSITE_RESERVE.english.firstInputPlaceholder
+                  : ONSITE_RESERVE.korean.firstInputPlaceholder
+              }
               value={field.value}
               onChangeFunc={field.onChange}
             />
@@ -224,8 +220,16 @@ function OnSiteReserve() {
           control={control}
           render={({ field }) => (
             <DefaultInput
-              category="연락처"
-              placeholder="연락처를 입력해주세요."
+              category={
+                language === "english"
+                  ? ONSITE_RESERVE.english.secondInputName
+                  : ONSITE_RESERVE.korean.secondInputName
+              }
+              placeholder={
+                language === "english"
+                  ? ONSITE_RESERVE.english.secondInputPlaceholder
+                  : ONSITE_RESERVE.korean.secondInputPlaceholder
+              }
               value={field.value}
               onChangeFunc={(e) => {
                 const rawValue = e.target.value.replace(/[^0-9]/g, "");
@@ -245,8 +249,16 @@ function OnSiteReserve() {
           control={control}
           render={({ field }) => (
             <DefaultInput
-              category="예매 인원"
-              placeholder="예매 인원을 선택해주세요."
+              category={
+                language === "english"
+                  ? ONSITE_RESERVE.english.thirdInputName
+                  : ONSITE_RESERVE.korean.thirdInputName
+              }
+              placeholder={
+                language === "english"
+                  ? ONSITE_RESERVE.english.thirdInputPlaceholder
+                  : ONSITE_RESERVE.korean.thirdInputPlaceholder
+              }
               isSelect={true}
               isNumberSelect={true}
               value={field.value.toString()}
@@ -260,8 +272,16 @@ function OnSiteReserve() {
           control={control}
           render={({ field }) => (
             <DefaultInput
-              category="공연 회차"
-              placeholder="공연 회차를 선택해주세요."
+              category={
+                language === "english"
+                  ? ONSITE_RESERVE.english.fourthInputName
+                  : ONSITE_RESERVE.korean.fourthInputName
+              }
+              placeholder={
+                language === "english"
+                  ? ONSITE_RESERVE.english.fouthInputPlaceholder
+                  : ONSITE_RESERVE.korean.fouthInputPlaceholder
+              }
               isSelect={true}
               options={filteredSchedules.map((schedule) => ({
                 value: schedule.id,
@@ -288,7 +308,9 @@ function OnSiteReserve() {
               onClick={handleCheckboxClick}
             ></CustomCheckbox>
             <span onClick={handleCheckboxClick} className="Podo-Ticket-Body-B5">
-              개인정보 수집 동의
+              {language === "english"
+                ? ONSITE_RESERVE.english.authCheckbox
+                : ONSITE_RESERVE.korean.authCheckbox}
             </span>
           </AgreementText>
 
@@ -297,12 +319,18 @@ function OnSiteReserve() {
             className="Podo-Ticket-Body-B10"
             onClick={openPrivacyModal}
           >
-            전문보기
+            {language === "english"
+              ? ONSITE_RESERVE.english.authShowMore
+              : ONSITE_RESERVE.korean.authShowMore}
           </AgreementModalLink>
         </AgreementContainer>
 
         <LargeBtn
-          content="예매 신청"
+          content={
+            language === "english"
+              ? ONSITE_RESERVE.english.submitBtn
+              : ONSITE_RESERVE.korean.submitBtn
+          }
           onClick={handleSubmit(handleReservationSubmit)}
           isAvailable={isDirty && isValid && isPrivacyChecked}
         />
@@ -313,8 +341,16 @@ function OnSiteReserve() {
       <PrivacyPolicyModal
         showTextModal={showPrivacyModal}
         onAcceptFunc={closePrivacyModal}
-        title="개인정보 수집 동의 약관"
-        description={AGREE_CONTENT}
+        title={
+          language === "english"
+            ? ONSITE_RESERVE.english.personalDataModalTitle
+            : ONSITE_RESERVE.korean.peronalDataModalAccept
+        }
+        description={
+          language === "english"
+            ? PERSONAL_INFORMATION_AGREE_CONTENT.english
+            : PERSONAL_INFORMATION_AGREE_CONTENT.korean
+        }
         overlaied={true}
       />
 
@@ -372,6 +408,7 @@ const ButtonContainer = styled.div`
 
   gap: 35px;
   margin-top: 40px;
+  padding: 0 20px;
 
   animation: ${fadeIn} 0.5s ease-in-out;
 

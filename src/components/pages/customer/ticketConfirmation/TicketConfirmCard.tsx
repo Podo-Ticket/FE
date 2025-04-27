@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { chunkArray } from "../../../../utils/ParseUtil";
+import { TICKET_CONFIRMATION } from "@/constants/text/UIText";
 
 interface TicketConfirmCardProps {
   poster: string;
@@ -18,11 +18,15 @@ const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
   location,
   seats,
 }) => {
-
+  const language = localStorage.getItem("language");
 
   return (
     <TicketConfirmCardContainer>
-      <CardTitle>발권 정보 요약</CardTitle>
+      <CardTitle>
+        {language === "english"
+          ? TICKET_CONFIRMATION.english.summaryTitle
+          : TICKET_CONFIRMATION.korean.summaryTitle}
+      </CardTitle>
 
       <CardContent>
         <PosterContainer>
@@ -32,17 +36,32 @@ const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
         <Details>
           <Title>{title}</Title>
           <DetailsRow>
-            <Label>시간</Label>
+            <Label>
+              {" "}
+              {language === "english"
+                ? TICKET_CONFIRMATION.english.firstCategory
+                : TICKET_CONFIRMATION.korean.firstCategory}
+            </Label>
             <Text>{dateTime}</Text>
           </DetailsRow>
           <DetailsRow>
-            <Label>장소</Label>
+            <Label>
+              {" "}
+              {language === "english"
+                ? TICKET_CONFIRMATION.english.secondCategory
+                : TICKET_CONFIRMATION.korean.secondCategory}
+            </Label>
             <Text>{location}</Text>
           </DetailsRow>
-            <DetailsRow>
-              <Label>좌석</Label>
-              <Text>{seats}</Text>
-            </DetailsRow>
+          <DetailsRow>
+            <Label>
+              {" "}
+              {language === "english"
+                ? TICKET_CONFIRMATION.english.thirdCategory
+                : TICKET_CONFIRMATION.korean.thirdCategory}
+            </Label>
+            <Text>{seats}</Text>
+          </DetailsRow>
         </Details>
       </CardContent>
     </TicketConfirmCardContainer>

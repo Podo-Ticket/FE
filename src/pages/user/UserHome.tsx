@@ -23,12 +23,15 @@ import { DateUtil, getClosestDateTime } from "../../utils/DateUtil";
 import { toggleModal } from "../../utils/ModalUtil.ts";
 import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
 import { useNavigateTo } from "../../utils/NavigateUtil.ts";
+import { USER_HOME } from "../../constants/text/UIText.ts";
+import { useLanguage } from "../../hooks/useLanguage.ts";
 import MultiLanguageHeader from "@components/layout/headers/MultiLanguageHeader.tsx";
 
 const itemsPerPage = 8; // 한 페이지당 보여줄 개수
 
 const UserHome: React.FC = () => {
   const navigateTo = useNavigateTo();
+  const { language, setLanguage } = useLanguage();
 
   // const handleMoveOnsiteReserve = () => {
   //   const params = { manage: isLocking ? "lock" : "unlock" };
@@ -83,10 +86,10 @@ const UserHome: React.FC = () => {
       }
     };
 
+    localStorage.setItem("language", "korean");
     loadPlayInfo();
   }, []);
 
-  // Navigation Bar 내용
   const lefter = {
     icon: goBackIcon,
     iconWidth: 13,
@@ -94,8 +97,13 @@ const UserHome: React.FC = () => {
     text: "상세 정보",
     clickFunc: () => toggleFlip(),
   };
+  const toggleLanguage = () => {
+    const current = localStorage.getItem("language");
+    const next = current === "korean" ? "english" : "korean";
+    localStorage.setItem("language", next);
+    setLanguage(next);
+  };
 
-  // 카드 flip 상태 관리
   const toggleFlip = () => setIsFlipped(!isFlipped);
   const togglePopup = () => {
     if (isPopupVisible) {
@@ -157,11 +165,10 @@ const UserHome: React.FC = () => {
 
   return (
     <MainContainer backgroundImage={poster}>
-      <MultiLanguageHeader clickLanguage={undefined}/>
+      <MultiLanguageHeader clickLanguage={toggleLanguage} />
 
       <PosterDetailsContainer>
         <Card isFlipped={isFlipped}>
-          {/* Front Side */}
           <CardFront>
             <CardBackgroundImage src={homeTicket} alt="배경 이미지" />
 
@@ -231,7 +238,6 @@ const UserHome: React.FC = () => {
               <MoreDetailBtnContainer>
                 <MoreDetailBtn
                   content="자세히 보기"
-                  // onClick={() => toggleFlip()}
                   onClick={() => toggleFlip()}
                   isAvailable={true}
                 />
@@ -240,14 +246,17 @@ const UserHome: React.FC = () => {
 
             <DetailBtnContainer>
               <GetTicketBtn
-                content="티켓 발권"
+                content={
+                  language === "english"
+                    ? USER_HOME.english.pickupBtn
+                    : USER_HOME.korean.pickupBtn
+                }
                 onClick={() => toggleModal("authModal", true, setModals)}
                 isAvailable={true}
               />
             </DetailBtnContainer>
           </CardFront>
 
-          {/* Back Side */}
           <CardBack>
             <CardBackgroundImage src={homeTicket} alt="배경 이미지" />
             <NavBar

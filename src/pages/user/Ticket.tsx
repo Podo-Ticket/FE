@@ -11,20 +11,14 @@ import infoIcon from "../../assets/images/info_icon.png";
 
 import { fetchTickets } from "../../api/user/TicketApi";
 import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
-
-interface Ticket {
-  id: string;
-  title: string;
-  location: string;
-  dateTime: string;
-  seat: string;
-  runningTime: number;
-  image: string;
-}
+import { ITicket } from "../../types/models/ticket.ts";
+import { TICKET } from "@/constants/text/UIText.ts";
 
 const Ticket = () => {
   const navigate = useNavigate();
-  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const language = localStorage.getItem("language");
+
+  const [tickets, setTickets] = useState<ITicket[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0); // 현재 티켓 인덱스
   const [isOnSite, setIsOnSite] = useState(false);
   const [, setIsSurveied] = useState(false);
@@ -41,8 +35,8 @@ const Ticket = () => {
     const loadTickets = async () => {
       try {
         const { tickets, isSurveyed, isOnSite } = await fetchTickets();
-        setTickets(tickets); 
-        setIsSurveied(isSurveyed); 
+        setTickets(tickets);
+        setIsSurveied(isSurveyed);
         setIsOnSite(isOnSite);
         console.log(tickets);
       } catch (error) {
@@ -83,37 +77,39 @@ const Ticket = () => {
   const togglePopup = () => {
     setIsPopupVisible(!isPopupVisible);
     if (!isPopupVisible) {
-      // 말풍선이 열릴 때 3초 후 닫히도록 설정
       setTimeout(() => {
-        setIsPopupClosing(true); // fade-out 효과 시작
+        setIsPopupClosing(true);
         setTimeout(() => {
           setIsPopupVisible(false);
-          setIsPopupClosing(false); // 상태 초기화
-        }, 350); // fade-out이 끝난 후 상태 초기화
-      }, 3000); // 3000ms = 3초
+          setIsPopupClosing(false);
+        }, 350);
+      }, 3000);
     }
   };
+
+  const navTitle =
+    language === "english" ? TICKET.english.pageTitle : TICKET.korean.pageTitle;
 
   const righter = {
     icon: infoIcon,
     iconWidth: 26,
     iconHeight: 26,
-    text: "티켓 정보",
+    text: navTitle,
     clickFunc: () => setIsTheaterInfoModalOpen(true),
   };
 
-  const handleActiveIndexChange = (index: number) => {
-    console.log("현재 Active Index:", index);
-    setCurrentIndex(index); // 부모 컴포넌트에서 active index 업데이트
-  };
-
+  const handleActiveIndexChange = (index: number) => setCurrentIndex(index);
   return (
     <ViewContainer>
       <TopNavContainer>
         <TopNav lefter={undefined} center={righter} righter={righter} />
         {isPopupVisible && (
           <SpeechBubble isClosing={isPopupClosing}>
-            <div>길을 못 찾겠다면?</div>
+            <div>
+              {language === "english"
+                ? TICKET.english.popupMessage
+                : TICKET.korean.popupMessage}
+            </div>
           </SpeechBubble>
         )}
       </TopNavContainer>
@@ -140,9 +136,21 @@ const Ticket = () => {
       <FinishTicketingModal
         showNoticeModal={isFinshTicketingModalOpen}
         imgStatus="success"
-        title="발권 완료"
-        description="바로 입장해주시면 됩니다!"
-        buttonContent="확인"
+        title={
+          language === "english"
+            ? TICKET.english.issuedModalTitle
+            : TICKET.korean.issuedModalTitle
+        }
+        description={
+          language === "english"
+            ? TICKET.english.issuedModalSubtitle
+            : TICKET.korean.issuedModalSubtitle
+        }
+        buttonContent={
+          language === "english"
+            ? TICKET.english.issuedModalAccept
+            : TICKET.korean.issuedModalAccept
+        }
         onAcceptFunc={closeFinishTicketingModal}
       />
     </ViewContainer>

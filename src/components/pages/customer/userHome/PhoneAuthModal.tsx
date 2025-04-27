@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import BackBtn from "@components/common/buttons/SmallBtn";
@@ -12,9 +12,12 @@ import NoticeModal from "@components/common/modals/NoticeModal";
 import CheckedIcon from "@assets/images/privacy_checked.png";
 import UncheckedIcon from "@assets/images/privacy_unchecked.png";
 
+import {
+  USER_HOME,
+  PERSONAL_INFORMATION_AGREE_CONTENT,
+} from "@/constants/text/UIText.ts";
 import { useNavigateTo } from "../../../../utils/NavigateUtil.ts";
 import { checkPhoneNumber } from "../../../../api/user/UserHomeApi";
-import { AGREE_CONTENT } from "../../../../constants/text/InfoText.ts";
 import {
   fadeIn,
   fadeOut,
@@ -34,14 +37,17 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
   onUnacceptFunc,
 }) => {
   const navigateTo = useNavigateTo();
-  const [phone, setPhone] = useState(""); // 전화번호 상태 관리
+
+  const language = localStorage.getItem("language");
+
+  const [phone, setPhone] = useState("");
 
   const [isClosing, setIsClosing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 관리
+  const [isLoading, setIsLoading] = useState(false);
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
-  const [isChecked, setIsChecked] = useState(false); // 체크박스 상태 관리
+  const [isChecked, setIsChecked] = useState(false);
   const handleCheckboxChange = () => {
     setIsChecked((prevChecked) => !prevChecked);
   };
@@ -93,7 +99,7 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
     setPhone(formattedValue);
   };
 
-  const isButtonEnabled = isChecked && phone.length === 13; // Assuming formatted phone is "000-0000-0000"
+  const isButtonEnabled = isChecked && phone.length === 13;
 
   const handleSubmit = async () => {
     if (!isButtonEnabled) {
@@ -108,7 +114,7 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
 
     try {
       setIsLoading(true);
-      await delay(500); // 로딩 애니메이션 시간
+      await delay(500);
       const result = await checkPhoneNumber(phone, scheduleId);
 
       if (localStorage.getItem("isForceLogout") === "true") {
@@ -134,13 +140,19 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
       <ModalContent isClosing={isClosing}>
         <ModalTopContainer>
           <HeadText className="Podo-Ticket-Headline-H2">
-            예매 내역 확인
+            {language === "english"
+              ? USER_HOME.english.authModalTitle
+              : USER_HOME.korean.authModalTitle}
           </HeadText>
 
           <PhoneInput
             className="Podo-Ticket-Body-B1"
             type="text"
-            placeholder="전화번호를 입력해 주세요"
+            placeholder={
+              language === "english"
+                ? USER_HOME.english.authInputPlaceholder
+                : USER_HOME.korean.authInputPlaceholder
+            }
             value={phone}
             onChange={handlePhoneChange}
           />
@@ -159,7 +171,9 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
                 onClick={handleCheckboxClick}
                 className="Podo-Ticket-Body-B5"
               >
-                개인정보 수집 동의
+                {language === "english"
+                  ? USER_HOME.english.authCheckbox
+                  : USER_HOME.korean.authCheckbox}
               </span>
             </AgreementText>
 
@@ -168,20 +182,30 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
               className="Podo-Ticket-Body-B10"
               onClick={openPrivacyModal}
             >
-              전문보기
+              {language === "english"
+                ? USER_HOME.english.authShowMore
+                : USER_HOME.korean.authShowMore}
             </AgreementModalLink>
           </AgreementContainer>
         </ModalTopContainer>
 
         <PhoneModalBtns>
           <BackBtn
-            content="이전"
+            content={
+              language === "english"
+                ? USER_HOME.english.authModalCancel
+                : USER_HOME.korean.authModalCancel
+            }
             onClick={handleUnacceptClick}
             isAvailable={true}
             isGray={true}
           />
           <NextBtn
-            content="다음"
+            content={
+              language === "english"
+                ? USER_HOME.english.authModalAccept
+                : USER_HOME.korean.authModalAccept
+            }
             onClick={handleSubmit}
             isAvailable={isButtonEnabled}
           />
@@ -191,19 +215,37 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
       <PrivacyPolicyModal
         showTextModal={showPrivacyModal}
         onAcceptFunc={closePrivacyModal}
-        title="개인정보 수집 동의 약관"
-        description={AGREE_CONTENT}
+        title={
+          language === "english"
+            ? USER_HOME.english.personalDataModalTitle
+            : USER_HOME.korean.personalDataModalTitle
+        }
+        description={
+          language === "english"
+            ? PERSONAL_INFORMATION_AGREE_CONTENT.english
+            : PERSONAL_INFORMATION_AGREE_CONTENT.korean
+        }
       />
 
       <Loading showLoading={isLoading} />
-      {/* TODO check모달 */}
 
-      {/* TODO 예매 내역 없을 시 설명 모달*/}
       <NoticeModal
         showNoticeModal={showNoticeModal}
-        title="예약된 정보가 없습니다."
-        description="현장 예매 페이지로 이동합니다."
-        buttonContent="확인"
+        title={
+          language === "english"
+            ? USER_HOME.english.noReserveDataModalTitle
+            : USER_HOME.korean.noReserveDataModalTitle
+        }
+        description={
+          language === "english"
+            ? USER_HOME.english.noReserveDataModalSubtitle
+            : USER_HOME.korean.noReserveDataModalSubtitle
+        }
+        buttonContent={
+          language === "english"
+            ? USER_HOME.english.noReserveDataModalAccept
+            : USER_HOME.korean.noReserveDataModalAccept
+        }
         onAcceptFunc={() => {
           setShowNoticeModal(false);
           navigateTo("/reserve");
