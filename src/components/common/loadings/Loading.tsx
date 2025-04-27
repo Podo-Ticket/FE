@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import PulseLoader from "react-spinners/PulseLoader";
 import waitReserve from "@assets/images/wait_reserve_icon.png";
+import { ONSITE_RESERVE } from "@/constants/text/UIText";
 
 interface LoadingModalProps {
   showLoading: boolean;
@@ -14,6 +15,7 @@ const Loading: React.FC<LoadingModalProps> = ({
   isOnSiteReserve = false,
 }) => {
   const [color] = useState<string>("#6A39C0");
+  const language = localStorage.getItem("language");
 
   if (!showLoading) return null;
 
@@ -27,9 +29,15 @@ const Loading: React.FC<LoadingModalProps> = ({
               alt="대기 아이콘"
               className="modal-content-load-icon"
             />
-            <p className="Podo-Ticket-Headline-H3">예매 수락 대기 중</p>
+            <p className="Podo-Ticket-Headline-H3">
+              {language === "english"
+                ? ONSITE_RESERVE.english.loadingModalTitle
+                : ONSITE_RESERVE.korean.loadingModalTitle}
+            </p>
             <span className="Podo-Ticket-Body-B5">
-              관리자가 내역을 확인 중입니다.
+              {language === "english"
+                ? ONSITE_RESERVE.english.loadingModalSubtitle
+                : ONSITE_RESERVE.korean.loadingModalSubtitle}
             </span>
             <PulseLoader
               color={color}

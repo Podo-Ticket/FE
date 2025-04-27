@@ -5,29 +5,41 @@ import { useMediaQuery } from "react-responsive";
 import availableSeat from "@assets/images/purple_rectangle.png";
 import selectedSeat from "@assets/images/lightgrey_rectangle.png";
 import disabledSeat from "@assets/images/xed_grey_block.png";
+import { SELECT_SEATS } from "@/constants/text/UIText";
 
 interface SeatsInfoInfoProps {}
 
 const SeatsInfo: React.FC<SeatsInfoInfoProps> = ({}) => {
-  const isSmallWidthDevice = useMediaQuery(
-    { maxDeviceWidth: 350 }
-  );
+  const language = localStorage.getItem("language");
+  const isSmallWidthDevice = useMediaQuery({ maxDeviceWidth: 350 });
 
   return (
     <SeatsInfoContainer>
       <SeatsInfoItem className="Podo-Ticket-Body-B11">
         <SeatsImage src={selectedSeat} />
-        <SeatsDescription>{isSmallWidthDevice? '선택 가능': '선택 가능 좌석'}</SeatsDescription>
+        <SeatsDescription>
+          {language === "english"
+            ? SELECT_SEATS.english.availableSeat
+            : SELECT_SEATS.korean.availableSeat}
+        </SeatsDescription>
       </SeatsInfoItem>
 
       <SeatsInfoItem className="Podo-Ticket-Body-B11">
         <SeatsImage src={availableSeat} />
-        <SeatsDescription>{isSmallWidthDevice? '선택됨': '선택한 좌석'}</SeatsDescription>
+        <SeatsDescription>
+          {language === "english"
+            ? SELECT_SEATS.english.selectedSeat
+            : SELECT_SEATS.korean.selectedSeat}
+        </SeatsDescription>
       </SeatsInfoItem>
 
       <SeatsInfoItem className="Podo-Ticket-Body-B11">
         <SeatsImage src={disabledSeat} />
-        <SeatsDescription>{isSmallWidthDevice? '선택 불가능': '선택 불가능 좌석'}</SeatsDescription>
+        <SeatsDescription>
+          {language === "english"
+            ? SELECT_SEATS.english.UnavailableSeat
+            : SELECT_SEATS.korean.UnavailableSeat}
+        </SeatsDescription>
       </SeatsInfoItem>
     </SeatsInfoContainer>
   );

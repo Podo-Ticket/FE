@@ -2,11 +2,11 @@ import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
-import SingleSeat from "../SingleSeat";
+import SingleSeat from "@components/common/buttons/SingleSeat";
 import stage from "@assets/images/stage.png";
-import { HUMANITIES_SMALL_THEATER as theater } from "../../../../constants/venue/SeoulNationalUniv";
+import { HUMANITIES_SMALL_THEATER as theater } from "@/constants/venue/SeoulNationalUniv";
 
-import { fetchSeats } from "../../../../api/user/SelectSeatsApi";
+import { fetchSeats } from "@/api/user/SelectSeatsApi";
 
 interface SeatMapProps {
   isRealTime: boolean; // 실시간 모드 여부

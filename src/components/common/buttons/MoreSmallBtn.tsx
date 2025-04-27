@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 
 interface MoreSmallBtnProps {
-  content: string; // 버튼 안 내용
-  onClick: () => void; // 온 클릭 함수
-  isAvailable: boolean; // 버튼 동작 여부
-  isGray?: boolean; // 남색 버튼 여부
+  content: string;
+  onClick: () => void;
+  isAvailable: boolean; 
+  isGray?: boolean; 
 }
 
 const MoreSmallBtn: React.FC<MoreSmallBtnProps> = ({

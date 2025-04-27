@@ -13,6 +13,7 @@ import confirmIcon from "../../assets/images/confirm_icon.png";
 import backIcon from "../../assets/images/left_arrow.png";
 
 import { DateUtil } from "../../utils/DateUtil";
+import { TICKET_CONFIRMATION } from "@/constants/text/UIText";
 import {
   fetchTicketingInfo,
   handleTicketIssuance,
@@ -23,6 +24,7 @@ import {
 const TicketConfirmation = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const language = localStorage.getItem("language");
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -30,9 +32,9 @@ const TicketConfirmation = () => {
     new Promise((resolve) => setTimeout(resolve, ms));
 
   const [ticketInfo, setTicketInfo] = useState<TicketInfo>();
-  const selectedSeats = location.state ? location.state.selectedSeats : []; // 선택한 좌석
+  const selectedSeats = location.state ? location.state.selectedSeats : []; 
 
-  const [showTimeOutModal, setShowTimeOutModal] = useState<boolean>(false); // 모달 표시 여부
+  const [showTimeOutModal, setShowTimeOutModal] = useState<boolean>(false); 
 
   // 티켓 정보 가져오기
   useEffect(() => {
@@ -40,9 +42,8 @@ const TicketConfirmation = () => {
       try {
         const info = await fetchTicketingInfo();
         setTicketInfo(info);
-      } catch (error: any) {
-        console.error(error.message);
-      }
+        localStorage.setItem("isForceLogout", "false");
+      } catch (error: any) {}
     };
 
     loadTicketingInfo();
@@ -80,23 +81,21 @@ const TicketConfirmation = () => {
 
   // 뒤로가기 처리
   const handleBack = async () => {
+    if (localStorage.getItem("isForceLogout") === "true") return;
+
     try {
       const success = await cancelSeatSelection(); // API 호출
       if (success) {
         navigate("/select", { state: { from: "/confirm" } }); // 성공 시 선택 페이지로 이동
       } else {
-        console.log("이미 발권 신청이 완료되었습니다."); // 실패 메시지 설정
       }
-    } catch (error: any) {
-      console.error(error.message);
-      console.log("발권 신청을 취소하는 데 실패했습니다."); // 오류 메시지 설정
-    }
+    } catch (error: any) {}
   };
 
   // 티켓 발권 처리
   const handleIssuance = async () => {
     setIsLoading(true);
-    await delay(500); // 로딩 애니메이션 시간
+    await delay(500);
 
     try {
       const success = await handleTicketIssuance(selectedSeats);
@@ -108,13 +107,11 @@ const TicketConfirmation = () => {
         }, 1000);
       }
     } catch (error: any) {
-      console.error(error.message);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // 타이머를 3분으로 설정
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowTimeOutModal(true); // 3분 후 모달을 띄움
@@ -127,19 +124,18 @@ const TicketConfirmation = () => {
 
   return (
     <Container>
-      {/* Header */}
       <Header>
         <BackIcon src={backIcon} onClick={handleBack} />
       </Header>
 
-      {/* Main Content */}
       <TopContent>
         <Icon src={confirmIcon} alt="확인 아이콘" />
-        <Title className="Podo-Ticket-Headline-H2">선택한 좌석으로</Title>
-        <Title className="Podo-Ticket-Headline-H2">티켓 발권 해드릴까요?</Title>
-        <Warning className="Podo-Ticket-Body-B6">
-          발권 이후 좌석 변경은 불가합니다.
-        </Warning>
+        <Title className="Podo-Ticket-Headline-H2">
+          {language === "english"
+            ? TICKET_CONFIRMATION.english.doubleCheckIssue
+            : TICKET_CONFIRMATION.korean.doubleCheckIssue}
+        </Title>
+        <div style={{ height: "30px" }} />
       </TopContent>
 
       <Divider />
@@ -151,13 +147,17 @@ const TicketConfirmation = () => {
             poster={poster}
             dateTime={DateUtil.formatDate(ticketInfo.date)}
             location={ticketInfo.location}
-            seats={selectedSeats}
+            seats={ticketInfo.seats}
           />
         )}
 
         <ButtonContainer>
           <GetTicketBtn
-            content="티켓 발권"
+            content={
+              language === "english"
+                ? TICKET_CONFIRMATION.english.pickupBtn
+                : TICKET_CONFIRMATION.korean.pickupBtn
+            }
             onClick={handleIssuance}
             isAvailable={true}
           />
@@ -166,9 +166,21 @@ const TicketConfirmation = () => {
 
       <NoticeModal
         showNoticeModal={showTimeOutModal}
-        title="티켓 발권 시간이 만료되었습니다."
-        description="원하는 좌석을 다시 선택해주세요."
-        buttonContent="확인"
+        title={
+          language === "english"
+            ? TICKET_CONFIRMATION.english.TimeoutModalTitle
+            : TICKET_CONFIRMATION.korean.TimeoutModalTitle
+        }
+        description={
+          language === "english"
+            ? TICKET_CONFIRMATION.english.TimeoutModalSubitle
+            : TICKET_CONFIRMATION.korean.TimeoutModalSubitle
+        }
+        buttonContent={
+          language === "english"
+            ? TICKET_CONFIRMATION.english.TimeoutModalAccept
+            : TICKET_CONFIRMATION.korean.TimeoutModalAccept
+        }
         onAcceptFunc={() => {
           setShowTimeOutModal(false);
           navigate("/select");
@@ -191,15 +203,14 @@ const Container = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 40px;
   margin-left: 37px;
 
   @media (max-resolution: 2dppx) {
-    margin-top: 60px;
+    margin-top: 30px;
     margin-left: 55.5px;
   }
   @media (min-resolution: 3dppx) {
-    margin-top: 40px;
+    margin-top: 20px;
     margin-left: 37px;
   }
 `;
@@ -315,6 +326,7 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
 
+  width: 100%;
   margin-top: 30px;
 
   @media (max-resolution: 2dppx) {

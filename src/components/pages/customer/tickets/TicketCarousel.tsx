@@ -8,7 +8,7 @@ import TicketBackground from "@assets/images/ticket_background.svg?react";
 import poster from "@assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg";
 
 import { splitDateTime } from "../../../../utils/DateUtil";
-
+import { TICKET } from "@/constants/text/UIText";
 interface Ticket {
   id: string;
   title: string;
@@ -22,7 +22,7 @@ interface Ticket {
 
 interface TicketCarouselProps {
   ticketCount: number;
-  onActiveIndexChange: (index: number) => void; // active index 변경 시 호출되는 콜백
+  onActiveIndexChange: (index: number) => void;
   currentTicketInfo: Ticket;
   isOnSite: boolean;
 }
@@ -34,6 +34,7 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
   isOnSite,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const language = localStorage.getItem("language");
 
   const handleSlideChange = (swiper: any) => {
     const newIndex = swiper.activeIndex;
@@ -43,7 +44,6 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
 
   if (!currentTicketInfo) return null;
 
-  // 공연 날짜와 공연 시작시간 분리
   const result = splitDateTime(currentTicketInfo.dateTime);
 
   return (
@@ -65,7 +65,11 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
             }
           >
             <TicketCellBackground>
-              <TicketBackground width="100%" height="100%" preserveAspectRatio="none"/>
+              <TicketBackground
+                width="100%"
+                height="100%"
+                preserveAspectRatio="none"
+              />
             </TicketCellBackground>
 
             <TicketHeaderContainer>
@@ -99,7 +103,11 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
             <TicketInformation>
               <TopContent>
                 <ContentItem>
-                  <Category>공연 제목</Category>
+                  <Category>
+                    {language === "english"
+                      ? TICKET.english.performanceTitle
+                      : TICKET.korean.performanceTitle}
+                  </Category>
                   <PlayTitle>{currentTicketInfo.title}</PlayTitle>
                 </ContentItem>
               </TopContent>
@@ -107,22 +115,38 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
               <MiddleContent>
                 <MiddleLeftContent>
                   <ContentItem>
-                    <Category>공연 일자</Category>
+                    <Category>
+                      {language === "english"
+                        ? TICKET.english.performanceDate
+                        : TICKET.korean.performanceDate}
+                    </Category>
                     <Description>{result?.date}</Description>
                   </ContentItem>
 
                   <ContentItem>
-                    <Category>공연 장소</Category>
+                    <Category>
+                      {language === "english"
+                        ? TICKET.english.venue
+                        : TICKET.korean.venue}
+                    </Category>
                     <Description>{currentTicketInfo.location}</Description>
                   </ContentItem>
                 </MiddleLeftContent>
                 <MiddleRightContent>
                   <ContentItem>
-                    <Category>시작 시간</Category>
+                    <Category>
+                      {language === "english"
+                        ? TICKET.english.startTime
+                        : TICKET.korean.startTime}
+                    </Category>
                     <Description>{result?.time}</Description>
                   </ContentItem>
                   <ContentItem>
-                    <Category>관람 시간</Category>
+                    <Category>
+                      {language === "english"
+                        ? TICKET.english.runningTime
+                        : TICKET.korean.runningTime}
+                    </Category>
                     <Description>{currentTicketInfo.runningTime}분</Description>
                   </ContentItem>
                 </MiddleRightContent>
@@ -131,7 +155,12 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
               <DummyContent />
 
               <BottomContent>
-                <Category>좌석 번호</Category>
+                <Category>
+                  {" "}
+                  {language === "english"
+                    ? TICKET.english.seatNumber
+                    : TICKET.korean.seatNumber}
+                </Category>
                 <CurrentSeat>{currentTicketInfo.seat}</CurrentSeat>
               </BottomContent>
             </TicketInformation>
@@ -186,7 +215,7 @@ const TicketCellBackground = styled.div`
   position: absolute;
   top: 0px;
   left: 0px;
-  
+
   width: 100%;
   height: 100%;
 
@@ -202,7 +231,7 @@ const TicketHeaderContainer = styled.div`
   display: flex;
 
   width: calc(100% - 3px);
-  
+
   overflow: hidden;
   z-index: 2;
 

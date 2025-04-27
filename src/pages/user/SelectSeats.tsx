@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from "react-responsive";
 
 import TopNav from "@components/layout/headers/TopNav";
 import SelectSeatsInfo from "@components/pages/customer/selectSeats/SeatsInfo";
@@ -12,13 +12,15 @@ import { SELECT_FAIL } from "../../constants/text/ErrorMessage";
 import refreshIcon from "../../assets/images/refresh2_icon.png";
 
 import { fetchSeats, checkSeats } from "../../api/user/SelectSeatsApi";
+import { useLanguage } from "../../hooks/useLanguage";
+import { SELECT_SEATS } from "../../constants/text/UIText.ts";
 
-/* 각 극장에 맞는 SeatMap component로 설정 필요 */
-import RiveractSeatMap from "@components/common/buttons/SeatMap/UserSeatMap_Riveract";
-// import KwangwoonSeatMap from '../../components/button/SeatMap/UserSeatMap_Kwangwoon';
+import RiveractSeatMap from "@components/pages/customer/selectSeats/UserSeatMap_Riveract.tsx";
+// import KwangwoonSeatMap from '@components/pages/customer/selectSeats/UserSeatMap_Kwangwoon';
 
 function SelectSeats() {
   const navigate = useNavigate();
+  const { language } = useLanguage();
 
   const currentScheduleId = Number(localStorage.getItem("scheduleId")) || 0;
 
@@ -31,7 +33,7 @@ function SelectSeats() {
   const triggerRefresh = () => {
     setIsRefreshed((prev) => !prev);
     setSelectedSeats([]);
-  }
+  };
 
   // 예매 인원 수 확인 Api
   useEffect(() => {
@@ -72,31 +74,46 @@ function SelectSeats() {
       if (response.success) {
         navigate("/confirm", { state: { selectedSeats } });
       } else {
-        setIsAlreadySelectedModalOpen(true); 
+        setIsAlreadySelectedModalOpen(true);
       }
     } catch (error: any) {
       console.error(error.message);
     }
   };
 
-  const buttonText = `선택 완료 ${selectedSeats.length} / ${headCount}`;
+  const buttonText = `${
+    language === "english"
+      ? SELECT_SEATS.english.NextBtn
+      : SELECT_SEATS.korean.NextBtn
+  } ${selectedSeats.length} / ${headCount}`;
 
   const SmallWidthDevice = () => {
-    const isSmallWidthDevice = useMediaQuery({ maxDeviceWidth: 370 })
-    return isSmallWidthDevice ? "좌석 선택" : "좌석을 선택해주세요"
-  }
+    const isSmallWidthDevice = useMediaQuery({ maxDeviceWidth: 370 });
+    return isSmallWidthDevice
+      ? "좌석 선택"
+      : `${
+          language === "english"
+            ? SELECT_SEATS.english.pageTitle
+            : SELECT_SEATS.korean.pageTitle
+        }`;
+  };
 
   const righter = {
     icon: refreshIcon,
-    iconWidth: 17, 
-    iconHeight: 17, 
+    iconWidth: 17,
+    iconHeight: 17,
     text: SmallWidthDevice(),
     clickFunc: triggerRefresh,
   };
 
   return (
     <SelectSeatsContainer>
-      <TopNav lefter={undefined} center={righter} righter={righter} isGrey={true} />
+      <TopNav
+        lefter={undefined}
+        center={righter}
+        righter={righter}
+        isGrey={true}
+      />
 
       <SelectSeatsContentContainer>
         <SelectSeatsInfo />
@@ -110,8 +127,8 @@ function SelectSeats() {
             disabled={false}
             currentSelectedSeats={selectedSeats}
             setCurrentSelectedSeats={setSelectedSeats}
-            showErrorModal={setIsAlreadySelectedModalOpen} 
-            />
+            showErrorModal={setIsAlreadySelectedModalOpen}
+          />
         </SeatMapContainer>
 
         <LargeBtn

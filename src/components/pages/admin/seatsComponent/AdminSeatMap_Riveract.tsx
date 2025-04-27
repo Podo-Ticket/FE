@@ -6,12 +6,12 @@ import SingleSeat from "@components/common/buttons/SingleSeat";
 import AudienceInfo from "@components/pages/admin/realtimeSeats/AudienceInfo";
 
 import stage from "@assets/images/stage.png";
-import { HUMANITIES_SMALL_THEATER as theater } from "../../../../constants/venue/SeoulNationalUniv";
+import { HUMANITIES_SMALL_THEATER as theater } from "@/constants/venue/SeoulNationalUniv";
 
 import {
   fetchAdminSeats,
   fetchSeatAudience,
-} from "../../../../api/admin/RealtimeSeatsApi";
+} from "@/api/admin/RealtimeSeatsApi";
 
 // 좌석 정보 인터페이스
 interface Seat {
