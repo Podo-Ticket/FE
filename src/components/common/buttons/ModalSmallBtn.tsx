@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface SmallBtnProps {
   content: string; // 버튼 안 내용
-  onClick: () => void; // 온 클릭 함수
+  onClick?: () => void; // 온 클릭 함수
   isAvailable: boolean; // 버튼 동작 여부
   isDarkblue?: boolean; // 남색 버튼 여부
 }
@@ -37,11 +37,11 @@ const ModalSmallBtnContainer = styled.button<{
   justify-content: center;
   align-items: center;
 
-  width: 9.375rem;
+  width: 100%;
   height: 2.875rem;
 
   padding: 11px 48px;
-  border-radius: 15px;
+  border-radius: 10px;
   background: ${({ isAvailable, isDarkblue }) =>
     isDarkblue
       ? "var(--grey-3)"

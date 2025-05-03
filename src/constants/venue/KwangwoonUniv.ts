@@ -1,5 +1,5 @@
 interface RowsType {
-    [key: string]: number[]; // 키는 string, 값은 number 배열
+    [key: string]: number[];
 }
 
 export const SAEBIT_LARGE_LECTURE_ROOM_LEFTSIDE: RowsType = {

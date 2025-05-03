@@ -10,8 +10,14 @@ import thanksIcon from "@assets/images/check_icon.png";
 import surveyImage1 from "@assets/images/admin/landing_character_1.png";
 import surveyImage2 from "@assets/images/admin/landing_character_2.png";
 
-import { submitEvaluation, submitRecommand } from "../../../../api/user/TicketApi"; // API 호출 함수 가져오기
-import { fadeIn, fadeOut } from "../../../../styles/animation/DefaultAnimation.ts";
+import {
+  submitEvaluation,
+  submitRecommand,
+} from "../../../../api/user/TicketApi"; // API 호출 함수 가져오기
+import {
+  fadeIn,
+  fadeOut,
+} from "../../../../styles/animation/DefaultAnimation.ts";
 
 interface SurveyModalProps {
   showSurveyModal: boolean;
@@ -29,8 +35,8 @@ const SurveyModal: React.FC<SurveyModalProps> = ({
   };
 
   const [activeTab, setActiveTab] = useState<string>("1");
-  const [selectedRating1, setSelectedRating1] = useState<number | 0>(0); // 첫 번째 별점
-  const [selectedRating2, setSelectedRating2] = useState<number | 0>(0); // 초기값 설정
+  const [selectedRating1, setSelectedRating1] = useState<number | 0>(0);
+  const [selectedRating2, setSelectedRating2] = useState<number | 0>(0);
 
   const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedRating2(Number(event.target.value));
@@ -38,14 +44,14 @@ const SurveyModal: React.FC<SurveyModalProps> = ({
 
   const handleNext = () => {
     setActiveTab((prevTab) => {
-      const nextTab = (parseInt(prevTab) + 1).toString(); // 현재 탭 + 1
+      const nextTab = (parseInt(prevTab) + 1).toString();
       return nextTab;
     });
   };
 
   const handleClose = () => {
     setActiveTab((prevTab) => {
-      const nextTab = (parseInt(prevTab) - 1).toString(); // 현재 탭 + 1
+      const nextTab = (parseInt(prevTab) - 1).toString();
       return nextTab;
     });
   };
@@ -53,32 +59,26 @@ const SurveyModal: React.FC<SurveyModalProps> = ({
   const handleSubmit1 = async () => {
     try {
       if (selectedRating1 !== 0) {
-        const result = await submitEvaluation(selectedRating1); // API 호출
-        console.log("응답 성공:", result);
-        handleNext(); // 다음 단계로 이동
+        await submitEvaluation(selectedRating1);
+        handleNext();
       }
-    } catch (error: any) {
-      console.error("응답 실패:", error.message);
-    }
+    } catch (error: any) {}
   };
 
   const handleSubmit2 = async () => {
     try {
       if (selectedRating1 !== 0) {
-        const result = await submitRecommand(selectedRating2); // API 호출
-        console.log("응답 성공:", result);
-        handleNext(); // 다음 단계로 이동
+        await submitRecommand(selectedRating2);
+        handleNext();
       }
-    } catch (error: any) {
-      console.error("응답 실패:", error.message);
-    }
+    } catch (error: any) {}
   };
 
   if (!showSurveyModal) return null;
 
   const renderContent = () => {
     switch (activeTab) {
-      case "1": // 두 번째 설문: 첫 번째 별점 선택
+      case "1":
         return (
           <StarContent>
             <StarContentHeader>
@@ -141,7 +141,7 @@ const SurveyModal: React.FC<SurveyModalProps> = ({
           </StarContent>
         );
 
-      case "2": // 세 번째 설문: 두 번째 별점 선택
+      case "2":
         return (
           <SliderContent>
             <StarContentHeader>
@@ -197,7 +197,7 @@ const SurveyModal: React.FC<SurveyModalProps> = ({
           </SliderContent>
         );
 
-      case "3": // 마지막 단계: 감사 메시지 표시
+      case "3":
         return (
           <Content isClosing={isClosing} isThanksContent={true}>
             <ThanksContentContainer>
@@ -286,6 +286,7 @@ const StarContent = styled.div`
   align-items: center;
 
   width: 22.0625rem;
+  height: 100%;
   background-color: var(--ect-white);
   border-radius: 10px;
 
@@ -350,6 +351,8 @@ const StarRatingContainer = styled.div`
   display: flex;
   flex-direction: column;
 
+  flex-grow: 1;
+
   gap: 5px;
 `;
 
@@ -360,6 +363,7 @@ const SliderContent = styled.div`
   align-items: center;
 
   width: 22.0625rem;
+  height: 100%;
   background-color: var(--ect-white);
   border-radius: 10px;
 
@@ -373,6 +377,7 @@ const SliderContent = styled.div`
 const SliderContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 
   width: 100%;
 
@@ -381,11 +386,11 @@ const SliderContainer = styled.div`
 `;
 
 interface SliderProps {
-  value: number; // value는 숫자 타입
+  value: number;
 }
 
 const SliderInput = styled.input.attrs<SliderProps>(() => ({
-  type: "range", // input의 기본 속성을 설정
+  type: "range",
 }))`
   -webkit-appearance: none; /* 기본 브라우저 스타일 제거 */
 
@@ -458,6 +463,8 @@ const RatingDescription = styled.div.attrs({
 
 const ButtonContainer = styled.div`
   display: flex;
+
+  width: 100%;
 
   gap: 20px;
   padding-bottom: 35px;

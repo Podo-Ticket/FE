@@ -8,6 +8,7 @@ import AuthModal from "@components/pages/customer/userHome/PhoneAuthModal.tsx";
 import Loading from "@components/common/loadings/Loading.tsx";
 import Success from "@components/common/loadings/Success.tsx";
 import TopNav from "@components/layout/headers/TopNav.tsx";
+import MultiLanguageHeader from "@components/layout/headers/MultiLanguageHeader.tsx";
 
 import poster from "../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg"; // 해당 공연에 맞는 상수값 적용 필요
 import homeTicket from "../../assets/images/home_ticket.png";
@@ -25,7 +26,6 @@ import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
 import { useNavigateTo } from "../../utils/NavigateUtil.ts";
 import { USER_HOME } from "../../constants/text/UIText.ts";
 import { useLanguage } from "../../hooks/useLanguage.ts";
-import MultiLanguageHeader from "@components/layout/headers/MultiLanguageHeader.tsx";
 
 const itemsPerPage = 8; // 한 페이지당 보여줄 개수
 
@@ -237,10 +237,9 @@ const UserHome: React.FC = () => {
               ))}
               <MoreDetailBtnContainer>
                 <MoreDetailBtn
-                  content="자세히 보기"
                   onClick={() => toggleFlip()}
                   isAvailable={true}
-                />
+                >자세히 보기</MoreDetailBtn>
               </MoreDetailBtnContainer>
             </DetailContainer>
 
@@ -353,24 +352,6 @@ const MainContainer = styled.div<{ backgroundImage: string }>`
   }
   @media (min-resolution: 3dppx) {
     padding: 0px 30px;
-  }
-`;
-
-const MainTitle = styled.h1`
-  padding: 30px 0;
-  padding-top: 40px;
-
-  z-index: 1;
-
-  color: var(--ect-white);
-
-  @media (max-resolution: 2dppx) {
-    padding: 45px 0;
-    padding-top: 60px;
-  }
-  @media (min-resolution: 3dppx) {
-    padding: 30px 0;
-    padding-top: 40px;
   }
 `;
 

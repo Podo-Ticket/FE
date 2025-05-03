@@ -1,28 +1,31 @@
-import React from "react";
+import React, { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import styled from "styled-components";
+import goFrontIcon from "@assets/images/lightgrey_right_arrow.png";
 
-import goFrontIcon from '@assets/images/lightgrey_right_arrow.png'
-
-interface SmallMoreBtnProps {
-  content: string; // 버튼 안 내용
-  onClick: () => void; // 온 클릭 함수
-  isAvailable: boolean; // 버튼 동작 여부
-  isUnderlined?: boolean; // 글자 밑줄 여부
+interface SmallMoreBtnProps
+  extends PropsWithChildren,
+    ButtonHTMLAttributes<HTMLButtonElement> {
+  isAvailable: boolean; 
+  isUnderlined?: boolean;
 }
 
 const SmallMoreBtn: React.FC<SmallMoreBtnProps> = ({
-  content,
-  onClick,
+  children,
   isAvailable,
   isUnderlined = false,
+  className = "",
+  ...props
 }) => {
+
+  const UnderlinedFont = isUnderlined ? "Podo-Ticket-Body-B10" : ""
+
   return (
     <SmallMoreBtnContainer
-      className={isUnderlined ? "Podo-Ticket-Body-B10" : "Podo-Ticket-Body-B7"}
-      onClick={onClick}
+      className={`${UnderlinedFont} ${className}`}
       disabled={!isAvailable}
+      {...props}
     >
-      <>{content}</>
+      <>{children}</>
       {isUnderlined ? undefined : (
         <Icon src={goFrontIcon} alt="Go Front Icon" />
       )}

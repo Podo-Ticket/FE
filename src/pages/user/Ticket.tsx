@@ -6,7 +6,11 @@ import TicketCarousel from "@components/pages/customer/tickets/TicketCarousel.ts
 import TopNav from "@components/layout/headers/TopNav.tsx";
 import TheaterInfoModal from "@components/common/modals/TheaterInfoModal.tsx";
 import FinishTicketingModal from "@components/common/modals/NoticeModal.tsx";
+import CancelTicketBtn from "@components/common/buttons/SmallMoreBtn.tsx";
+import GoSurveyModal from "@/components/common/modals/DefaultModal.tsx";
+import CancelTicketModal from "@/components/common/modals/DefaultModal.tsx";
 
+import surveyIcon from "../../assets/icons/ic_clipboard.svg";
 import infoIcon from "../../assets/images/info_icon.png";
 
 import { fetchTickets } from "../../api/user/TicketApi";
@@ -24,6 +28,10 @@ const Ticket = () => {
   const [, setIsSurveied] = useState(false);
   const [isFinshTicketingModalOpen, setIsFinishTicketingModalOpen] =
     useState(false);
+
+  const [isCancelTicketModalOpen, setIsCancelTicketModalOpen] = useState(false);
+
+  const [isGoSurveyModalOpen, setIsGoSurveyModalOpen] = useState(false);
 
   const [isTheaterInfoModalOpen, setIsTheaterInfoModalOpen] = useState(false);
 
@@ -90,6 +98,14 @@ const Ticket = () => {
   const navTitle =
     language === "english" ? TICKET.english.pageTitle : TICKET.korean.pageTitle;
 
+  const lefter = {
+    icon: surveyIcon,
+    iconWidth: 26,
+    iconHeight: 26,
+    text: navTitle,
+    clickFunc: () => setIsGoSurveyModalOpen(true),
+  };
+
   const righter = {
     icon: infoIcon,
     iconWidth: 26,
@@ -102,7 +118,7 @@ const Ticket = () => {
   return (
     <ViewContainer>
       <TopNavContainer>
-        <TopNav lefter={undefined} center={righter} righter={righter} />
+        <TopNav lefter={lefter} center={righter} righter={righter} />
         {isPopupVisible && (
           <SpeechBubble isClosing={isPopupClosing}>
             <div>
@@ -126,6 +142,14 @@ const Ticket = () => {
           currentTicketInfo={currentTicket}
           isOnSite={isOnSite}
         />
+
+        <CancelTicketBtn
+          onClick={() => setIsCancelTicketModalOpen(true)}
+          isAvailable={true}
+          className="Podo-Ticket-Headline-H5"
+        >
+          발권 취소
+        </CancelTicketBtn>
       </TicketCarouselContainer>
 
       <TheaterInfoModal
@@ -152,6 +176,22 @@ const Ticket = () => {
             : TICKET.korean.issuedModalAccept
         }
         onAcceptFunc={closeFinishTicketingModal}
+      />
+
+      <GoSurveyModal
+        showDefaultModal={isGoSurveyModalOpen}
+        title="포도티켓 서비스를 평가해주시겠어요?"
+        description="여러분의 소중한 의견은 서비스 개선에 큰 도움이 됩니다!"
+        onAcceptFunc={() => navigate("/survey")}
+        onUnacceptFunc={() => setIsGoSurveyModalOpen(false)}
+      />
+
+      <CancelTicketModal
+        showDefaultModal={isCancelTicketModalOpen}
+        title="발권 취소하시겠습니까?"
+        description="발권된 좌석 모두 취소됩니다."
+        onAcceptFunc={undefined}
+        onUnacceptFunc={() => setIsCancelTicketModalOpen(false)}
       />
     </ViewContainer>
   );

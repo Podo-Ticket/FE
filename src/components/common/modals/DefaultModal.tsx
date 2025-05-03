@@ -1,39 +1,48 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
-import ModalSmallBtn from '@components/common/buttons/ModalSmallBtn.tsx';
+import ModalSmallBtn from "@components/common/buttons/ModalSmallBtn.tsx";
 
-import { fadeIn, fadeOut } from '../../../styles/animation/DefaultAnimation.ts'
+import { fadeIn, fadeOut } from "../../../styles/animation/DefaultAnimation.ts";
 
 interface DefaultModalProps {
   showDefaultModal: boolean;
   title: string;
   description: string;
-  onAcceptFunc: () => void;
+  onAcceptFunc?: () => void;
   onUnacceptFunc: () => void;
   noOverlay?: boolean;
 }
 
-const DefaultModal: React.FC<DefaultModalProps> = ({ showDefaultModal, title, description, onAcceptFunc, onUnacceptFunc, noOverlay = false }) => {
+const DefaultModal: React.FC<DefaultModalProps> = ({
+  showDefaultModal,
+  title,
+  description,
+  onAcceptFunc,
+  onUnacceptFunc,
+  noOverlay = false,
+}) => {
   const [isClosing, setIsClosing] = useState(false);
 
   if (!showDefaultModal) return null;
 
   const handleUnacceptClick = () => {
-    setIsClosing(true); // 페이드아웃 애니메이션 시작
+    setIsClosing(true);
     setTimeout(() => {
-      setIsClosing(false); // 상태 초기화
-      onUnacceptFunc(); // 애니메이션 종료 후 닫기 함수 호출
-    }, 300); // 애니메이션 시간과 동일하게 설정
+      setIsClosing(false);
+      onUnacceptFunc();
+    }, 300);
   };
 
   return (
     <Overlay noOverlay={noOverlay}>
-      <Content isClosing={isClosing} isExpand={description === ''}>
-        <Title className='Podo-Ticket-Headline-H3'>{title}</Title>
-        {description === '' ? undefined :
-          <Description className='Podo-Ticket-Body-B5'>{description}</Description>
-        }
+      <Content isClosing={isClosing} isExpand={description === ""}>
+        <Title className="Podo-Ticket-Headline-H3">{title}</Title>
+        {description === "" ? undefined : (
+          <Description className="Podo-Ticket-Body-B5">
+            {description}
+          </Description>
+        )}
 
         <ButtonContainer>
           <ModalSmallBtn
@@ -44,7 +53,7 @@ const DefaultModal: React.FC<DefaultModalProps> = ({ showDefaultModal, title, de
           />
           <ModalSmallBtn
             content="확인"
-            onClick={onAcceptFunc}
+            onClick={onAcceptFunc || undefined}
             isAvailable={true}
             isDarkblue={false}
           />
@@ -62,7 +71,8 @@ const Overlay = styled.div<{ noOverlay: boolean }>`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: ${({ noOverlay }) => (noOverlay ? 'rgba(0, 0, 0, 0.0)' : 'rgba(0, 0, 0, 0.6)')};
+  background-color: ${({ noOverlay }) =>
+    noOverlay ? "rgba(0, 0, 0, 0.0)" : "rgba(0, 0, 0, 0.6)"};
 
   display: flex;
   justify-content: center;
@@ -70,12 +80,12 @@ const Overlay = styled.div<{ noOverlay: boolean }>`
   z-index: 10000;
 `;
 
-const Content = styled.div<{ isClosing: boolean, isExpand: boolean }>`
+const Content = styled.div<{ isClosing: boolean; isExpand: boolean }>`
   display: flex;
   justify-content: center;
   flex-direction: column;
 
-  width: 20.1875rem;
+  width: 90%;
   background: var(--ect-white);
   border-radius: 10px;
 
@@ -84,7 +94,8 @@ const Content = styled.div<{ isClosing: boolean, isExpand: boolean }>`
 
   text-align: center;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
+  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s
+    ease-in-out;
 `;
 
 const Title = styled.h2`
