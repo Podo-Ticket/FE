@@ -113,7 +113,11 @@ const UserHome: React.FC = () => {
                     {playInfo.title}
                   </ShowDetailsTitle>
                   <ShowDetailsSubtitle className="Podo-Ticket-Body-B5">
-                    <Subtitle className="Podo-Ticket-Body-B9">회차</Subtitle>
+                    <Subtitle className="Podo-Ticket-Body-B9">
+                      {language === "english"
+                        ? USER_HOME.english.time
+                        : USER_HOME.korean.time}
+                    </Subtitle>
                     {DateUtil.formatDate(performanceSession)}
                   </ShowDetailsSubtitle>
                 </>

@@ -79,6 +79,7 @@ You have the right to refuse consent to the collection and use of personal infor
 export const USER_HOME = {
   korean: {
     pickupBtn: "티켓 발권",
+    time: "회차",
     authModalTitle: "예매 정보 확인",
     authInputPlaceholder: "전화번호를 입력해 주세요.",
     authCheckbox: "개인정보 수집 동의",
@@ -95,6 +96,7 @@ export const USER_HOME = {
   },
   english: {
     pickupBtn: "Issue Ticket",
+    time: "Time",
     authModalTitle: "Check Reservation Details",
     authInputPlaceholder: "Please Enter Your Phone Number",
     authCheckbox: "Consent to Personal Data Collection",
