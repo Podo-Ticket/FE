@@ -310,7 +310,6 @@ const ViewMainContainer = styled.div`
   flex-direction: column;
 
   margin: 0 auto;
-
 `;
 
 const AppTitle = styled.div`
@@ -335,7 +334,6 @@ const MainContainer = styled.div`
   display: flex;
   align-items: center;
   height: ${pxToPercent(255, 557)};
-
 `;
 
 const TextContainer = styled.div`
@@ -346,7 +344,6 @@ const TextContainer = styled.div`
   margin-left: ${pxToVw(5)};
 
   height: ${pxToPercent(115, 255)};
-
 `;
 
 const MainText = styled.div`
@@ -365,7 +362,6 @@ const LiveSeatButton = styled.button`
   background: var(--purple-4);
   border: none;
   color: var(--ect-white);
-
 `;
 
 const ButtonText = styled.div`

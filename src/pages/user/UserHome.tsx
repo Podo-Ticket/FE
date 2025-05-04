@@ -166,82 +166,26 @@ const UserHome: React.FC = () => {
   return (
     <MainContainer backgroundImage={poster}>
       <MultiLanguageHeader clickLanguage={toggleLanguage} />
-
       <PosterDetailsContainer>
-        <Card isFlipped={isFlipped}>
-          <CardFront>
-            <CardBackgroundImage src={homeTicket} alt="배경 이미지" />
+        <CardFront>
+          <CardBackGround />
 
-            <TicketHeaderContainer>
-              <Poster src={poster} alt="공연 포스터" />
-              <ImageOverlay />
-              <ShowDetails>
-                {playInfo && (
-                  <>
-                    <ShowDetailsTitle className="Podo-Ticket-Headline-H1">
-                      {playInfo.title}
-                    </ShowDetailsTitle>
-                    <ShowDetailsSubtitle className="Podo-Ticket-Body-B5">
-                      {DateUtil.formatDate(performanceSession)}
-                    </ShowDetailsSubtitle>
-                  </>
-                )}
-              </ShowDetails>
-            </TicketHeaderContainer>
+          <Poster src={poster} alt="공연 포스터" />
 
-            <DetailContainer>
-              {BASE_PERFORMANCE_INFO.map((item, index) => (
-                <FrontCardInfoItem key={index}>
-                  <InfoCategory className="Podo-Ticket-Body-B9">
-                    {item.category}
-                  </InfoCategory>
-                  <InfoContent className="Podo-Ticket-Body-B7">
-                    {Array.isArray(item.content) ? (
-                      <>
-                        {/* Show only the first 4 items */}
-                        {item.content
-                          .slice(0, 4)
-                          .map((contentItem, contentIndex, arr) => (
-                            <span key={contentIndex}>
-                              {contentItem}
-                              {contentIndex !== arr.length - 1 && <>,&nbsp;</>}
-                            </span>
-                          ))}
-                        {/* Show "More" button if content has more than 4 items */}
-                        {item.content.length > 4 && (
-                          <div style={{ position: "relative" }}>
-                            ..
-                            <MoreBtn
-                              content="더보기" // 버튼 안 내용
-                              isAvailable={true} // 버튼 동작 여부
-                              onClick={togglePopup}
-                              isUnderlined={true}
-                            />
-                            {isPopupVisible && (
-                              <SpeechBubble
-                                ref={popupRef}
-                                isClosing={isPopupClosing}
-                              >
-                                <div>박도현, 박세웅, 오지우, 윤가은</div>
-                                <div>이윤하</div>
-                              </SpeechBubble>
-                            )}
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      item.content
-                    )}
-                  </InfoContent>
-                </FrontCardInfoItem>
-              ))}
-              <MoreDetailBtnContainer>
-                <MoreDetailBtn
-                  onClick={() => toggleFlip()}
-                  isAvailable={true}
-                >자세히 보기</MoreDetailBtn>
-              </MoreDetailBtnContainer>
-            </DetailContainer>
+          <TicketBottomContainer>
+            <ShowDetails>
+              {playInfo && (
+                <>
+                  <ShowDetailsTitle className="Podo-Ticket-Headline-H1">
+                    {playInfo.title}
+                  </ShowDetailsTitle>
+                  <ShowDetailsSubtitle className="Podo-Ticket-Body-B5">
+                    <Subtitle className="Podo-Ticket-Body-B9">회차</Subtitle>
+                    {DateUtil.formatDate(performanceSession)}
+                  </ShowDetailsSubtitle>
+                </>
+              )}
+            </ShowDetails>
 
             <DetailBtnContainer>
               <GetTicketBtn
@@ -254,88 +198,179 @@ const UserHome: React.FC = () => {
                 isAvailable={true}
               />
             </DetailBtnContainer>
-          </CardFront>
-
-          <CardBack>
-            <CardBackgroundImage src={homeTicket} alt="배경 이미지" />
-            <NavBar
-              lefter={lefter}
-              center={lefter}
-              righter={undefined}
-              customStyles={{
-                borderRadius: "20px 20px 0px 0px",
-                background: "transparent",
-                height: "60px",
-              }}
-              font="Podo-Ticket-Headline-H5"
-            />
-
-            <BackDetailContainer>
-              {DETAILED_PERFORMANCE_INFO.slice(
-                currentPage * itemsPerPage,
-                (currentPage + 1) * itemsPerPage
-              ).map((item, index) => (
-                <FrontCardInfoItem key={index}>
-                  <InfoCategory className="Podo-Ticket-Body-B9 ">
-                    {item.category}
-                  </InfoCategory>
-                  <BackInfoContent className=" Podo-Ticket-Body-B7">
-                    {Array.isArray(item.content)
-                      ? item.content.join(", ")
-                      : item.content}
-                  </BackInfoContent>
-                </FrontCardInfoItem>
-              ))}
-            </BackDetailContainer>
-            <PaginationContainer>
-              <PaginationButton
-                onClick={handlePrevPage}
-                disabled={currentPage === 0}
-              >
-                ◀
-              </PaginationButton>
-              <PageIndicator className="Podo-Ticket-Body-B7 ">
-                {currentPage + 1} / {totalPages}
-              </PageIndicator>
-              <PaginationButton
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages - 1}
-              >
-                ▶
-              </PaginationButton>
-            </PaginationContainer>
-          </CardBack>
-        </Card>
+          </TicketBottomContainer>
+        </CardFront>
       </PosterDetailsContainer>
-
-      <AuthModal
-        showPhoneModal={modals.authModal}
-        scheduleId={scheduleId}
-        onAcceptFunc={handleAuthModalAccept}
-        onUnacceptFunc={() => toggleModal("authModal", false, setModals)}
-      />
-
-      <Loading showLoading={modals.loading} />
-      <Success showSuccess={modals.success} />
     </MainContainer>
+    // <MainContainer backgroundImage={poster}>
+    //   <MultiLanguageHeader clickLanguage={toggleLanguage} />
+    //   <PosterDetailsContainer>
+
+    //     <Card isFlipped={isFlipped}>
+    //       <CardFront>
+    //         <CardBackgroundImage src={homeTicket} alt="배경 이미지" />
+
+    //         <TicketHeaderContainer>
+    //           <Poster src={poster} alt="공연 포스터" />
+    //           <ImageOverlay />
+    //           <ShowDetails>
+    //             {playInfo && (
+    //               <>
+    //                 <ShowDetailsTitle className="Podo-Ticket-Headline-H1">
+    //                   {playInfo.title}
+    //                 </ShowDetailsTitle>
+    //                 <ShowDetailsSubtitle className="Podo-Ticket-Body-B5">
+    //                   {DateUtil.formatDate(performanceSession)}
+    //                 </ShowDetailsSubtitle>
+    //               </>
+    //             )}
+    //           </ShowDetails>
+    //         </TicketHeaderContainer>
+
+    //         <DetailContainer>
+    //           {BASE_PERFORMANCE_INFO.map((item, index) => (
+    //             <FrontCardInfoItem key={index}>
+    //               <InfoCategory className="Podo-Ticket-Body-B9">
+    //                 {item.category}
+    //               </InfoCategory>
+    //               <InfoContent className="Podo-Ticket-Body-B7">
+    //                 {Array.isArray(item.content) ? (
+    //                   <>
+    //                     {/* Show only the first 4 items */}
+    //                     {item.content
+    //                       .slice(0, 4)
+    //                       .map((contentItem, contentIndex, arr) => (
+    //                         <span key={contentIndex}>
+    //                           {contentItem}
+    //                           {contentIndex !== arr.length - 1 && <>,&nbsp;</>}
+    //                         </span>
+    //                       ))}
+    //                     {/* Show "More" button if content has more than 4 items */}
+    //                     {item.content.length > 4 && (
+    //                       <div style={{ position: "relative" }}>
+    //                         ..
+    //                         <MoreBtn
+    //                           content="더보기" // 버튼 안 내용
+    //                           isAvailable={true} // 버튼 동작 여부
+    //                           onClick={togglePopup}
+    //                           isUnderlined={true}
+    //                         />
+    //                         {isPopupVisible && (
+    //                           <SpeechBubble
+    //                             ref={popupRef}
+    //                             isClosing={isPopupClosing}
+    //                           >
+    //                             <div>박도현, 박세웅, 오지우, 윤가은</div>
+    //                             <div>이윤하</div>
+    //                           </SpeechBubble>
+    //                         )}
+    //                       </div>
+    //                     )}
+    //                   </>
+    //                 ) : (
+    //                   item.content
+    //                 )}
+    //               </InfoContent>
+    //             </FrontCardInfoItem>
+    //           ))}
+    //           <MoreDetailBtnContainer>
+    //             <MoreDetailBtn
+    //               onClick={() => toggleFlip()}
+    //               isAvailable={true}
+    //             >자세히 보기</MoreDetailBtn>
+    //           </MoreDetailBtnContainer>
+    //         </DetailContainer>
+
+    //         <DetailBtnContainer>
+    //           <GetTicketBtn
+    //             content={
+    //               language === "english"
+    //                 ? USER_HOME.english.pickupBtn
+    //                 : USER_HOME.korean.pickupBtn
+    //             }
+    //             onClick={() => toggleModal("authModal", true, setModals)}
+    //             isAvailable={true}
+    //           />
+    //         </DetailBtnContainer>
+    //       </CardFront>
+
+    //       <CardBack>
+    //         <CardBackgroundImage src={homeTicket} alt="배경 이미지" />
+    //         <NavBar
+    //           lefter={lefter}
+    //           center={lefter}
+    //           righter={undefined}
+    //           customStyles={{
+    //             borderRadius: "20px 20px 0px 0px",
+    //             background: "transparent",
+    //             height: "60px",
+    //           }}
+    //           font="Podo-Ticket-Headline-H5"
+    //         />
+
+    //         <BackDetailContainer>
+    //           {DETAILED_PERFORMANCE_INFO.slice(
+    //             currentPage * itemsPerPage,
+    //             (currentPage + 1) * itemsPerPage
+    //           ).map((item, index) => (
+    //             <FrontCardInfoItem key={index}>
+    //               <InfoCategory className="Podo-Ticket-Body-B9 ">
+    //                 {item.category}
+    //               </InfoCategory>
+    //               <BackInfoContent className=" Podo-Ticket-Body-B7">
+    //                 {Array.isArray(item.content)
+    //                   ? item.content.join(", ")
+    //                   : item.content}
+    //               </BackInfoContent>
+    //             </FrontCardInfoItem>
+    //           ))}
+    //         </BackDetailContainer>
+    //         <PaginationContainer>
+    //           <PaginationButton
+    //             onClick={handlePrevPage}
+    //             disabled={currentPage === 0}
+    //           >
+    //             ◀
+    //           </PaginationButton>
+    //           <PageIndicator className="Podo-Ticket-Body-B7 ">
+    //             {currentPage + 1} / {totalPages}
+    //           </PageIndicator>
+    //           <PaginationButton
+    //             onClick={handleNextPage}
+    //             disabled={currentPage === totalPages - 1}
+    //           >
+    //             ▶
+    //           </PaginationButton>
+    //         </PaginationContainer>
+    //       </CardBack>
+    //     </Card>
+    //   </PosterDetailsContainer>
+
+    //   <AuthModal
+    //     showPhoneModal={modals.authModal}
+    //     scheduleId={scheduleId}
+    //     onAcceptFunc={handleAuthModalAccept}
+    //     onUnacceptFunc={() => toggleModal("authModal", false, setModals)}
+    //   />
+
+    //   <Loading showLoading={modals.loading} />
+    //   <Success showSuccess={modals.success} />
+    // </MainContainer>
   );
 };
 
 export default UserHome;
-
 const MainContainer = styled.div<{ backgroundImage: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  height: 100%;
-  padding: 0px 30px;
+  width: 100%;
+  height: 100svh;
+  padding: 0 8.39vw;
   background-image: ${({ backgroundImage }) => `url(${backgroundImage})`};
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  position: relative;
-  overflow: hidden;
 
   &::before {
     content: "";
@@ -346,132 +381,83 @@ const MainContainer = styled.div<{ backgroundImage: string }>`
     bottom: 0;
     background: var(--background-gradient-1);
   }
-
-  @media (max-resolution: 2dppx) {
-    padding: 0px 45px;
-  }
-  @media (min-resolution: 3dppx) {
-    padding: 0px 30px;
-  }
 `;
 
 const PosterDetailsContainer = styled.div`
   width: 100%;
-  height: 100%;
-
-  border-radius: 20px 20px 0px 0px;
-
-  z-index: 1;
-  perspective: 1000px;
+  height: 83.81svh;
 
   animation: ${slideUp} 0.5s ease-out;
-
-  @media (max-resolution: 2dppx) {
-    border-radius: 30px 30px 0px 0px;
-    perspective: 1500px;
-  }
-  @media (min-resolution: 3dppx) {
-    border-radius: 20px 20px 0px 0px;
-    perspective: 1000px;
-  }
-`;
-
-const Card = styled.div<{ isFlipped?: boolean }>`
-  position: relative;
-
-  width: 100%;
-  height: 100%;
-
-  transform-style: preserve-3d;
-  transition: transform 1s ease-in-out;
-
-  ${({ isFlipped }) =>
-    isFlipped &&
-    `
-    transform: rotateY(180deg);
-  `}
 `;
 
 const CardFront = styled.div`
-  position: absolute;
-
   display: flex;
   flex-direction: column;
-
   width: 100%;
   height: 100%;
-  backface-visibility: hidden;
-
-  z-index: 2;
-  transform: rotateY(0deg);
-  transform-style: preserve-3d;
-`;
-
-const CardBackgroundImage = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 110%;
-  border-radius: 20px 20px 0px 0px;
-
-  z-index: 2;
-
-  @media (max-resolution: 2dppx) {
-    border-radius: 30px 30px 0px 0px;
-  }
-  @media (min-resolution: 3dppx) {
-    border-radius: 20px 20px 0px 0px;
-  }
-`;
-
-const TicketHeaderContainer = styled.div`
   position: relative;
 
-  overflow: hidden;
-  z-index: 2;
+  -webkit-mask-image: radial-gradient(
+      circle at left 68.95%,
+      transparent 4.5%,
+      black 4.5%
+    ),
+    radial-gradient(circle at right 68.95%, transparent 4.5%, black 4.5%),
+    linear-gradient(white, white);
+  -webkit-mask-composite: destination-out;
+  -webkit-mask-repeat: no-repeat;
+
+  mask-image: radial-gradient(
+      circle at left 68.95%,
+      transparent 4.5%,
+      black 4.5%
+    ),
+    radial-gradient(circle at right 68.95%, transparent4.5%, black 4.5%),
+    linear-gradient(white, white);
+  mask-composite: exclude;
+  mask-repeat: no-repeat;
+`;
+
+const CardBackGround = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border-radius: 20px;
 `;
 
 const Poster = styled.img`
-  width: 100%;
-  height: 150px;
-
-  border-radius: 20px 20px 0px 0px;
+  position: relative;
+  height: 68.95%;
+  width: auto;
   object-fit: cover;
   object-position: center;
+  z-index: 0;
+  border-radius: 20px 20px 0 0;
+  border-bottom: 2px dashed var(--grey-grey-5, #9e9e9e);
 
-  @media (max-resolution: 2dppx) {
-    height: 225px;
-  }
-  @media (min-resolution: 3dppx) {
-    height: 150px;
-  }
+  // @media (max-resolution: 2dppx) {
+  //   height: 225px;
+  // }
+  // @media (min-resolution: 3dppx) {
+  //   height: 150px;
+  // }
 `;
 
-const ImageOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: calc(100% - 5px);
+const TicketBottomContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 31.05%;
+  z-index: 1;
 
-  width: 100%;
-  border-radius: 20px 20px 0px 0px;
-  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  gap: 18px;
 `;
 
 const ShowDetails = styled.div`
-  position: absolute;
-  top: calc(60%);
-  left: calc(50%);
-  transform: translate(-50%, -50%);
-
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  color: var(--ect-white);
+  gap: 10px;
 `;
 
 const ShowDetailsTitle = styled.div`
@@ -480,245 +466,440 @@ const ShowDetailsTitle = styled.div`
 `;
 
 const ShowDetailsSubtitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+
+  justify-content: center;
+
   white-space: nowrap; // 줄 바꿈 방지
+`;
+
+const Subtitle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-`;
+  border: 1px solid var(--grey-grey-3, #e2e2e2);
+  color: var(--grey-grey-6, #777);
 
-const DetailContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-
-  padding-left: 36px;
-  padding-top: 35px;
-  padding-right: 0px;
-  gap: 13px;
-
-  z-index: 2;
-
-  @media (max-resolution: 2dppx) {
-    padding-left: 54px;
-    padding-top: 52.5px;
-    padding-right: 0px;
-  }
-  @media (min-resolution: 3dppx) {
-    padding-left: 36px;
-    padding-top: 35px;
-    padding-right: 0px;
-  }
-`;
-
-const FrontCardInfoItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-
-  @media (max-resolution: 2dppx) {
-    gap: 24px;
-  }
-  @media (min-resolution: 3dppx) {
-    gap: 16px;
-  }
-`;
-
-const InfoCategory = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 59px;
+  padding: 0 3.7%;
   border-radius: 30px;
-  border: 1px solid var(--purple-9);
-  background: var(--ect-white);
-  white-space: nowrap;
-  color: var(--grey-6);
-
-  @media (max-resolution: 2dppx) {
-    width: 88.5px;
-    border-radius: 45px;
-  }
-  @media (min-resolution: 3dppx) {
-    width: 59px;
-    border-radius: 30px;
-    // padding-top:10px;
-  }
-`;
-
-const InfoContent = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  color: var(--grey-7);
-  white-space: nowrap; // 줄 바꿈 방지
-`;
-
-const BackInfoContent = styled.div`
-  color: var(--grey-7);
-`;
-
-const MoreDetailBtnContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding-right: 36px;
-  margin-top: 26px;
-
-  @media (max-resolution: 2dppx) {
-    padding-right: 54px;
-    margin-top: 39px;
-  }
-  @media (min-resolution: 3dppx) {
-    padding-right: 36px;
-    margin-top: 26px;
-  }
 `;
 
 const DetailBtnContainer = styled.div`
-  position: absolute;
-
-  bottom: 30px; /* 하단에서 30px 위로 위치 */
   width: 100%;
 
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
 
   z-index: 2;
-
-  @media (max-resolution: 2dppx) {
-    bottom: 45px; /* 하단에서 30px 위로 위치 */
-  }
-  @media (min-resolution: 3dppx) {
-    bottom: 30px; /* 하단에서 30px 위로 위치 */
-  }
 `;
 
 const GetTicketBtn = styled(MediumBtn)``;
 
-const CardBack = styled.div`
-  position: absolute; // 위치 고정
-  width: 100%;
-  height: 100%;
+// const MainContainer = styled.div<{ backgroundImage: string }>`;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
 
-  transform-style: preserve-3d;
-  transform: rotateY(180deg);
+//   height: 100svh;
 
-  overflow: visible;
-`;
+//   padding-top: env(safe-area-inset-top); /* 상단 안전 영역 */
+//   padding-left: 30px;
+//   padding-right: 30px;
 
-const NavBar = styled(TopNav)``;
+//   background-image: ${({ backgroundImage }) => `url(${backgroundImage})`};
+//   background-size: cover;
+//   background-position: center;
+//   background-repeat: no-repeat;
 
-const BackDetailContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  z-index: 2;
+//   position: relative;
+//   overflow: hidden;
+//   border: 1px solid var(--purple-9);
 
-  height: 100%;
+//   &::before {
+//     content: "";
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     background: var(--background-gradient-1);
+//   }
 
-  width: 100%;
+//   @media (max-resolution: 2dppx) {
+//     padding: 0px 45px;
+//   }
+// `;
 
-  overflow-y: auto;
-  overscroll-behavior: contain; // iOS 및 기타 브라우저 스크롤 동작 제어
+// const PosterDetailsContainer = styled.div`
+//   width: 100%;
+//   height: 100%;
 
-  -webkit-overflow-scrolling: touch; /* iOS에서 부드러운 스크롤 */
+//   border-radius: 20px 20px 0px 0px;
 
-  @media (max-resolution: 2dppx) {
-    padding: 30px 54px;
-    gap: 19.5px;
-  }
-  @media (min-resolution: 3dppx) {
-    padding: 20px 36px;
-    gap: 13px;
-  }
-`;
+//   z-index: 1;
+//   border: 1px solid var(--purple-9);
+//   perspective: 1000px;
 
-const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
-  isClosing: boolean;
-}>`
-  position: absolute;
-  top: 150%;
-  left: -8%;
-  transform: translateX(-50%);
+//   animation: ${slideUp} 0.5s ease-out;
 
-  width: 168px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+//   @media (max-resolution: 2dppx) {
+//     border-radius: 30px 30px 0px 0px;
+//     perspective: 1500px;
+//   }
 
-  padding: 10px 0;
-  padding-left: 10px;
-  padding-right: 0px;
+//   @media (min-resolution: 3dppx) {
+//     border-radius: 20px 20px 0px 0px;
+//     perspective: 1000px;
+//   }
+// `;
 
-  text-align: left;
-  color: var(--grey-6);
+// const Card = styled.div<{ isFlipped?: boolean }>`
+//   position: relative;
 
-  z-index: 10;
+//   width: 100%;
+//   height: 100%;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.3s
-    ease-in-out;
+//   transform-style: preserve-3d;
+//   transition: transform 1s ease-in-out;
 
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 75%;
-    transform: translateX(-50%);
-    border-width: 10px;
-    border-style: solid;
-    border-color: transparent transparent white transparent;
-  }
-`;
+//   ${({ isFlipped }) =>
+//     isFlipped &&
+//     `
+//     transform: rotateY(180deg);
+//   `}
+// `;
 
-const PaginationContainer = styled.div`
-  display: flex;
-  position: absolute;
-  bottom: 0;
-  top: 45%;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  z-index: 10;
+// const CardFront = styled.div`
+//   position: absolute;
 
-  @media (max-resolution: 2dppx) {
-    gap: 15px;
-  }
-  @media (min-resolution: 3dppx) {
-    gap: 10px;
-  }
-`;
+//   display: flex;
+//   flex-direction: column;
 
-const PaginationButton = styled.button`
-  padding: 8px 12px;
-  border: none;
-  background-color: var(--purple-9);
-  color: var(--grey-6);
+//   width: 100%;
+//   height: 100%;
+//   backface-visibility: hidden;
 
-  border-radius: 4px;
-  cursor: pointer;
+//   z-index: 2;
+//   transform: rotateY(0deg);
+//   transform-style: preserve-3d;
+// `;
 
-  z-index: 10;
-  &:disabled {
-    background-color: #fff;
-    cursor: not-allowed;
-  }
+// const CardBackgroundImage = styled.img`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
 
-  @media (max-resolution: 2dppx) {
-    padding: 12px 18px;
-    border-radius: 6px;
-  }
-  @media (min-resolution: 3dppx) {
-    padding: 8px 12px;
-    border-radius: 4px;
-  }
-`;
+//   width: 100%;
+//   height: 110%;
+//   border-radius: 20px 20px 0px 0px;
 
-const PageIndicator = styled.span`
-  color: var(--grey-7);
-`;
+//   z-index: 2;
+
+//   @media (max-resolution: 2dppx) {
+//     border-radius: 30px 30px 0px 0px;
+//   }
+//   @media (min-resolution: 3dppx) {
+//     border-radius: 20px 20px 0px 0px;
+//   }
+// `;
+
+// const TicketHeaderContainer = styled.div`
+//   position: relative;
+
+//   overflow: hidden;
+//   z-index: 2;
+// `;
+
+// const Poster = styled.img`
+//   width: 100%;
+//   height: 150px;
+
+//   border-radius: 20px 20px 0px 0px;
+//   object-fit: cover;
+//   object-position: center;
+
+//   @media (max-resolution: 2dppx) {
+//     height: 225px;
+//   }
+//   @media (min-resolution: 3dppx) {
+//     height: 150px;
+//   }
+// `;
+
+// const ImageOverlay = styled.div`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   height: calc(100% - 5px);
+
+//   width: 100%;
+//   border-radius: 20px 20px 0px 0px;
+//   background-color: rgba(0, 0, 0, 0.5);
+// `;
+
+// const ShowDetails = styled.div`
+//   position: absolute;
+//   top: calc(60%);
+//   left: calc(50%);
+//   transform: translate(-50%, -50%);
+
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+
+//   color: var(--ect-white);
+// `;
+
+// const ShowDetailsTitle = styled.div`
+//   white-space: nowrap; // 줄 바꿈 방지
+//   text-align: center;
+// `;
+
+// const ShowDetailsSubtitle = styled.div`
+//   white-space: nowrap; // 줄 바꿈 방지
+//   text-align: center;
+// `;
+
+// const DetailContainer = styled.div`
+//   position: relative;
+//   display: flex;
+//   flex-direction: column;
+
+//   padding-left: 36px;
+//   padding-top: 35px;
+//   padding-right: 0px;
+//   gap: 13px;
+
+//   z-index: 2;
+
+//   @media (max-resolution: 2dppx) {
+//     padding-left: 54px;
+//     padding-top: 52.5px;
+//     padding-right: 0px;
+//   }
+//   @media (min-resolution: 3dppx) {
+//     padding-left: 36px;
+//     padding-top: 35px;
+//     padding-right: 0px;
+//   }
+// `;
+
+// const FrontCardInfoItem = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 16px;
+
+//   @media (max-resolution: 2dppx) {
+//     gap: 24px;
+//   }
+//   @media (min-resolution: 3dppx) {
+//     gap: 16px;
+//   }
+// `;
+
+// const InfoCategory = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+
+//   width: 59px;
+//   border-radius: 30px;
+//   border: 1px solid var(--purple-9);
+//   background: var(--ect-white);
+//   white-space: nowrap;
+//   color: var(--grey-6);
+
+//   @media (max-resolution: 2dppx) {
+//     width: 88.5px;
+//     border-radius: 45px;
+//   }
+//   @media (min-resolution: 3dppx) {
+//     width: 59px;
+//     border-radius: 30px;
+//     // padding-top:10px;
+//   }
+// `;
+
+// const InfoContent = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+
+//   color: var(--grey-7);
+//   white-space: nowrap; // 줄 바꿈 방지
+// `;
+
+// const BackInfoContent = styled.div`
+//   color: var(--grey-7);
+// `;
+
+// const MoreDetailBtnContainer = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+
+//   padding-right: 36px;
+//   margin-top: 26px;
+
+//   @media (max-resolution: 2dppx) {
+//     padding-right: 54px;
+//     margin-top: 39px;
+//   }
+//   @media (min-resolution: 3dppx) {
+//     padding-right: 36px;
+//     margin-top: 26px;
+//   }
+// `;
+
+// const DetailBtnContainer = styled.div`
+//   position: absolute;
+
+//   bottom: 30px; /* 하단에서 30px 위로 위치 */
+//   width: 100%;
+
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   flex-grow: 1;
+
+//   z-index: 2;
+
+//   @media (max-resolution: 2dppx) {
+//     bottom: 45px; /* 하단에서 30px 위로 위치 */
+//   }
+//   @media (min-resolution: 3dppx) {
+//     bottom: 30px; /* 하단에서 30px 위로 위치 */
+//   }
+// `;
+
+// const GetTicketBtn = styled(MediumBtn)``;
+
+// const CardBack = styled.div`
+//   position: absolute; // 위치 고정
+//   width: 100%;
+//   height: 100%;
+
+//   transform-style: preserve-3d;
+//   transform: rotateY(180deg);
+
+//   overflow: visible;
+// `;
+
+// const NavBar = styled(TopNav)``;
+
+// const BackDetailContainer = styled.div`
+//   position: relative;
+//   display: flex;
+//   flex-direction: column;
+//   z-index: 2;
+
+//   height: 100%;
+
+//   width: 100%;
+
+//   overflow-y: auto;
+//   overscroll-behavior: contain; // iOS 및 기타 브라우저 스크롤 동작 제어
+
+//   -webkit-overflow-scrolling: touch; /* iOS에서 부드러운 스크롤 */
+
+//   @media (max-resolution: 2dppx) {
+//     padding: 30px 54px;
+//     gap: 19.5px;
+//   }
+//   @media (min-resolution: 3dppx) {
+//     padding: 20px 36px;
+//     gap: 13px;
+//   }
+// `;
+
+// const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
+//   isClosing: boolean;
+// }>`
+//   position: absolute;
+//   top: 150%;
+//   left: -8%;
+//   transform: translateX(-50%);
+
+//   width: 168px;
+//   background: white;
+//   border: 1px solid #ddd;
+//   border-radius: 8px;
+//   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+//   padding: 10px 0;
+//   padding-left: 10px;
+//   padding-right: 0px;
+
+//   text-align: left;
+//   color: var(--grey-6);
+
+//   z-index: 10;
+
+//   animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.3s
+//     ease-in-out;
+
+//   &::after {
+//     content: "";
+//     position: absolute;
+//     bottom: 100%;
+//     left: 75%;
+//     transform: translateX(-50%);
+//     border-width: 10px;
+//     border-style: solid;
+//     border-color: transparent transparent white transparent;
+//   }
+// `;
+
+// const PaginationContainer = styled.div`
+//   display: flex;
+//   position: absolute;
+//   bottom: 0;
+//   top: 45%;
+//   justify-content: center;
+//   align-items: center;
+//   gap: 10px;
+//   width: 100%;
+//   z-index: 10;
+
+//   @media (max-resolution: 2dppx) {
+//     gap: 15px;
+//   }
+//   @media (min-resolution: 3dppx) {
+//     gap: 10px;
+//   }
+// `;
+
+// const PaginationButton = styled.button`
+//   padding: 8px 12px;
+//   border: none;
+//   background-color: var(--purple-9);
+//   color: var(--grey-6);
+
+//   border-radius: 4px;
+//   cursor: pointer;
+
+//   z-index: 10;
+//   &:disabled {
+//     background-color: #fff;
+//     cursor: not-allowed;
+//   }
+
+//   @media (max-resolution: 2dppx) {
+//     padding: 12px 18px;
+//     border-radius: 6px;
+//   }
+//   @media (min-resolution: 3dppx) {
+//     padding: 8px 12px;
+//     border-radius: 4px;
+//   }
+// `;
+
+// const PageIndicator = styled.span`
+//   color: var(--grey-7);
+// `;

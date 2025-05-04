@@ -18,7 +18,7 @@ const MultiLanguageHeader: React.FC<MultiLanguageHeaderProps> = ({
         <LogoName className="Podo-Ticket-Headline-H4">포도티켓</LogoName>
       </LeftSide>
 
-      <LanguageImage src={languageImage} onClick={clickLanguage}/>
+      <LanguageImage src={languageImage} onClick={clickLanguage} />
     </HeaderContainer>
   );
 };
@@ -33,11 +33,11 @@ const HeaderContainer = styled.nav`
 
   position: sticky;
   top: 0;
-
+  margin-top: 3.93%;
+  margin-bottom: 3.63%;
   width: 100%;
-  height: 140px;
 
-  padding: 0 10px;
+  padding: 0 7px;
 
   user-select: none; /* 텍스트 선택 방지 */
   -webkit-user-select: none; /* Safari에서 드래그 방지 */
