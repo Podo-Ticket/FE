@@ -15,6 +15,7 @@ import Splash from "./pages/Splash.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 
 import UserHome from "./pages/user/UserHome.tsx";
+import IssueTicket from "./pages/user/IssueTicket.tsx";
 import OnSiteReserve from "./pages/user/OnSiteReserve.tsx";
 import SelectSeats from "./pages/user/SelectSeats.tsx";
 import TicketConfirmation from "./pages/user/TicketConfirmation.tsx";
@@ -124,7 +125,7 @@ function App() {
   };
   useEffect(() => {
     if (showOnboardingModal) {
-      document.body.style.overflow = "hidden"; 
+      document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
@@ -144,7 +145,7 @@ function App() {
   }, [showSplash]);
   const handleSplashFinish = () => setShowSplash(false);
   if (showSplash) return <Splash onFinish={handleSplashFinish} />;
-  
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -160,6 +161,7 @@ function App() {
         <Routes location={location} key={location.pathname}>
           {/* User Routes */}
           <Route path="/" element={<UserHome />} />
+          <Route path="issue-ticket" element={<IssueTicket />} />
           <Route path="/reserve" element={<OnSiteReserve />} />
           <Route
             path="/select"

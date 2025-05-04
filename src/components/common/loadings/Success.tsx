@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import checkIcon from '@assets/images/check_icon.png';
+import checkIcon from "@assets/images/check_icon.png";
 
 interface LoadingModalProps {
   showSuccess: boolean;
@@ -31,7 +31,7 @@ const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 1000;
 `;
 
 const CompleteModal = styled.div`

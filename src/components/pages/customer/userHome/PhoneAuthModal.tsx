@@ -222,8 +222,8 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
         }
         description={
           language === "english"
-            ? PERSONAL_INFORMATION_AGREE_CONTENT.english
-            : PERSONAL_INFORMATION_AGREE_CONTENT.korean
+            ? PERSONAL_INFORMATION_AGREE_CONTENT.english.detail
+            : PERSONAL_INFORMATION_AGREE_CONTENT.korean.detail
         }
       />
 
