@@ -1,5 +1,7 @@
 export const PERSONAL_INFORMATION_AGREE_CONTENT = {
-  korean: `
+  korean: {
+    title: `개인정보 수집 약관동의 (필수)`,
+    detail: `
 개인정보보호법에 따라 <포도티켓>에 회원가입 하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및 이용목적, 개인정보의 보유 및 이용기간, 동의 거부권 및 동의 거부 시 불이익에 관한 사항을 안내해 드리오니 자세히 읽은 후 동의하여 주시기를 바랍니다.
 ■ 수집하는 개인정보 항목
 <포도티켓>은 회원 서비스 운영, 판매 상품 A/S, 주문 및 결제, 서비스 홍보 및 판매 권유를 위해 아래와 같은 개인정보를 수집하고 있습니다.
@@ -25,7 +27,10 @@ export const PERSONAL_INFORMATION_AGREE_CONTENT = {
 제공하는 항목: 이름, 전화번호
 보유 및 이용기간: 해당 계약 종료 시점 이전까지
 귀하는 위와 같이 개인정보를 수집 ∙ 이용하는데 동의를 거부할 권리가 있습니다. 필수 수집 항목에 대해 동의를 거절하는 경우 서비스 이용이 제한될 수 있습니다.`,
-  english: `
+  },
+  english: {
+    title: `Consent to Personal Data Collectio`,
+    detail: `
 In accordance with the Personal Information Protection Act, <PodoTicket> informs members registering on our platform about the items of personal information collected, the purposes of collection and use, the retention and usage period of the personal information, the right to refuse consent, and any disadvantages that may arise from such refusal. Please read the following carefully before giving your consent.
 
 ■ Items of Personal Information Collected
@@ -68,13 +73,14 @@ Items provided: Name, Phone number
 Retention and use period: Until the end of the relevant contract
 
 You have the right to refuse consent to the collection and use of personal information as described above. However, refusal to consent to required items may limit your ability to use the service.`,
+  },
 };
 
 export const USER_HOME = {
   korean: {
     pickupBtn: "티켓 발권",
     authModalTitle: "예매 정보 확인",
-    authInputPlaceholder: "전화번호를 입력해 주세요",
+    authInputPlaceholder: "전화번호를 입력해 주세요.",
     authCheckbox: "개인정보 수집 동의",
     authShowMore: "전문보기",
     personalDataModalTitle: "개인정보 수집 동의 약관",
@@ -84,9 +90,11 @@ export const USER_HOME = {
     noReserveDataModalTitle: "예약된 정보가 없습니다.",
     noReserveDataModalSubtitle: "현장 예매 페이지로 이동합니다.",
     noReserveDataModalAccept: "확인",
+    checkReservation: "예매 내역 확인",
+    acceptTerms: "약관 동의",
   },
   english: {
-    pickupBtn: "Ticket pickup",
+    pickupBtn: "Issue Ticket",
     authModalTitle: "Check Reservation Details",
     authInputPlaceholder: "Please Enter Your Phone Number",
     authCheckbox: "Consent to Personal Data Collection",
@@ -98,8 +106,12 @@ export const USER_HOME = {
     noReserveDataModalTitle: "No Reserved Information Available.",
     noReserveDataModalSubtitle: "Redirecting to the On-site Ticketing Page.",
     noReserveDataModalAccept: "OK",
+    checkReservation: "Check Reservation",
+    acceptTerms: "Agree to Terms",
   },
 };
+
+export const ISSUE_Ticket = {};
 
 export const SELECT_SEATS = {
   korean: {

@@ -26,7 +26,10 @@ import {
   submitReservation,
   ReservationRequest,
 } from "../../api/user/OnSiteReserveApi";
-import { ONSITE_RESERVE, PERSONAL_INFORMATION_AGREE_CONTENT } from "@/constants/text/UIText.ts";
+import {
+  ONSITE_RESERVE,
+  PERSONAL_INFORMATION_AGREE_CONTENT,
+} from "@/constants/text/UIText.ts";
 
 const reservationSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요."),
@@ -51,7 +54,7 @@ function OnSiteReserve() {
     Array<{ id: number; date_time: string; free_seats: number }>
   >([]);
 
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
   const handleCheckboxChange = () => {
@@ -348,8 +351,8 @@ function OnSiteReserve() {
         }
         description={
           language === "english"
-            ? PERSONAL_INFORMATION_AGREE_CONTENT.english
-            : PERSONAL_INFORMATION_AGREE_CONTENT.korean
+            ? PERSONAL_INFORMATION_AGREE_CONTENT.english.detail
+            : PERSONAL_INFORMATION_AGREE_CONTENT.korean.detail
         }
         overlaied={true}
       />
