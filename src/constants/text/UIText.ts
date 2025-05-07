@@ -115,6 +115,7 @@ export const MODAL = {
 
 export const USER_HOME = {
   korean: {
+    title: "포도티켓",
     pickupBtn: "티켓 발권",
     time: "회차",
     authModalTitle: "예매 정보 확인",
@@ -132,6 +133,7 @@ export const USER_HOME = {
     acceptTerms: "약관 동의",
   },
   english: {
+    title: "Podo Ticket",
     pickupBtn: "Issue Ticket",
     time: "Time",
     authModalTitle: "Check Reservation Details",
@@ -219,7 +221,6 @@ export const TICKET = {
     issuedSeatsCancelNotice: "발권된 좌석 모두 취소됩니다.",
     onSiteReservation: "현장 예매",
     advanceReservation: "사전 예매",
-
   },
   english: {
     pageTitle: "Ticket Information",
