@@ -115,7 +115,10 @@ const UserHome: React.FC = () => {
                         ? USER_HOME.english.time
                         : USER_HOME.korean.time}
                     </Subtitle>
-                    {DateUtil.formatDate(performanceSession, language)}
+                    <SubContents className="Podo-Ticket-Body-B7">
+                      {" "}
+                      {DateUtil.formatDate(performanceSession, language)}
+                    </SubContents>
                   </ShowDetailsSubtitle>
                 </>
               )}
@@ -253,6 +256,7 @@ const ShowDetailsSubtitle = styled.div`
   justify-content: center;
 
   white-space: nowrap; // 줄 바꿈 방지
+  color: var(--grey-grey7);
 `;
 
 const Subtitle = styled.div`
@@ -265,6 +269,12 @@ const Subtitle = styled.div`
 
   padding: 0 3.7%;
   border-radius: 30px;
+`;
+
+const SubContents = styled.span`
+  color: var(--grey-7);
+  display: flex;
+  align-items: center;
 `;
 
 const DetailBtnContainer = styled.div`
