@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 import logoImage from "@assets/icons/ic_logo.svg";
-import languageImage from "@assets/icons/ic_multilingual.svg";
-
+import languageImage1 from "@assets/icons/ic_language_en.svg";
+import languageImage2 from "@assets/icons/ic_language_ko.svg";
+import { Language } from "../../../constants/text/Language.ts";
 interface MultiLanguageHeaderProps {
   clickLanguage: () => void;
 }
@@ -11,6 +12,7 @@ interface MultiLanguageHeaderProps {
 const MultiLanguageHeader: React.FC<MultiLanguageHeaderProps> = ({
   clickLanguage,
 }) => {
+  const language = localStorage.getItem("language") as Language;
   return (
     <HeaderContainer>
       <LeftSide>
@@ -18,7 +20,10 @@ const MultiLanguageHeader: React.FC<MultiLanguageHeaderProps> = ({
         <LogoName className="Podo-Ticket-Headline-H4">포도티켓</LogoName>
       </LeftSide>
 
-      <LanguageImage src={languageImage} onClick={clickLanguage} />
+      <LanguageImage
+        src={language === Language.English ? languageImage2 : languageImage1}
+        onClick={clickLanguage}
+      />
     </HeaderContainer>
   );
 };
