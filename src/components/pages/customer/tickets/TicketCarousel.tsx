@@ -6,6 +6,7 @@ import "swiper/css";
 
 import TicketBackground from "@assets/images/ticket_background.svg?react";
 import poster from "@/assets/images/posters/2025_Spring_KwangwoonUniv_poster.png"; // 해당 공연에 맞는 상수값 적용 필요
+import { Language } from "@/constants/text/Language";
 
 import { splitDateTime } from "../../../../utils/DateUtil";
 import { TICKET } from "@/constants/text/UIText";
@@ -34,7 +35,10 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
   isOnSite,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const language = localStorage.getItem("language");
+  const language =
+    localStorage.getItem("language") === "english"
+      ? Language.English
+      : Language.Korean;
 
   const handleSlideChange = (swiper: any) => {
     const newIndex = swiper.activeIndex;
@@ -44,7 +48,8 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
 
   if (!currentTicketInfo) return null;
 
-  const result = splitDateTime(currentTicketInfo.dateTime);
+  console.log(currentTicketInfo.dateTime);
+  const result = splitDateTime(currentTicketInfo.dateTime, language);
 
   return (
     <TicketCarouselContainer>
@@ -147,7 +152,12 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
                         ? TICKET.english.runningTime
                         : TICKET.korean.runningTime}
                     </Category>
-                    <Description>{currentTicketInfo.runningTime}분</Description>
+                    <Description>
+                      {currentTicketInfo.runningTime}{" "}
+                      {language === "english"
+                        ? TICKET.english.minutes
+                        : TICKET.korean.minutes}
+                    </Description>
                   </ContentItem>
                 </MiddleRightContent>
               </MiddleContent>

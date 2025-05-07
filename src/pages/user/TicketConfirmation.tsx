@@ -21,11 +21,15 @@ import {
   TicketInfo,
   cancelSeatSelection,
 } from "../../api/user/TicketConfirmationApi";
+import { Language } from "../../constants/text/Language.ts";
 
 const TicketConfirmation = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const language = localStorage.getItem("language");
+  const language =
+    localStorage.getItem("language") === "english"
+      ? Language.English
+      : Language.Korean;
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -142,11 +146,12 @@ const TicketConfirmation = () => {
       <Divider />
 
       <BottomContent>
+        
         {ticketInfo && (
           <TicketConfirmCard
             title={ticketInfo.title}
             poster={poster}
-            dateTime={DateUtil.formatDate(ticketInfo.date)}
+            dateTime={DateUtil.formatDate(ticketInfo.date, language)}
             location={ticketInfo.location}
             seats={ticketInfo.seats}
           />
