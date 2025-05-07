@@ -4,11 +4,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import TopNav from "@components/layout/headers/TopNav";
 import PlaySessionPicker from "@components/layout/headers/PlaySessionPicker";
+import AdminSeatInfo from "@components/common/informations/AdminSeatInfo";
 import NoticeModal from "@components/common//modals/NoticeModal";
 import SingleManagelBtn from "@components/common/buttons/SmallBtn";
 import MultipleManagelBtn from "@components/common/buttons/SmallBtn";
 import SingleAcceptModal from "@components/common/modals/DefaultModal";
 import MultipleAcceptModal from "@components/common/modals/DefaultModal";
+import NoticeReservedSeatModal from "@components/pages/admin/manageLockingSeats/NoticeReservedSeatModal";
 
 import backIcon from "../../assets/images/admin/grey_left_arrow.png";
 import refreshIcon from "../../assets/images/refresh2_icon.png";
@@ -25,10 +27,8 @@ import {
   ReservedSeat,
 } from "../../api/admin/ManageLockingSeatsApi";
 
-/* 각 극장에 맞는 SeatMap component로 설정 필요 */
-import AdminSeatMap from "@components/pages/admin/seatsComponent/AdminSeatMap_Riveract";
-import NoticeReservedSeatModal from "@components/pages/admin/manageLockingSeats/NoticeReservedSeatModal";
-import AdminSeatInfo from "@components/common/informations/AdminSeatInfo";
+import AdminSeatMap from "@components/pages/admin/seatsComponent/AdminSeatMap_SeongbukVillageTheater";
+// import AdminSeatMap from "@components/pages/admin/seatsComponent/AdminSeatMap_Riveract";
 // import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_Kwangwoon';
 
 const ManageLockingSeats = () => {
