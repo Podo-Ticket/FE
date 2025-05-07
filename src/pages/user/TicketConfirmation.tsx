@@ -151,6 +151,7 @@ const TicketConfirmation = () => {
       <Divider />
 
       <BottomContent>
+        
         {ticketInfo && (
           <TicketConfirmCard
             title={ticketInfo.title}

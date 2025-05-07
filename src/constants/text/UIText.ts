@@ -219,6 +219,7 @@ export const TICKET = {
     issuedSeatsCancelNotice: "발권된 좌석 모두 취소됩니다.",
     onSiteReservation: "현장 예매",
     advanceReservation: "사전 예매",
+
   },
   english: {
     pageTitle: "Ticket Information",
