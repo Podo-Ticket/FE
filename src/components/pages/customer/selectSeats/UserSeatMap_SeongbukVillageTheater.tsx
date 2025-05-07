@@ -30,18 +30,16 @@ const SeatMap: React.FC<SeatMapProps> = ({
   setCurrentSelectedSeats,
 
   showErrorModal,
-  isRefreshed,
   disabled,
   scheduleId,
   headCount,
   isRealTime,
   onSeatEdit,
 }) => {
-  const seatMapRef = useRef(null);
+  const seatMapRef = useRef<HTMLDivElement>(null);
   const [seatMapWidth, setSeatMapWidth] = useState(0);
 
   useEffect(() => {
-    // SeatMapContent의 너비를 가져옴
     if (seatMapRef.current) {
       const width = seatMapRef.current.getBoundingClientRect().width;
       setSeatMapWidth(width);
@@ -50,7 +48,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
 
   const [unclickableSeats, setUnclickableSeats] = useState<string[]>([]);
   const [reservedSeats, setReservedSeats] = useState<string[]>([]);
-  const [lockedSeats, setLockedSeats] = useState<string[]>([]); // 잠금된 좌석 배열 추가
+  const [lockedSeats, setLockedSeats] = useState<string[]>([]);
 
   // 좌석 정보 가져오기
   const loadSeatMapSeats = async () => {
