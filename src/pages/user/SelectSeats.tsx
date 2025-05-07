@@ -15,7 +15,8 @@ import { fetchSeats, checkSeats } from "../../api/user/SelectSeatsApi";
 import { useLanguage } from "../../hooks/useLanguage";
 import { SELECT_SEATS } from "../../constants/text/UIText.ts";
 
-import RiveractSeatMap from "@components/pages/customer/selectSeats/UserSeatMap_Riveract.tsx";
+import SeongbukVillageTheaterSeatMap from "@components/pages/customer/selectSeats/UserSeatMap_SeongbukVillageTheater.tsx";
+// import RiveractSeatMap from "@components/pages/customer/selectSeats/UserSeatMap_Riveract.tsx";
 // import KwangwoonSeatMap from '@components/pages/customer/selectSeats/UserSeatMap_Kwangwoon';
 
 function SelectSeats() {
@@ -119,7 +120,7 @@ function SelectSeats() {
         <SelectSeatsInfo />
 
         <SeatMapContainer>
-          <RiveractSeatMap
+          <SeongbukVillageTheaterSeatMap
             isRealTime={false}
             isRefreshed={isRefreshed}
             scheduleId={5}

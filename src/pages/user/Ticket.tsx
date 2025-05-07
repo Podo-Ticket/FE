@@ -13,7 +13,7 @@ import CancelTicketModal from "@/components/common/modals/DefaultModal.tsx";
 import surveyIcon from "../../assets/icons/ic_clipboard.svg";
 import infoIcon from "../../assets/images/info_icon.png";
 
-import { fetchTickets } from "../../api/user/TicketApi";
+import { fetchTickets, deleteTickets } from "../../api/user/TicketApi.ts";
 import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
 import { ITicket } from "../../types/models/ticket.ts";
 import { TICKET } from "@/constants/text/UIText.ts";
@@ -38,7 +38,7 @@ const Ticket = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isPopupClosing, setIsPopupClosing] = useState(false);
 
-  // 티켓 정보 가져오기
+  // 티켓 정보 가져오기 API
   useEffect(() => {
     const loadTickets = async () => {
       try {
@@ -46,14 +46,20 @@ const Ticket = () => {
         setTickets(tickets);
         setIsSurveied(isSurveyed);
         setIsOnSite(isOnSite);
-        console.log(tickets);
       } catch (error) {
-        console.error("Error loading tickets:", error);
       }
     };
     loadTickets();
     setIsFinishTicketingModalOpen(true);
   }, []);
+
+  const cancelTicket = async () => {
+    try {
+      await deleteTickets();
+      navigate('/');
+    } catch (error) {
+    }
+  }
 
   // 티켓에서 뒤로가기를 누를 경우 '/'으로 리다이렉트
   useEffect(() => {
@@ -190,7 +196,7 @@ const Ticket = () => {
         showDefaultModal={isCancelTicketModalOpen}
         title="발권 취소하시겠습니까?"
         description="발권된 좌석 모두 취소됩니다."
-        onAcceptFunc={undefined}
+        onAcceptFunc={cancelTicket}
         onUnacceptFunc={() => setIsCancelTicketModalOpen(false)}
       />
     </ViewContainer>

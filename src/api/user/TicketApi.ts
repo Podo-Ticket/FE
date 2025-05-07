@@ -19,8 +19,6 @@ export const fetchTickets = async () => {
   try {
     const response = await api.get("/ticket/info");
 
-    console.log("response : ", response);
-
     // 티켓 데이터를 포맷팅하여 반환
     const formattedTickets = response.data.seats.map((seat: any) => ({
       id: `${seat.row}${seat.number}`, // 각 티켓의 ID 생성
@@ -42,6 +40,16 @@ export const fetchTickets = async () => {
   } catch (error) {
     console.error("Error fetching tickets:", error);
     throw new Error("티켓 정보를 가져오는 데 실패했습니다.");
+  }
+};
+
+// 발권 취소 API
+export const deleteTickets = async () => {
+  try {
+    const response = await api.delete(`/reservation`);
+    return response.data.success;
+  } catch (error: any) {
+    throw error.response?.data?.error || "예기치 않은 오류가 발생했습니다.";
   }
 };
 
