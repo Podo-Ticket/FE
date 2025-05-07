@@ -230,17 +230,16 @@ const TicketHeaderContainer = styled.div`
   position: relative;
   display: flex;
 
-  width: calc(100% - 3px);
+  width: calc(100%);
+  height: 28.5svh;
 
   overflow: hidden;
   z-index: 2;
-
-  transform: translate(1.5px, 0.8px); // 티켓 보라색 테두리 고려
 `;
 
 const Poster = styled.img`
-  width: calc(100%); // 티켓 보라색 테두리 고려
-  height: calc(135px); // 티켓 보라색 테두리 고려
+  width: 100%; // 티켓 보라색 테두리 고려
+  height: calc(100%); // 티켓 보라색 테두리 고려
   border-radius: 20px 20px 0px 0px;
 
   object-fit: cover;
