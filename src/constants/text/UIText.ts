@@ -186,6 +186,7 @@ export const TICKET = {
     venue: "티켓 장소",
     startTime: "시작 시간",
     runningTime: "관람 시간",
+    minutes:"분",
     seatNumber: "좌석 번호",
     popupMessage: "길을 못 찾겠다면?",
     issuedModalTitle: "발권 완료",
@@ -196,6 +197,7 @@ export const TICKET = {
     venueModalMap: "공연장 지도",
     venueModalGuidelines: "공연 유의사항",
     venueModalAccpet: "닫기",
+    ticketCancellation :"발권 취소"
   },
   english: {
     pageTitle: "Ticket Information",
@@ -204,6 +206,7 @@ export const TICKET = {
     venue: "Venue",
     startTime: "Start Time",
     runningTime: "Running Time",
+    minutes:"minutes",
     seatNumber: "Seat Number",
     popupMessage: "If you can't find your way?",
     issuedModalTitle: "Ticket Issued",
@@ -214,6 +217,7 @@ export const TICKET = {
     venueModalMap: "Venue Map",
     venueModalGuidelines: "Guidelines",
     venueModalAccpet: "OK",
+     ticketCancellation :"Ticket Cancellation"
   },
 };
 

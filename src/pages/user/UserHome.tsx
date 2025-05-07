@@ -11,6 +11,7 @@ import { DateUtil, getClosestDateTime } from "../../utils/DateUtil";
 import { useNavigateTo } from "../../utils/NavigateUtil.ts";
 import { USER_HOME } from "../../constants/text/UIText.ts";
 import { useLanguage } from "../../hooks/useLanguage.ts";
+import { Language } from "../../constants/text/Language.ts";
 
 const UserHome: React.FC = () => {
   const navigateTo = useNavigateTo();
@@ -54,13 +55,14 @@ const UserHome: React.FC = () => {
       }
     };
 
-    localStorage.setItem("language", "korean");
+    localStorage.setItem("language", Language.Korean);
     loadPlayInfo();
   }, []);
 
   const toggleLanguage = () => {
-    const current = localStorage.getItem("language");
-    const next = current === "korean" ? "english" : "korean";
+    const current = localStorage.getItem("language") as Language;
+    const next =
+      current === Language.Korean ? Language.English : Language.Korean;
     localStorage.setItem("language", next);
     setLanguage(next);
   };
@@ -107,11 +109,11 @@ const UserHome: React.FC = () => {
                   </ShowDetailsTitle>
                   <ShowDetailsSubtitle className="Podo-Ticket-Body-B5">
                     <Subtitle className="Podo-Ticket-Body-B9">
-                      {language === "english"
+                      {language === Language.English
                         ? USER_HOME.english.time
                         : USER_HOME.korean.time}
                     </Subtitle>
-                    {DateUtil.formatDate(performanceSession)}
+                    {DateUtil.formatDate(performanceSession, language)}
                   </ShowDetailsSubtitle>
                 </>
               )}
@@ -120,7 +122,7 @@ const UserHome: React.FC = () => {
             <DetailBtnContainer>
               <GetTicketBtn
                 content={
-                  language === "english"
+                  language === Language.English
                     ? USER_HOME.english.pickupBtn
                     : USER_HOME.korean.pickupBtn
                 }

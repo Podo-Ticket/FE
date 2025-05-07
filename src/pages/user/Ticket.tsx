@@ -46,8 +46,7 @@ const Ticket = () => {
         setTickets(tickets);
         setIsSurveied(isSurveyed);
         setIsOnSite(isOnSite);
-      } catch (error) {
-      }
+      } catch (error) {}
     };
     loadTickets();
     setIsFinishTicketingModalOpen(true);
@@ -56,10 +55,9 @@ const Ticket = () => {
   const cancelTicket = async () => {
     try {
       await deleteTickets();
-      navigate('/');
-    } catch (error) {
-    }
-  }
+      navigate("/");
+    } catch (error) {}
+  };
 
   // 티켓에서 뒤로가기를 누를 경우 '/'으로 리다이렉트
   useEffect(() => {
@@ -154,7 +152,9 @@ const Ticket = () => {
           isAvailable={true}
           className="Podo-Ticket-Headline-H5"
         >
-          발권 취소
+          {language === "english"
+            ? TICKET.english.ticketCancellation
+            : TICKET.korean.ticketCancellation}
         </CancelTicketBtn>
       </TicketCarouselContainer>
 
