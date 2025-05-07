@@ -16,7 +16,7 @@ import infoIcon from "../../assets/icons/ic_info.svg";
 import { fetchTickets, deleteTickets } from "../../api/user/TicketApi.ts";
 import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
 import { ITicket } from "../../types/models/ticket.ts";
-import { TICKET } from "@/constants/text/UIText.ts";
+import { TICKET, SERVICE_FEEDBACK_MESSAGES } from "@/constants/text/UIText.ts";
 
 const Ticket = () => {
   const navigate = useNavigate();
@@ -43,6 +43,7 @@ const Ticket = () => {
     const loadTickets = async () => {
       try {
         const { tickets, isSurveyed, isOnSite } = await fetchTickets();
+        console.log(tickets);
         setTickets(tickets);
         setIsSurveied(isSurveyed);
         setIsOnSite(isOnSite);
@@ -186,16 +187,32 @@ const Ticket = () => {
 
       <GoSurveyModal
         showDefaultModal={isGoSurveyModalOpen}
-        title="포도티켓 서비스를 평가해주시겠어요?"
-        description="여러분의 소중한 의견은 서비스 개선에 큰 도움이 됩니다!"
+        title={
+          language === "english"
+            ? SERVICE_FEEDBACK_MESSAGES.english.title
+            : SERVICE_FEEDBACK_MESSAGES.korean.title
+        }
+        description={
+          language === "english"
+            ? SERVICE_FEEDBACK_MESSAGES.english.description
+            : SERVICE_FEEDBACK_MESSAGES.korean.description
+        }
         onAcceptFunc={() => navigate("/survey")}
         onUnacceptFunc={() => setIsGoSurveyModalOpen(false)}
       />
 
       <CancelTicketModal
         showDefaultModal={isCancelTicketModalOpen}
-        title="발권 취소하시겠습니까?"
-        description="발권된 좌석 모두 취소됩니다."
+        title={
+          language === "english"
+            ? TICKET.english.cancelTicketConfirmation
+            : TICKET.korean.cancelTicketConfirmation
+        }
+        description={
+          language === "english"
+            ? TICKET.english.issuedSeatsCancelNotice
+            : TICKET.korean.issuedSeatsCancelNotice
+        }
         onAcceptFunc={cancelTicket}
         onUnacceptFunc={() => setIsCancelTicketModalOpen(false)}
       />

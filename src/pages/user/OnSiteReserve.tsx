@@ -19,6 +19,8 @@ import goBackIcon from "../../assets/images/left_arrow.png";
 import CheckedIcon from "../../assets/images/privacy_checked.png";
 import UncheckedIcon from "../../assets/images/privacy_unchecked.png";
 
+import { Language } from "../../constants/text/Language.ts";
+
 import { DateUtil } from "../../utils/DateUtil";
 import { fadeIn } from "../../styles/animation/DefaultAnimation.ts";
 import {
@@ -29,6 +31,7 @@ import {
 import {
   ONSITE_RESERVE,
   PERSONAL_INFORMATION_AGREE_CONTENT,
+  MODAL,
 } from "@/constants/text/UIText.ts";
 
 const reservationSchema = z.object({
@@ -48,7 +51,7 @@ type ReservationFormData = z.infer<typeof reservationSchema>;
 
 function OnSiteReserve() {
   const navigate = useNavigate();
-  const language = localStorage.getItem("language");
+  const language = localStorage.getItem("language") as Language;
 
   const [performanceSchedules, setPerformanceSchedules] = useState<
     Array<{ id: number; date_time: string; free_seats: number }>
@@ -288,9 +291,11 @@ function OnSiteReserve() {
               isSelect={true}
               options={filteredSchedules.map((schedule) => ({
                 value: schedule.id,
-                label: `${DateUtil.formatDate(schedule.date_time)} [여석: ${
-                  schedule.free_seats
-                }]`,
+                label: `${DateUtil.formatDate(schedule.date_time, language)} [${
+                  language === "english"
+                    ? ONSITE_RESERVE.english.availableSeats
+                    : ONSITE_RESERVE.korean.availableSeats
+                }: ${schedule.free_seats}]`,
               }))}
               value={field.value.toString()}
               onChangeFunc={(e) => field.onChange(Number(e.target.value))}
@@ -359,23 +364,41 @@ function OnSiteReserve() {
 
       <ErrorModal
         showDefaultErrorModal={isDuplicatePhoneModalOpen}
-        errorMessage="이미 예매 신청이 완료된 연락처입니다."
+        errorMessage={
+          language === "english"
+            ? ONSITE_RESERVE.english.alreadyReservedContactMessage
+            : ONSITE_RESERVE.korean.alreadyReservedContactMessage
+        }
         onAcceptFunc={() => setIsDuplicatePhoneModalOpen(false)}
         aboveButton={true}
       />
 
       <ErrorModal
         showDefaultErrorModal={isMaximumPersonModalOpen}
-        errorMessage="예약 가능 인원을 초과하였습니다."
+        errorMessage={
+          language === "english"
+            ? ONSITE_RESERVE.english.reservationLimitExceeded
+            : ONSITE_RESERVE.korean.reservationLimitExceeded
+        }
         onAcceptFunc={() => setIsMaximumPersonModalOpen(false)}
         aboveButton={true}
       />
 
       <NoticeModal
         showNoticeModal={isRejectedModalOpen}
-        title="예매 신청이 승인되지 않았습니다."
-        description="관리자에게 문의 부탁드립니다."
-        buttonContent="확인"
+        title={
+          language === "english"
+            ? ONSITE_RESERVE.english.failedModalTitle
+            : ONSITE_RESERVE.korean.failedModalTitle
+        }
+        description={
+          language === "english"
+            ? ONSITE_RESERVE.english.failedModalSubtitle
+            : ONSITE_RESERVE.korean.failedModalSubtitle
+        }
+        buttonContent={
+          language === "english" ? MODAL.english.ok : MODAL.korean.ok
+        }
         onAcceptFunc={() => setIsRejectedModalOpen(false)}
       />
     </OnSiteReserveContainer>

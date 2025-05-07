@@ -6,6 +6,8 @@ import { TICKET_CONFIRMATION } from "@/constants/text/UIText";
 interface TicketConfirmCardProps {
   poster: string;
   title: string;
+  en_title: string;
+  en_location: string;
   dateTime: string;
   location: string;
   seats: string[] | string;
@@ -14,8 +16,10 @@ interface TicketConfirmCardProps {
 const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
   poster,
   title,
+  en_title,
   dateTime,
   location,
+  en_location,
   seats,
 }) => {
   const language = localStorage.getItem("language");
@@ -34,7 +38,7 @@ const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
         </PosterContainer>
 
         <Details>
-          <Title>{title}</Title>
+          <Title> {language === "english" ? en_title : title}</Title>
           <DetailsRow>
             <Label>
               {" "}
@@ -51,7 +55,9 @@ const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
                 ? TICKET_CONFIRMATION.english.secondCategory
                 : TICKET_CONFIRMATION.korean.secondCategory}
             </Label>
-            <Text>{location}</Text>
+            <Text>   {language === "english"
+                ? en_location
+                : TICKET_CONFIRMATION.korean.secondCategory}</Text>
           </DetailsRow>
           <DetailsRow>
             <Label>

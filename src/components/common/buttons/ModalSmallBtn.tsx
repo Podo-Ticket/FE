@@ -42,6 +42,7 @@ const ModalSmallBtnContainer = styled.button<{
 
   padding: 11px 48px;
   border-radius: 10px;
+ 
   background: ${({ isAvailable, isDarkblue }) =>
     isDarkblue
       ? "var(--grey-3)"
