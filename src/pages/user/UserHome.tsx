@@ -2,19 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 
 import MediumBtn from "@components/common/buttons/MediumBtn.tsx";
-
 import MultiLanguageHeader from "@components/layout/headers/MultiLanguageHeader.tsx";
-
-import poster from "../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg"; // 해당 공연에 맞는 상수값 적용 필요
+import poster from "../../assets/images/posters/2025_Spring_KwangwoonUniv_poster.png"; // 해당 공연에 맞는 상수값 적용 필요
 
 import { fetchPlayInfo } from "../../api/user/UserHomeApi";
 import { slideUp } from "../../styles/animation/DefaultAnimation.ts";
-import {
-  BASE_PERFORMANCE_INFO,
-  DETAILED_PERFORMANCE_INFO,
-} from "../../constants/text/playInfo/24th_seoulnationalUniv_riveract.ts"; // 해당 공연에 맞는 상수값 적용 필요
 import { DateUtil, getClosestDateTime } from "../../utils/DateUtil";
-
 import { useNavigateTo } from "../../utils/NavigateUtil.ts";
 import { USER_HOME } from "../../constants/text/UIText.ts";
 import { useLanguage } from "../../hooks/useLanguage.ts";
@@ -24,13 +17,13 @@ const UserHome: React.FC = () => {
   const { language, setLanguage } = useLanguage();
 
   const [playInfo, setPlayInfo] = useState<any>(null);
-  const [scheduleId, setScheduleId] = useState<number | 0>(0);
+  const [, setScheduleId] = useState<number | 0>(0);
   const [performanceSession, setPerformanceSession] = useState<string | "">("");
 
   // 애니메이션 모달 선언 부
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [isPopupClosing, setIsPopupClosing] = useState(false);
+  const [, setIsPopupClosing] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null); // 팝업 요소를 참조하는 ref
 
   // 현재 공연 정보 반영

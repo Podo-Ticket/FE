@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, createSearchParams } from "react-router-dom";
-import { useMediaQuery } from "react-responsive";
 import { pxToVw, pxToVh, pxToPercent } from "../../utils/unitConverter.ts"; // 경로는 실제 구조에 맞게!
 import {
   fetchAdminEnter,

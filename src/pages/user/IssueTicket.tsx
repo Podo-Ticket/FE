@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   USER_HOME,
   PERSONAL_INFORMATION_AGREE_CONTENT,
