@@ -371,6 +371,7 @@ const ContentPrivacy = styled.div`
   color: var(--grey-6);
 
   overflow-y: auto;
+  white-space: pre-wrap;
 `;
 const AgreementContainerHeader = styled.div`
   display: flex;
