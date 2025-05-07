@@ -11,7 +11,7 @@ import GoSurveyModal from "@/components/common/modals/DefaultModal.tsx";
 import CancelTicketModal from "@/components/common/modals/DefaultModal.tsx";
 
 import surveyIcon from "../../assets/icons/ic_clipboard.svg";
-import infoIcon from "../../assets/images/info_icon.png";
+import infoIcon from "../../assets/icons/ic_info.svg";
 
 import { fetchTickets, deleteTickets } from "../../api/user/TicketApi.ts";
 import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";

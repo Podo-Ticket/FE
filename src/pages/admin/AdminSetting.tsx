@@ -9,6 +9,7 @@ import PWAInstallModal from '@components/pages/admin/adminSetting/PWAInstallModa
 import downloadImage from '../../assets/images/admin/purple_downbox.png'
 import theaterInfoImage from '../../assets/images/admin/purple_performance.png'
 import versionImage from '../../assets/images/admin/purple_circled_info.png'
+import contectImage from '../../assets/icons/ic_paper_airplane.svg'
 
 const AdminSetting = () => {
     const [isTheaterInfoModalOpen, setIsTheaterInfoModalOpen] = useState(false);
@@ -53,8 +54,17 @@ const AdminSetting = () => {
                         <ContentLeftContainer>
                             <ContentImage src={versionImage} style={{ width: '22px', height: '22px' }} />
                             <ContentName>버전 정보</ContentName>
+                            <ContentSubName>v1.2.0</ContentSubName>
                         </ContentLeftContainer>
-                        <ContentDescription>v1.2.0</ContentDescription>
+                        <ContentDescription>최신 버전</ContentDescription>
+                    </CategoryItem>
+                    <CategoryItem>
+                        <ContentLeftContainer>
+                            <ContentImage src={contectImage} style={{ width: '20px', height: '20px' }} />
+                            <ContentName>문의 메일</ContentName>
+                            <ContentSubName>podostore1111@gmail.com</ContentSubName>
+                        </ContentLeftContainer>
+                        <ContentDescription></ContentDescription>
                     </CategoryItem>
                 </Category>
             </SettingContainer>
@@ -112,6 +122,7 @@ const CategoryItem = styled.button`
 
 const ContentLeftContainer = styled.div`
   display: flex;
+  align-items: center;
 
   flex-grow: 1;
   gap: 20px;
@@ -123,6 +134,16 @@ const ContentName = styled.div.attrs({ className: 'Podo-Ticket-Body-B4' })`
 color: var(--grey-7);
 `;
 
-const ContentDescription = styled.div.attrs({ className: 'Podo-Ticket-Body-B9' })`
+const ContentSubName = styled.div.attrs({ className: 'Podo-Ticket-Body-B9' })`
+  display: flex;
+  align-items: center;
 
+  color: var(--grey-6);
+`;
+
+const ContentDescription = styled.div.attrs({ className: 'Podo-Ticket-Body-B6' })`
+  display: flex;
+  align-items: center;
+  
+  color: var(--grey-6);
 `;
