@@ -4,6 +4,7 @@ import styled from "styled-components";
 import ModalSmallBtn from "@components/common/buttons/ModalSmallBtn.tsx";
 
 import { fadeIn, fadeOut } from "../../../styles/animation/DefaultAnimation.ts";
+import { MODAL } from "@/constants/text/UIText.ts";
 
 interface DefaultModalProps {
   showDefaultModal: boolean;
@@ -22,6 +23,7 @@ const DefaultModal: React.FC<DefaultModalProps> = ({
   onUnacceptFunc,
   noOverlay = false,
 }) => {
+  const language = localStorage.getItem("language");
   const [isClosing, setIsClosing] = useState(false);
 
   if (!showDefaultModal) return null;
@@ -46,13 +48,17 @@ const DefaultModal: React.FC<DefaultModalProps> = ({
 
         <ButtonContainer>
           <ModalSmallBtn
-            content="취소"
+            content={
+              language === "english" ? MODAL.english.cancel : MODAL.english.ok
+            }
             onClick={handleUnacceptClick}
             isAvailable={true}
             isDarkblue={true}
           />
           <ModalSmallBtn
-            content="확인"
+            content={
+              language === "english" ? MODAL.english.ok : MODAL.english.ok
+            }
             onClick={onAcceptFunc || undefined}
             isAvailable={true}
             isDarkblue={false}
@@ -100,12 +106,13 @@ const Content = styled.div<{ isClosing: boolean; isExpand: boolean }>`
 
 const Title = styled.h2`
   margin-bottom: 10px;
-
+  white-space: nowrap;
   color: var(--grey-7);
 `;
 
 const Description = styled.span`
   color: var(--grey-5);
+  white-space: nowrap;
 `;
 
 const ButtonContainer = styled.div`

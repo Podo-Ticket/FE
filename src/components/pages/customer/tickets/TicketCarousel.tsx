@@ -13,6 +13,8 @@ import { TICKET } from "@/constants/text/UIText";
 interface Ticket {
   id: string;
   title: string;
+  en_title: string;
+  en_location: string;
   location: string;
   dateTime: string;
   seat: string;
@@ -88,7 +90,9 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
                     color: "var(--ect-white)",
                   }}
                 >
-                  현장 예매
+                  {language === "english"
+                    ? TICKET.english.onSiteReservation
+                    : TICKET.korean.onSiteReservation}
                 </ReservationTag>
               ) : (
                 <ReservationTag
@@ -100,7 +104,9 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
                     color: "var(--purple-4-main)",
                   }}
                 >
-                  사전 예매
+                  {language === "english"
+                    ? TICKET.english.advanceReservation
+                    : TICKET.korean.advanceReservation}
                 </ReservationTag>
               )}
             </TicketHeaderContainer>
@@ -113,7 +119,12 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
                       ? TICKET.english.performanceTitle
                       : TICKET.korean.performanceTitle}
                   </Category>
-                  <PlayTitle>{currentTicketInfo.title}</PlayTitle>
+                  <PlayTitle>
+                    {" "}
+                    {language === "english"
+                      ? currentTicketInfo.en_title
+                      : currentTicketInfo.title}
+                  </PlayTitle>
                 </ContentItem>
               </TopContent>
 
@@ -134,7 +145,12 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
                         ? TICKET.english.venue
                         : TICKET.korean.venue}
                     </Category>
-                    <Description>{currentTicketInfo.location}</Description>
+                    <Description>
+                      {" "}
+                      {language === "english"
+                        ? currentTicketInfo.en_location
+                        : currentTicketInfo.location}
+                    </Description>
                   </ContentItem>
                 </MiddleLeftContent>
                 <MiddleRightContent>

@@ -1,3 +1,5 @@
+import OnSiteReserve from "@/pages/user/OnSiteReserve";
+
 export const PERSONAL_INFORMATION_AGREE_CONTENT = {
   korean: {
     title: `개인정보 수집 약관동의 (필수)`,
@@ -94,6 +96,23 @@ Please read the details below regarding the collection, use (and provision) of p
   },
 };
 
+export const MODAL = {
+  korean: {
+    ok: "확인",
+    previous: "이전",
+    next: "다음",
+    close: "닫기",
+    cancel: "취소",
+  },
+  english: {
+    ok: "OK",
+    previous: "Previous",
+    next: "Next",
+    close: "Ok",
+    cancel: "Cancel",
+  },
+};
+
 export const USER_HOME = {
   korean: {
     pickupBtn: "티켓 발권",
@@ -130,8 +149,6 @@ export const USER_HOME = {
     acceptTerms: "Agree to Terms",
   },
 };
-
-export const ISSUE_Ticket = {};
 
 export const SELECT_SEATS = {
   korean: {
@@ -186,7 +203,7 @@ export const TICKET = {
     venue: "티켓 장소",
     startTime: "시작 시간",
     runningTime: "관람 시간",
-    minutes:"분",
+    minutes: "분",
     seatNumber: "좌석 번호",
     popupMessage: "길을 못 찾겠다면?",
     issuedModalTitle: "발권 완료",
@@ -197,7 +214,12 @@ export const TICKET = {
     venueModalMap: "공연장 지도",
     venueModalGuidelines: "공연 유의사항",
     venueModalAccpet: "닫기",
-    ticketCancellation :"발권 취소"
+    ticketCancellation: "발권 취소",
+    cancelTicketConfirmation: "발권 취소하시겠습니까?",
+    issuedSeatsCancelNotice: "발권된 좌석 모두 취소됩니다.",
+    onSiteReservation: "현장 예매",
+    advanceReservation: "사전 예매",
+
   },
   english: {
     pageTitle: "Ticket Information",
@@ -206,7 +228,7 @@ export const TICKET = {
     venue: "Venue",
     startTime: "Start Time",
     runningTime: "Running Time",
-    minutes:"minutes",
+    minutes: "minutes",
     seatNumber: "Seat Number",
     popupMessage: "If you can't find your way?",
     issuedModalTitle: "Ticket Issued",
@@ -217,7 +239,11 @@ export const TICKET = {
     venueModalMap: "Venue Map",
     venueModalGuidelines: "Guidelines",
     venueModalAccpet: "OK",
-     ticketCancellation :"Ticket Cancellation"
+    ticketCancellation: "Ticket Cancellation",
+    cancelTicketConfirmation: "Do you want to cancel your ticket?",
+    issuedSeatsCancelNotice: "All issued seats will be canceled.",
+    onSiteReservation: "On-site",
+    advanceReservation: "Advance",
   },
 };
 
@@ -242,6 +268,9 @@ export const ONSITE_RESERVE = {
     failedModalTitle: "예매 신청이 승인되지 않았습니다.",
     failedModalSubtitle: "관리자에게 문의 부탁드립니다.",
     failedModalAccept: "확인",
+    availableSeats: "여석",
+    reservationLimitExceeded: "예약 가능 인원을 초과하였습니다.",
+    alreadyReservedContactMessage: "이미 예매 신청이 완료된 연락처입니다.",
   },
   english: {
     pageTitle: "On-site Ticketing",
@@ -263,5 +292,20 @@ export const ONSITE_RESERVE = {
     failedModalTitle: "Approval not possible",
     failedModalSubtitle: "Please contact the administrator.",
     failedModalAccept: "OK",
+    availableSeats: "Available Seats",
+    reservationLimitExceeded: "Reservation limit exceeded.",
+    alreadyReservedContactMessage:
+      "This phone number has already been used to make a reservation.",
+  },
+};
+
+export const SERVICE_FEEDBACK_MESSAGES = {
+  korean: {
+    title: "포도티켓 서비스를 평가해주시겠어요?",
+    description: "여러분의 소중한 의견은 서비스 개선에 큰 도움이 됩니다!",
+  },
+  english: {
+    title: "Please rate the PodoTicket service.",
+    description: "Your valuable feedback helps us improve!",
   },
 };

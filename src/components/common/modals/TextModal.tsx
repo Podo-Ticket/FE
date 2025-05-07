@@ -134,7 +134,7 @@ const ContentPrivacy = styled.div`
   color: var(--grey-6);
 
   overflow-y: auto;
-
+  white-space: pre-wrap;
   @media (max-resolution: 2dppx) {
     height: 217.5px;
     border-radius: 15px;

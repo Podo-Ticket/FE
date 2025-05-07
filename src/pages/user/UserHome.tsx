@@ -33,7 +33,7 @@ const UserHome: React.FC = () => {
       try {
         const playId = 1; // 추후에 다이나믹하게 변경
         const data = await fetchPlayInfo(playId);
-
+        console.log(data);
         // 가장 가까운 스케줄의 date_time 계산
         const closestDateTime = getClosestDateTime(data.schedule);
 
@@ -105,7 +105,9 @@ const UserHome: React.FC = () => {
               {playInfo && (
                 <>
                   <ShowDetailsTitle className="Podo-Ticket-Headline-H1">
-                    {playInfo.title}
+                    {language === Language.English
+                      ? playInfo.en_title
+                      : playInfo.title}
                   </ShowDetailsTitle>
                   <ShowDetailsSubtitle className="Podo-Ticket-Body-B5">
                     <Subtitle className="Podo-Ticket-Body-B9">

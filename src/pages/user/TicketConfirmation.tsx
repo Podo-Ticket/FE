@@ -37,6 +37,7 @@ const TicketConfirmation = () => {
     new Promise((resolve) => setTimeout(resolve, ms));
 
   const [ticketInfo, setTicketInfo] = useState<TicketInfo>();
+
   const selectedSeats = location.state ? location.state.selectedSeats : [];
 
   const [showTimeOutModal, setShowTimeOutModal] = useState<boolean>(false);
@@ -47,6 +48,10 @@ const TicketConfirmation = () => {
       try {
         const info = await fetchTicketingInfo();
         setTicketInfo(info);
+
+        // setTicketTitle(
+        //   language === Language.English ? info.title : info.en_title
+        // );
         localStorage.setItem("isForceLogout", "false");
       } catch (error: any) {}
     };
@@ -150,6 +155,8 @@ const TicketConfirmation = () => {
         {ticketInfo && (
           <TicketConfirmCard
             title={ticketInfo.title}
+            en_title={ticketInfo.en_title}
+            en_location={ticketInfo.en_location}
             poster={poster}
             dateTime={DateUtil.formatDate(ticketInfo.date, language)}
             location={ticketInfo.location}
