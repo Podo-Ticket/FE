@@ -8,7 +8,8 @@ import Loading from "@components/common/loadings/Loading";
 import Success from "@components/common/loadings/Success";
 import NoticeModal from "@components/common/modals/NoticeModal";
 
-import poster from "../../assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg";
+import poster from "@/assets/images/posters/2025_Spring_KwangwoonUniv_poster.png";
+
 import confirmIcon from "../../assets/images/confirm_icon.png";
 import backIcon from "../../assets/images/left_arrow.png";
 
@@ -32,9 +33,9 @@ const TicketConfirmation = () => {
     new Promise((resolve) => setTimeout(resolve, ms));
 
   const [ticketInfo, setTicketInfo] = useState<TicketInfo>();
-  const selectedSeats = location.state ? location.state.selectedSeats : []; 
+  const selectedSeats = location.state ? location.state.selectedSeats : [];
 
-  const [showTimeOutModal, setShowTimeOutModal] = useState<boolean>(false); 
+  const [showTimeOutModal, setShowTimeOutModal] = useState<boolean>(false);
 
   // 티켓 정보 가져오기
   useEffect(() => {

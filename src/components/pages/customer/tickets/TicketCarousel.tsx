@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
 import TicketBackground from "@assets/images/ticket_background.svg?react";
-import poster from "@assets/images/posters/24th_SeoulNationalUniv_Riveract_poster.jpg";
+import poster from "@/assets/images/posters/2025_Spring_KwangwoonUniv_poster.png"; // 해당 공연에 맞는 상수값 적용 필요
 
 import { splitDateTime } from "../../../../utils/DateUtil";
 import { TICKET } from "@/constants/text/UIText";
@@ -243,7 +243,7 @@ const Poster = styled.img`
   border-radius: 20px 20px 0px 0px;
 
   object-fit: cover;
-  object-position: center;
+  object-position: top; // 포스터에 맞게 보이는 위치 변경
 `;
 
 const TicketInformation = styled.div`
