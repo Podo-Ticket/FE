@@ -46,7 +46,7 @@ const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
                 ? TICKET_CONFIRMATION.english.firstCategory
                 : TICKET_CONFIRMATION.korean.firstCategory}
             </Label>
-            <Text>{dateTime}</Text>
+            <Time>{dateTime}</Time>
           </DetailsRow>
           <DetailsRow>
             <Label>
@@ -55,9 +55,7 @@ const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
                 ? TICKET_CONFIRMATION.english.secondCategory
                 : TICKET_CONFIRMATION.korean.secondCategory}
             </Label>
-            <Text>   {language === "english"
-                ? en_location
-                : TICKET_CONFIRMATION.korean.secondCategory}</Text>
+            <Text> {language === "english" ? en_location : location}</Text>
           </DetailsRow>
           <DetailsRow>
             <Label>
@@ -178,32 +176,23 @@ const DetailsRow = styled.div`
 `;
 
 const Label = styled.span.attrs({ className: "Podo-Ticket-Body-B9" })`
-  display: flex; /* 플렉스 박스 사용 */
-  align-items: center; /* 수직 중앙 정렬 */
-  justify-content: center; /* 수평 중앙 정렬 */
-
-  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 30px;
   border: 1px solid var(--grey-3);
   background: var(--ect-white);
 
-  padding: 0 8px;
+  width: 13.23vw;
 
   color: var(--grey-6);
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */
-
-  @media (max-resolution: 2dppx) {
-    height: 36px;
-    border-radius: 45px;
-    padding: 0 12px;
-  }
-  @media (min-resolution: 3dppx) {
-    height: 24px;
-    border-radius: 30px;
-    padding: 0 8px;
-  }
 `;
 
+const Time = styled.span.attrs({ className: "Podo-Ticket-Body-B7" })`
+  color: var(--grey-7);
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+`;
 const Text = styled.span.attrs({ className: "Podo-Ticket-Body-B7" })`
   color: var(--grey-7);
 `;
