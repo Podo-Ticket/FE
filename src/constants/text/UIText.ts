@@ -200,9 +200,9 @@ export const TICKET_CONFIRMATION = {
 export const TICKET = {
   korean: {
     pageTitle: "티켓 정보",
-    performanceTitle: "티켓 제목",
-    performanceDate: "티켓 일자",
-    venue: "티켓 장소",
+    performanceTitle: "공연 제목",
+    performanceDate: "공연 일자",
+    venue: "공연 장소",
     startTime: "시작 시간",
     runningTime: "관람 시간",
     minutes: "분",

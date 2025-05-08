@@ -5,7 +5,7 @@ import goFrontIcon from "@assets/images/lightgrey_right_arrow.png";
 interface SmallMoreBtnProps
   extends PropsWithChildren,
     ButtonHTMLAttributes<HTMLButtonElement> {
-  isAvailable: boolean; 
+  isAvailable: boolean;
   isUnderlined?: boolean;
 }
 
@@ -16,8 +16,7 @@ const SmallMoreBtn: React.FC<SmallMoreBtnProps> = ({
   className = "",
   ...props
 }) => {
-
-  const UnderlinedFont = isUnderlined ? "Podo-Ticket-Body-B10" : ""
+  const UnderlinedFont = isUnderlined ? "Podo-Ticket-Body-B10" : "";
 
   return (
     <SmallMoreBtnContainer
@@ -45,7 +44,7 @@ const SmallMoreBtnContainer = styled.button`
 
   gap: 3px;
 
-  color: var(--grey-6);
+  color: var(--grey-5);
   text-align: center;
 
   user-select: none; /* 텍스트 선택 방지 */
