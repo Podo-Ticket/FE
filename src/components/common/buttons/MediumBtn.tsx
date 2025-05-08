@@ -37,8 +37,8 @@ const MediumBtnContainer = styled.button<{
   justify-content: center;
   align-items: center;
 
-  width: 16.3125rem;
-  height: 3.4375rem;
+  width: 70.48vw;
+  height: 8.32svh;
 
   padding: 15px 0px;
   border-radius: 15px;

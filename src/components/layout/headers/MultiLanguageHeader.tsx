@@ -44,10 +44,9 @@ const HeaderContainer = styled.nav`
 
   position: sticky;
   top: 0;
-  margin-top: 3.93%;
-  margin-bottom: 3.63%;
-  width: 100%;
 
+  width: 100%;
+  height: 11.5svh;
   padding: 0 7px;
 
   user-select: none; /* 텍스트 선택 방지 */
