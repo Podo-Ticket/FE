@@ -176,7 +176,7 @@ const IssueTicket: React.FC = () => {
       <Contents>
         <Step>
           <ReservationCheckLabel isActive={true} labelText={checkReservation} />
-          <LabelLine></LabelLine>
+          <LabelLine isActive={step === 2} />
           <ReservationCheckLabel
             isActive={step === 2}
             labelText={acceptTerms}
@@ -313,7 +313,8 @@ const PhoneInput = styled.input`
   border: 1px solid var(--grey-grey-4, #bababa);
   border-radius: 10px;
   height: 8.9svh;
-  max-height: 64px;
+  min-height: 64px;
+  max-height: 100px;
   width: 100%;
   background: var(--ect-white);
 
@@ -331,13 +332,14 @@ const PhoneInput = styled.input`
   }
 `;
 
-const LabelLine = styled.span`
+const LabelLine = styled.span<{ isActive?: boolean }>`
   display: flex;
   width: 20px;
   height: 1px;
   align-items: center;
   justify-content: center;
-  background: #bababa;
+  background: ${({ isActive }) =>
+    isActive ? "var(--purple-7)" : "var(--grey-4)"};
 `;
 
 const ButtonContainer = styled.div`
