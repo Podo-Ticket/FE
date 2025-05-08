@@ -285,17 +285,17 @@ const Step = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 1%;
 `;
 
 const Contents = styled.div`
   width: 100%;
+  min-width: 339px;
   height: 100%;
   min-width: 347px;
   display: flex;
   flex-direction: column;
-  padding: 2svh 5.8vw;
-  gap: 2svh;
+  padding: 3svh 6.8vw;
+  gap: 3.03svh;
 `;
 
 const PhoneNumberContainer = styled.div`
@@ -345,16 +345,16 @@ const LabelLine = styled.span<{ isActive?: boolean }>`
 const ButtonContainer = styled.div`
   display: flex;
 
-  width: 100%;
+  width: 100vw;
 
-  gap: 10px;
+  gap: 2.54vw;
 
-  padding: 0 5.8vw;
-  margin-bottom: 5.44svh;
+  padding: 0 5.1vw;
+  margin-bottom: 5.45svh;
 `;
 
 const AgreementContainer = styled.div`
-  max-height: 60svh;
+  height: 60svh;
 `;
 const ContentPrivacy = styled.div`
   display: flex;
@@ -365,10 +365,8 @@ const ContentPrivacy = styled.div`
 
   border-radius: 10px;
   background-color: var(--grey-2);
-
-  margin-bottom: 23px;
-  padding: 10px;
-  padding-right: 20px;
+  margin: 0 0.76vw;
+  padding: 8px 20px 8px 10px;
 
   color: var(--grey-6);
 
@@ -379,19 +377,18 @@ const AgreementContainerHeader = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 0 2vw;
+  margin-bottom: 3.8%;
 `;
 
-const AgreementContainerTitle = styled.p`
-  padding-left: 1.27vw;
-  margin-bottom: 15px;
-`;
+const AgreementContainerTitle = styled.p``;
 const CustomCheckbox = styled.div<{ checked: boolean }>`
-  width: 20px;
+  width: 6.2%;
   height: auto;
   margin-right: 3px;
   background-image: ${(props) =>
     props.checked ? `url(${CheckedIcon})` : `url(${UncheckedIcon})`};
   background-size: contain;
   background-repeat: no-repeat;
-  display: inline-block;
+  display: flex;
 `;
