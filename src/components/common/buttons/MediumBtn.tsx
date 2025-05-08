@@ -41,7 +41,7 @@ const MediumBtnContainer = styled.button<{
   height: 8.32svh;
 
   padding: 15px 0px;
-  border-radius: 15px;
+  border-radius: 10px;
   border: none;
   background: ${({ isAvailable, isGray }) =>
     isGray
