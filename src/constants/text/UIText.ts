@@ -173,7 +173,7 @@ export const SELECT_SEATS = {
 
 export const TICKET_CONFIRMATION = {
   korean: {
-    doubleCheckIssue: "선택한 좌석으로 티켓 발권 해드릴까요? ",
+    doubleCheckIssue: "선택한 좌석으로\n티켓 발권 해드릴까요? ",
     summaryTitle: "발권 정보 요약",
     firstCategory: "시간",
     secondCategory: "장소",
@@ -185,7 +185,7 @@ export const TICKET_CONFIRMATION = {
   },
   english: {
     doubleCheckIssue:
-      "Would you like me to issue the ticket for the selected seat?",
+      "Would you like me to issue\nthe ticket for the selected seat?",
     summaryTitle: "Ticket Issuance Summary",
     firstCategory: "Time",
     secondCategory: "Venue",
