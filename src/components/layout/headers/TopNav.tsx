@@ -10,13 +10,13 @@ interface navItem {
 }
 
 interface TopNavProps {
-  lefter?: navItem,
-  center?: navItem,
-  righter?: navItem,
-  isGrey?: boolean,
-  isUnderlined?: boolean,
-  customStyles?: any,
-  font?: any
+  lefter?: navItem;
+  center?: navItem;
+  righter?: navItem;
+  isGrey?: boolean;
+  isUnderlined?: boolean;
+  customStyles?: any;
+  font?: any;
 }
 
 const TopNav: React.FC<TopNavProps> = ({
@@ -93,7 +93,9 @@ const NavContainer = styled.nav<{ isGrey: boolean; isUnderlined: boolean }>`
   top: 0;
 
   width: 100%;
-  height: 82px;
+  height: 10.74svh;
+  min-height: 71px;
+
   background: ${({ isGrey }) =>
     isGrey ? "var(--background-1)" : "var(--ect-white)"};
   border-bottom: ${({ isUnderlined }) =>
@@ -109,7 +111,7 @@ const CenterContent = styled.div`
   display: flex;
   justify-content: center;
   text-align: center; /* 중앙 정렬 */
-
+  padding-top: 1%;
   width: 210px;
 
   color: var(--gray-100);
