@@ -214,7 +214,7 @@ const Poster = styled.img`
   height: 69%;
   width: auto;
   object-fit: cover;
-  object-position: center;
+  object-position: top;
   z-index: 0;
   border-radius: 20px 20px 0 0;
   border-bottom: 2px dashed var(--grey-grey-5, #9e9e9e);
