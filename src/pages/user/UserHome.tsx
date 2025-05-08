@@ -47,7 +47,7 @@ const UserHome: React.FC = () => {
           setScheduleId(closestSchedule.id); // 가장 가까운 스케줄의 id 설정
           localStorage.setItem("scheduleId", closestSchedule.id); // 로컬스토리지에 저장
         }
-
+        localStorage.setItem("isForceLogout", 'false');
         setPlayInfo(data.play);
         setPerformanceSession(getClosestDateTime(data.schedule));
       } catch (error) {

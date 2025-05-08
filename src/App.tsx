@@ -56,6 +56,13 @@ function App() {
   const { openModal } = useForceLogoutStore();
 
   useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
+  useEffect(() => {
     const handleForceLogout = (data: { message?: string }) => {
       openModal(data.message);
       localStorage.setItem("isForceLogout", "true");
@@ -145,13 +152,6 @@ function App() {
   }, [showSplash]);
   const handleSplashFinish = () => setShowSplash(false);
   if (showSplash) return <Splash onFinish={handleSplashFinish} />;
-
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, []);
 
   return (
     <>

@@ -264,5 +264,6 @@ const ButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 75px;
+  padding: 0 30px;
   animation: ${fadeIn} 0.5s ease-in-out;
 `;
