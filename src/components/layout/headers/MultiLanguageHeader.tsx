@@ -2,8 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 import logoImage from "@assets/icons/ic_logo.svg";
-import languageImage from "@assets/icons/ic_multilingual.svg";
+import languageImage1 from "@assets/icons/ic_language_en.svg";
+import languageImage2 from "@assets/icons/ic_language_ko.svg";
+import { Language } from "../../../constants/text/Language.ts";
 
+import { USER_HOME } from "@/constants/text/UIText.ts";
 interface MultiLanguageHeaderProps {
   clickLanguage: () => void;
 }
@@ -11,14 +14,22 @@ interface MultiLanguageHeaderProps {
 const MultiLanguageHeader: React.FC<MultiLanguageHeaderProps> = ({
   clickLanguage,
 }) => {
+  const language = localStorage.getItem("language") as Language;
   return (
     <HeaderContainer>
       <LeftSide>
         <LogoImage src={logoImage} />
-        <LogoName className="Podo-Ticket-Headline-H4">포도티켓</LogoName>
+        <LogoName className="Podo-Ticket-Headline-H4">
+          {language === Language.English
+            ? USER_HOME.english.title
+            : USER_HOME.korean.title}
+        </LogoName>
       </LeftSide>
 
-      <LanguageImage src={languageImage} onClick={clickLanguage} />
+      <LanguageImage
+        src={language === Language.English ? languageImage2 : languageImage1}
+        onClick={clickLanguage}
+      />
     </HeaderContainer>
   );
 };
@@ -33,10 +44,9 @@ const HeaderContainer = styled.nav`
 
   position: sticky;
   top: 0;
-  margin-top: 3.93%;
-  margin-bottom: 3.63%;
-  width: 100%;
 
+  width: 100%;
+  height: 11.5svh;
   padding: 0 7px;
 
   user-select: none; /* 텍스트 선택 방지 */

@@ -49,7 +49,7 @@ const DefaultModal: React.FC<DefaultModalProps> = ({
         <ButtonContainer>
           <ModalSmallBtn
             content={
-              language === "english" ? MODAL.english.cancel : MODAL.english.ok
+              language === "english" ? MODAL.english.cancel : MODAL.english.cancel
             }
             onClick={handleUnacceptClick}
             isAvailable={true}

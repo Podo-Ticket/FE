@@ -104,7 +104,7 @@ const UserHome: React.FC = () => {
             <ShowDetails>
               {playInfo && (
                 <>
-                  <ShowDetailsTitle className="Podo-Ticket-Headline-H1">
+                  <ShowDetailsTitle className="Podo-Ticket-Headline-H3">
                     {language === Language.English
                       ? playInfo.en_title
                       : playInfo.title}
@@ -115,7 +115,10 @@ const UserHome: React.FC = () => {
                         ? USER_HOME.english.time
                         : USER_HOME.korean.time}
                     </Subtitle>
-                    {DateUtil.formatDate(performanceSession, language)}
+                    <SubContents className="Podo-Ticket-Body-B7">
+                      {" "}
+                      {DateUtil.formatDate(performanceSession, language)}
+                    </SubContents>
                   </ShowDetailsSubtitle>
                 </>
               )}
@@ -159,7 +162,7 @@ const MainContainer = styled.div<{ backgroundImage: string }>`
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--background-gradient-1);
+    background: var(--background-gradation-main);
   }
 `;
 
@@ -179,10 +182,10 @@ const CardFront = styled.div`
 
   -webkit-mask-image: radial-gradient(
       circle at left 68.95%,
-      transparent 4.5%,
-      black 4.5%
+      transparent 15px,
+      black 15px
     ),
-    radial-gradient(circle at right 68.95%, transparent 4.5%, black 4.5%),
+    radial-gradient(circle at right 68.95%, transparent 15px, black 15px),
     linear-gradient(white, white);
   -webkit-mask-composite: destination-out;
   -webkit-mask-repeat: no-repeat;
@@ -208,20 +211,13 @@ const CardBackGround = styled.div`
 
 const Poster = styled.img`
   position: relative;
-  height: 68.95%;
+  height: 69%;
   width: auto;
   object-fit: cover;
-  object-position: center;
+  object-position: top;
   z-index: 0;
   border-radius: 20px 20px 0 0;
   border-bottom: 2px dashed var(--grey-grey-5, #9e9e9e);
-
-  // @media (max-resolution: 2dppx) {
-  //   height: 225px;
-  // }
-  // @media (min-resolution: 3dppx) {
-  //   height: 150px;
-  // }
 `;
 
 const TicketBottomContainer = styled.div`
@@ -253,6 +249,7 @@ const ShowDetailsSubtitle = styled.div`
   justify-content: center;
 
   white-space: nowrap; // 줄 바꿈 방지
+  color: var(--grey-grey7);
 `;
 
 const Subtitle = styled.div`
@@ -265,6 +262,12 @@ const Subtitle = styled.div`
 
   padding: 0 3.7%;
   border-radius: 30px;
+`;
+
+const SubContents = styled.span`
+  color: var(--grey-7);
+  display: flex;
+  align-items: center;
 `;
 
 const DetailBtnContainer = styled.div`

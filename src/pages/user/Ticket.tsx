@@ -137,16 +137,22 @@ const Ticket = () => {
 
       <TicketCarouselContainer>
         <TicketIndex>
-          <CurrentTicketIndex>{currentIndex + 1}</CurrentTicketIndex>
-          <DummyComponent>/</DummyComponent>
-          <DummyComponent>{tickets.length}</DummyComponent>
+          <CurrentTicketIndex className="Podo-Ticket-Headline-H2">
+            {currentIndex + 1}
+          </CurrentTicketIndex>
+          <DummyComponent className="Podo-Ticket-Headline-H4">/</DummyComponent>
+          <DummyComponent className="Podo-Ticket-Headline-H4">
+            {tickets.length}
+          </DummyComponent>
         </TicketIndex>
-        <TicketCarousel
-          ticketCount={tickets.length}
-          onActiveIndexChange={handleActiveIndexChange}
-          currentTicketInfo={currentTicket}
-          isOnSite={isOnSite}
-        />
+        <TicketMain>
+          <TicketCarousel
+            ticketCount={tickets.length}
+            onActiveIndexChange={handleActiveIndexChange}
+            currentTicketInfo={currentTicket}
+            isOnSite={isOnSite}
+          />
+        </TicketMain>
 
         <CancelTicketBtn
           onClick={() => setIsCancelTicketModalOpen(true)}
@@ -222,7 +228,9 @@ const Ticket = () => {
 
 export default Ticket;
 
-const ViewContainer = styled.div``;
+const ViewContainer = styled.div`
+  height: 100svh;
+`;
 
 const TopNavContainer = styled.div`
   position: relative;
@@ -268,24 +276,24 @@ const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
 const TicketCarouselContainer = styled.div`
   display: flex;
   flex-direction: column;
-
-  gap: 25px;
-  margin-bottom: 30px;
+  height: 88.5%;
+`;
+const TicketMain = styled.div`
+  height: 80.9%;
+  margin-bottom: 3.1%;
 `;
 
 const TicketIndex = styled.div.attrs({ className: "Podo-Ticket-Headline-H4" })`
   display: flex;
   justify-content: center;
   align-items: center;
-
+  margin-bottom: 4.27%;
   gap: 3px;
 
   color: var(--grey-5);
 `;
 
-const CurrentTicketIndex = styled.span.attrs({
-  className: "Podo-Ticket-Headline-H2",
-})`
+const CurrentTicketIndex = styled.span`
   color: var(--purple-4);
 `;
 

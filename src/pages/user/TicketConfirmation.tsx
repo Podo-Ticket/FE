@@ -145,13 +145,11 @@ const TicketConfirmation = () => {
             ? TICKET_CONFIRMATION.english.doubleCheckIssue
             : TICKET_CONFIRMATION.korean.doubleCheckIssue}
         </Title>
-        <div style={{ height: "30px" }} />
       </TopContent>
 
       <Divider />
 
       <BottomContent>
-        
         {ticketInfo && (
           <TicketConfirmCard
             title={ticketInfo.title}
@@ -211,26 +209,20 @@ export default TicketConfirmation;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+
+  height: 100svh;
+  width: 100vw;
 `;
 
 const Header = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 37px;
-
-  @media (max-resolution: 2dppx) {
-    margin-top: 30px;
-    margin-left: 55.5px;
-  }
-  @media (min-resolution: 3dppx) {
-    margin-top: 20px;
-    margin-left: 37px;
-  }
+  margin: 4.3% 9.4% 0;
 `;
 
 const BackIcon = styled.img`
-  width: 13px;
-  height: 20px;
+  width: auto;
+  height: 3%;
 
   @media (max-resolution: 2dppx) {
     width: 19.5 px;
@@ -245,64 +237,31 @@ const BackIcon = styled.img`
 const TopContent = styled.div`
   display: flex;
   flex-direction: column;
-
-  padding: 0 15px;
-
+  height: 29.2%;
   align-items: center;
-
-  @media (max-resolution: 2dppx) {
-    padding: 0 22.5px;
-  }
-  @media (min-resolution: 3dppx) {
-    padding: 0 15px;
-  }
+  padding-top: 1.7%;
+  gap: 10.36%;
 `;
 
 const BottomContent = styled.div`
   display: flex;
   flex-direction: column;
-
-  padding: 0 15px;
+  height: 61.57%;
+  padding: 6.35% 5%;
 
   align-items: center;
-
-  @media (max-resolution: 2dppx) {
-    padding: 0 22.5px;
-  }
-  @media (min-resolution: 3dppx) {
-    padding: 0 15px;
-  }
 `;
 
 const Icon = styled.img`
-  width: 57px;
-  height: 55px;
-  margin-bottom: 20px;
-
-  @media (max-resolution: 2dppx) {
-    width: 85.5px;
-    height: 82.5px;
-    margin-bottom: 30px;
-  }
-  @media (min-resolution: 3dppx) {
-    width: 57px;
-    height: 55px;
-    margin-bottom: 20px;
-  }
+  width: 17.05%;
 `;
 
 const Title = styled.span`
-  margin-bottom: 10px;
-
+  display: flex;
   color: var(--charcoal-black);
   text-align: center;
-
-  @media (max-resolution: 2dppx) {
-    margin-bottom: 15px;
-  }
-  @media (min-resolution: 3dppx) {
-    margin-bottom: 10px;
-  }
+  white-space: pre-wrap; // 줄 바꿈 방지
+  height: 50.3%;
 `;
 
 const Warning = styled.span`
@@ -320,19 +279,8 @@ const Warning = styled.span`
 
 const Divider = styled.div`
   width: 100%;
-  height: 12px;
-
-  margin-bottom: 30px;
+  height: 1.8%;
   background-color: var(--grey-2);
-
-  @media (max-resolution: 2dppx) {
-    height: 18px;
-    margin-bottom: 45px;
-  }
-  @media (min-resolution: 3dppx) {
-    height: 12px;
-    margin-bottom: 10px;
-  }
 `;
 
 const ButtonContainer = styled.div`

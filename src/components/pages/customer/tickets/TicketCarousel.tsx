@@ -112,73 +112,73 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
             </TicketHeaderContainer>
 
             <TicketInformation>
-              <TopContent>
-                <ContentItem>
-                  <Category>
-                    {language === "english"
-                      ? TICKET.english.performanceTitle
-                      : TICKET.korean.performanceTitle}
-                  </Category>
-                  <PlayTitle>
-                    {" "}
-                    {language === "english"
-                      ? currentTicketInfo.en_title
-                      : currentTicketInfo.title}
-                  </PlayTitle>
-                </ContentItem>
-              </TopContent>
-
-              <MiddleContent>
-                <MiddleLeftContent>
+              <Information>
+                <TopContent>
                   <ContentItem>
                     <Category>
                       {language === "english"
-                        ? TICKET.english.performanceDate
-                        : TICKET.korean.performanceDate}
+                        ? TICKET.english.performanceTitle
+                        : TICKET.korean.performanceTitle}
                     </Category>
-                    <Description>{result?.date}</Description>
-                  </ContentItem>
-
-                  <ContentItem>
-                    <Category>
-                      {language === "english"
-                        ? TICKET.english.venue
-                        : TICKET.korean.venue}
-                    </Category>
-                    <Description>
+                    <PlayTitle>
                       {" "}
                       {language === "english"
-                        ? currentTicketInfo.en_location
-                        : currentTicketInfo.location}
-                    </Description>
+                        ? currentTicketInfo.en_title
+                        : currentTicketInfo.title}
+                    </PlayTitle>
                   </ContentItem>
-                </MiddleLeftContent>
-                <MiddleRightContent>
-                  <ContentItem>
-                    <Category>
-                      {language === "english"
-                        ? TICKET.english.startTime
-                        : TICKET.korean.startTime}
-                    </Category>
-                    <Description>{result?.time}</Description>
-                  </ContentItem>
-                  <ContentItem>
-                    <Category>
-                      {language === "english"
-                        ? TICKET.english.runningTime
-                        : TICKET.korean.runningTime}
-                    </Category>
-                    <Description>
-                      {currentTicketInfo.runningTime}{" "}
-                      {language === "english"
-                        ? TICKET.english.minutes
-                        : TICKET.korean.minutes}
-                    </Description>
-                  </ContentItem>
-                </MiddleRightContent>
-              </MiddleContent>
+                </TopContent>
 
-              <DummyContent />
+                <MiddleContent>
+                  <MiddleLeftContent>
+                    <ContentItem>
+                      <Category>
+                        {language === "english"
+                          ? TICKET.english.performanceDate
+                          : TICKET.korean.performanceDate}
+                      </Category>
+                      <Description>{result?.date}</Description>
+                    </ContentItem>
+
+                    <ContentItem>
+                      <Category>
+                        {language === "english"
+                          ? TICKET.english.venue
+                          : TICKET.korean.venue}
+                      </Category>
+                      <Description>
+                        {" "}
+                        {language === "english"
+                          ? currentTicketInfo.en_location
+                          : currentTicketInfo.location}
+                      </Description>
+                    </ContentItem>
+                  </MiddleLeftContent>
+                  <MiddleRightContent>
+                    <ContentItem>
+                      <Category>
+                        {language === "english"
+                          ? TICKET.english.startTime
+                          : TICKET.korean.startTime}
+                      </Category>
+                      <Description>{result?.time}</Description>
+                    </ContentItem>
+                    <ContentItem>
+                      <Category>
+                        {language === "english"
+                          ? TICKET.english.runningTime
+                          : TICKET.korean.runningTime}
+                      </Category>
+                      <Description>
+                        {currentTicketInfo.runningTime}{" "}
+                        {language === "english"
+                          ? TICKET.english.minutes
+                          : TICKET.korean.minutes}
+                      </Description>
+                    </ContentItem>
+                  </MiddleRightContent>
+                </MiddleContent>
+              </Information>
 
               <BottomContent>
                 <Category>
@@ -200,8 +200,9 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
 export default TicketCarousel;
 
 const TicketCarouselContainer = styled.div`
-  width: 100%;
-  height: 65svh;
+  width: auto;
+
+  height: 100%;
   background: transparent;
 
   text-align: center;
@@ -235,6 +236,9 @@ const TicketSwiperSlide = styled(SwiperSlide)`
 
   width: 100%;
   height: 100%;
+  border-radius: 20px;
+
+  overflow: hidden;
 `;
 
 const TicketCellBackground = styled.div`
@@ -257,7 +261,7 @@ const TicketHeaderContainer = styled.div`
   display: flex;
 
   width: calc(100%);
-  height: 28.5svh;
+  height: 28.6%;
 
   overflow: hidden;
   z-index: 2;
@@ -266,8 +270,10 @@ const TicketHeaderContainer = styled.div`
 const Poster = styled.img`
   width: 100%; // 티켓 보라색 테두리 고려
   height: calc(100%); // 티켓 보라색 테두리 고려
-  border-radius: 20px 20px 0px 0px;
-
+  border-top: 1px solid var(--purple-7);
+  border-right: 1px solid var(--purple-7);
+  border-left: 1px solid var(--purple-7);
+  border-radius: 20px 20px 0 0;
   object-fit: cover;
   object-position: top; // 포스터에 맞게 보이는 위치 변경
 `;
@@ -277,13 +283,23 @@ const TicketInformation = styled.div`
   flex-direction: column;
 
   width: 100%;
-  height: 100%;
+  height: 71.4%;
 
+  padding: 0 7.3%;
   z-index: 2;
+`;
+
+const Information = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 74.85%;
 `;
 
 const Category = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })`
   color: var(--grey-5);
+  white-space: nowrap; // 줄 바꿈 방지
 `;
 
 const Description = styled.div.attrs({ className: "Podo-Ticket-Body-B6" })`
@@ -291,57 +307,58 @@ const Description = styled.div.attrs({ className: "Podo-Ticket-Body-B6" })`
 `;
 
 const TopContent = styled.div`
-  padding: 20px;
-  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+
+  height: 34.4%;
+  gap: 3px;
+  justify-content: center;
+  border-bottom: 1px solid var(--grey-2);
 `;
 
-const PlayTitle = styled.div.attrs({ className: "Podo-Ticket-Body-B1" })`
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--grey-2);
-
+const PlayTitle = styled.div.attrs({ className: "Podo-Ticket-Headline-H3" })`
   color: var(--grey-7);
 `;
 
 const MiddleContent = styled.div`
   display: flex;
-
-  padding: 20px;
-
-  gap: 20px;
+  flex-direction: row;
+  width: 100%;
+  padding-top: 7.9%;
+  height: 65.6%;
 `;
 
 const MiddleLeftContent = styled.div`
   display: flex;
   flex-direction: column;
-
-  gap: 25px;
+  width: 72.2%;
+  padding-right: 6.7%;
+  gap: 15%;
 `;
 
 const MiddleRightContent = styled.div`
   display: flex;
+  width: auto;
   flex-direction: column;
-
-  gap: 25px;
+  gap: 15%;
 `;
 
 const ContentItem = styled.div`
   display: flex;
   flex-direction: column;
-
+  gap: 4px;
   text-align: left;
-
-  gap: 3px;
 `;
 
-const DummyContent = styled.div`
-  flex-grow: 1;
+const BottomContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 25.15%;
+  justify-content: center;
+  gap: 4%;
 `;
 
-const BottomContent = styled.div``;
-
-const CurrentSeat = styled.div.attrs({ className: "Podo-Ticket-Body-B2" })`
-  padding-bottom: 20px;
-
+const CurrentSeat = styled.div.attrs({ className: "Podo-Ticket-Headline-H2" })`
   color: var(--purple-4);
 `;
 

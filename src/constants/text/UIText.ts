@@ -115,6 +115,7 @@ export const MODAL = {
 
 export const USER_HOME = {
   korean: {
+    title: "포도티켓",
     pickupBtn: "티켓 발권",
     time: "회차",
     authModalTitle: "예매 정보 확인",
@@ -132,6 +133,7 @@ export const USER_HOME = {
     acceptTerms: "약관 동의",
   },
   english: {
+    title: "Podo Ticket",
     pickupBtn: "Issue Ticket",
     time: "Time",
     authModalTitle: "Check Reservation Details",
@@ -171,7 +173,7 @@ export const SELECT_SEATS = {
 
 export const TICKET_CONFIRMATION = {
   korean: {
-    doubleCheckIssue: "선택한 좌석으로 티켓 발권 해드릴까요? ",
+    doubleCheckIssue: "선택한 좌석으로\n티켓 발권 해드릴까요? ",
     summaryTitle: "발권 정보 요약",
     firstCategory: "시간",
     secondCategory: "장소",
@@ -183,7 +185,7 @@ export const TICKET_CONFIRMATION = {
   },
   english: {
     doubleCheckIssue:
-      "Would you like me to issue the ticket for the selected seat?",
+      "Would you like me to issue\nthe ticket for the selected seat?",
     summaryTitle: "Ticket Issuance Summary",
     firstCategory: "Time",
     secondCategory: "Venue",
@@ -198,9 +200,9 @@ export const TICKET_CONFIRMATION = {
 export const TICKET = {
   korean: {
     pageTitle: "티켓 정보",
-    performanceTitle: "티켓 제목",
-    performanceDate: "티켓 일자",
-    venue: "티켓 장소",
+    performanceTitle: "공연 제목",
+    performanceDate: "공연 일자",
+    venue: "공연 장소",
     startTime: "시작 시간",
     runningTime: "관람 시간",
     minutes: "분",
@@ -219,7 +221,6 @@ export const TICKET = {
     issuedSeatsCancelNotice: "발권된 좌석 모두 취소됩니다.",
     onSiteReservation: "현장 예매",
     advanceReservation: "사전 예매",
-
   },
   english: {
     pageTitle: "Ticket Information",
