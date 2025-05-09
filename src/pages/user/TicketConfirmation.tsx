@@ -8,6 +8,7 @@ import Loading from "@components/common/loadings/Loading";
 import Success from "@components/common/loadings/Success";
 import NoticeModal from "@components/common/modals/NoticeModal";
 import NoSuchCustomerModal from "@components/common/modals/NoticeModal.tsx";
+import NoSeatsDataModal from "@components/common/modals/NoticeModal.tsx";
 
 import poster from "@/assets/images/posters/2025_Spring_KwangwoonUniv_poster.png";
 
@@ -44,6 +45,8 @@ const TicketConfirmation = () => {
   const [showTimeOutModal, setShowTimeOutModal] = useState<boolean>(false);
   const [showNoSuchCustomerModal, setShowNoSuchCustomerModal] =
     useState<boolean>(false);
+  const [showNoSeatsDataModal, setShowNoSeatsDataModal] =
+    useState<boolean>(false);
 
   // 티켓 정보 가져오기
   useEffect(() => {
@@ -56,7 +59,9 @@ const TicketConfirmation = () => {
         //   language === Language.English ? info.title : info.en_title
         // );
         localStorage.setItem("isForceLogout", "false");
-      } catch (error: any) {}
+      } catch (error: any) {
+        setShowNoSeatsDataModal(true);
+      }
     };
 
     loadTicketingInfo();
@@ -129,7 +134,7 @@ const TicketConfirmation = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowTimeOutModal(true); // 3분 후 모달을 띄움
+      setShowTimeOutModal(true);
     }, 3 * 60 * 1000);
 
     return () => {
@@ -224,6 +229,30 @@ const TicketConfirmation = () => {
         onAcceptFunc={() => {
           setShowNoSuchCustomerModal(false);
           navigate("/");
+        }}
+      />
+
+      <NoSeatsDataModal
+        showNoticeModal={showNoSeatsDataModal}
+        imgStatus="danger"
+        title={
+          language === "english"
+            ? TICKET_CONFIRMATION.english.NoSeatsDataModalTitle
+            : TICKET_CONFIRMATION.korean.NoSeatsDataModalTitle
+        }
+        description={
+          language === "english"
+            ? TICKET_CONFIRMATION.english.NoSeatsDataModalSubtitle
+            : TICKET_CONFIRMATION.korean.NoSeatsDataModalSubtitle
+        }
+        buttonContent={
+          language === "english"
+            ? TICKET_CONFIRMATION.english.NoSeatsDataModalAccpet
+            : TICKET_CONFIRMATION.korean.NoSeatsDataModalAccpet
+        }
+        onAcceptFunc={() => {
+          setShowNoSeatsDataModal(false);
+          navigate("/select");
         }}
       />
 

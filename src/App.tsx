@@ -52,15 +52,17 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  const location = useLocation();
-  const { openModal } = useForceLogoutStore();
-
   useEffect(() => {
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
     };
   }, []);
+
+  const location = useLocation();
+  const { openModal } = useForceLogoutStore();
 
   useEffect(() => {
     const handleForceLogout = (data: { message?: string }) => {

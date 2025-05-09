@@ -49,7 +49,7 @@ const DefaultModal: React.FC<DefaultModalProps> = ({
         <ButtonContainer>
           <ModalSmallBtn
             content={
-              language === "english" ? MODAL.english.cancel : MODAL.english.cancel
+              language === "english" ? MODAL.english.cancel : MODAL.korean.cancel
             }
             onClick={handleUnacceptClick}
             isAvailable={true}
@@ -57,7 +57,7 @@ const DefaultModal: React.FC<DefaultModalProps> = ({
           />
           <ModalSmallBtn
             content={
-              language === "english" ? MODAL.english.ok : MODAL.english.ok
+              language === "english" ? MODAL.english.ok : MODAL.korean.ok
             }
             onClick={onAcceptFunc || undefined}
             isAvailable={true}

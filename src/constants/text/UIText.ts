@@ -189,6 +189,9 @@ export const TICKET_CONFIRMATION = {
     NoSuchCustomerModalTitle: "예매된 고객 정보가 없습니다.",
     NoSuchCustomerModalSubitle: "홈 화면으로 돌아갑니다.",
     NoSuchCustomerModalAccpet: "확인",
+    NoSeatsDataModalTitle: "선택된 좌석 정보가 없습니다.",
+    NoSeatsDataModalSubtitle: "좌석을 다시 선택해주세요.",
+    NoSeatsDataModalAccpet: "확인",
   },
   english: {
     doubleCheckIssue:
@@ -204,6 +207,9 @@ export const TICKET_CONFIRMATION = {
     NoSuchCustomerModalTitle: "No such reserved customer.",
     NoSuchCustomerModalSubitle: "Redirect to home",
     NoSuchCustomerModalAccpet: "OK",
+    NoSeatsDataModalTitle: "No selected seats information.",
+    NoSeatsDataModalSubtitle: "Please select seats again.",
+    NoSeatsDataModalAccpet: "OK",
   },
 };
 
