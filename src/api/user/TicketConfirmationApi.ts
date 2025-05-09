@@ -91,12 +91,15 @@ export const handleTicketIssuance = async (
     });
 
     if (response.data.success) {
-      return true; // 발권 성공
+      return true;
     } else {
-      throw new Error("티켓 발권에 실패했습니다.");
+      throw new Error("티켓 발권 불가");
     }
-  } catch (error) {
-    console.error("Error issuing ticket:", error);
+  } catch (error: any) {
+    if (error.status == 400) {
+      throw new Error("예매 내역 확인 불가");
+    } else {
+    }
     throw new Error("티켓 발권에 실패했습니다.");
   }
 };

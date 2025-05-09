@@ -7,6 +7,7 @@ import TopNav from "@components/layout/headers/TopNav";
 import SelectSeatsInfo from "@components/pages/customer/selectSeats/SeatsInfo";
 import LargeBtn from "@components/common/buttons/LargeBtn";
 import ErrorModal from "@components/common/errors/DefaultErrorModal";
+import NoSuchCustomerModal from "@components/common/modals/NoticeModal.tsx";
 
 import { SELECT_FAIL } from "../../constants/text/ErrorMessage";
 import refreshIcon from "../../assets/images/refresh2_icon.png";
@@ -28,6 +29,8 @@ function SelectSeats() {
   const [selectedSeats, setSelectedSeats] = useState<any>([]);
   const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] =
     useState(false);
+  const [showNoSuchCustomerModal, setShowNoSuchCustomerModal] =
+    useState<boolean>(false);
   const [headCount, setHeadCount] = useState(0); // headCount
 
   const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
@@ -78,7 +81,11 @@ function SelectSeats() {
         setIsAlreadySelectedModalOpen(true);
       }
     } catch (error: any) {
-      console.error(error.message);
+      if (error.message == "예매 내역 확인 불가") {
+        setShowNoSuchCustomerModal(true);
+      } else {
+        console.log(error.message);
+      }
     }
   };
 
@@ -138,6 +145,30 @@ function SelectSeats() {
           isAvailable={!(selectedSeats.length < Number(headCount))}
         />
       </SelectSeatsContentContainer>
+
+      <NoSuchCustomerModal
+        showNoticeModal={showNoSuchCustomerModal}
+        imgStatus="danger"
+        title={
+          language === "english"
+            ? SELECT_SEATS.english.NoSuchCustomerModalTitle
+            : SELECT_SEATS.korean.NoSuchCustomerModalTitle
+        }
+        description={
+          language === "english"
+            ? SELECT_SEATS.english.NoSuchCustomerModalSubitle
+            : SELECT_SEATS.korean.NoSuchCustomerModalSubitle
+        }
+        buttonContent={
+          language === "english"
+            ? SELECT_SEATS.english.NoSuchCustomerModalAccpet
+            : SELECT_SEATS.korean.NoSuchCustomerModalAccpet
+        }
+        onAcceptFunc={() => {
+          setShowNoSuchCustomerModal(false);
+          navigate("/");
+        }}
+      />
 
       <ErrorModal
         showDefaultErrorModal={isAlreadySelectedModalOpen}

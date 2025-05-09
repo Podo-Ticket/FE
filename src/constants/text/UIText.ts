@@ -1,5 +1,3 @@
-import OnSiteReserve from "@/pages/user/OnSiteReserve";
-
 export const PERSONAL_INFORMATION_AGREE_CONTENT = {
   korean: {
     title: `개인정보 수집 약관동의 (필수)`,
@@ -160,6 +158,9 @@ export const SELECT_SEATS = {
     UnavailableSeat: "선택 불가능 좌석",
     Stage: "무대",
     NextBtn: "선택 완료",
+    NoSuchCustomerModalTitle: "예매된 고객 정보가 없습니다.",
+    NoSuchCustomerModalSubitle: "홈 화면으로 돌아갑니다.",
+    NoSuchCustomerModalAccpet: "확인",
   },
   english: {
     pageTitle: "Please select a seat",
@@ -168,6 +169,9 @@ export const SELECT_SEATS = {
     UnavailableSeat: "Unavailable Seats",
     Stage: "Stage",
     NextBtn: "Selection Complete",
+    NoSuchCustomerModalTitle: "No such reserved customer.",
+    NoSuchCustomerModalSubitle: "Redirect to home",
+    NoSuchCustomerModalAccpet: "OK",
   },
 };
 
@@ -182,6 +186,9 @@ export const TICKET_CONFIRMATION = {
     TimeoutModalTitle: "티켓 발권 시간이 만료되었습니다.",
     TimeoutModalSubitle: "원하는 좌석을 다시 선택해주세요.",
     TimeoutModalAccept: "확인",
+    NoSuchCustomerModalTitle: "예매된 고객 정보가 없습니다.",
+    NoSuchCustomerModalSubitle: "홈 화면으로 돌아갑니다.",
+    NoSuchCustomerModalAccpet: "확인",
   },
   english: {
     doubleCheckIssue:
@@ -194,6 +201,9 @@ export const TICKET_CONFIRMATION = {
     TimeoutModalTitle: "Ticket Issuance Time Expired",
     TimeoutModalSubitle: "Please select your desired seat again.",
     TimeoutModalAccept: "OK",
+    NoSuchCustomerModalTitle: "No such reserved customer.",
+    NoSuchCustomerModalSubitle: "Redirect to home",
+    NoSuchCustomerModalAccpet: "OK",
   },
 };
 
@@ -219,6 +229,9 @@ export const TICKET = {
     ticketCancellation: "발권 취소",
     cancelTicketConfirmation: "발권 취소하시겠습니까?",
     issuedSeatsCancelNotice: "발권된 좌석 모두 취소됩니다.",
+    noTicketsModalTitle: "발권된 티켓이 없습니다.",
+    noTicketsModalSubtitle: "홈 화면으로 돌아갑니다.",
+    noTicketsModalAccept: "확인",
     onSiteReservation: "현장 예매",
     advanceReservation: "사전 예매",
   },
@@ -243,6 +256,9 @@ export const TICKET = {
     ticketCancellation: "Ticket Cancellation",
     cancelTicketConfirmation: "Do you want to cancel your ticket?",
     issuedSeatsCancelNotice: "All issued seats will be canceled.",
+    noTicketsModalTitle: "No issued Tickets",
+    noTicketsModalSubtitle: "Redirect to home.",
+    noTicketsModalAccept: "OK",
     onSiteReservation: "On-site",
     advanceReservation: "Advance",
   },

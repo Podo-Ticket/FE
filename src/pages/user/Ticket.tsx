@@ -6,6 +6,7 @@ import TicketCarousel from "@components/pages/customer/tickets/TicketCarousel.ts
 import TopNav from "@components/layout/headers/TopNav.tsx";
 import TheaterInfoModal from "@components/common/modals/TheaterInfoModal.tsx";
 import FinishTicketingModal from "@components/common/modals/NoticeModal.tsx";
+import NoTicketsModal from "@components/common/modals/NoticeModal.tsx";
 import CancelTicketBtn from "@components/common/buttons/SmallMoreBtn.tsx";
 import GoSurveyModal from "@/components/common/modals/DefaultModal.tsx";
 import CancelTicketModal from "@/components/common/modals/DefaultModal.tsx";
@@ -23,16 +24,15 @@ const Ticket = () => {
   const language = localStorage.getItem("language");
 
   const [tickets, setTickets] = useState<ITicket[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0); // 현재 티켓 인덱스
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isOnSite, setIsOnSite] = useState(false);
   const [, setIsSurveied] = useState(false);
+
   const [isFinshTicketingModalOpen, setIsFinishTicketingModalOpen] =
     useState(false);
-
+  const [isNoTicketsModalOpen, setIsNoTicketsModalOpen] = useState(false);
   const [isCancelTicketModalOpen, setIsCancelTicketModalOpen] = useState(false);
-
   const [isGoSurveyModalOpen, setIsGoSurveyModalOpen] = useState(false);
-
   const [isTheaterInfoModalOpen, setIsTheaterInfoModalOpen] = useState(false);
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -43,15 +43,25 @@ const Ticket = () => {
     const loadTickets = async () => {
       try {
         const { tickets, isSurveyed, isOnSite } = await fetchTickets();
-        console.log(tickets);
+        if (!tickets || tickets.length === 0) {
+          setIsNoTicketsModalOpen(true);
+          return;
+        }
         setTickets(tickets);
         setIsSurveied(isSurveyed);
         setIsOnSite(isOnSite);
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        setIsFinishTicketingModalOpen(true);
+      }
     };
     loadTickets();
-    setIsFinishTicketingModalOpen(true);
   }, []);
+
+  const noTicketsAccepetd = () => {
+    setIsNoTicketsModalOpen(false);
+    navigate("/");
+  };
 
   const cancelTicket = async () => {
     try {
@@ -83,7 +93,7 @@ const Ticket = () => {
   };
 
   const closeFinishTicketingModal = () => {
-    setIsFinishTicketingModalOpen(false); // Finish Ticketing Modal 닫기
+    setIsFinishTicketingModalOpen(false); 
     togglePopup();
   };
 
@@ -189,6 +199,27 @@ const Ticket = () => {
             : TICKET.korean.issuedModalAccept
         }
         onAcceptFunc={closeFinishTicketingModal}
+      />
+
+      <NoTicketsModal
+        showNoticeModal={isNoTicketsModalOpen}
+        imgStatus="danger"
+        title={
+          language === "english"
+            ? TICKET.english.noTicketsModalTitle
+            : TICKET.korean.noTicketsModalTitle
+        }
+        description={
+          language === "english"
+            ? TICKET.english.noTicketsModalSubtitle
+            : TICKET.korean.noTicketsModalSubtitle
+        }
+        buttonContent={
+          language === "english"
+            ? TICKET.english.noTicketsModalAccept
+            : TICKET.korean.noTicketsModalAccept
+        }
+        onAcceptFunc={noTicketsAccepetd}
       />
 
       <GoSurveyModal

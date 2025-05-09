@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import BackBtn from "@components/common/buttons/SmallBtn";
@@ -103,12 +103,10 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
 
   const handleSubmit = async () => {
     if (!isButtonEnabled) {
-      console.log("버튼 비활성화 상태");
       return;
     }
 
     if (!phone || !scheduleId) {
-      console.error("전화번호 또는 scheduleId 없음");
       return;
     }
 

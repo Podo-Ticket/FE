@@ -7,6 +7,7 @@ import TicketConfirmCard from "@components/pages/customer/ticketConfirmation/Tic
 import Loading from "@components/common/loadings/Loading";
 import Success from "@components/common/loadings/Success";
 import NoticeModal from "@components/common/modals/NoticeModal";
+import NoSuchCustomerModal from "@components/common/modals/NoticeModal.tsx";
 
 import poster from "@/assets/images/posters/2025_Spring_KwangwoonUniv_poster.png";
 
@@ -41,6 +42,8 @@ const TicketConfirmation = () => {
   const selectedSeats = location.state ? location.state.selectedSeats : [];
 
   const [showTimeOutModal, setShowTimeOutModal] = useState<boolean>(false);
+  const [showNoSuchCustomerModal, setShowNoSuchCustomerModal] =
+    useState<boolean>(false);
 
   // 티켓 정보 가져오기
   useEffect(() => {
@@ -117,6 +120,8 @@ const TicketConfirmation = () => {
         }, 1000);
       }
     } catch (error: any) {
+      if (error.message == "예매 내역 확인 불가")
+        setShowNoSuchCustomerModal(true);
     } finally {
       setIsLoading(false);
     }
@@ -125,10 +130,10 @@ const TicketConfirmation = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowTimeOutModal(true); // 3분 후 모달을 띄움
-    }, 3 * 60 * 1000); // 3분 (3 * 60 * 1000ms)
+    }, 3 * 60 * 1000);
 
     return () => {
-      clearTimeout(timer); // 타이머 정리
+      clearTimeout(timer);
     };
   }, []);
 
@@ -198,6 +203,30 @@ const TicketConfirmation = () => {
         }}
       />
 
+      <NoSuchCustomerModal
+        showNoticeModal={showNoSuchCustomerModal}
+        imgStatus="danger"
+        title={
+          language === "english"
+            ? TICKET_CONFIRMATION.english.NoSuchCustomerModalTitle
+            : TICKET_CONFIRMATION.korean.NoSuchCustomerModalTitle
+        }
+        description={
+          language === "english"
+            ? TICKET_CONFIRMATION.english.NoSuchCustomerModalSubitle
+            : TICKET_CONFIRMATION.korean.NoSuchCustomerModalSubitle
+        }
+        buttonContent={
+          language === "english"
+            ? TICKET_CONFIRMATION.english.NoSuchCustomerModalAccpet
+            : TICKET_CONFIRMATION.korean.NoSuchCustomerModalAccpet
+        }
+        onAcceptFunc={() => {
+          setShowNoSuchCustomerModal(false);
+          navigate("/");
+        }}
+      />
+
       <Loading showLoading={isLoading} />
       <Success showSuccess={isSuccess} />
     </Container>
@@ -262,19 +291,6 @@ const Title = styled.span`
   text-align: center;
   white-space: pre-wrap; // 줄 바꿈 방지
   height: 50.3%;
-`;
-
-const Warning = styled.span`
-  margin-bottom: 30px;
-
-  color: var(--red-1);
-
-  @media (max-resolution: 2dppx) {
-    margin-bottom: 45px;
-  }
-  @media (min-resolution: 3dppx) {
-    margin-bottom: 10px;
-  }
 `;
 
 const Divider = styled.div`
