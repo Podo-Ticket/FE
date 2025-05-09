@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { useMediaQuery } from "react-responsive";
 
 import availableSeatImage from "@assets/images/admin/lightgrey_block.png";
 import reservedSeatImage from "@assets/images/xed_grey_block.png";
@@ -15,10 +14,6 @@ const AdminSeatInfo: React.FC<AdminSeatInfoProps> = ({
   isRealTime,
   remainingSeatsCount,
 }) => {
-  const SmallWidthDevice = () => {
-    const isSmallWidthDevice = useMediaQuery({ maxDeviceWidth: 370 });
-    return isSmallWidthDevice ? "좌석 선택" : "좌석을 선택해주세요";
-  };
 
   return (
     <SeatInfoContainer isRealTime={isRealTime}>

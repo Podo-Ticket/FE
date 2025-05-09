@@ -64,16 +64,13 @@ const SeatMap: React.FC<SeatMapProps> = ({
   setAudienceInfo,
   setRemainingSeats,
 }) => {
-  const seatMapRef = useRef(null);
+  const seatMapRef = useRef<HTMLDivElement>(null);
   const [seatMapWidth, setSeatMapWidth] = useState(0);
 
   useEffect(() => {
-    // SeatMapContent의 너비를 가져옴
     if (seatMapRef.current) {
       const width = seatMapRef.current.getBoundingClientRect().width;
       setSeatMapWidth(width);
-
-      console.log("seatMapwidth: ", width);
     }
   }, []);
 
@@ -83,14 +80,14 @@ const SeatMap: React.FC<SeatMapProps> = ({
   const [unclickableSeats, setUnclickableSeats] = useState<string[]>([]);
   const [reservedSeats, setReservedSeats] = useState<string[]>([]);
   const [lockedSeats, setLockedSeats] = useState<string[]>([]);
-  const [remainingSeatsCount, setRemainingSeatsCount] = useState<number>(0);
+  const [, setRemainingSeatsCount] = useState<number>(0);
 
   const [reservedAudienceInfo, setReservedAudienceInfo] =
     useState<ReservedAudienceInfo>();
   const [showAudienceInfo, setShowAudienceInfo] = useState<Boolean>(false);
   const [selectedAudienceSeats, setSelectedAudienceSeats] = useState<string[]>(
     []
-  ); // 관객 정보 가시화 좌석
+  );
 
   const [newLockedSeats, setNewLockedSeats] = useState<string[]>([]);
   const [newUnlockedSeats, setNewUnlockedSeats] = useState<string[]>([]);

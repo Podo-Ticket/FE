@@ -49,9 +49,8 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
 
 
   // 좌석 정보 가져오기
-  const loadSeatMapSeats = async (isRealTime: boolean) => {
+  const loadSeatMapSeats = async () => {
     if (!scheduleId) {
-      console.error("scheduleId가 없습니다.");
       return;
     }
 
@@ -83,16 +82,6 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
       setbookedSeatsInfo(bookedSeatInfo);
       setLockedSeatsInfo(lockedSeatInfo);
 
-      // 로그를 한 번만 출력하도록 조건 추가
-      if (isRealTime) {
-        console.log("예약된 좌석 (실시간):", reservedSeats);
-        console.log("블락된 좌석 (실시간):", lockedSeats);
-        console.log("예약+블락된 좌석 (실시간):", unclickableSeats);
-      } else {
-        console.log("예약+블락된 좌석:", unclickableSeats);
-        console.log("예약된 좌석:", reservedSeats);
-        console.log("블락된 좌석:", lockedSeats);
-      }
     } catch (error) {
       console.error("Error fetching seats:", error);
     }
@@ -101,7 +90,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
   // 일반 좌석 정보 가져오기
   useEffect(() => {
     if (!isRealTime) {
-      loadSeatMapSeats(false); // 일반 좌석 정보 가져오기
+      loadSeatMapSeats(); // 일반 좌석 정보 가져오기
     }
   }, [scheduleId, isRealTime]);
 
@@ -109,7 +98,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
   useEffect(() => {
     if (isRealTime) {
       const timer = setTimeout(() => {
-        loadSeatMapSeats(true); // 실시간 좌석 정보 가져오기
+        loadSeatMapSeats(); // 실시간 좌석 정보 가져오기
       }, 100); // 100ms의 지연 후 실행
       return () => clearTimeout(timer); // cleanup
     }

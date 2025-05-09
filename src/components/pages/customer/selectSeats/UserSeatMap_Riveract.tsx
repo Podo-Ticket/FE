@@ -26,14 +26,13 @@ const SeatMap: React.FC<SeatMapProps> = ({
   setCurrentSelectedSeats,
 
   showErrorModal,
-  isRefreshed,
   disabled,
   scheduleId,
   headCount,
   isRealTime,
   onSeatEdit,
 }) => {
-  const seatMapRef = useRef(null);
+  const seatMapRef = useRef<HTMLDivElement>(null);
   const [seatMapWidth, setSeatMapWidth] = useState(0);
 
   useEffect(() => {

@@ -67,14 +67,11 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
 
   const [unclickableSeats, setUnclickableSeats] = useState<string[]>([]);
   const [reservedSeats, setReservedSeats] = useState<string[]>([]);
-  const [temporarySelectedSeats, setTemporarySelectedSeats] = useState<string[]>([]); // 일시적으로 선택된 좌석
-  const [lockedSeats, setLockedSeats] = useState<string[]>([]); // 잠금된 좌석 배열 추가
+  const [temporarySelectedSeats, setTemporarySelectedSeats] = useState<string[]>([]); 
+  const [lockedSeats, setLockedSeats] = useState<string[]>([]);
 
-
-  // 좌석 정보 가져오기
   const loadSeatMapSeats = async (isRealTime: boolean) => {
     if (!scheduleId) {
-      console.error("scheduleId가 없습니다.");
       return;
     }
 

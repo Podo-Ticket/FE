@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Player } from '@lottiefiles/react-lottie-player';
+// import { Player } from '@lottiefiles/react-lottie-player';
 
 import logo from '../assets/images/splash.png';
 // import animationData from '../styles/animation/splashAnimation.json';
-import { fadeIn, fadeOut } from '../styles/animation/DefaultAnimation.ts'
+import { fadeIn } from '../styles/animation/DefaultAnimation.ts'
 
 const Splash: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
     // const [showPlayer, setShowPlayer] = useState(false);

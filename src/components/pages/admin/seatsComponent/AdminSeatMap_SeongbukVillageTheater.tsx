@@ -75,8 +75,6 @@ const SeatMap: React.FC<SeatMapProps> = ({
     if (seatMapRef.current) {
       const width = seatMapRef.current.getBoundingClientRect().width;
       setSeatMapWidth(width);
-
-      console.log("seatMapwidth: ", width);
     }
   }, []);
 

@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { useMediaQuery } from "react-responsive";
 
 import availableSeat from "@assets/images/purple_rectangle.png";
 import selectedSeat from "@assets/images/lightgrey_rectangle.png";
@@ -11,7 +10,7 @@ interface SeatsInfoInfoProps {}
 
 const SeatsInfo: React.FC<SeatsInfoInfoProps> = ({}) => {
   const language = localStorage.getItem("language");
-  const isSmallWidthDevice = useMediaQuery({ maxDeviceWidth: 350 });
+  // const isSmallWidthDevice = useMediaQuery({ maxDeviceWidth: 350 });
 
   return (
     <SeatsInfoContainer>

@@ -42,11 +42,9 @@ const FotterNav: React.FC<FooterNavProps> = ({
 }) => {
   const location = useLocation();
   const { prevPath, setPrevPath } = usePath();
-  const [preveIndex, setPreveIndex] = useState(pathToIndex(location.pathname));
+  const [, setPreveIndex] = useState(pathToIndex(location.pathname));
   const prevIndex = pathToIndex(prevPath);
-  const [activeIndex, setActiveIndex] = useState(
-    pathToIndex(location.pathname)
-  );
+  const [activeIndex] = useState(pathToIndex(location.pathname));
   const [direction, setDirection] = useState<"left" | "right">("right");
   const [hasPendingApproval, setHasPendingApproval] = useState(false);
   const [, setData] = useState<UserWithApproval[]>([]);
