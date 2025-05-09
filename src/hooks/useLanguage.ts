@@ -9,10 +9,6 @@ export const useLanguage = () => {
   );
 
   useEffect(() => {
-    console.log("language:", language);
-  }, [language]);
-
-  useEffect(() => {
     const handler = () => {
       setLanguage(
         (localStorage.getItem("language") as Language) || Language.Korean

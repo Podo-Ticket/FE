@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import socket from "../../../../api/socket";
 import styled from "styled-components";
 import { useForceLogoutStore } from "../../../../store/useForceLogoutStore";
@@ -10,7 +10,7 @@ import SmallBtn from "@components/common/buttons/SmallBtn";
 
 const ForceLogoutModal = () => {
   const { isOpen, message, closeModal } = useForceLogoutStore();
-  const [isClosing, setIsClosing] = useState(false);
+  const [isClosing,] = useState(false);
 
   if (!isOpen) return null;
 

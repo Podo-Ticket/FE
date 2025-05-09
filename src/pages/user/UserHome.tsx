@@ -21,8 +21,6 @@ const UserHome: React.FC = () => {
   const [, setScheduleId] = useState<number | 0>(0);
   const [performanceSession, setPerformanceSession] = useState<string | "">("");
 
-  // 애니메이션 모달 선언 부
-
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [, setIsPopupClosing] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null); // 팝업 요소를 참조하는 ref
@@ -31,21 +29,18 @@ const UserHome: React.FC = () => {
   useEffect(() => {
     const loadPlayInfo = async () => {
       try {
-        const playId = 1; // 추후에 다이나믹하게 변경
+        const playId = 1;
         const data = await fetchPlayInfo(playId);
-        console.log(data);
-        // 가장 가까운 스케줄의 date_time 계산
-        const closestDateTime = getClosestDateTime(data.schedule);
 
-        // 가장 가까운 스케줄의 id 찾기
+        const closestDateTime = getClosestDateTime(data.schedule);
         const closestSchedule = data.schedule.find(
           (schedule: { date_time: string }) =>
             schedule.date_time === closestDateTime
         );
 
         if (closestSchedule) {
-          setScheduleId(closestSchedule.id); // 가장 가까운 스케줄의 id 설정
-          localStorage.setItem("scheduleId", closestSchedule.id); // 로컬스토리지에 저장
+          setScheduleId(closestSchedule.id); 
+          localStorage.setItem("scheduleId", closestSchedule.id);
         }
         localStorage.setItem("isForceLogout", 'false');
         setPlayInfo(data.play);
@@ -67,7 +62,6 @@ const UserHome: React.FC = () => {
     setLanguage(next);
   };
 
-  // 팝업 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

@@ -65,7 +65,9 @@ function App() {
   useEffect(() => {
     const handleForceLogout = (data: { message?: string }) => {
       openModal(data.message);
-      localStorage.setItem("isForceLogout", "true");
+      if (window.location.pathname == "/confirm") {
+        localStorage.setItem("isForceLogout", "true");
+      }
     };
 
     socket.on("forceLogout", handleForceLogout);
