@@ -8,8 +8,8 @@ import styled from "styled-components";
 import TopNav from "@components/layout/headers/TopNav";
 import ReservationCheckLabel from "@/components/pages/customer/userHome/ReservationCheckLabel.tsx";
 import MediumBtn from "@components/common/buttons/MediumBtn.tsx";
-import CheckedIcon from "@assets/icons/ic_privacy_checked.svg";
-import UncheckedIcon from "@assets/icons/ic_privacy_unchecked.svg";
+import CheckedIcon from "@assets/icons/ic_privacy_checked.svg?url";
+import UncheckedIcon from "@assets/icons/ic_privacy_unchecked.svg?url";
 import Loading from "@components/common/loadings/Loading.tsx";
 
 import ErrorModal from "@components/common/errors/DefaultErrorModal.tsx";
@@ -384,6 +384,7 @@ const AgreementContainerHeader = styled.div`
 const AgreementContainerTitle = styled.p``;
 const CustomCheckbox = styled.div<{ checked: boolean }>`
   width: 6.2%;
+
   height: auto;
   margin-right: 3px;
   background-image: ${(props) =>
