@@ -313,28 +313,28 @@ const SeatMap: React.FC<SeatMapProps> = ({
   };
 
   return (
-    <SeatMapContainer>
-      {isRealTime &&
-        (showAudienceInfo ? (
-          <AudienceInfoWrapper>
-            <AudienceInfo
-              name={reservedAudienceInfo?.name}
-              phoneNumber={reservedAudienceInfo?.phoneNumber}
-              headCount={reservedAudienceInfo?.headCount}
-            />
-          </AudienceInfoWrapper>
-        ) : null)}
+    <TransformWrapper
+      initialScale={1} // 초기 확대 비율
+      minScale={1} // 최소 축소 비율
+      maxScale={5} // 최대 확대 비율
+      doubleClick={{ disabled: true }} // 더블 클릭 확대 비활성화
+      wheel={{ step: 0.1 }} // 마우스 휠 줌 속도( step: 0.1) (마우스 휠 줌 비활성화 -  disabled: true  )
+      pinch={{ step: 5 }} // 핀치 줌 감도
+      centerZoomedOut // 줌아웃 시 중앙 정렬
+    >
+      <TransformComponent>
+        <SeatMapContainer>
+          {isRealTime &&
+            (showAudienceInfo ? (
+              <AudienceInfoWrapper>
+                <AudienceInfo
+                  name={reservedAudienceInfo?.name}
+                  phoneNumber={reservedAudienceInfo?.phoneNumber}
+                  headCount={reservedAudienceInfo?.headCount}
+                />
+              </AudienceInfoWrapper>
+            ) : null)}
 
-      <TransformWrapper
-        initialScale={1} // 초기 확대 비율
-        minScale={1} // 최소 축소 비율
-        maxScale={5} // 최대 확대 비율
-        doubleClick={{ disabled: true }} // 더블 클릭 확대 비활성화
-        wheel={{ step: 0.1 }} // 마우스 휠 줌 속도( step: 0.1) (마우스 휠 줌 비활성화 -  disabled: true  )
-        pinch={{ step: 5 }} // 핀치 줌 감도
-        centerZoomedOut // 줌아웃 시 중앙 정렬
-      >
-        <TransformComponent>
           <StageContainer seatMapWidth={seatMapWidth}>
             <StageImage stage={stage}>
               <StageText className="Podo-Ticket-Headline-H4">무대</StageText>
@@ -460,9 +460,9 @@ const SeatMap: React.FC<SeatMapProps> = ({
               </SeatRow>
             </SeatMapDownSide>
           </SeatMapContent>
-        </TransformComponent>
-      </TransformWrapper>
-    </SeatMapContainer>
+        </SeatMapContainer>
+      </TransformComponent>
+    </TransformWrapper>
   );
 };
 
@@ -480,8 +480,6 @@ const SeatMapContainer = styled.div`
   gap: 15px;
   padding: 15px;
   padding-bottom: 50px;
-
-  overflow: scroll;
 `;
 
 const StageContainer = styled.div<{ seatMapWidth: number }>`

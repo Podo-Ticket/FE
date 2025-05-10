@@ -103,18 +103,18 @@ const SeatMap: React.FC<SeatMapProps> = ({
   };
 
   return (
-    <SeatMapScroller>
-      <SeatMapContainer>
-        <TransformWrapper
-          initialScale={1} // 초기 확대 비율
-          minScale={1} // 최소 축소 비율
-          maxScale={5} // 최대 확대 비율
-          doubleClick={{ disabled: true }} // 더블 클릭 확대 비활성화
-          wheel={{ step: 0.1 }} // 마우스 휠 줌 속도( step: 0.1) (마우스 휠 줌 비활성화 -  disabled: true  )
-          pinch={{ step: 5 }} // 핀치 줌 감도
-          centerZoomedOut // 줌아웃 시 중앙 정렬
-        >
-          <TransformComponent>
+    <TransformWrapper
+      initialScale={1} // 초기 확대 비율
+      minScale={1} // 최소 축소 비율
+      maxScale={5} // 최대 확대 비율
+      doubleClick={{ disabled: true }} // 더블 클릭 확대 비활성화
+      wheel={{ step: 0.1 }} // 마우스 휠 줌 속도( step: 0.1) (마우스 휠 줌 비활성화 -  disabled: true  )
+      pinch={{ step: 5 }} // 핀치 줌 감도
+      centerZoomedOut // 줌아웃 시 중앙 정렬
+    >
+      <TransformComponent>
+        <SeatMapScroller>
+          <SeatMapContainer>
             <StageContainer seatMapWidth={seatMapWidth}>
               <StageImage stage={stage}>
                 <StageText className="Podo-Ticket-Headline-H4">무대</StageText>
@@ -181,7 +181,10 @@ const SeatMap: React.FC<SeatMapProps> = ({
               <SeatMapDownSide>
                 <SeatRow>
                   {Object.keys(theater_bottom).map((row) => (
-                    <SeatColumn key={row} seatCount={theater_bottom[row].length}>
+                    <SeatColumn
+                      key={row}
+                      seatCount={theater_bottom[row].length}
+                    >
                       {theater_bottom[row].map((seat) => {
                         const seatId = `${row}${seat}`;
                         const isReserved = reservedSeats.includes(seatId);
@@ -207,10 +210,10 @@ const SeatMap: React.FC<SeatMapProps> = ({
                 </SeatRow>
               </SeatMapDownSide>
             </SeatMapContent>
-          </TransformComponent>
-        </TransformWrapper>
-      </SeatMapContainer>
-    </SeatMapScroller>
+          </SeatMapContainer>
+        </SeatMapScroller>
+      </TransformComponent>
+    </TransformWrapper>
   );
 };
 
@@ -219,21 +222,7 @@ export default SeatMap;
 const SeatMapScroller = styled.div`
   display: flex;
   justify-content: center;
-
   min-height: 300px;
-
-  overflow: scroll;
-
-  /* Chrome, Safari, Edge */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Firefox */
-  scrollbar-width: none;
-
-  /* Internet Explorer and older Edge */
-  -ms-overflow-style: none;
 `;
 
 const SeatMapContainer = styled.div`
