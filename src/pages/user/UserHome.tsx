@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import MediumBtn from "@components/common/buttons/MediumBtn.tsx";
 import MultiLanguageHeader from "@components/layout/headers/MultiLanguageHeader.tsx";
+import lowResPoster from "../../assets/images/posters/2025_Spring_KwangwoonUniv_poster_lowRes.png";
 import poster from "../../assets/images/posters/2025_Spring_KwangwoonUniv_poster.png"; // 해당 공연에 맞는 상수값 적용 필요
 
 import { fetchPlayInfo } from "../../api/user/UserHomeApi";
@@ -12,6 +13,7 @@ import { useNavigateTo } from "../../utils/NavigateUtil.ts";
 import { USER_HOME } from "../../constants/text/UIText.ts";
 import { useLanguage } from "../../hooks/useLanguage.ts";
 import { Language } from "../../constants/text/Language.ts";
+import ProgressiveImage from "@/components/pages/customer/userHome/ProgressiveImage.tsx";
 
 const UserHome: React.FC = () => {
   const navigateTo = useNavigateTo();
@@ -39,10 +41,10 @@ const UserHome: React.FC = () => {
         );
 
         if (closestSchedule) {
-          setScheduleId(closestSchedule.id); 
+          setScheduleId(closestSchedule.id);
           localStorage.setItem("scheduleId", closestSchedule.id);
         }
-        localStorage.setItem("isForceLogout", 'false');
+        localStorage.setItem("isForceLogout", "false");
         setPlayInfo(data.play);
         setPerformanceSession(getClosestDateTime(data.schedule));
       } catch (error) {
@@ -92,7 +94,12 @@ const UserHome: React.FC = () => {
         <CardFront>
           <CardBackGround />
 
-          <Poster src={poster} alt="공연 포스터" />
+          <ProgressiveImage
+            lowResSrc={lowResPoster}
+            highResSrc={poster}
+            alt="공연 포스터"
+            style={{ borderRadius: "8px" }}
+          />
 
           <TicketBottomContainer>
             <ShowDetails>
@@ -201,17 +208,6 @@ const CardBackGround = styled.div`
   height: 100%;
   background-color: white;
   border-radius: 20px;
-`;
-
-const Poster = styled.img`
-  position: relative;
-  height: 69%;
-  width: auto;
-  object-fit: cover;
-  object-position: top;
-  z-index: 0;
-  border-radius: 20px 20px 0 0;
-  border-bottom: 2px dashed var(--grey-grey-5, #9e9e9e);
 `;
 
 const TicketBottomContainer = styled.div`
