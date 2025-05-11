@@ -8,8 +8,8 @@ import styled from "styled-components";
 import TopNav from "@components/layout/headers/TopNav";
 import ReservationCheckLabel from "@/components/pages/customer/userHome/ReservationCheckLabel.tsx";
 import MediumBtn from "@components/common/buttons/MediumBtn.tsx";
-import CheckedIcon from "@assets/icons/ic_privacy_checked.svg?url";
-import UncheckedIcon from "@assets/icons/ic_privacy_unchecked.svg?url";
+import CheckedIcon from "@assets/icons/ic_privacy_checked.svg";
+import UncheckedIcon from "@assets/icons/ic_privacy_unchecked.svg";
 import Loading from "@components/common/loadings/Loading.tsx";
 
 import ErrorModal from "@components/common/errors/DefaultErrorModal.tsx";
@@ -209,9 +209,10 @@ const IssueTicket: React.FC = () => {
                 {agreementTitle}
               </AgreementContainerTitle>
               <CustomCheckbox
-                checked={isChecked}
+                src={isChecked ? CheckedIcon : UncheckedIcon}
                 onClick={handleCheckboxClick}
-              ></CustomCheckbox>
+                alt="약관 동의 체크박스"
+              />
             </AgreementContainerHeader>
             <ContentPrivacy className="Podo-Ticket-Body-B8">
               {description}
@@ -382,14 +383,10 @@ const AgreementContainerHeader = styled.div`
 `;
 
 const AgreementContainerTitle = styled.p``;
-const CustomCheckbox = styled.div<{ checked: boolean }>`
-  width: 6.2%;
 
+const CustomCheckbox = styled.img`
+  width: 6.2%;
   height: auto;
   margin-right: 3px;
-  background-image: ${(props) =>
-    props.checked ? `url(${CheckedIcon})` : `url(${UncheckedIcon})`};
-  background-size: contain;
-  background-repeat: no-repeat;
-  display: flex;
 `;
+
