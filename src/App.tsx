@@ -9,6 +9,7 @@ import { AnimatePresence } from "framer-motion";
 import { useForceLogoutStore } from "./store/useForceLogoutStore";
 
 import PageWrapper from "./styles/animation/PageWrapper.tsx";
+import ScrollLockWrapper from "./components/layout/wrappers/ScrollLockWrapper.tsx";
 import PWABadge from "./PWABadge.tsx";
 
 import Splash from "./pages/Splash.tsx";
@@ -52,15 +53,6 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "auto";
-      document.documentElement.style.overflow = "auto";
-    };
-  }, []);
-
   const location = useLocation();
   const { openModal } = useForceLogoutStore();
 
@@ -164,16 +156,31 @@ function App() {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           {/* User Routes */}
-          <Route path="/" element={<UserHome />} />
-          <Route path="issue-ticket" element={<IssueTicket />} />
+          <Route
+            path="/"
+            element={
+              <ScrollLockWrapper>
+                <UserHome />
+              </ScrollLockWrapper>
+            }
+          />
+          <Route
+            path="issue-ticket"
+            element={
+              <ScrollLockWrapper>
+                <IssueTicket />
+              </ScrollLockWrapper>
+            }
+          />
           <Route path="/reserve" element={<OnSiteReserve />} />
           <Route
             path="/select"
             element={
-              <PageWrapper slideDirection="right">
-                {" "}
-                <SelectSeats />{" "}
-              </PageWrapper>
+              <ScrollLockWrapper>
+                <PageWrapper slideDirection="right">
+                  <SelectSeats />{" "}
+                </PageWrapper>
+              </ScrollLockWrapper>
             }
           />
           <Route
@@ -185,16 +192,32 @@ function App() {
               </PageWrapper>
             }
           />
-          <Route path="/ticket" element={<TicketScreen />} />
+          <Route
+            path="/ticket"
+            element={
+              <ScrollLockWrapper>
+                <TicketScreen />
+              </ScrollLockWrapper>
+            }
+          />
 
           {/* Admin Routes */}
-          <Route path="/adminAuth" element={<AdminAuth />} />
+          <Route
+            path="/adminAuth"
+            element={
+              <ScrollLockWrapper>
+                <AdminAuth />
+              </ScrollLockWrapper>
+            }
+          />
 
           <Route
             path="/home"
             element={
               <ProtectedRoute>
-                <AdminHome />
+                <ScrollLockWrapper>
+                  <AdminHome />
+                </ScrollLockWrapper>
               </ProtectedRoute>
             }
           />
@@ -202,7 +225,9 @@ function App() {
             path="/home/realtime"
             element={
               <ProtectedRoute>
-                <RealtimeSeats />
+                <ScrollLockWrapper>
+                  <RealtimeSeats />
+                </ScrollLockWrapper>
               </ProtectedRoute>
             }
           />
@@ -210,7 +235,9 @@ function App() {
             path="/home/manage"
             element={
               <ProtectedRoute>
-                <ManageLockingSeats />
+                <ScrollLockWrapper>
+                  <ManageLockingSeats />
+                </ScrollLockWrapper>
               </ProtectedRoute>
             }
           />
@@ -261,7 +288,9 @@ function App() {
             path="/setting"
             element={
               <ProtectedRoute>
-                <AdminSetting />
+                <ScrollLockWrapper>
+                  <AdminSetting />
+                </ScrollLockWrapper>
               </ProtectedRoute>
             }
           />

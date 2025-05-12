@@ -190,5 +190,7 @@ const ListContainer = styled.div`
   max-height: calc(100vh - 250px);
   overflow-y: auto;
 
+  padding-bottom: 50px;
+
   animation: ${fadeIn} 0.3s ease-in-out;
 `;

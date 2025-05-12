@@ -16,8 +16,6 @@ import NoticeModal from "@components/common/modals/NoticeModal.tsx";
 import PrivacyPolicyModal from "@components/common/modals/TextModal.tsx";
 
 import goBackIcon from "../../assets/images/left_arrow.png";
-import CheckedIcon from "../../assets/images/privacy_checked.png";
-import UncheckedIcon from "../../assets/images/privacy_unchecked.png";
 
 import { Language } from "../../constants/text/Language.ts";
 
@@ -59,15 +57,7 @@ function OnSiteReserve() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
-  const handleCheckboxChange = () => {
-    setIsPrivacyChecked((prevChecked) => !prevChecked);
-  };
-  const handleCheckboxClick = () => {
-    setIsPrivacyChecked((prevChecked) => !prevChecked);
-  };
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
-  const openPrivacyModal = () => setShowPrivacyModal(true);
   const closePrivacyModal = () => setShowPrivacyModal(false);
 
   const [isRejectedModalOpen, setIsRejectedModalOpen] = useState(false);
@@ -305,34 +295,6 @@ function OnSiteReserve() {
       </InputContainer>
 
       <ButtonContainer>
-        <AgreementContainer className="Podo-Ticket-Body-B5">
-          <AgreementText isChecked={isPrivacyChecked}>
-            <HiddenCheckbox
-              checked={isPrivacyChecked}
-              onChange={handleCheckboxChange}
-            />
-            <CustomCheckbox
-              checked={isPrivacyChecked}
-              onClick={handleCheckboxClick}
-            ></CustomCheckbox>
-            <span onClick={handleCheckboxClick} className="Podo-Ticket-Body-B5">
-              {language === "english"
-                ? ONSITE_RESERVE.english.authCheckbox
-                : ONSITE_RESERVE.korean.authCheckbox}
-            </span>
-          </AgreementText>
-
-          <AgreementModalLink
-            href="#"
-            className="Podo-Ticket-Body-B10"
-            onClick={openPrivacyModal}
-          >
-            {language === "english"
-              ? ONSITE_RESERVE.english.authShowMore
-              : ONSITE_RESERVE.korean.authShowMore}
-          </AgreementModalLink>
-        </AgreementContainer>
-
         <LargeBtn
           content={
             language === "english"
@@ -340,7 +302,7 @@ function OnSiteReserve() {
               : ONSITE_RESERVE.korean.submitBtn
           }
           onClick={handleSubmit(handleReservationSubmit)}
-          isAvailable={isDirty && isValid && isPrivacyChecked}
+          isAvailable={isDirty && isValid}
         />
       </ButtonContainer>
 
@@ -407,13 +369,16 @@ function OnSiteReserve() {
 
 export default OnSiteReserve;
 
-const OnSiteReserveContainer = styled.div``;
+const OnSiteReserveContainer = styled.div`
+  overflow-y: auto;
+`;
 
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
   padding: 25px 30px;
+
   animation: ${fadeIn} 0.5s ease-in-out;
 
   @media (max-resolution: 2dppx) {
@@ -446,56 +411,4 @@ const ButtonContainer = styled.div`
     gap: 35px;
     margin-top: 40px;
   }
-`;
-
-const AgreementContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 6px;
-
-  @media (max-resolution: 2dppx) {
-    gap: 9px;
-  }
-  @media (min-resolution: 3dppx) {
-    gap: 6px;
-  }
-`;
-
-const AgreementText = styled.span<{ isChecked: boolean }>`
-  display: flex;
-  align-items: center;
-  color: ${({ isChecked }) =>
-    isChecked ? "var(--purple-5)" : "var(--grey-6)"};
-`;
-
-const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
-  display: none;
-`;
-
-const CustomCheckbox = styled.div<{ checked: boolean }>`
-  width: 14px;
-  height: 14px;
-  margin-right: 3px;
-  background-image: ${(props) =>
-    props.checked ? `url(${CheckedIcon})` : `url(${UncheckedIcon})`};
-  background-size: contain;
-  background-repeat: no-repeat;
-  display: inline-block;
-
-  @media (max-resolution: 2dppx) {
-    width: 21px;
-    height: 21px;
-    margin-right: 4.5px;
-  }
-  @media (min-resolution: 3dppx) {
-    width: 14px;
-    height: 14px;
-    margin-right: 3px;
-  }
-`;
-
-const AgreementModalLink = styled.a`
-  color: var(--grey-6);
 `;
