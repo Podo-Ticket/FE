@@ -206,7 +206,17 @@ function OnSiteReserve() {
                   : ONSITE_RESERVE.korean.firstInputPlaceholder
               }
               value={field.value}
-              onChangeFunc={field.onChange}
+              onChangeFunc={(e) => {
+                const input = e.target.value;
+
+                // 1. 20자 초과 제한
+                if (input.length > 20) return;
+
+                // 2. 공백만 있는 경우 입력 반영 안 함
+                if (input.trim().length === 0 && input !== "") return;
+
+                field.onChange(input);
+              }}
             />
           )}
         />
