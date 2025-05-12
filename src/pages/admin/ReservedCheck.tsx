@@ -34,6 +34,7 @@ export default function ReservedCheck() {
           Number(scheduleId),
           BigInt(userId)
         );
+        console.log(info.user);
         setReservationInfo(info.user);
       } catch (error) {
         console.error("Failed to load reservation info:", error);
@@ -90,7 +91,7 @@ export default function ReservedCheck() {
       <TopNav
         lefter={navItem}
         center={navItem}
-        righter={rightItem}
+        righter={reservationInfo?.state ? undefined : rightItem}
         isUnderlined={true}
       />
       <Form>
@@ -132,7 +133,6 @@ export default function ReservedCheck() {
           </DeleteButton>
         </div>
 
-        
         <MultipleAcceptModal
           showDefaultModal={showMultipleAcceptModal}
           title={"해당 명단을 삭제하시겠습니까?"}
