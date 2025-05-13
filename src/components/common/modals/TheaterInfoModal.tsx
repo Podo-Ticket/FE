@@ -260,6 +260,7 @@ const SeatDescription = styled.div`
   padding: 5px;
 
   img {
+    height: 100%;
     max-height: 100%;
     object-fit: contain; /* 이미지 비율 유지 */
     margin-top: 20px;
