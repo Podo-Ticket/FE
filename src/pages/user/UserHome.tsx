@@ -27,6 +27,21 @@ const UserHome: React.FC = () => {
   const [, setIsPopupClosing] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null); // 팝업 요소를 참조하는 ref
 
+  const [cardWidth, setCardWidth] = useState(312);
+
+  useEffect(() => {
+    const resize = () => {
+      const svh = window.innerHeight * 0.926;
+      const height = Math.min(svh, 597);
+      const newWidth = (height * 312) / 597;
+      setCardWidth(Math.min(312, newWidth));
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+
   // 현재 공연 정보 반영
   useEffect(() => {
     const loadPlayInfo = async () => {
@@ -89,8 +104,8 @@ const UserHome: React.FC = () => {
 
   return (
     <MainContainer backgroundImage={poster}>
-      <MultiLanguageHeader clickLanguage={toggleLanguage} />
-      <PosterDetailsContainer>
+      <PosterDetailsContainer cardWidth={cardWidth}>
+        <MultiLanguageHeader clickLanguage={toggleLanguage} />
         <CardFront>
           <CardBackGround />
 
@@ -151,12 +166,12 @@ const MainContainer = styled.div<{ backgroundImage: string }>`
 
   width: 100%;
   height: 100svh;
-  padding: 0 8.39vw;
+
   background-image: ${({ backgroundImage }) => `url(${backgroundImage})`};
   background-size: cover;
   background-position: center;
 
-  &::before {
+  &::after {
     content: "";
     position: absolute;
     top: 0;
@@ -165,38 +180,62 @@ const MainContainer = styled.div<{ backgroundImage: string }>`
     bottom: 0;
     background: var(--background-gradation-main);
   }
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+  }
 `;
 
-const PosterDetailsContainer = styled.div`
-  width: 100%;
-  height: 83.81svh;
+const PosterDetailsContainer = styled.div<{ cardWidth: number }>`
+  @media (max-height: 645px) {
+    height: 100svh;
+    width: ${({ cardWidth }) => `${cardWidth}px`};
+  }
+
+  @media (min-height: 646px) {
+    min-width: 312px;
+    min-height: 645px;
+  }
+
+  max-width: 312px;
+  z-index: 100000;
+  height: 90.3svh;
+  max-height: 645px;
 
   animation: ${slideUp} 0.5s ease-out;
+
+  margin: auto;
 `;
 
 const CardFront = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: 92.6%;
   position: relative;
-
+  border-radius: 20px;
+  margin-top: 3.7%;
   -webkit-mask-image: radial-gradient(
-      circle at left 68.95%,
+      circle at left 73.9%,
       transparent 15px,
       black 15px
     ),
-    radial-gradient(circle at right 68.95%, transparent 15px, black 15px),
+    radial-gradient(circle at right 73.9%, transparent 15px, black 15px),
     linear-gradient(white, white);
   -webkit-mask-composite: destination-out;
   -webkit-mask-repeat: no-repeat;
 
   mask-image: radial-gradient(
-      circle at left 68.95%,
+      circle at left 73.9%,
       transparent 4.5%,
       black 4.5%
     ),
-    radial-gradient(circle at right 68.95%, transparent4.5%, black 4.5%),
+    radial-gradient(circle at right 73.9%, transparent4.5%, black 4.5%),
     linear-gradient(white, white);
   mask-composite: exclude;
   mask-repeat: no-repeat;
@@ -213,17 +252,18 @@ const CardBackGround = styled.div`
 const TicketBottomContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 31.05%;
+  height: 26.1%;
   z-index: 1;
 
   justify-content: center;
-  gap: 18px;
+  gap: 8.3%;
 `;
 
 const ShowDetails = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+
+  gap: 15.3%;
 `;
 
 const ShowDetailsTitle = styled.div`

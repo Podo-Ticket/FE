@@ -47,7 +47,7 @@ export const PERSONAL_INFORMATION_AGREE_CONTENT = {
   귀하는 위와 같이 개인정보를 수집 ∙ 이용하는데 동의를 거부할 권리가 있습니다. 필수 수집 항목에 대해 동의를 거절하는 경우 서비스 이용이 제한될 수 있습니다.`,
   },
   english: {
-    title: `Consent to Personal Data Collectio`,
+    title: `Consent to Personal Data Collection`,
     detail: ` In accordance with the Personal Information Protection Act, <PodoTicket> informs members registering on our platform about the items of personal information collected, the purposes of collection and use, the retention and usage period of the personal information, the right to refuse consent, and any disadvantages that may arise from such refusal. Please read the following carefully before giving your consent.
 
 
