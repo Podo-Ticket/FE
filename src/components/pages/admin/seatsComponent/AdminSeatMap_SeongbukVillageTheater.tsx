@@ -366,7 +366,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
                         <SingleSeat
                           key={seatId}
                           isAdmin={true}
-                          content={`${row}${seat}`}
+                          content={`${row}${String(seat).padStart(2, '0')}`}
                           onClick={() => handleSeatClick(seatId)}
                           isAvailable={isAvailable}
                           isSelectedAudience={isShowSelectedAudience}
@@ -404,7 +404,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
                         <SingleSeat
                           key={seatId}
                           isAdmin={true}
-                          content={`${row}${seat}`}
+                          content={`${row}${String(seat).padStart(2, '0')}`}
                           onClick={() => handleSeatClick(seatId)}
                           isAvailable={isAvailable}
                           isSelectedAudience={isShowSelectedAudience}
@@ -444,7 +444,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
                         <SingleSeat
                           key={seatId}
                           isAdmin={true}
-                          content={`${row}${seat}`}
+                          content={`${row}${String(seat).padStart(2, '0')}`}
                           onClick={() => handleSeatClick(seatId)}
                           isAvailable={isAvailable}
                           isSelectedAudience={isShowSelectedAudience}
@@ -516,13 +516,15 @@ const SeatMapContent = styled.div`
   display: flex;
   flex-direction: column;
 
-  gap: 5px;
+  gap: 2.5px;
+  margin-right: 70px;
 `;
 
 const SeatMapTopSide = styled.div`
   display: flex;
+  justify-content: space-between;
 
-  gap: 70px;
+  gap: 35px;
 `;
 
 const SeatMapDownSide = styled.div`

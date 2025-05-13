@@ -97,7 +97,7 @@ height: 100%;
 
 const CheckBoxContainer = styled.div`
   position: absolute;
-  top: 92%;
+  top: 93.5%;
   left: 0;
 
   display: flex;

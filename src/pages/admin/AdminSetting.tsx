@@ -54,7 +54,7 @@ const AdminSetting = () => {
                         <ContentLeftContainer>
                             <ContentImage src={versionImage} style={{ width: '22px', height: '22px' }} />
                             <ContentName>버전 정보</ContentName>
-                            <ContentSubName>v1.2.0</ContentSubName>
+                            <ContentSubName>v1.3.0</ContentSubName>
                         </ContentLeftContainer>
                         <ContentDescription>최신 버전</ContentDescription>
                     </CategoryItem>
