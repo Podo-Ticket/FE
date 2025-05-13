@@ -205,7 +205,10 @@ const IssueTicket: React.FC = () => {
         {step === 2 && (
           <AgreementContainer>
             <AgreementContainerHeader>
-              <AgreementContainerTitle className="Podo-Ticket-Body-B4">
+              <AgreementContainerTitle
+                isChecked={isChecked}
+                className="Podo-Ticket-Body-B4"
+              >
                 {agreementTitle}
               </AgreementContainerTitle>
               <CustomCheckbox
@@ -382,11 +385,12 @@ const AgreementContainerHeader = styled.div`
   margin-bottom: 3.8%;
 `;
 
-const AgreementContainerTitle = styled.p``;
+const AgreementContainerTitle = styled.p<{ isChecked: boolean }>`
+  color: ${({ isChecked }) => (isChecked ? "var(--purple-4)" : "")};
+`;
 
 const CustomCheckbox = styled.img`
   width: 6.2%;
   height: auto;
   margin-right: 3px;
 `;
-
