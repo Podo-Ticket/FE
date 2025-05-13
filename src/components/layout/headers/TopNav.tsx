@@ -115,6 +115,7 @@ const CenterContent = styled.div`
   width: 210px;
 
   color: var(--gray-100);
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 `;
 
 const ImageContainer = styled.div`
