@@ -4,7 +4,7 @@ import styled from "styled-components";
 import calendarIcon from "@assets/images/admin/calendar.png";
 import arrowDownIcon from "@assets/images/admin/arrow_down.png";
 
-import { DateUtil } from '../../../utils/DateUtil';
+import { DateUtil } from "../../../utils/DateUtil";
 
 // Schedule 타입 정의
 export interface Schedule {
@@ -29,7 +29,7 @@ const PlaySessionPicker: React.FC<PlaySessionPickerProps> = ({
   onContentChange,
   isEllipse = false,
   isDisabled = false,
-  isRounded = false
+  isRounded = false,
 }) => {
   // Ref for the select element
   const selectRef = useRef<HTMLSelectElement>(null);
@@ -41,7 +41,10 @@ const PlaySessionPicker: React.FC<PlaySessionPickerProps> = ({
     if (selectRef.current) {
       selectRef.current.focus(); // 포커스 설정
       // ArrowDown 키 이벤트를 트리거하여 드롭다운 열기
-      const event = new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true });
+      const event = new KeyboardEvent("keydown", {
+        key: "ArrowDown",
+        bubbles: true,
+      });
       selectRef.current.dispatchEvent(event);
     }
   };
@@ -78,16 +81,21 @@ const PlaySessionPicker: React.FC<PlaySessionPickerProps> = ({
 
 export default PlaySessionPicker;
 
-const SessionPickerContainer = styled.div<{ isEllipse?: boolean, isRounded: boolean }>`
+const SessionPickerContainer = styled.div<{
+  isEllipse?: boolean;
+  isRounded: boolean;
+}>`
   display: flex;
   justify-content: center;
   align-items: center;
 
   width: ${({ isEllipse }) => (isEllipse ? "90%" : "100%")};
-  border-radius: ${({ isEllipse, isRounded }) => (isEllipse || isRounded ? "10px" : "0")};
+  border-radius: ${({ isEllipse, isRounded }) =>
+    isEllipse || isRounded ? "10px" : "0"};
   border: 1px solid var(--grey-3);
-  background: var(--background-1);
-  box-shadow: ${({ isRounded }) => (isRounded ? "0px 0px 5px 3px rgba(0, 0, 0, 0.02)" : "none")};
+  background: var(--ect-white);
+  box-shadow: ${({ isRounded }) =>
+    isRounded ? "0px 0px 5px 3px rgba(0, 0, 0, 0.02)" : "none"};
 
   user-select: none; /* 텍스트 선택 방지 */
 `;
@@ -118,7 +126,7 @@ const IconContainer = styled.img`
 
 const SessionSelector = styled.select`
   appearance: none;
-  
+
   width: 100%;
   border: none;
   background: transparent;
