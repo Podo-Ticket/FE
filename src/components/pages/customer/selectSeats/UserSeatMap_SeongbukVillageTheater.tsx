@@ -135,7 +135,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
                           <SingleSeat
                             key={seatId}
                             isAdmin={false}
-                            content={`${row}${seat}`}
+                            content={`${row}${String(seat).padStart(2, '0')}`}
                             onClick={() => handleUserSeatClick(row, seat)}
                             isAvailable={
                               (!disabled && !(onSeatEdit && isReserved)) || true
@@ -162,7 +162,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
                           <SingleSeat
                             key={seatId}
                             isAdmin={false}
-                            content={`${row}${seat}`}
+                            content={`${row}${String(seat).padStart(2, '0')}`}
                             onClick={() => handleUserSeatClick(row, seat)}
                             isAvailable={
                               (!disabled && !(onSeatEdit && isReserved)) || true
@@ -194,7 +194,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
                           <SingleSeat
                             key={seatId}
                             isAdmin={false}
-                            content={`${row}${seat}`}
+                            content={`${row}${String(seat).padStart(2, '0')}`}
                             onClick={() => handleUserSeatClick(row, seat)}
                             isAvailable={
                               (!disabled && !(onSeatEdit && isReserved)) || true

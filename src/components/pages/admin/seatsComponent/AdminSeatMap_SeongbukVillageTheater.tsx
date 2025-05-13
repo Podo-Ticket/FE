@@ -366,7 +366,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
                         <SingleSeat
                           key={seatId}
                           isAdmin={true}
-                          content={`${row}${seat}`}
+                          content={`${row}${String(seat).padStart(2, '0')}`}
                           onClick={() => handleSeatClick(seatId)}
                           isAvailable={isAvailable}
                           isSelectedAudience={isShowSelectedAudience}
@@ -404,7 +404,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
                         <SingleSeat
                           key={seatId}
                           isAdmin={true}
-                          content={`${row}${seat}`}
+                          content={`${row}${String(seat).padStart(2, '0')}`}
                           onClick={() => handleSeatClick(seatId)}
                           isAvailable={isAvailable}
                           isSelectedAudience={isShowSelectedAudience}
@@ -444,7 +444,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
                         <SingleSeat
                           key={seatId}
                           isAdmin={true}
-                          content={`${row}${seat}`}
+                          content={`${row}${String(seat).padStart(2, '0')}`}
                           onClick={() => handleSeatClick(seatId)}
                           isAvailable={isAvailable}
                           isSelectedAudience={isShowSelectedAudience}
