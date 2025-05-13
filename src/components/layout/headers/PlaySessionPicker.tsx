@@ -121,7 +121,8 @@ const SessionPickerContentLeft = styled.div`
 `;
 
 const IconContainer = styled.img`
-  width: 15px;
+  width: 20px;
+  height: 20px;
 `;
 
 const SessionSelector = styled.select`
