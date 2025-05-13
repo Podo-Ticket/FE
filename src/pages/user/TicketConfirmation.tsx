@@ -149,12 +149,14 @@ const TicketConfirmation = () => {
       </Header>
 
       <TopContent>
-        <Icon src={confirmIcon} alt="확인 아이콘" />
-        <Title className="Podo-Ticket-Headline-H2">
-          {language === "english"
-            ? TICKET_CONFIRMATION.english.doubleCheckIssue
-            : TICKET_CONFIRMATION.korean.doubleCheckIssue}
-        </Title>
+        <TopDiv>
+          <Icon src={confirmIcon} alt="확인 아이콘" />
+          <Title className="Podo-Ticket-Headline-H2">
+            {language === "english"
+              ? TICKET_CONFIRMATION.english.doubleCheckIssue
+              : TICKET_CONFIRMATION.korean.doubleCheckIssue}
+          </Title>
+        </TopDiv>
       </TopContent>
 
       <Divider />
@@ -267,7 +269,6 @@ export default TicketConfirmation;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-
   height: 100svh;
   width: 100vw;
 `;
@@ -276,42 +277,42 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   margin: 4.3% 9.4% 0;
+  height: 3%;
 `;
 
 const BackIcon = styled.img`
   width: auto;
-  height: 3%;
-
-  @media (max-resolution: 2dppx) {
-    width: 19.5 px;
-    height: 30px;
-  }
-  @media (min-resolution: 3dppx) {
-    width: 13px;
-    height: 20px;
-  }
+  height: 100%;
 `;
 
 const TopContent = styled.div`
   display: flex;
-  flex-direction: column;
   height: 29.2%;
   align-items: center;
-  padding-top: 1.7%;
-  gap: 10.36%;
+  justify-content: center;
+`;
+
+const TopDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 71%;
+  justify-content: center;
+  gap: 14.6%;
 `;
 
 const BottomContent = styled.div`
   display: flex;
   flex-direction: column;
   height: 61.57%;
-  padding: 6.35% 5%;
+  padding-top: 7.37%;
 
   align-items: center;
 `;
 
 const Icon = styled.img`
-  width: 17.05%;
+  height: 47.4%;
+  max-height: 65px;
 `;
 
 const Title = styled.span`
@@ -324,21 +325,14 @@ const Title = styled.span`
 
 const Divider = styled.div`
   width: 100%;
-  height: 1.8%;
+  height: 2.27%;
   background-color: var(--grey-2);
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 89.8%;
 
-  width: 100%;
-  margin-top: 30px;
-
-  @media (max-resolution: 2dppx) {
-    margin-top: 45px;
-  }
-  @media (min-resolution: 3dppx) {
-    margin-top: 30px;
-  }
+  margin-top: 7.37%;
 `;

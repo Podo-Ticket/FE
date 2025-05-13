@@ -33,9 +33,7 @@ const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
       </CardTitle>
 
       <CardContent>
-        <PosterContainer>
-          <Poster src={poster} alt="공연 포스터" />
-        </PosterContainer>
+        <Poster src={poster} alt="공연 포스터" />
 
         <Details>
           <Title> {language === "english" ? en_title : title}</Title>
@@ -76,30 +74,25 @@ export default TicketConfirmCard;
 
 const TicketConfirmCardContainer = styled.div`
   display: flex;
-  justify-content: center;
+
   flex-direction: column;
 
   border-radius: 10px;
   background: var(--grey-2);
 
-  gap: 20px;
-  padding: 23px 25px;
+  gap: 7.81%;
+
+  width: 89.8%;
+  height: 62.9%;
+  min-height: 256px;
+  justify-content: center;
+
+  padding: 0 7%;
 
   user-select: none; /* 텍스트 선택 방지 */
   -webkit-user-select: none; /* Safari에서 드래그 방지 */
   -moz-user-select: none; /* Firefox에서 드래그 방지 */
   -ms-user-select: none;
-
-  @media (max-resolution: 2dppx) {
-    border-radius: 15px;
-    gap: 30px;
-    padding: 34.5px 37.5px;
-  }
-  @media (min-resolution: 3dppx) {
-    border-radius: 10px;
-    gap: 20px;
-    padding: 23px 25px;
-  }
 `;
 
 const CardTitle = styled.span.attrs({ className: "Podo-Ticket-Headline-H4" })`
@@ -109,37 +102,14 @@ const CardTitle = styled.span.attrs({ className: "Podo-Ticket-Headline-H4" })`
 const CardContent = styled.div`
   display: flex;
 
-  gap: 12px;
-
-  @media (max-resolution: 2dppx) {
-    gap: 18px;
-  }
-  @media (min-resolution: 3dppx) {
-    gap: 12px;
-  }
-`;
-
-const PosterContainer = styled.div`
-  width: 114px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 9px 6px rgba(0, 0, 0, 0.03);
-
-  margin-bottom: 7px;
-
-  @media (max-resolution: 2dppx) {
-    width: 171px;
-    border-radius: 15px;
-    margin-bottom: 10.5px;
-  }
-  @media (min-resolution: 3dppx) {
-    width: 114px;
-    border-radius: 10px;
-    margin-bottom: 7px;
-  }
+  max-height: 157px;
+  width: 100%;
+  gap: 4%;
 `;
 
 const Poster = styled.img`
-  width: 100%;
+  height: 100%;
+  width: auto;
   border-radius: 10px;
 `;
 
@@ -147,17 +117,12 @@ const Details = styled.div`
   display: flex;
   flex-direction: column;
 
-  gap: 10px;
-  @media (max-resolution: 2dppx) {
-    gap: 15px;
-  }
-  @media (min-resolution: 3dppx) {
-    gap: 10px;
-  }
+  gap: 7%;
 `;
 
 const Title = styled.span.attrs({ className: "Podo-Ticket-Headline-H5" })`
   color: var(--ect-black);
+  margin-left: 3px;
 `;
 
 const DetailsRow = styled.div`
