@@ -493,7 +493,7 @@ const TicketingPercent = styled.div`
   align-items: center;
   width: ${pxToPercent(315, 343)};
   margin: 0 auto;
-  // border: 1px solid var(--red-2);
+
 `;
 
 const ArrowImg = styled.img`

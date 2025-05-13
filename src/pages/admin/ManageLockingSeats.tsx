@@ -113,8 +113,8 @@ const ManageLockingSeats = () => {
   // Top navigation 요소 정의
   const navItem = {
     icon: backIcon,
-    iconWidth: 9, // 아이콘 너비 (px 단위)
-    iconHeight: 16, // 아이콘 높이 (px 단위)
+    iconWidth: 13, // 아이콘 너비 (px 단위)
+    iconHeight: 20, // 아이콘 높이 (px 단위)
     text: navCenterTitle,
     clickFunc: () => {
       navigate(-1);
@@ -394,7 +394,10 @@ const ManageLockingSeats = () => {
             setRemainingSeats={setRemainingSeats}
           />
 
-          <AdminSeatInfo isRealTime={false} remainingSeatsCount={remainingSeats} />
+          <AdminSeatInfo
+            isRealTime={false}
+            remainingSeatsCount={remainingSeats}
+          />
         </SeatMapContainer>
 
         <ButtonContainer>
@@ -481,7 +484,9 @@ const ViewContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  height: 100%;
+  height: 100svh;
+  width: 100vw;
+  padding-top: 0.6svh;
 
   background: var(--background-1);
 `;
@@ -489,10 +494,9 @@ const ViewContainer = styled.div`
 const SelectSeatsContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-
-  gap: 15px;
+  justify-content: center;
+  height: 87.3%;
   padding: 0 20px;
 `;
 
@@ -503,8 +507,10 @@ const SeatMapContainer = styled.div`
   align-items: center;
 
   width: 100%;
-  height: 65vh;
+  height: 72%;
 
+  margin-bottom: 2.7%;
+  margin-top: 2.2%;
   border-radius: 10px;
   border: 1px solid var(--grey-3);
   background: var(--ect-white);
@@ -513,8 +519,9 @@ const SeatMapContainer = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
-  gap: 10px;
+  gap: 2.54vw;
+  width: 100%;
 `;
