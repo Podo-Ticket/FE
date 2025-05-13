@@ -81,7 +81,8 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
 
             <TicketHeaderContainer>
               <Poster src={poster} alt="공연 포스터" />
-              {isOnSite ? (
+              {/* 현장예매/사전예매 태그 */}
+              {/* {isOnSite ? (
                 <ReservationTag
                   className="Podo-Ticket-Body-B12"
                   style={{
@@ -108,7 +109,7 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
                     ? TICKET.english.advanceReservation
                     : TICKET.korean.advanceReservation}
                 </ReservationTag>
-              )}
+              )} */}
             </TicketHeaderContainer>
 
             <TicketInformation>
