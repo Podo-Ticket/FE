@@ -37,7 +37,7 @@ const DefaultInput: React.FC<DefaultInputProps> = ({
 
           {/* 숫자 선택 (1~16명) */}
           {isNumberSelect &&
-            Array.from({ length: 16 }, (_, index) => (
+            Array.from({ length: 1 }, (_, index) => (
               <option key={index + 1} value={index + 1}>
                 {index + 1}명
               </option>
