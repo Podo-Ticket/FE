@@ -8,7 +8,7 @@ import SearchFilterBar from "@components/layout/headers/SearchFilterBar.tsx";
 import CustomerListItem from "@components/common/informations/CustomerListItem.tsx";
 import TopNav from "@components/layout/headers/TopNav.tsx";
 
-import insertCustomer from "../../assets/images/admin/plus_user.png";
+import insertCustomer from "@assets/icons/ic_plus_user.svg";
 
 import { fadeIn } from "../../styles/animation/DefaultAnimation.ts";
 import {
@@ -53,9 +53,15 @@ const ReservedManage = () => {
 
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("전체");
-  const handleSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => setSearch(e.target.value);
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
   const handleSearchButtonClick = () => setSearch(""); // 검색어 초기화
 
+  const handleClearSearch = () => {
+    setSearch("");
+  };
   // 예매자 리스트 데이터 가져오기
   const [data, setData] = useState<User[]>([]);
   useEffect(() => {
@@ -79,12 +85,15 @@ const ReservedManage = () => {
   }, [selectedSession, isRefreshed]);
 
   // Top navigation 요소 정의
-  const navItem = {
+  const rightItem = {
     icon: insertCustomer,
-    width: 22,
-    height: 19,
-    text: "예매 명단 관리",
+    iconWidth: 22,
+    iconHeight: 19,
     clickFunc: () => navigate("add"),
+  };
+
+  const centerItem = {
+    text: "예매 명단 관리",
   };
 
   // 필터에 따라 데이터를 필터링 및 정렬
@@ -125,7 +134,7 @@ const ReservedManage = () => {
     setFilter(newFilter);
   };
 
-  const handleListItemlick = (item: { scheduleId: string; id: any; }) => {
+  const handleListItemlick = (item: { scheduleId: string; id: any }) => {
     item.scheduleId = selectedSession;
 
     navigate("/reserved/check", {
@@ -140,8 +149,8 @@ const ReservedManage = () => {
     <ViewContainer>
       <TopNav
         lefter={undefined}
-        center={navItem}
-        righter={navItem}
+        center={centerItem}
+        righter={rightItem}
         isUnderlined={true}
       />
 
@@ -156,6 +165,7 @@ const ReservedManage = () => {
         search={search}
         handleSearch={handleSearch}
         handleSearchButtonClick={handleSearchButtonClick}
+        handleClearSearch={handleClearSearch}
         filter={filter}
         totalCount={totalCount}
         acceptCount={acceptCount}
