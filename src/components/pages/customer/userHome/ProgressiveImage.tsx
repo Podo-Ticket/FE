@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-interface ProgressiveImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+interface ProgressiveImageProps
+  extends React.ImgHTMLAttributes<HTMLImageElement> {
   lowResSrc: string;
   highResSrc: string;
 }
 
 const Poster = styled.img`
   position: relative;
-  height: 69%;
+  max-height: 441px;
+  height: auto;
   width: auto;
   object-fit: cover;
-  object-position: top;
+  object-position: contain;
   z-index: 0;
   border-radius: 20px 20px 0 0;
   border-bottom: 2px dashed var(--grey-5);
+
 `;
 
 const ProgressiveImage: React.FC<ProgressiveImageProps> = ({

@@ -19,7 +19,7 @@ const MultiLanguageHeader: React.FC<MultiLanguageHeaderProps> = ({
     <HeaderContainer>
       <LeftSide>
         <LogoImage src={logoImage} />
-        <LogoName className="Podo-Ticket-Headline-H4">
+        <LogoName className="Podo-Ticket-Headline-H4-Title">
           {language === Language.English
             ? USER_HOME.english.title
             : USER_HOME.korean.title}
@@ -42,12 +42,9 @@ const HeaderContainer = styled.nav`
   align-items: center;
   z-index: 1000;
 
-  position: sticky;
   top: 0;
 
   width: 100%;
-  height: 11.5svh;
-  padding: 0 7px;
 
   user-select: none; /* 텍스트 선택 방지 */
   -webkit-user-select: none; /* Safari에서 드래그 방지 */
