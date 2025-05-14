@@ -516,7 +516,7 @@ const SeatMapContent = styled.div`
   display: flex;
   flex-direction: column;
 
-  gap: 2.5px;
+  gap: 5px;
   margin-right: 70px;
 `;
 
@@ -538,7 +538,7 @@ const SeatRow = styled.div`
   justify-content: center;
   align-items: center;
 
-  gap: 2.5px;
+  gap: 5px;
 `;
 
 const SeatColumn = styled.div<{ seatCount: number }>`
@@ -546,7 +546,7 @@ const SeatColumn = styled.div<{ seatCount: number }>`
 
   width: ${({ seatCount }) => `${seatCount * 35}px`};
 
-  gap: 2.5px;
+  gap: 5px;
 `;
 
 const AudienceInfoWrapper = styled.div`

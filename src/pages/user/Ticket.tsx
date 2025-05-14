@@ -18,6 +18,7 @@ import { fetchTickets, deleteTickets } from "../../api/user/TicketApi.ts";
 import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
 import { ITicket } from "../../types/models/ticket.ts";
 import { TICKET, SERVICE_FEEDBACK_MESSAGES } from "@/constants/text/UIText.ts";
+import SurveyModal from "@/components/pages/customer/surveyLink/SurveyModal.tsx";
 
 const Ticket = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const Ticket = () => {
   const [isCancelTicketModalOpen, setIsCancelTicketModalOpen] = useState(false);
   const [isGoSurveyModalOpen, setIsGoSurveyModalOpen] = useState(false);
   const [isTheaterInfoModalOpen, setIsTheaterInfoModalOpen] = useState(false);
+  const [showSurveyModal, setShowSurveyModal] = useState<boolean>(false);
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isPopupClosing, setIsPopupClosing] = useState(false);
@@ -93,7 +95,7 @@ const Ticket = () => {
   };
 
   const closeFinishTicketingModal = () => {
-    setIsFinishTicketingModalOpen(false); 
+    setIsFinishTicketingModalOpen(false);
     togglePopup();
   };
 
@@ -234,7 +236,10 @@ const Ticket = () => {
             ? SERVICE_FEEDBACK_MESSAGES.english.description
             : SERVICE_FEEDBACK_MESSAGES.korean.description
         }
-        onAcceptFunc={() => navigate("/survey")}
+        onAcceptFunc={() => {
+          setIsGoSurveyModalOpen(false);
+          setShowSurveyModal(true);
+        }}
         onUnacceptFunc={() => setIsGoSurveyModalOpen(false)}
       />
 
@@ -252,6 +257,13 @@ const Ticket = () => {
         }
         onAcceptFunc={cancelTicket}
         onUnacceptFunc={() => setIsCancelTicketModalOpen(false)}
+      />
+
+      <SurveyModal
+        showSurveyModal={showSurveyModal}
+        onAcceptFunc={() => {
+          setShowSurveyModal(false);
+        }}
       />
     </ViewContainer>
   );

@@ -449,7 +449,7 @@ const SliderLabels = styled.div`
 
 const Label = styled.span.attrs<{ isActive?: boolean }>((props) => ({
   className: props.isActive
-    ? "Podo-Ticket-Headline-H5"
+    ? "Podo-Ticket-Headline-H6"
     : "Podo-Ticket-Headline-H6",
 }))<{ isActive?: boolean }>`
   color: ${(props) => (props.isActive ? "var(--purple-4)" : "var(--grey-5)")};

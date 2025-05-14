@@ -260,9 +260,13 @@ const StageImage = styled.div<{ stage: string }>`
 
 const StageText = styled.span`
   position: absolute;
-  top: 15%;
-  left: 50%;
-  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+  padding-bottom: 4%;
 
   color: var(--grey-4);
 `;
@@ -271,7 +275,7 @@ const SeatMapContent = styled.div`
   display: flex;
   flex-direction: column;
 
-  gap: 2.5px;
+  gap: 5px;
   margin-right: 70px;
 `;
 
@@ -293,7 +297,7 @@ const SeatRow = styled.div`
   justify-content: center;
   align-items: center;
 
-  gap: 2.5px;
+  gap: 5px;
 `;
 
 const SeatColumn = styled.div<{ seatCount: number }>`
@@ -301,5 +305,5 @@ const SeatColumn = styled.div<{ seatCount: number }>`
 
   width: ${({ seatCount }) => `${seatCount * 35}px`};
 
-  gap: 2.5px;
+  gap: 5px;
 `;
