@@ -34,7 +34,6 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
   ticketCount,
   onActiveIndexChange,
   currentTicketInfo,
-  isOnSite,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const language =
@@ -363,16 +362,16 @@ const CurrentSeat = styled.div.attrs({ className: "Podo-Ticket-Headline-H2" })`
   color: var(--purple-4);
 `;
 
-const ReservationTag = styled.span`
-  position: absolute;
-  width: 2.875rem;
-  height: 1.125rem;
-  border-radius: 1.875rem;
+// const ReservationTag = styled.span`
+//   position: absolute;
+//   width: 2.875rem;
+//   height: 1.125rem;
+//   border-radius: 1.875rem;
 
-  right: 20px;
-  top: 15px;
+//   right: 20px;
+//   top: 15px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// `;
