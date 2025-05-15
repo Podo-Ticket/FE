@@ -13,15 +13,16 @@ import surveyImage2 from "@assets/images/admin/landing_character_2.png";
 import {
   submitEvaluation,
   submitRecommand,
-} from "../../../../api/user/TicketApi"; // API 호출 함수 가져오기
+} from "../../../../api/user/TicketApi";
 import {
   fadeIn,
   fadeOut,
 } from "../../../../styles/animation/DefaultAnimation.ts";
+import { SURVEY_PODO_TICKET } from "@/constants/text/UIText.ts";
 
 interface SurveyModalProps {
   showSurveyModal: boolean;
-  onAcceptFunc: () => void; // 모달 닫기 함수
+  onAcceptFunc: () => void;
 }
 
 const SurveyModal: React.FC<SurveyModalProps> = ({
@@ -29,9 +30,13 @@ const SurveyModal: React.FC<SurveyModalProps> = ({
   onAcceptFunc,
 }) => {
   const [isClosing] = useState(false);
+  const language = localStorage.getItem("language");
 
   const center = {
-    text: "포도티켓 서비스 평가",
+    text:
+      language === "english"
+        ? SURVEY_PODO_TICKET.english.SurveyPageTitle
+        : SURVEY_PODO_TICKET.korean.SurveyPageTitle,
   };
 
   const [activeTab, setActiveTab] = useState<string>("1");
@@ -94,37 +99,51 @@ const SurveyModal: React.FC<SurveyModalProps> = ({
               <ContentImage src={surveyImage1} />
               <StarEvaluationTitle className="Podo-Ticket-Headline-H3">
                 <span style={{ color: "var(--purple-4)" }}>
-                  포도티켓의 전반적인 만족도
+                  {language === "english"
+                    ? SURVEY_PODO_TICKET.english.SatisfactionPageDescription1
+                    : SURVEY_PODO_TICKET.korean.SatisfactionPageDescription1}
                 </span>
-                가<br />
-                어땠는지 알려주세요!
+                <br />
+                {language === "english"
+                  ? SURVEY_PODO_TICKET.english.SatisfactionPageDescription2
+                  : SURVEY_PODO_TICKET.korean.SatisfactionPageDescription2}
               </StarEvaluationTitle>
             </StarContentHeader>
 
             <StarRatingContainer>
               <StarRatings
-                rating={selectedRating1} // 현재 별점 값
+                rating={selectedRating1}
                 starRatedColor="#B489FF" // --purple-7
                 starHoverColor="#B489FF" // --purple-7
                 changeRating={(newRating) => setSelectedRating1(newRating)}
-                numberOfStars={5} // 전체 별의 개수
-                name="rating1" // 별점 컴포넌트의 이름
-                starDimension="41px" // 각 별의 크기
-                starSpacing="9px" // 별 사이의 간격
+                numberOfStars={5}
+                name="rating1"
+                starDimension="41px"
+                starSpacing="9px"
               />
               <RatingDescription>
                 {selectedRating1}/5 (
                 <span className="Podo-Ticket-Body-B7">
                   {selectedRating1 === 1
-                    ? "진짜 별로예요"
+                    ? language === "english"
+                      ? SURVEY_PODO_TICKET.english.SatisfactionLevel1
+                      : SURVEY_PODO_TICKET.korean.SatisfactionLevel1
                     : selectedRating1 === 2
-                    ? "좀 아쉬워요"
+                    ? language === "english"
+                      ? SURVEY_PODO_TICKET.english.SatisfactionLevel2
+                      : SURVEY_PODO_TICKET.korean.SatisfactionLevel2
                     : selectedRating1 === 3
-                    ? "흠.."
+                    ? language === "english"
+                      ? SURVEY_PODO_TICKET.english.SatisfactionLevel3
+                      : SURVEY_PODO_TICKET.korean.SatisfactionLevel3
                     : selectedRating1 === 4
-                    ? "쓸만해요"
+                    ? language === "english"
+                      ? SURVEY_PODO_TICKET.english.SatisfactionLevel4
+                      : SURVEY_PODO_TICKET.korean.SatisfactionLevel4
                     : selectedRating1 === 5
-                    ? "최고예요"
+                    ? language === "english"
+                      ? SURVEY_PODO_TICKET.english.SatisfactionLevel5
+                      : SURVEY_PODO_TICKET.korean.SatisfactionLevel5
                     : "🙂"}
                 </span>
                 )
@@ -133,7 +152,11 @@ const SurveyModal: React.FC<SurveyModalProps> = ({
 
             <ButtonContainer>
               <LargeBtn
-                content="다음"
+                content={
+                  language === "english"
+                    ? SURVEY_PODO_TICKET.english.SatisfactionPageButton
+                    : SURVEY_PODO_TICKET.korean.SatisfactionPageButton
+                }
                 onClick={handleSubmit1}
                 isAvailable={selectedRating1 !== 0}
               />
@@ -157,10 +180,14 @@ const SurveyModal: React.FC<SurveyModalProps> = ({
               <ContentImage src={surveyImage2} />
               <StarEvaluationTitle className="Podo-Ticket-Headline-H3">
                 <span style={{ color: "var(--purple-4)" }}>
-                  포도티켓을 주변에 추천한다면
+                  {language === "english"
+                    ? SURVEY_PODO_TICKET.english.NPSPageDescription1
+                    : SURVEY_PODO_TICKET.korean.NPSPageDescription1}
                 </span>
                 <br />
-                0~10점 중 몇 점을 주시겠어요?
+                {language === "english"
+                  ? SURVEY_PODO_TICKET.english.NPSPageDescription2
+                  : SURVEY_PODO_TICKET.korean.NPSPageDescription2}
               </StarEvaluationTitle>
             </StarContentHeader>
 
@@ -183,13 +210,21 @@ const SurveyModal: React.FC<SurveyModalProps> = ({
 
             <ButtonContainer>
               <SmallBtn
-                content="이전"
+                content={
+                  language === "english"
+                    ? SURVEY_PODO_TICKET.english.NPSPagePreviousButton
+                    : SURVEY_PODO_TICKET.korean.NPSPagePreviousButton
+                }
                 onClick={handleClose}
                 isAvailable={true}
                 isDarkblue={true}
               />
               <SmallBtn
-                content="완료"
+                content={
+                  language === "english"
+                    ? SURVEY_PODO_TICKET.english.NPSPageButton
+                    : SURVEY_PODO_TICKET.korean.NPSPageButton
+                }
                 onClick={handleSubmit2}
                 isAvailable={selectedRating2 !== 0}
               />
@@ -204,17 +239,25 @@ const SurveyModal: React.FC<SurveyModalProps> = ({
               <ThanksImage src={thanksIcon} alt="감사 아이콘" />
               <ThankYouMessageContainer>
                 <ThankYouMessage className="Podo-Ticket-Headline-H3">
-                  서비스 평가에 응해주셔서 감사합니다!
+                  {language === "english"
+                    ? SURVEY_PODO_TICKET.english.ThanksPageDescription1
+                    : SURVEY_PODO_TICKET.korean.ThanksPageDescription1}
                 </ThankYouMessage>
                 <ThankYouMessage className="Podo-Ticket-Headline-H3">
-                  더 나은 서비스로 보답하겠습니다!
+                  {language === "english"
+                    ? SURVEY_PODO_TICKET.english.ThanksPageDescription2
+                    : SURVEY_PODO_TICKET.korean.ThanksPageDescription2}
                 </ThankYouMessage>
               </ThankYouMessageContainer>
             </ThanksContentContainer>
 
-            <ButtonContainer>
+            <ButtonContainer>ƒ
               <LargeBtn
-                content="처음으로"
+                content={
+                  language === "english"
+                    ? SURVEY_PODO_TICKET.english.ThanksPageButton
+                    : SURVEY_PODO_TICKET.korean.ThanksPageButton
+                }
                 onClick={() => {
                   onAcceptFunc();
                   setActiveTab("1");

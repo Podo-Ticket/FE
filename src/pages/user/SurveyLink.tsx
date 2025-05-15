@@ -36,7 +36,7 @@ const SurveyLink = () => {
         <SurveyOrganization
           onClick={() =>
             window.open(
-              "https://docs.google.com/forms/d/e/1FAIpQLSfz9Gfmr3TNwwIdEHPWFox_J34qBFmPBBGkKAoM8wvEvwuQPg/viewform",
+              "https://podo-store.com/",
               "_blank"
             )
           }
@@ -45,9 +45,9 @@ const SurveyLink = () => {
             src={customerIcon}
             style={{ width: "66px", height: "66px" }}
           />
-          <OrganizationTitle>리버액트(LIBERACT) 공연 설문</OrganizationTitle>
+          <OrganizationTitle>OO 공연 설문</OrganizationTitle>
           <OrganizationSubtitle>
-            리버액트 공연과 공연장에 대한 의견을 남겨주세요!
+            OO 공연과 공연장에 대한 의견을 남겨주세요!
           </OrganizationSubtitle>
         </SurveyOrganization>
       </SurveyOrganizationContainer>

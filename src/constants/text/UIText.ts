@@ -332,3 +332,68 @@ export const SERVICE_FEEDBACK_MESSAGES = {
     description: "Your valuable feedback helps us improve!",
   },
 };
+
+export const FORCE_LOGOUT_MODAL = {
+  korean: {
+    title: "동시 접속이 확인되었습니다.",
+    description: "홈 화면으로 이동합니다.",
+    button: "확인",
+  },
+  english: {
+    title: "Multiple logins detected.",
+    description: "Redirecting to home.",
+    button: "OK",
+  },
+};
+
+export const NOT_FOUND_PAGE = {
+  korean: {
+    title: "페이지를 찾을 수 없습니다.",
+    description: "잠시 후에 다시 시도해주세요.",
+  },
+  english: {
+    title: "Page not found.",
+    description: "Please try again later.",
+  },
+};
+
+export const SURVEY_PODO_TICKET = {
+  korean: {
+    SurveyPageTitle: "포도티켓 서비스 평가",
+    SatisfactionPageDescription1: "포도티켓의 전반적인 만족도가",
+    SatisfactionPageDescription2: "어땠는지 알려주세요!",
+    SatisfactionPageButton: "다음",
+    SatisfactionLevel1: "진짜 별로에요",
+    SatisfactionLevel2: "좀 아쉬워요",
+    SatisfactionLevel3: "흠..",
+    SatisfactionLevel4: "쓸만해요",
+    SatisfactionLevel5: "최고에요",
+    NPSPageDescription1: "포도티켓을 주변에 추천한다면",
+    NPSPageDescription2: "0~10점 중 몇 점을 주시겠어요?",
+    NPSPagePreviousButton: "이전",
+    NPSPageButton: "완료",
+    ThanksPageDescription1: "서비스 평가에 응해주셔서 감사합니다!",
+    ThanksPageDescription2: "더 나은 서비스로 보답하겠습니다!",
+    ThanksPageButton: "티켓 정보 돌아가기",
+  },
+  english: {
+    SurveyPageTitle: "PodoTicket Service Feedback",
+    SatisfactionPageDescription1: "How satisfied were you with",
+    SatisfactionPageDescription2: "the overall PodoTicket experience?",
+    SatisfactionPageButton: "Next",
+    SatisfactionLevel1: "Poor",
+    SatisfactionLevel2: "Needs Improvement",
+    SatisfactionLevel3: "Average",
+    SatisfactionLevel4: "Pretty Good",
+    SatisfactionLevel5: "Excellent",
+    NPSPageTitle: "PodoTicket Service Feedback",
+    NPSPageDescription1: "Would you recommend",
+    NPSPageDescription2: "PodoTicket to a friend? (0–10)",
+    NPSPagePreviousButton: "Previous",
+    NPSPageNextButton: "Next",
+    NPSPageButton: "OK",
+    ThanksPageDescription1: "Thank you for your feedback!",
+    ThanksPageDescription2: "We're working to get even better.",
+    ThanksPageButton: "Back to Ticket Info",
+  },
+};
