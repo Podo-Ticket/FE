@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { FORCE_LOGOUT_MODAL } from "@/constants/text/UIText.ts";
 
 interface ForceLogoutStateProps {
   isOpen: boolean;
@@ -11,7 +12,14 @@ export const useForceLogoutStore = create<ForceLogoutStateProps>((set) => ({
   isOpen: false,
   message: "",
   openModal: (msg) => {
-    set({ isOpen: true, message: msg || "동시 접속이 확인되었습니다." });
+    const language = localStorage.getItem("language");
+    set({
+      isOpen: true,
+      message:
+        msg || language === "english"
+          ? FORCE_LOGOUT_MODAL.english.title
+          : FORCE_LOGOUT_MODAL.korean.title,
+    });
   },
   closeModal: () => set({ isOpen: false, message: "" }),
 }));

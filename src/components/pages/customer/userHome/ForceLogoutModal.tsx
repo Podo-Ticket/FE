@@ -7,10 +7,12 @@ import {
   fadeOut,
 } from "../../../../styles/animation/DefaultAnimation.ts";
 import SmallBtn from "@components/common/buttons/SmallBtn";
+import { FORCE_LOGOUT_MODAL } from "@/constants/text/UIText.ts";
 
 const ForceLogoutModal = () => {
   const { isOpen, message, closeModal } = useForceLogoutStore();
-  const [isClosing,] = useState(false);
+  const language = localStorage.getItem("language");
+  const [isClosing] = useState(false);
 
   if (!isOpen) return null;
 
@@ -30,10 +32,16 @@ const ForceLogoutModal = () => {
       <ModalContent isClosing={isClosing}>
         <Title className="Podo-Ticket-Headline-H2">{message}</Title>
         <Subtitle className="Podo-Ticket-Body-B5">
-          홈 화면으로 이동합니다.
+          {language === "english"
+            ? FORCE_LOGOUT_MODAL.english.description
+            : FORCE_LOGOUT_MODAL.korean.description}
         </Subtitle>
         <SmallBtn
-          content="확인"
+          content={
+            language === "english"
+              ? FORCE_LOGOUT_MODAL.english.button
+              : FORCE_LOGOUT_MODAL.korean.button
+          }
           onClick={handleLogout}
           isAvailable={true}
           isGray={true}
