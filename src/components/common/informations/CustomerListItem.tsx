@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Bowser from "bowser";
 
 interface OnsiteApprovalRequest {
   userIds: number[];
@@ -34,6 +35,10 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
   onApprovalRequest = undefined,
   onCheckClick = undefined,
 }) => {
+  const browser = Bowser.getParser(window.navigator.userAgent);
+  const osName = browser.getOSName();
+  const isMobile = osName === "iOS" || osName === "Android";
+
   const handleApproveClick = async (userId: number) => {
     try {
       // 요청 데이터 생성
@@ -66,7 +71,6 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
     }
   };
 
-
   return (
     <ResultContent>
       {data.map((item) => {
@@ -84,7 +88,19 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
               <NameContainer className="Podo-Ticket-Headline-H5">
                 {user.name}
                 <TextDivider>|</TextDivider>
-                <Phone className="Podo-Ticket-Body-B11">
+                <Phone
+                  as="a"
+                  href={
+                    isMobile
+                      ? `tel:${user.phone_number.replace(/-/g, "")}`
+                      : undefined
+                  }
+                  className="Podo-Ticket-Body-B11"
+                  onClick={(e) => {
+                    console.log("osName: ", osName);
+                    e.stopPropagation();
+                  }}
+                >
                   {user.phone_number}
                 </Phone>
               </NameContainer>
