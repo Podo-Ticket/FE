@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import socket from '../../api/socket';
 
 import {useForm, Controller} from 'react-hook-form';
@@ -49,7 +50,10 @@ type ReservationFormData = z.infer<typeof reservationSchema>;
 
 function OnSiteReserve() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const language = localStorage.getItem('language') as Language;
+  const phone = location.state?.phone || '';
 
   const [performanceSchedules, setPerformanceSchedules] = useState<
     Array<{id: number; date_time: string; free_seats: number}>
@@ -69,17 +73,29 @@ function OnSiteReserve() {
   const {
     control,
     handleSubmit,
+    reset,
     formState: {isDirty, isValid},
   } = useForm<ReservationFormData>({
     resolver: zodResolver(reservationSchema),
     mode: 'onChange',
     defaultValues: {
       name: '',
-      phoneNumber: '',
+      phoneNumber: phone,
       headCount: 0,
       scheduleId: 0,
     },
   });
+
+  useEffect(() => {
+    if (phone) {
+      reset({
+        name: '',
+        phoneNumber: phone,
+        headCount: 0,
+        scheduleId: 0,
+      });
+    }
+  }, [phone, reset]);
 
   useEffect(() => {
     const loadSchedules = async () => {

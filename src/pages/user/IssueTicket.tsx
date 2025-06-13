@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import {USER_HOME, PERSONAL_INFORMATION_AGREE_CONTENT} from '../../constants/text/UIText.ts';
 import {useNavigateTo} from '../../utils/NavigateUtil.ts';
 import styled from 'styled-components';
@@ -19,6 +20,7 @@ import {checkPhoneNumber} from '../../api/user/UserHomeApi';
 const IssueTicket: React.FC = () => {
   const scheduleId = Number(localStorage.getItem('scheduleId'));
   const language = localStorage.getItem('language');
+  const navigate = useNavigate();
 
   const [phone, setPhone] = useState('010-');
   const [step, setStep] = useState(1);
@@ -136,7 +138,7 @@ const IssueTicket: React.FC = () => {
         openWaitingForReservationError();
       } else handleAuthModalAccept('/select');
     } catch (error) {
-      openInvalidPhoneError(); // 에러 모달 표시
+      openInvalidPhoneError();
     } finally {
       setIsLoading(false);
     }
@@ -231,7 +233,7 @@ const IssueTicket: React.FC = () => {
         }
         onAcceptFunc={() => {
           setShowNoticeModal(false);
-          navigateTo('/reserve');
+          navigate('/reserve', {state: {phone}});
         }}
       />
       <ErrorModal
