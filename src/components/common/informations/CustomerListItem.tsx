@@ -1,5 +1,6 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
+import Bowser from 'bowser';
 
 interface OnsiteApprovalRequest {
   userIds: number[];
@@ -20,8 +21,8 @@ interface CustomerListItemProps {
   onCheckClick?: (userId: number) => void;
 }
 
-import Checked from "@assets/images/privacy_checked.png"; // 체크된 이미지 경로
-import Unchecked from "@assets/images/onsite_unckecked.png"; // 체크 해제된 이미지 경로
+import Checked from '@assets/images/privacy_checked.png'; // 체크된 이미지 경로
+import Unchecked from '@assets/images/onsite_unckecked.png'; // 체크 해제된 이미지 경로
 
 const CustomerListItem: React.FC<CustomerListItemProps> = ({
   data,
@@ -34,6 +35,10 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
   onApprovalRequest = undefined,
   onCheckClick = undefined,
 }) => {
+  const browser = Bowser.getParser(window.navigator.userAgent);
+  const osName = browser.getOSName();
+  const isMobile = osName === 'iOS' || osName === 'Android';
+
   const handleApproveClick = async (userId: number) => {
     try {
       // 요청 데이터 생성
@@ -45,8 +50,7 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
 
       onApprovalRequest?.(request);
     } catch (error: any) {
-      console.error("Error while sending approval request:", error);
-      alert(error.message || "승인 요청 중 오류가 발생했습니다.");
+      alert(error.message || '승인 요청 중 오류가 발생했습니다.');
     }
   };
 
@@ -61,15 +65,13 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
 
       onApprovalRequest?.(request);
     } catch (error: any) {
-      console.error("Error while sending approval request:", error);
-      alert(error.message || "승인 요청 중 오류가 발생했습니다.");
+      alert(error.message || '승인 요청 중 오류가 발생했습니다.');
     }
   };
 
-
   return (
     <ResultContent>
-      {data.map((item) => {
+      {data.map(item => {
         // isOnsite에 따라 데이터 구조 처리
         const user = isOnsite ? item.user : item; // UserWithApproval의 user 또는 User
         const approve = isOnsite ? item.approve : item.state; // 승인 여부 또는 발권 상태
@@ -81,22 +83,29 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
             onClick={onBtnClick ? () => onBtnClick(item) : undefined}
           >
             <PersonInfo>
-              <NameContainer className="Podo-Ticket-Headline-H5">
+              <NameContainer className='Podo-Ticket-Headline-H5'>
                 {user.name}
                 <TextDivider>|</TextDivider>
-                <Phone className="Podo-Ticket-Body-B11">
+                <Phone
+                  as='a'
+                  href={isMobile ? `tel:${user.phone_number.replace(/-/g, '')}` : undefined}
+                  className='Podo-Ticket-Body-B11'
+                  onClick={e => {
+                    e.stopPropagation();
+                  }}
+                >
                   {user.phone_number}
                 </Phone>
               </NameContainer>
 
               {!canControll && (
-                <Status completed={approve} className="Podo-Ticket-Body-B12">
-                  {approve ? "발권 완료" : "미 발권"}
+                <Status completed={approve} className='Podo-Ticket-Body-B12'>
+                  {approve ? '발권 완료' : '미 발권'}
                 </Status>
               )}
 
               {canControll && approve && (
-                <Status completed={approve} className="Podo-Ticket-Body-B12">
+                <Status completed={approve} className='Podo-Ticket-Body-B12'>
                   수락 완료
                 </Status>
               )}
@@ -104,13 +113,13 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
               {canControll && !isExpanded && !approve && (
                 <ActionButtons>
                   <ApproveButton
-                    className="Podo-Ticket-Body-B9"
+                    className='Podo-Ticket-Body-B9'
                     onClick={() => handleApproveClick?.(user.id)}
                   >
                     수락
                   </ApproveButton>
                   <DeleteButton
-                    className="Podo-Ticket-Body-B9"
+                    className='Podo-Ticket-Body-B9'
                     onClick={() => handleRejectClick?.(user.id)}
                   >
                     삭제
@@ -121,10 +130,9 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
               {canControll && isExpanded && !approve && (
                 <CheckButton
                   src={checkedItems.includes(user.id) ? Checked : Unchecked}
-                  alt="상태 이미지"
+                  alt='상태 이미지'
                   onClick={() => {
                     onCheckClick?.(user.id);
-                    console.log("passed user.id: ", user.id);
                   }}
                 />
               )}
@@ -133,14 +141,14 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
             <Divider completed={approve} />
 
             <SeatInfo completed={approve}>
-              <SeatText className="Podo-Ticket-Body-B11">예매 좌석 수</SeatText>
-              <Seats className="Podo-Ticket-Body-B9">{user.head_count}석</Seats>
+              <SeatText className='Podo-Ticket-Body-B11'>예매 좌석 수</SeatText>
+              <Seats className='Podo-Ticket-Body-B9'>{user.head_count}석</Seats>
             </SeatInfo>
           </ResultContentItems>
         );
       })}
 
-      <div style={{ height: "100px" }}></div>
+      <div style={{height: '100px'}}></div>
     </ResultContent>
   );
 };
@@ -173,8 +181,7 @@ const ResultContentItems = styled.li<ResultContentItemsProps>`
   flex-direction: column;
 
   width: 100%;
-  border: 0.5px solid
-    ${({ completed }) => (completed ? "var(--grey-4)" : "var(--purple-7)")};
+  border: 0.5px solid ${({completed}) => (completed ? 'var(--grey-4)' : 'var(--purple-7)')};
   border-radius: 10px;
   background-color: var(--ect-white);
 `;
@@ -222,8 +229,7 @@ const Status = styled.div<StatusProps>`
   text-align: center;
 
   border-radius: 30px;
-  background: ${({ completed }) =>
-    completed ? "var(--grey-5)" : "var(--purple-4)"};
+  background: ${({completed}) => (completed ? 'var(--grey-5)' : 'var(--purple-4)')};
 `;
 
 const ActionButtons = styled.div`
@@ -296,8 +302,7 @@ interface DividerProps {
 
 const Divider = styled.div<DividerProps>`
   width: 100%;
-  border-bottom: 0.5px solid
-    ${({ completed }) => (completed ? "var(--grey-4)" : "var(--purple-7)")};
+  border-bottom: 0.5px solid ${({completed}) => (completed ? 'var(--grey-4)' : 'var(--purple-7)')};
 `;
 
 interface SeatInfoProps {
@@ -316,10 +321,9 @@ const SeatInfo = styled.div<SeatInfoProps>`
 
   border-radius: 0px 0px 10px 10px;
 
-  background: ${({ completed }) =>
-    completed ? "var(--grey-2)" : "var(--lightpurple-2)"};
+  background: ${({completed}) => (completed ? 'var(--grey-2)' : 'var(--lightpurple-2)')};
 
-  color: ${({ completed }) => (completed ? "var(--grey-6)" : "var(--grey-7)")};
+  color: ${({completed}) => (completed ? 'var(--grey-6)' : 'var(--grey-7)')};
 `;
 
 const SeatText = styled.div``;

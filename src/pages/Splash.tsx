@@ -1,38 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 // import { Player } from '@lottiefiles/react-lottie-player';
 
 import logo from '../assets/images/splash.png';
 // import animationData from '../styles/animation/splashAnimation.json';
-import { fadeIn } from '../styles/animation/DefaultAnimation.ts'
+import {fadeIn} from '../styles/animation/DefaultAnimation.ts';
 
-const Splash: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
-    // const [showPlayer, setShowPlayer] = useState(false);
-    const [showLogo, setShowLogo] = useState(true);
+const Splash: React.FC<{onFinish: () => void}> = ({onFinish}) => {
+  // const [showPlayer, setShowPlayer] = useState(false);
+  const [showLogo, setShowLogo] = useState(true);
 
-    useEffect(() => {
-        const logoTimer = setTimeout(() => {
-            setShowLogo(false);
-            onFinish();
-        }, 1500);
+  useEffect(() => {
+    const logoTimer = setTimeout(() => {
+      setShowLogo(false);
+      onFinish();
+    }, 1500);
 
-        return () => {
-            clearTimeout(logoTimer);
-        };
-    }, [onFinish]);
+    return () => {
+      clearTimeout(logoTimer);
+    };
+  }, [onFinish]);
 
-    return (
-        <SplashContainer>
-            {/* {showPlayer && (
+  return (
+    <SplashContainer>
+      {/* {showPlayer && (
                 <AnimatedPlayer
                     autoplay
                     loop
                     src={animationData}
                 />
             )} */}
-            {showLogo && <AnimatedLogo src={logo} alt="로고" />}
-        </SplashContainer>
-    );
+      {showLogo && <AnimatedLogo src={logo} alt='로고' />}
+    </SplashContainer>
+  );
 };
 
 export default Splash;
@@ -57,7 +57,7 @@ const SplashContainer = styled.div`
 
 const AnimatedLogo = styled.img`
   position: absolute;
-  
+
   top: calc(50% - 20px);
   left: calc(50% - 75px);
 

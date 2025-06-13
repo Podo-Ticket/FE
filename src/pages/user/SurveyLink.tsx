@@ -1,19 +1,19 @@
-import { useState } from "react";
-import styled from "styled-components";
+import {useState} from 'react';
+import styled from 'styled-components';
 
-import SurveyModal from "@components/pages/customer/surveyLink/SurveyModal.tsx";
+import SurveyModal from '@components/pages/customer/surveyLink/SurveyModal.tsx';
 
-import ownerIcon from "../../assets/images/admin/podo_logo.png";
-import customerIcon from "../../assets/images/admin/riveract_logo.png";
+import ownerIcon from '../../assets/images/admin/podo_logo.png';
+import customerIcon from '../../assets/images/admin/riveract_logo.png';
 
-import { clickAnimation } from "../../styles/animation/DefaultAnimation.ts";
+import {clickAnimation} from '../../styles/animation/DefaultAnimation.ts';
 
 const SurveyLink = () => {
   const [showSurveyModal, setShowSurveyModal] = useState<boolean>(false);
 
   return (
     <ViewContainer>
-      <SurveyTitle className="Podo-Ticket-Headline-H3">
+      <SurveyTitle className='Podo-Ticket-Headline-H3'>
         평가를 원하는 항목을 선택해주세요!
       </SurveyTitle>
 
@@ -23,32 +23,15 @@ const SurveyLink = () => {
             setShowSurveyModal(true);
           }}
         >
-          <OrganizationIcon
-            src={ownerIcon}
-            style={{ width: "51px", height: "66px" }}
-          />
+          <OrganizationIcon src={ownerIcon} style={{width: '51px', height: '66px'}} />
           <OrganizationTitle>포도티켓 서비스 평가</OrganizationTitle>
-          <OrganizationSubtitle>
-            포도티켓 서비스에 대한 의견을 남겨주세요!
-          </OrganizationSubtitle>
+          <OrganizationSubtitle>포도티켓 서비스에 대한 의견을 남겨주세요!</OrganizationSubtitle>
         </SurveyOrganization>
 
-        <SurveyOrganization
-          onClick={() =>
-            window.open(
-              "https://podo-store.com/",
-              "_blank"
-            )
-          }
-        >
-          <OrganizationIcon
-            src={customerIcon}
-            style={{ width: "66px", height: "66px" }}
-          />
+        <SurveyOrganization onClick={() => window.open('https://podo-store.com/', '_blank')}>
+          <OrganizationIcon src={customerIcon} style={{width: '66px', height: '66px'}} />
           <OrganizationTitle>OO 공연 설문</OrganizationTitle>
-          <OrganizationSubtitle>
-            OO 공연과 공연장에 대한 의견을 남겨주세요!
-          </OrganizationSubtitle>
+          <OrganizationSubtitle>OO 공연과 공연장에 대한 의견을 남겨주세요!</OrganizationSubtitle>
         </SurveyOrganization>
       </SurveyOrganizationContainer>
 
@@ -115,13 +98,13 @@ const SurveyOrganization = styled.button`
 `;
 
 const OrganizationTitle = styled.div.attrs({
-  className: "Podo-Ticket-Headline-H2",
+  className: 'Podo-Ticket-Headline-H2',
 })`
   color: var(--grey-7);
 `;
 
 const OrganizationSubtitle = styled.div.attrs({
-  className: "Podo-Ticket-Body-B5",
+  className: 'Podo-Ticket-Body-B5',
 })`
   color: var(--grey-6);
 `;

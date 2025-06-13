@@ -1,19 +1,19 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import checkIcon from "@assets/images/check_icon.png";
+import checkIcon from '@assets/images/check_icon.png';
 
 interface LoadingModalProps {
   showSuccess: boolean;
 }
 
-const Loading: React.FC<LoadingModalProps> = ({ showSuccess }) => {
+const Loading: React.FC<LoadingModalProps> = ({showSuccess}) => {
   if (!showSuccess) return null;
 
   return (
     <ModalOverlay>
       <CompleteModal>
-        <CheckIcon src={checkIcon} alt="완료 아이콘" />
+        <CheckIcon src={checkIcon} alt='완료 아이콘' />
       </CompleteModal>
     </ModalOverlay>
   );

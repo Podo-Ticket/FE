@@ -1,23 +1,21 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import profileDo from "@assets/images/profile_do.png";
-import { NOT_FOUND_PAGE } from "@/constants/text/UIText";
+import profileDo from '@assets/images/profile_do.png';
+import {NOT_FOUND_PAGE} from '@/constants/text/UIText';
 
 const NotFoundPage: React.FC = ({}) => {
-  const language = localStorage.getItem("language");
+  const language = localStorage.getItem('language');
 
   return (
     <ViewContainer>
       <CenterContainer>
         <DoImage src={profileDo} />
-        <Title className="Podo-Ticket-Headline-H3">
-          {language === "english"
-            ? NOT_FOUND_PAGE.english.title
-            : NOT_FOUND_PAGE.korean.title}
+        <Title className='Podo-Ticket-Headline-H3'>
+          {language === 'english' ? NOT_FOUND_PAGE.english.title : NOT_FOUND_PAGE.korean.title}
         </Title>
-        <Subtitle className="Podo-Ticket-Body-B5">
-          {language === "english"
+        <Subtitle className='Podo-Ticket-Body-B5'>
+          {language === 'english'
             ? NOT_FOUND_PAGE.english.description
             : NOT_FOUND_PAGE.korean.description}
         </Subtitle>

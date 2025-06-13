@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const apiUrl = import.meta.env.VITE_API_URL; // 환경 변수에서 API URL 가져오기
 
@@ -6,7 +6,7 @@ const api = axios.create({
   baseURL: apiUrl, // 기본 URL 설정
   timeout: 10000, // 요청 타임아웃 설정
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
   withCredentials: true, // 쿠키 포함
 });
@@ -14,39 +14,35 @@ const api = axios.create({
 // 좌석 정보 가져오기 API
 export const fetchSeats = async (scheduleId: number) => {
   try {
-    const response = await api.get("/seat", {
-      params: { scheduleId },
+    const response = await api.get('/seat', {
+      params: {scheduleId},
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching seats:", error);
-    throw new Error("좌석 정보를 가져오는 데 실패했습니다.");
+    throw new Error('좌석 정보를 가져오는 데 실패했습니다.');
   }
 };
 
 // 좌석 확인 API
-export const checkSeats = async (
-  scheduleId: number,
-  selectedSeats: string[]
-) => {
+export const checkSeats = async (scheduleId: number, selectedSeats: string[]) => {
   try {
-    const seats = selectedSeats.map((seat) => {
+    const seats = selectedSeats.map(seat => {
       // 좌석의 row가 전부 다르고 영어인 경우
       if (/^[A-Za-z]/.test(seat)) {
         const row = seat.slice(0, 1);
         const column = parseInt(seat.slice(1));
-        return { row, number: column }; // 객체 형식으로 변환
+        return {row, number: column}; // 객체 형식으로 변환
       }
       // 좌석의 row가 같은 문자인 경우
       const row = seat.slice(0, 2); // 좌석 ID의 첫 두 문자를 행으로 설정
       const column = parseInt(seat.slice(2)); // 나머지 부분을 숫자로 변환하여 column으로 설정
 
-      return { row, number: column };
+      return {row, number: column};
     });
 
     const encodedSeats = encodeURIComponent(JSON.stringify(seats));
 
-    const response = await api.get("/seat/check", {
+    const response = await api.get('/seat/check', {
       params: {
         scheduleId,
         seats: encodedSeats,
@@ -56,8 +52,7 @@ export const checkSeats = async (
     return response.data;
   } catch (error: any) {
     if (error.status == 400) {
-      throw new Error("예매 내역 확인 불가");
+      throw new Error('예매 내역 확인 불가');
     }
-    console.error("Error checking seats:", error);
   }
 };

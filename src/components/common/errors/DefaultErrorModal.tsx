@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import styled from 'styled-components';
 
-import errorIcon from '../../../assets/images/circle_error.png'
-import successIcon from '../../../assets/images/check_icon.png'
+import errorIcon from '../../../assets/images/circle_error.png';
+import successIcon from '../../../assets/images/check_icon.png';
 
-import { fadeIn, fadeOut } from '../../../styles/animation/DefaultAnimation.ts'
+import {fadeIn, fadeOut} from '../../../styles/animation/DefaultAnimation.ts';
 
 interface DefaultErrorModalProps {
   showDefaultErrorModal: boolean;
@@ -37,26 +37,20 @@ const DefaultErrorModal: React.FC<DefaultErrorModalProps> = ({
 
   return (
     <Overlay onClick={handleOverlayClick} OnTopSide={OnTopSide}>
-      {OnTopSide ? undefined : <div style={{ height: "540px" }}></div>}
+      {OnTopSide ? undefined : <div style={{height: '540px'}}></div>}
       <Content isClosing={isClosing} isSuccess={isSuccess}>
-        {isSuccess ? (
-          <ContentIcon src={successIcon} />
-        ) : (
-          <ContentIcon src={errorIcon} />
-        )}
-        <ContentText className="Podo-Ticket-Body-B6">
-          {errorMessage}
-        </ContentText>
+        {isSuccess ? <ContentIcon src={successIcon} /> : <ContentIcon src={errorIcon} />}
+        <ContentText className='Podo-Ticket-Body-B6'>{errorMessage}</ContentText>
       </Content>
-      {aboveButton ? <div style={{ height: "130px" }}></div> : undefined}
-      {OnTopSide ? <div style={{ height: "400px" }}></div> : undefined}
+      {aboveButton ? <div style={{height: '130px'}}></div> : undefined}
+      {OnTopSide ? <div style={{height: '400px'}}></div> : undefined}
     </Overlay>
   );
 };
 
 export default DefaultErrorModal;
 
-const Overlay = styled.div<{ OnTopSide: boolean }>`
+const Overlay = styled.div<{OnTopSide: boolean}>`
   position: fixed;
   top: 0;
   left: 0;
@@ -71,7 +65,7 @@ const Overlay = styled.div<{ OnTopSide: boolean }>`
   z-index: 10000;
 `;
 
-const Content = styled.div<{ isClosing: boolean; isSuccess: boolean }>`
+const Content = styled.div<{isClosing: boolean; isSuccess: boolean}>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -80,8 +74,7 @@ const Content = styled.div<{ isClosing: boolean; isSuccess: boolean }>`
   width: 20.44rem;
   border-radius: 10px;
   border: 1px solid var(--red-2);
-  background: ${({ isSuccess }) =>
-    isSuccess ? "var(--purple-40)" : "var(--red-3)"};
+  background: ${({isSuccess}) => (isSuccess ? 'var(--purple-40)' : 'var(--red-3)')};
   box-shadow: 0px 0px 30px 0px rgba(255, 255, 255, 0.3);
 
   gap: 9px;
@@ -90,8 +83,7 @@ const Content = styled.div<{ isClosing: boolean; isSuccess: boolean }>`
   text-align: center;
   color: var(--red-1);
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.2s
-    ease-in-out;
+  animation: ${({isClosing}) => (isClosing ? fadeOut : fadeIn)} 0.2s ease-in-out;
 
   @media (max-resolution: 2dppx) {
     width: 30.66rem;

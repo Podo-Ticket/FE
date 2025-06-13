@@ -1,23 +1,21 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 interface DefaultInputProps {
   category: string; // input 카테고리 명
   placeholder: string; // 입력 필드의 플레이스홀더
   type?: string; // 입력 필드의 타입 (기본값은 text)
   value: string; // 입력 필드의 값
-  onChangeFunc: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void; // onChange 핸들러
+  onChangeFunc: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void; // onChange 핸들러
   isSelect?: boolean; // select 여부 (기본값 false)
-  options?: Array<{ value: string | number; label: string }> | string[];
+  options?: Array<{value: string | number; label: string}> | string[];
   isNumberSelect?: boolean;
 }
 
 const DefaultInput: React.FC<DefaultInputProps> = ({
   category,
   placeholder,
-  type = "text",
+  type = 'text',
   value,
   onChangeFunc,
   isSelect = false,
@@ -26,18 +24,14 @@ const DefaultInput: React.FC<DefaultInputProps> = ({
 }) => {
   return (
     <InputContainer>
-      <Category className="Podo-Ticket-Body-B3">{category}</Category>
+      <Category className='Podo-Ticket-Body-B3'>{category}</Category>
       {isSelect ? (
-        <SelectField
-          className="Podo-Ticket-Body-B4"
-          value={value}
-          onChange={onChangeFunc}
-        >
-          {placeholder && <option value="placeholder">{placeholder}</option>}
+        <SelectField className='Podo-Ticket-Body-B4' value={value} onChange={onChangeFunc}>
+          {placeholder && <option value='placeholder'>{placeholder}</option>}
 
           {/* 숫자 선택 (1~16명) */}
           {isNumberSelect &&
-            Array.from({ length: 1 }, (_, index) => (
+            Array.from({length: 1}, (_, index) => (
               <option key={index + 1} value={index + 1}>
                 {index + 1}명
               </option>
@@ -45,8 +39,8 @@ const DefaultInput: React.FC<DefaultInputProps> = ({
 
           {/* 커스텀 옵션 (공연 일정) */}
           {!isNumberSelect &&
-            options?.map((option) =>
-              typeof option === "string" ? (
+            options?.map(option =>
+              typeof option === 'string' ? (
                 <option key={option} value={option}>
                   {option}
                 </option>
@@ -54,17 +48,17 @@ const DefaultInput: React.FC<DefaultInputProps> = ({
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
-              )
+              ),
             )}
         </SelectField>
       ) : (
         <InputField
-          className="Podo-Ticket-Body-B4"
+          className='Podo-Ticket-Body-B4'
           type={type}
           placeholder={placeholder}
           onChange={onChangeFunc}
           value={value}
-          onFocus={(e) => e.preventDefault()}
+          onFocus={e => e.preventDefault()}
         />
       )}
     </InputContainer>

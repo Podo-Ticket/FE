@@ -1,15 +1,15 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import styled from 'styled-components';
 
 import SingleSeat from '@components/common/buttons/SingleSeat';
 
-import stage from '../../../assets/images/stage.png'
+import stage from '../../../assets/images/stage.png';
 import {
   SAEBIT_LARGE_LECTURE_ROOM_LEFTSIDE as RowsLeft,
-  SAEBIT_LARGE_LECTURE_ROOM_RIGHTSIDE as RowsRight
-} from "@/constants/venue/KwangwoonUniv";
+  SAEBIT_LARGE_LECTURE_ROOM_RIGHTSIDE as RowsRight,
+} from '@/constants/venue/KwangwoonUniv';
 
-import { fetchSeats } from '@/api/user/SelectSeatsApi';
+import {fetchSeats} from '@/api/user/SelectSeatsApi';
 
 interface SeatMapProps {
   isRealTime: boolean; // 실시간 모드 여부
@@ -20,7 +20,7 @@ interface SeatMapProps {
   showErrorModal: React.Dispatch<React.SetStateAction<boolean>>; // 이미 선택된 좌석 경고 모달 상태 업데이트 함수
   disabled: boolean; // 좌석 선택 비활성화 여부
   onSeatClick?: (seatId: string) => void; // 좌석 클릭 핸들러 (옵션)
-  bookingInfo?: { seats: { row: string; number: number }[] }; // 예약 정보 (옵션)
+  bookingInfo?: {seats: {row: string; number: number}[]}; // 예약 정보 (옵션)
   onSeatEdit?: boolean; // 좌석 수정 모드 여부 (옵션)
   newLockedSeats: string[]; // 새로 잠긴 좌석 배열
   setNewLockedSeats: React.Dispatch<React.SetStateAction<string[]>>; // 새로 잠긴 좌석 상태 업데이트 함수
@@ -31,22 +31,33 @@ interface SeatMapProps {
   setIsUnlockAvailable: React.Dispatch<React.SetStateAction<boolean>>; // 잠금 해제 가능 여부 업데이트 함수
 }
 
-const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelectedSeats,
+const SeatMap: React.FC<SeatMapProps> = ({
+  currentSelectedSeats,
+  setCurrentSelectedSeats,
 
   showErrorModal,
-  disabled, scheduleId, headCount, isRealTime, bookingInfo, onSeatEdit
-  , newLockedSeats, setNewLockedSeats, newUnlockedSeats, setNewUnlockedSeats, setCurrentLockedSeatsInfo
-  , setIsLockAvailable, setIsUnlockAvailable }) => {
-
+  disabled,
+  scheduleId,
+  headCount,
+  isRealTime,
+  bookingInfo,
+  onSeatEdit,
+  newLockedSeats,
+  setNewLockedSeats,
+  newUnlockedSeats,
+  setNewUnlockedSeats,
+  setCurrentLockedSeatsInfo,
+  setIsLockAvailable,
+  setIsUnlockAvailable,
+}) => {
   const seatMapRef = useRef(null);
   const [lockedSeatsInfo, setLockedSeatsInfo] = useState<any>([]);
   const [bookedSeatsInfo, setbookedSeatsInfo] = useState<any>([]);
 
   const [unclickableSeats, setUnclickableSeats] = useState<string[]>([]);
   const [reservedSeats, setReservedSeats] = useState<string[]>([]);
-  const [temporarySelectedSeats, setTemporarySelectedSeats] = useState<string[]>([]); // 일시적으로 선택된 좌석
+  const [, setTemporarySelectedSeats] = useState<string[]>([]); // 일시적으로 선택된 좌석
   const [lockedSeats, setLockedSeats] = useState<string[]>([]); // 잠금된 좌석 배열 추가
-
 
   // 좌석 정보 가져오기
   const loadSeatMapSeats = async () => {
@@ -56,24 +67,25 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
 
     try {
       // const endpoint = isRealTime ? `${SERVER_URL}/seat/realTime` : `${SERVER_URL}/seat`;
-      const data = await fetchSeats(0 | Number(localStorage.getItem("scheduleId")));
+      const data = await fetchSeats(0 | Number(localStorage.getItem('scheduleId')));
 
       // 선택 불가 좌석 배열 생성
-      const unclickable = data.seats.map((seat: { row: string; number: number; }) => `${seat.row}${seat.number}`);
-      console.log("unclickable: ", unclickable);
+      const unclickable = data.seats.map(
+        (seat: {row: string; number: number}) => `${seat.row}${seat.number}`,
+      );
 
       // 예매된 좌석 Id 배열 생성
       const reserved = data.seats
-        .filter((seat: { lock: boolean; }) => seat.lock === false) // (lock == false) === 예매된 좌석
-        .map((seat: { row: string; number: number; }) => `${seat.row}${seat.number}`);
+        .filter((seat: {lock: boolean}) => seat.lock === false) // (lock == false) === 예매된 좌석
+        .map((seat: {row: string; number: number}) => `${seat.row}${seat.number}`);
 
       // 잠금된 좌석 Id 배열 생성
       const locked = data.seats
-        .filter((seat: { lock: boolean; }) => seat.lock == true) // (lock == true) === 잠금된 좌석
-        .map((seat: { row: string; number: number; }) => `${seat.row}${seat.number}`);
+        .filter((seat: {lock: boolean}) => seat.lock == true) // (lock == true) === 잠금된 좌석
+        .map((seat: {row: string; number: number}) => `${seat.row}${seat.number}`);
 
-      const bookedSeatInfo = data.seats.filter((seat: { lock: boolean; }) => seat.lock === false);
-      const lockedSeatInfo = data.seats.filter((seat: { lock: boolean; }) => seat.lock === true);
+      const bookedSeatInfo = data.seats.filter((seat: {lock: boolean}) => seat.lock === false);
+      const lockedSeatInfo = data.seats.filter((seat: {lock: boolean}) => seat.lock === true);
 
       setUnclickableSeats(unclickable); // 선택 불가 좌석
       setReservedSeats(reserved); // 예매된 좌석
@@ -81,10 +93,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
 
       setbookedSeatsInfo(bookedSeatInfo);
       setLockedSeatsInfo(lockedSeatInfo);
-
-    } catch (error) {
-      console.error("Error fetching seats:", error);
-    }
+    } catch (error) {}
   };
 
   // 일반 좌석 정보 가져오기
@@ -118,17 +127,11 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
     }
   }, [bookingInfo]);
 
-  // temporarySelectedSeats 값이 변경될 때 로그 출력
-  useEffect(() => {
-    console.log("temporarySelectedSeats:", temporarySelectedSeats);
-  }, [temporarySelectedSeats]);
-
   const handleSeatClick = (seatId: string) => {
     if (disabled) return;
 
     // 좌석 클릭 시 예매 정보 API 호출
     if (isRealTime) {
-
       if (onSeatEdit) {
         // newLockedSeats가 빈 배열인 경우에도 처리
         if (!newLockedSeats || newLockedSeats.length === 0) {
@@ -145,8 +148,6 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
           }
         } else {
           const firstLockedSeat = newLockedSeats[0];
-          console.log("newLockedSeats[0] : ", firstLockedSeat);
-
           // 같은 좌석을 두 번 클릭한 경우
           if (newLockedSeats.includes(seatId)) {
             // lockedSeats에서 제거
@@ -191,36 +192,21 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
             }
           }
         }
-
-        console.log("newLockedSeats : ", newLockedSeats);
-        console.log("newUnlockedSeats : ", newUnlockedSeats);
-        console.log("lockedSeatsInfo : ", lockedSeatsInfo);
-
         setCurrentLockedSeatsInfo(lockedSeatsInfo);
-        console.log(lockedSeatsInfo);
       } else {
-
-        console.log("bookedSeatsInfo : ", bookedSeatsInfo);
-
-        const bookedSeatIndex = bookedSeatsInfo.findIndex((seat: { row: string; number: number; }) => `${seat.row}${seat.number}` === seatId);
-        console.log("bookedSeatIndex : ", bookedSeatIndex);
-        console.log("bookedSeatIndex : ", bookedSeatIndex);
+        const bookedSeatIndex = bookedSeatsInfo.findIndex(
+          (seat: {row: string; number: number}) => `${seat.row}${seat.number}` === seatId,
+        );
 
         if (bookedSeatIndex !== -1) {
-          // const bookedSeatInfo = bookedSeatsInfo[bookedSeatIndex];
-          // const bookedSeatId = bookedSeatInfo.id;
-          // onSeatClick(bookedSeatId);
-
-          // 좌석 클릭 시 해당 좌석을 temporarySelectedSeats에 추가
-          const userSeats = bookingInfo ? bookingInfo.seats.map(seat => `${seat.row}${seat.number}`) : [];
-          setTemporarySelectedSeats(userSeats); // userSeats를 일시적으로 선택된 좌석으로 설정
+          const userSeats = bookingInfo
+            ? bookingInfo.seats.map(seat => `${seat.row}${seat.number}`)
+            : [];
+          setTemporarySelectedSeats(userSeats);
           return;
         }
       }
     } else {
-      // 일반 좌석 선택 로직
-      console.log(seatId);
-
       if (unclickableSeats.includes(seatId)) {
         showErrorModal(true);
       } else if (currentSelectedSeats.includes(seatId)) {
@@ -237,10 +223,8 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
 
   const handleUserSeatClick = (row: string, seat: number) => {
     const seatId = `${row}${seat}`; // 좌석 ID 생성
-    console.log("쨘쨘:", unclickableSeats);
     if (unclickableSeats.includes(seatId)) {
       showErrorModal(true);
-      console.log("쨘");
     } else if (currentSelectedSeats.includes(seatId)) {
       // 이미 선택된 좌석을 클릭하면 선택 취소
       setCurrentSelectedSeats(currentSelectedSeats.filter(id => id !== seatId));
@@ -250,7 +234,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
       setCurrentSelectedSeats([...currentSelectedSeats, seatId]);
       setTemporarySelectedSeats([]); // 이전 선택된 좌석의 색 복원
     }
-  }
+  };
 
   return (
     <SeatMapContainer>
@@ -262,9 +246,9 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
       <SeatMapContent ref={seatMapRef}>
         {/* Left section seats */}
         <SeatRow>
-          {Object.keys(RowsLeft).map((row) => (
-            < SeatColumn key={row} seatCount={RowsLeft[row].length} >
-              {RowsLeft[row].map((seat) => {
+          {Object.keys(RowsLeft).map(row => (
+            <SeatColumn key={row} seatCount={RowsLeft[row].length}>
+              {RowsLeft[row].map(seat => {
                 const seatId = `${row}${seat}`;
                 const isReserved = reservedSeats.includes(seatId);
                 const isLocked = lockedSeats.includes(seatId);
@@ -279,7 +263,7 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
                         ? () => handleSeatClick(seatId)
                         : () => handleUserSeatClick(row, seat)
                     }
-                    isAvailable={!disabled && !(onSeatEdit && isReserved) || true}
+                    isAvailable={(!disabled && !(onSeatEdit && isReserved)) || true}
                     isSelected={currentSelectedSeats.includes(seatId)}
                     isReserved={isReserved}
                     isLocked={isLocked}
@@ -291,10 +275,10 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
         </SeatRow>
 
         {/* Right section seats */}
-        <SeatRow className="seat-row">
+        <SeatRow className='seat-row'>
           {Object.keys(RowsRight).map(row => (
-            < SeatColumn key={row} seatCount={RowsRight[row].length} >
-              {RowsRight[row].map((seat) => {
+            <SeatColumn key={row} seatCount={RowsRight[row].length}>
+              {RowsRight[row].map(seat => {
                 const seatId = `${row}${seat}`;
                 const isReserved = reservedSeats.includes(seatId);
                 const isLocked = lockedSeats.includes(seatId);
@@ -320,7 +304,6 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
           ))}
         </SeatRow>
       </SeatMapContent>
-
     </SeatMapContainer>
   );
 };
@@ -328,62 +311,62 @@ const SeatMap: React.FC<SeatMapProps> = ({ currentSelectedSeats, setCurrentSelec
 export default SeatMap;
 
 const SeatMapContainer = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-width: 100%;
-height: 100%;
+  width: 100%;
+  height: 100%;
 
-gap: 15px;
-padding: 15px;
+  gap: 15px;
+  padding: 15px;
 
-overflow: scroll;
+  overflow: scroll;
 `;
 
 const StageContainer = styled.div`
-position: relative;
-display: flex;
-justify-content: center;
-align-items: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-width: 100%;
+  width: 100%;
 
-transform: translate(225px, 0);
+  transform: translate(225px, 0);
 
-img {
-display: block;
-width: 397px;
-height: auto;
-}
+  img {
+    display: block;
+    width: 397px;
+    height: auto;
+  }
 `;
 
 const StageText = styled.span`
-position: absolute;
-top: 10%;
+  position: absolute;
+  top: 10%;
 
-color: var(--grey-4);
+  color: var(--grey-4);
 `;
 
 const SeatMapContent = styled.div`
-display: flex;
+  display: flex;
 
-gap: 5px;
+  gap: 5px;
 `;
 
 const SeatRow = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-gap: 2.5px;
+  gap: 2.5px;
 `;
 
-const SeatColumn = styled.div<{ seatCount: number }>`
-display: flex;
+const SeatColumn = styled.div<{seatCount: number}>`
+  display: flex;
 
-width: ${({ seatCount }) => `${seatCount * 35}px`};
+  width: ${({seatCount}) => `${seatCount * 35}px`};
 
-gap: 2.5px;
+  gap: 2.5px;
 `;

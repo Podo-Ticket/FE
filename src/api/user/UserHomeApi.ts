@@ -1,5 +1,5 @@
 import axios from 'axios';
-import socket from '../socket'
+import socket from '../socket';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 // Create an Axios instance with default configurations
@@ -14,7 +14,7 @@ const api = axios.create({
 // 현재 해당 공연 GET Api
 export const fetchPlayInfo = async (playId: number) => {
   try {
-    const response = await api.get(`/`, { params: { playId } });
+    const response = await api.get(`/`, {params: {playId}});
     return response.data;
   } catch (error) {
     console.error('Error fetching play info:', error);
@@ -27,7 +27,7 @@ export const checkPhoneNumber = async (phoneNumber: string, scheduleId: number) 
   try {
     const socketId = socket.id;
     const response = await api.get(`/user/check`, {
-      params: { phoneNumber, scheduleId, socketId },
+      params: {phoneNumber, scheduleId, socketId},
       withCredentials: true,
     });
 

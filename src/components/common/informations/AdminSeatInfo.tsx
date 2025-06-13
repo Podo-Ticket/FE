@@ -1,20 +1,16 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import availableSeatImage from "@assets/images/admin/lightgrey_block.png";
-import reservedSeatImage from "@assets/images/xed_grey_block.png";
-import lockImage from "@assets/images/admin/purple_lock.png";
+import availableSeatImage from '@assets/images/admin/lightgrey_block.png';
+import reservedSeatImage from '@assets/images/xed_grey_block.png';
+import lockImage from '@assets/images/admin/purple_lock.png';
 
 interface AdminSeatInfoProps {
   isRealTime: boolean;
   remainingSeatsCount: number;
 }
 
-const AdminSeatInfo: React.FC<AdminSeatInfoProps> = ({
-  isRealTime,
-  remainingSeatsCount,
-}) => {
-
+const AdminSeatInfo: React.FC<AdminSeatInfoProps> = ({isRealTime, remainingSeatsCount}) => {
   return (
     <SeatInfoContainer isRealTime={isRealTime}>
       <SeatCategoryContainer>
@@ -41,7 +37,7 @@ const AdminSeatInfo: React.FC<AdminSeatInfoProps> = ({
 
 export default AdminSeatInfo;
 
-const SeatInfoContainer = styled.div<{ isRealTime: boolean }>`
+const SeatInfoContainer = styled.div<{isRealTime: boolean}>`
   position: absolute;
   top: 90%;
 
@@ -82,11 +78,11 @@ const SeatImage = styled.img`
   height: 14px;
 `;
 
-const SeatDescription = styled.div.attrs({ className: "Podo-Ticket-Body-B11" })`
+const SeatDescription = styled.div.attrs({className: 'Podo-Ticket-Body-B11'})`
   color: var(--grey-7);
 `;
 
-const RemainingSeat = styled.div.attrs({ className: "Podo-Ticket-Body-B9" })`
+const RemainingSeat = styled.div.attrs({className: 'Podo-Ticket-Body-B9'})`
   border-radius: 20px;
   border: 1px solid var(--purple-7);
   background: var(--lightpurple-2);

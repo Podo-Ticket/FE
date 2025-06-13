@@ -1,27 +1,25 @@
-import { useState, useEffect } from "react";
-import { Language } from "../constants/text/Language"; 
+import {useState, useEffect} from 'react';
+import {Language} from '../constants/text/Language';
 
 export const useLanguage = () => {
   const [language, setLanguage] = useState<Language>(() =>
-    typeof window !== "undefined"
-      ? (localStorage.getItem("language") as Language) || Language.Korean
-      : Language.Korean
+    typeof window !== 'undefined'
+      ? (localStorage.getItem('language') as Language) || Language.Korean
+      : Language.Korean,
   );
 
   useEffect(() => {
     const handler = () => {
-      setLanguage(
-        (localStorage.getItem("language") as Language) || Language.Korean
-      );
+      setLanguage((localStorage.getItem('language') as Language) || Language.Korean);
     };
 
-    window.addEventListener("storage", handler);
-    window.addEventListener("languageChange", handler);
+    window.addEventListener('storage', handler);
+    window.addEventListener('languageChange', handler);
     return () => {
-      window.removeEventListener("storage", handler);
-      window.removeEventListener("languageChange", handler);
+      window.removeEventListener('storage', handler);
+      window.removeEventListener('languageChange', handler);
     };
   }, []);
 
-  return { language, setLanguage };
+  return {language, setLanguage};
 };

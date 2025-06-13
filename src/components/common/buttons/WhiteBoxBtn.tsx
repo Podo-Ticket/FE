@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import greyRightArrow from "@assets/images/admin/grey_right_arrow.png";
-import { pxToVw, pxToVh } from "../../../utils/unitConverter.ts";
+import greyRightArrow from '@assets/images/admin/grey_right_arrow.png';
+import {pxToVw, pxToVh} from '../../../utils/unitConverter.ts';
 interface WhiteBoxBtnProps {
   iconSrc: string;
   title: string;
@@ -10,28 +10,19 @@ interface WhiteBoxBtnProps {
   onClick: () => void;
 }
 
-const WhiteBoxBtn: React.FC<WhiteBoxBtnProps> = ({
-  iconSrc,
-  title,
-  description,
-  onClick,
-}) => {
+const WhiteBoxBtn: React.FC<WhiteBoxBtnProps> = ({iconSrc, title, description, onClick}) => {
   return (
     <ButtonContainer onClick={onClick}>
       <ButtonContants>
         <ButtonTitle>
           <LeftContent>
             <LeftIcon>
-              <Icon src={iconSrc} alt="아이콘" />
+              <Icon src={iconSrc} alt='아이콘' />
             </LeftIcon>
 
-            <Title className="Podo-Ticket-Headline-H5">{title}</Title>
+            <Title className='Podo-Ticket-Headline-H5'>{title}</Title>
           </LeftContent>
-          <img
-            src={greyRightArrow}
-            alt="화살표"
-            style={{ width: "7px", height: "12px" }}
-          />
+          <img src={greyRightArrow} alt='화살표' style={{width: '7px', height: '12px'}} />
         </ButtonTitle>
         <Description>{description}</Description>
       </ButtonContants>

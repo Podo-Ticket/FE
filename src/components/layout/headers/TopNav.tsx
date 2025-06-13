@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 interface navItem {
   icon?: string;
@@ -26,52 +26,40 @@ const TopNav: React.FC<TopNavProps> = ({
   isGrey = false,
   isUnderlined = false,
   customStyles = {},
-  font = "Podo-Ticket-Headline-H3",
+  font = 'Podo-Ticket-Headline-H3',
 }) => {
   return (
-    <NavContainer
-      isGrey={isGrey}
-      isUnderlined={isUnderlined}
-      style={customStyles}
-    >
+    <NavContainer isGrey={isGrey} isUnderlined={isUnderlined} style={customStyles}>
       <ImageContainer onClick={lefter ? lefter.clickFunc : undefined}>
         {lefter ? (
           lefter.icon ? (
             <LeftIcon
               src={lefter ? lefter.icon : undefined}
-              alt="LeftIcon"
+              alt='LeftIcon'
               width={lefter.iconWidth}
               height={lefter.iconHeight}
             />
           ) : lefter.text ? (
-            <span
-              className="Podo-Ticket-Body-B6"
-              style={{ color: "var(--grey-7)" }}
-            >
+            <span className='Podo-Ticket-Body-B6' style={{color: 'var(--grey-7)'}}>
               {lefter ? lefter.text : undefined}
             </span>
           ) : null
         ) : undefined}
       </ImageContainer>
 
-      <CenterContent className={font}>
-        {center ? center.text : null}
-      </CenterContent>
+      <CenterContent className={font}>{center ? center.text : null}</CenterContent>
 
       <ImageContainer onClick={righter ? righter.clickFunc : undefined}>
         {righter ? (
           righter.icon ? (
             <RightIcon
               src={righter ? righter.icon : undefined}
-              alt="RightIcon"
+              alt='RightIcon'
               width={righter.iconWidth}
               height={righter.iconHeight}
             />
           ) : righter.text ? (
-            <span
-              className="Podo-Ticket-Body-B6"
-              style={{ color: "var(--grey-7)" }}
-            >
+            <span className='Podo-Ticket-Body-B6' style={{color: 'var(--grey-7)'}}>
               {righter ? righter.text : undefined}
             </span>
           ) : null
@@ -83,7 +71,7 @@ const TopNav: React.FC<TopNavProps> = ({
 
 export default TopNav;
 
-const NavContainer = styled.nav<{ isGrey: boolean; isUnderlined: boolean }>`
+const NavContainer = styled.nav<{isGrey: boolean; isUnderlined: boolean}>`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -96,10 +84,8 @@ const NavContainer = styled.nav<{ isGrey: boolean; isUnderlined: boolean }>`
   height: 10.74svh;
   max-height: 70px;
 
-  background: ${({ isGrey }) =>
-    isGrey ? "var(--background-1)" : "var(--ect-white)"};
-  border-bottom: ${({ isUnderlined }) =>
-    isUnderlined ? "0.5px solid var(--grey-4)" : "none"};
+  background: ${({isGrey}) => (isGrey ? 'var(--background-1)' : 'var(--ect-white)')};
+  border-bottom: ${({isUnderlined}) => (isUnderlined ? '0.5px solid var(--grey-4)' : 'none')};
 
   user-select: none; /* 텍스트 선택 방지 */
   -webkit-user-select: none; /* Safari에서 드래그 방지 */
@@ -128,12 +114,12 @@ const ImageContainer = styled.div`
   height: 40px;
 `;
 
-const LeftIcon = styled.img<{ width?: number; height?: number }>`
-  width: ${({ width }) => (width ? `${width}px` : "20px")};
-  height: ${({ height }) => (height ? `${height}px` : "20px")};
+const LeftIcon = styled.img<{width?: number; height?: number}>`
+  width: ${({width}) => (width ? `${width}px` : '20px')};
+  height: ${({height}) => (height ? `${height}px` : '20px')};
 `;
 
-const RightIcon = styled.img<{ width?: number; height?: number }>`
-  width: ${({ width }) => (width ? `${width}px` : "20px")};
-  height: ${({ height }) => (height ? `${height}px` : "20px")};
+const RightIcon = styled.img<{width?: number; height?: number}>`
+  width: ${({width}) => (width ? `${width}px` : '20px')};
+  height: ${({height}) => (height ? `${height}px` : '20px')};
 `;

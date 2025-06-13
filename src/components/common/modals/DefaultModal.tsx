@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import styled from 'styled-components';
 
-import ModalSmallBtn from "@components/common/buttons/ModalSmallBtn.tsx";
+import ModalSmallBtn from '@components/common/buttons/ModalSmallBtn.tsx';
 
-import { fadeIn, fadeOut } from "../../../styles/animation/DefaultAnimation.ts";
-import { MODAL } from "@/constants/text/UIText.ts";
+import {fadeIn, fadeOut} from '../../../styles/animation/DefaultAnimation.ts';
+import {MODAL} from '@/constants/text/UIText.ts';
 
 interface DefaultModalProps {
   showDefaultModal: boolean;
@@ -23,7 +23,7 @@ const DefaultModal: React.FC<DefaultModalProps> = ({
   onUnacceptFunc,
   noOverlay = false,
 }) => {
-  const language = localStorage.getItem("language");
+  const language = localStorage.getItem('language');
   const [isClosing, setIsClosing] = useState(false);
 
   if (!showDefaultModal) return null;
@@ -38,27 +38,21 @@ const DefaultModal: React.FC<DefaultModalProps> = ({
 
   return (
     <Overlay noOverlay={noOverlay}>
-      <Content isClosing={isClosing} isExpand={description === ""}>
-        <Title className="Podo-Ticket-Headline-H3">{title}</Title>
-        {description === "" ? undefined : (
-          <Description className="Podo-Ticket-Body-B5">
-            {description}
-          </Description>
+      <Content isClosing={isClosing} isExpand={description === ''}>
+        <Title className='Podo-Ticket-Headline-H3'>{title}</Title>
+        {description === '' ? undefined : (
+          <Description className='Podo-Ticket-Body-B5'>{description}</Description>
         )}
 
         <ButtonContainer>
           <ModalSmallBtn
-            content={
-              language === "english" ? MODAL.english.cancel : MODAL.korean.cancel
-            }
+            content={language === 'english' ? MODAL.english.cancel : MODAL.korean.cancel}
             onClick={handleUnacceptClick}
             isAvailable={true}
             isDarkblue={true}
           />
           <ModalSmallBtn
-            content={
-              language === "english" ? MODAL.english.ok : MODAL.korean.ok
-            }
+            content={language === 'english' ? MODAL.english.ok : MODAL.korean.ok}
             onClick={onAcceptFunc || undefined}
             isAvailable={true}
             isDarkblue={false}
@@ -71,14 +65,13 @@ const DefaultModal: React.FC<DefaultModalProps> = ({
 
 export default DefaultModal;
 
-const Overlay = styled.div<{ noOverlay: boolean }>`
+const Overlay = styled.div<{noOverlay: boolean}>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: ${({ noOverlay }) =>
-    noOverlay ? "rgba(0, 0, 0, 0.0)" : "rgba(0, 0, 0, 0.6)"};
+  background-color: ${({noOverlay}) => (noOverlay ? 'rgba(0, 0, 0, 0.0)' : 'rgba(0, 0, 0, 0.6)')};
 
   display: flex;
   justify-content: center;
@@ -86,7 +79,7 @@ const Overlay = styled.div<{ noOverlay: boolean }>`
   z-index: 10000;
 `;
 
-const Content = styled.div<{ isClosing: boolean; isExpand: boolean }>`
+const Content = styled.div<{isClosing: boolean; isExpand: boolean}>`
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -95,13 +88,12 @@ const Content = styled.div<{ isClosing: boolean; isExpand: boolean }>`
   background: var(--ect-white);
   border-radius: 10px;
 
-  padding: ${({ isExpand }) => (isExpand ? 35 : 25)}px 21px;
+  padding: ${({isExpand}) => (isExpand ? 35 : 25)}px 21px;
   padding-top: 30px;
 
   text-align: center;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s
-    ease-in-out;
+  animation: ${({isClosing}) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
 `;
 
 const Title = styled.h2`

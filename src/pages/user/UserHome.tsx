@@ -1,31 +1,31 @@
-import React, { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
+import React, {useEffect, useState, useRef} from 'react';
+import styled from 'styled-components';
 
-import MediumBtn from "@components/common/buttons/MediumBtn.tsx";
-import MultiLanguageHeader from "@components/layout/headers/MultiLanguageHeader.tsx";
-import lowResPoster from "../../assets/images/posters/2025_Spring_KwangwoonUniv_poster_lowRes.png";
-import poster from "../../assets/images/posters/2025_Spring_KwangwoonUniv_poster.png"; // 해당 공연에 맞는 상수값 적용 필요
+import MediumBtn from '@components/common/buttons/MediumBtn.tsx';
+import MultiLanguageHeader from '@components/layout/headers/MultiLanguageHeader.tsx';
+import lowResPoster from '../../assets/images/posters/2025_Spring_KwangwoonUniv_poster_lowRes.png';
+import poster from '../../assets/images/posters/2025_Spring_KwangwoonUniv_poster.png'; // 해당 공연에 맞는 상수값 적용 필요
 
-import { fetchPlayInfo } from "../../api/user/UserHomeApi";
-import { slideUp } from "../../styles/animation/DefaultAnimation.ts";
-import { DateUtil, getClosestDateTime } from "../../utils/DateUtil";
-import { useNavigateTo } from "../../utils/NavigateUtil.ts";
-import { USER_HOME } from "../../constants/text/UIText.ts";
-import { useLanguage } from "../../hooks/useLanguage.ts";
-import { Language } from "../../constants/text/Language.ts";
-import ProgressiveImage from "@/components/pages/customer/userHome/ProgressiveImage.tsx";
+import {fetchPlayInfo} from '../../api/user/UserHomeApi';
+import {slideUp} from '../../styles/animation/DefaultAnimation.ts';
+import {DateUtil, getClosestDateTime} from '../../utils/DateUtil';
+import {useNavigateTo} from '../../utils/NavigateUtil.ts';
+import {USER_HOME} from '../../constants/text/UIText.ts';
+import {useLanguage} from '../../hooks/useLanguage.ts';
+import {Language} from '../../constants/text/Language.ts';
+import ProgressiveImage from '@/components/pages/customer/userHome/ProgressiveImage.tsx';
 
 const UserHome: React.FC = () => {
   const navigateTo = useNavigateTo();
-  const { language, setLanguage } = useLanguage();
+  const {language, setLanguage} = useLanguage();
 
   const [playInfo, setPlayInfo] = useState<any>(null);
   const [, setScheduleId] = useState<number | 0>(0);
-  const [performanceSession, setPerformanceSession] = useState<string | "">("");
+  const [performanceSession, setPerformanceSession] = useState<string | ''>('');
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [, setIsPopupClosing] = useState(false);
-  const popupRef = useRef<HTMLDivElement>(null); // 팝업 요소를 참조하는 ref
+  const popupRef = useRef<HTMLDivElement>(null);
 
   const [cardWidth, setCardWidth] = useState(312);
 
@@ -38,8 +38,8 @@ const UserHome: React.FC = () => {
     };
 
     resize();
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
+    window.addEventListener('resize', resize);
+    return () => window.removeEventListener('resize', resize);
   }, []);
 
   // 현재 공연 정보 반영
@@ -51,40 +51,35 @@ const UserHome: React.FC = () => {
 
         const closestDateTime = getClosestDateTime(data.schedule);
         const closestSchedule = data.schedule.find(
-          (schedule: { date_time: string }) =>
-            schedule.date_time === closestDateTime
+          (schedule: {date_time: string}) => schedule.date_time === closestDateTime,
         );
 
         if (closestSchedule) {
           setScheduleId(closestSchedule.id);
-          localStorage.setItem("scheduleId", closestSchedule.id);
+          localStorage.setItem('scheduleId', closestSchedule.id);
         }
-        localStorage.setItem("isForceLogout", "false");
+        localStorage.setItem('isForceLogout', 'false');
         setPlayInfo(data.play);
         setPerformanceSession(getClosestDateTime(data.schedule));
       } catch (error) {
-        console.error("Failed to load play info:", error);
+        console.error('Failed to load play info:', error);
       }
     };
 
-    localStorage.setItem("language", Language.Korean);
+    localStorage.setItem('language', Language.Korean);
     loadPlayInfo();
   }, []);
 
   const toggleLanguage = () => {
-    const current = localStorage.getItem("language") as Language;
-    const next =
-      current === Language.Korean ? Language.English : Language.Korean;
-    localStorage.setItem("language", next);
+    const current = localStorage.getItem('language') as Language;
+    const next = current === Language.Korean ? Language.English : Language.Korean;
+    localStorage.setItem('language', next);
     setLanguage(next);
   };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popupRef.current &&
-        !popupRef.current.contains(event.target as Node)
-      ) {
+      if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
         setIsPopupClosing(true);
         setTimeout(() => {
           setIsPopupVisible(false);
@@ -94,11 +89,11 @@ const UserHome: React.FC = () => {
     };
 
     if (isPopupVisible) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isPopupVisible]);
 
@@ -112,27 +107,25 @@ const UserHome: React.FC = () => {
           <ProgressiveImage
             lowResSrc={lowResPoster}
             highResSrc={poster}
-            alt="공연 포스터"
-            style={{ borderRadius: "8px" }}
+            alt='공연 포스터'
+            style={{borderRadius: '8px'}}
           />
 
           <TicketBottomContainer>
             <ShowDetails>
               {playInfo && (
                 <>
-                  <ShowDetailsTitle className="Podo-Ticket-Headline-H3">
-                    {language === Language.English
-                      ? playInfo.en_title
-                      : playInfo.title}
+                  <ShowDetailsTitle className='Podo-Ticket-Headline-H3'>
+                    {language === Language.English ? playInfo.en_title : playInfo.title}
                   </ShowDetailsTitle>
-                  <ShowDetailsSubtitle className="Podo-Ticket-Body-B5">
-                    <Subtitle className="Podo-Ticket-Body-B9">
+                  <ShowDetailsSubtitle className='Podo-Ticket-Body-B5'>
+                    <Subtitle className='Podo-Ticket-Body-B9'>
                       {language === Language.English
                         ? USER_HOME.english.time
                         : USER_HOME.korean.time}
                     </Subtitle>
-                    <SubContents className="Podo-Ticket-Body-B7">
-                      {" "}
+                    <SubContents className='Podo-Ticket-Body-B7'>
+                      {' '}
                       {DateUtil.formatDate(performanceSession, language)}
                     </SubContents>
                   </ShowDetailsSubtitle>
@@ -147,7 +140,7 @@ const UserHome: React.FC = () => {
                     ? USER_HOME.english.pickupBtn
                     : USER_HOME.korean.pickupBtn
                 }
-                onClick={() => navigateTo("/issue-ticket")}
+                onClick={() => navigateTo('/issue-ticket')}
                 isAvailable={true}
               />
             </DetailBtnContainer>
@@ -159,7 +152,7 @@ const UserHome: React.FC = () => {
 };
 
 export default UserHome;
-const MainContainer = styled.div<{ backgroundImage: string }>`
+const MainContainer = styled.div<{backgroundImage: string}>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -167,12 +160,12 @@ const MainContainer = styled.div<{ backgroundImage: string }>`
   width: 100%;
   height: 100svh;
 
-  background-image: ${({ backgroundImage }) => `url(${backgroundImage})`};
+  background-image: ${({backgroundImage}) => `url(${backgroundImage})`};
   background-size: cover;
   background-position: center;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -181,7 +174,7 @@ const MainContainer = styled.div<{ backgroundImage: string }>`
     background: var(--background-gradation-main);
   }
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -191,10 +184,10 @@ const MainContainer = styled.div<{ backgroundImage: string }>`
   }
 `;
 
-const PosterDetailsContainer = styled.div<{ cardWidth: number }>`
+const PosterDetailsContainer = styled.div<{cardWidth: number}>`
   @media (max-height: 645px) {
     height: 100svh;
-    width: ${({ cardWidth }) => `${cardWidth}px`};
+    width: ${({cardWidth}) => `${cardWidth}px`};
   }
 
   @media (min-height: 646px) {
@@ -220,21 +213,15 @@ const CardFront = styled.div`
   position: relative;
   border-radius: 20px;
   margin-top: 3.7%;
-  -webkit-mask-image: radial-gradient(
-      circle at left 73.9%,
-      transparent 15px,
-      black 15px
-    ),
+  -webkit-mask-image:
+    radial-gradient(circle at left 73.9%, transparent 15px, black 15px),
     radial-gradient(circle at right 73.9%, transparent 15px, black 15px),
     linear-gradient(white, white);
   -webkit-mask-composite: destination-out;
   -webkit-mask-repeat: no-repeat;
 
-  mask-image: radial-gradient(
-      circle at left 73.9%,
-      transparent 4.5%,
-      black 4.5%
-    ),
+  mask-image:
+    radial-gradient(circle at left 73.9%, transparent 4.5%, black 4.5%),
     radial-gradient(circle at right 73.9%, transparent4.5%, black 4.5%),
     linear-gradient(white, white);
   mask-composite: exclude;

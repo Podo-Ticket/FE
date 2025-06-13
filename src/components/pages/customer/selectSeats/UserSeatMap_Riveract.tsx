@@ -1,12 +1,12 @@
-import React, { useRef, useEffect, useState } from "react";
-import styled from "styled-components";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import React, {useRef, useEffect, useState} from 'react';
+import styled from 'styled-components';
+import {TransformWrapper, TransformComponent} from 'react-zoom-pan-pinch';
 
-import SingleSeat from "@components/common/buttons/SingleSeat";
-import stage from "@assets/images/stage.png";
-import { HUMANITIES_SMALL_THEATER as theater } from "@/constants/venue/SeoulNationalUniv";
+import SingleSeat from '@components/common/buttons/SingleSeat';
+import stage from '@assets/images/stage.png';
+import {HUMANITIES_SMALL_THEATER as theater} from '@/constants/venue/SeoulNationalUniv';
 
-import { fetchSeats } from "@/api/user/SelectSeatsApi";
+import {fetchSeats} from '@/api/user/SelectSeatsApi';
 
 interface SeatMapProps {
   isRealTime: boolean; // 실시간 모드 여부
@@ -50,34 +50,25 @@ const SeatMap: React.FC<SeatMapProps> = ({
   // 좌석 정보 가져오기
   const loadSeatMapSeats = async () => {
     if (!scheduleId) {
-      console.error("scheduleId가 없습니다.");
       return;
     }
 
     try {
-      const data = await fetchSeats(
-        0 | Number(localStorage.getItem("scheduleId"))
-      );
+      const data = await fetchSeats(0 | Number(localStorage.getItem('scheduleId')));
       const unclickable = data.seats.map(
-        (seat: { row: string; number: number }) => `${seat.row}${seat.number}`
+        (seat: {row: string; number: number}) => `${seat.row}${seat.number}`,
       );
       const reserved = data.seats
-        .filter((seat: { lock: boolean }) => seat.lock === false)
-        .map(
-          (seat: { row: string; number: number }) => `${seat.row}${seat.number}`
-        );
+        .filter((seat: {lock: boolean}) => seat.lock === false)
+        .map((seat: {row: string; number: number}) => `${seat.row}${seat.number}`);
       const locked = data.seats
-        .filter((seat: { lock: boolean }) => seat.lock == true)
-        .map(
-          (seat: { row: string; number: number }) => `${seat.row}${seat.number}`
-        );
+        .filter((seat: {lock: boolean}) => seat.lock == true)
+        .map((seat: {row: string; number: number}) => `${seat.row}${seat.number}`);
 
       setUnclickableSeats(unclickable);
       setReservedSeats(reserved);
       setLockedSeats(locked);
-    } catch (error) {
-      console.error("Error fetching seats:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -91,9 +82,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
     if (unclickableSeats.includes(seatId)) {
       showErrorModal(true);
     } else if (currentSelectedSeats.includes(seatId)) {
-      setCurrentSelectedSeats(
-        currentSelectedSeats.filter((id) => id !== seatId)
-      );
+      setCurrentSelectedSeats(currentSelectedSeats.filter(id => id !== seatId));
     } else if (currentSelectedSeats.length < headCount) {
       setCurrentSelectedSeats([...currentSelectedSeats, seatId]);
     }
@@ -106,23 +95,23 @@ const SeatMap: React.FC<SeatMapProps> = ({
           initialScale={1} // 초기 확대 비율
           minScale={1} // 최소 축소 비율
           maxScale={5} // 최대 확대 비율
-          doubleClick={{ disabled: true }} // 더블 클릭 확대 비활성화
-          wheel={{ step: 0.1 }} // 마우스 휠 줌 속도( step: 0.1) (마우스 휠 줌 비활성화 -  disabled: true  )
-          pinch={{ step: 5 }} // 핀치 줌 감도
+          doubleClick={{disabled: true}} // 더블 클릭 확대 비활성화
+          wheel={{step: 0.1}} // 마우스 휠 줌 속도( step: 0.1) (마우스 휠 줌 비활성화 -  disabled: true  )
+          pinch={{step: 5}} // 핀치 줌 감도
           centerZoomedOut // 줌아웃 시 중앙 정렬
         >
           <TransformComponent>
             <StageContainer seatMapWidth={seatMapWidth}>
               <StageImage stage={stage}>
-                <StageText className="Podo-Ticket-Headline-H4">무대</StageText>
+                <StageText className='Podo-Ticket-Headline-H4'>무대</StageText>
               </StageImage>
             </StageContainer>
 
             <SeatMapContent ref={seatMapRef}>
               <SeatRow>
-                {Object.keys(theater).map((row) => (
+                {Object.keys(theater).map(row => (
                   <SeatColumn key={row} seatCount={theater[row].length}>
-                    {theater[row].map((seat) => {
+                    {theater[row].map(seat => {
                       const seatId = `${row}${seat}`;
                       const isReserved = reservedSeats.includes(seatId);
                       const isLocked = lockedSeats.includes(seatId);
@@ -133,9 +122,7 @@ const SeatMap: React.FC<SeatMapProps> = ({
                           isAdmin={false}
                           content={`${row}${seat}`}
                           onClick={() => handleUserSeatClick(row, seat)}
-                          isAvailable={
-                            (!disabled && !(onSeatEdit && isReserved)) || true
-                          }
+                          isAvailable={(!disabled && !(onSeatEdit && isReserved)) || true}
                           isSelected={currentSelectedSeats.includes(seatId)}
                           isReserved={isReserved}
                           isLocked={isLocked}
@@ -187,19 +174,19 @@ const SeatMapContainer = styled.div`
   padding: 15px;
 `;
 
-const StageContainer = styled.div<{ seatMapWidth: number }>`
+const StageContainer = styled.div<{seatMapWidth: number}>`
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: ${({ seatMapWidth }) => `${seatMapWidth}px`};
+  width: ${({seatMapWidth}) => `${seatMapWidth}px`};
 `;
 
-const StageImage = styled.div<{ stage: string }>`
+const StageImage = styled.div<{stage: string}>`
   position: relative;
 
-  background-image: url(${(props) => props.stage});
+  background-image: url(${props => props.stage});
   background-size: cover;
   background-position: center;
 
@@ -230,10 +217,10 @@ const SeatRow = styled.div`
   gap: 2.5px;
 `;
 
-const SeatColumn = styled.div<{ seatCount: number }>`
+const SeatColumn = styled.div<{seatCount: number}>`
   display: flex;
 
-  width: ${({ seatCount }) => `${seatCount * 35}px`};
+  width: ${({seatCount}) => `${seatCount * 35}px`};
 
   gap: 2.5px;
 `;

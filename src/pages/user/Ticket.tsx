@@ -1,36 +1,35 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
 
-import TicketCarousel from "@components/pages/customer/tickets/TicketCarousel.tsx";
-import TopNav from "@components/layout/headers/TopNav.tsx";
-import TheaterInfoModal from "@components/common/modals/TheaterInfoModal.tsx";
-import FinishTicketingModal from "@components/common/modals/NoticeModal.tsx";
-import NoTicketsModal from "@components/common/modals/NoticeModal.tsx";
-import CancelTicketBtn from "@components/common/buttons/SmallMoreBtn.tsx";
-import GoSurveyModal from "@/components/common/modals/DefaultModal.tsx";
-import CancelTicketModal from "@/components/common/modals/DefaultModal.tsx";
+import TicketCarousel from '@components/pages/customer/tickets/TicketCarousel.tsx';
+import TopNav from '@components/layout/headers/TopNav.tsx';
+import TheaterInfoModal from '@components/common/modals/TheaterInfoModal.tsx';
+import FinishTicketingModal from '@components/common/modals/NoticeModal.tsx';
+import NoTicketsModal from '@components/common/modals/NoticeModal.tsx';
+import CancelTicketBtn from '@components/common/buttons/SmallMoreBtn.tsx';
+import GoSurveyModal from '@/components/common/modals/DefaultModal.tsx';
+import CancelTicketModal from '@/components/common/modals/DefaultModal.tsx';
 
-import surveyIcon from "../../assets/icons/ic_clipboard.svg";
-import infoIcon from "../../assets/icons/ic_info.svg";
+import surveyIcon from '../../assets/icons/ic_clipboard.svg';
+import infoIcon from '../../assets/icons/ic_info.svg';
 
-import { fetchTickets, deleteTickets } from "../../api/user/TicketApi.ts";
-import { fadeIn, fadeOut } from "../../styles/animation/DefaultAnimation.ts";
-import { ITicket } from "../../types/models/ticket.ts";
-import { TICKET, SERVICE_FEEDBACK_MESSAGES } from "@/constants/text/UIText.ts";
-import SurveyModal from "@/components/pages/customer/surveyLink/SurveyModal.tsx";
+import {fetchTickets, deleteTickets} from '../../api/user/TicketApi.ts';
+import {fadeIn, fadeOut} from '../../styles/animation/DefaultAnimation.ts';
+import {ITicket} from '../../types/models/ticket.ts';
+import {TICKET, SERVICE_FEEDBACK_MESSAGES} from '@/constants/text/UIText.ts';
+import SurveyModal from '@/components/pages/customer/surveyLink/SurveyModal.tsx';
 
 const Ticket = () => {
   const navigate = useNavigate();
-  const language = localStorage.getItem("language");
+  const language = localStorage.getItem('language');
 
   const [tickets, setTickets] = useState<ITicket[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isOnSite, setIsOnSite] = useState(false);
   const [, setIsSurveied] = useState(false);
 
-  const [isFinshTicketingModalOpen, setIsFinishTicketingModalOpen] =
-    useState(false);
+  const [isFinshTicketingModalOpen, setIsFinishTicketingModalOpen] = useState(false);
   const [isNoTicketsModalOpen, setIsNoTicketsModalOpen] = useState(false);
   const [isCancelTicketModalOpen, setIsCancelTicketModalOpen] = useState(false);
   const [isGoSurveyModalOpen, setIsGoSurveyModalOpen] = useState(false);
@@ -44,7 +43,7 @@ const Ticket = () => {
   useEffect(() => {
     const loadTickets = async () => {
       try {
-        const { tickets, isSurveyed, isOnSite } = await fetchTickets();
+        const {tickets, isSurveyed, isOnSite} = await fetchTickets();
         if (!tickets || tickets.length === 0) {
           setIsNoTicketsModalOpen(true);
           return;
@@ -62,28 +61,28 @@ const Ticket = () => {
 
   const noTicketsAccepetd = () => {
     setIsNoTicketsModalOpen(false);
-    navigate("/");
+    navigate('/');
   };
 
   const cancelTicket = async () => {
     try {
       await deleteTickets();
-      navigate("/");
+      navigate('/');
     } catch (error) {}
   };
 
   // 티켓에서 뒤로가기를 누를 경우 '/'으로 리다이렉트
   useEffect(() => {
     const handlePopState = () => {
-      navigate("/");
+      navigate('/');
     };
 
     // 뒤로가기 이벤트 리스너 추가
-    window.addEventListener("popstate", handlePopState);
+    window.addEventListener('popstate', handlePopState);
 
     // 컴포넌트 언마운트 시 리스너 제거
     return () => {
-      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener('popstate', handlePopState);
     };
   }, [navigate]);
 
@@ -112,8 +111,7 @@ const Ticket = () => {
     }
   };
 
-  const navTitle =
-    language === "english" ? TICKET.english.pageTitle : TICKET.korean.pageTitle;
+  const navTitle = language === 'english' ? TICKET.english.pageTitle : TICKET.korean.pageTitle;
 
   const lefter = {
     icon: surveyIcon,
@@ -139,9 +137,7 @@ const Ticket = () => {
         {isPopupVisible && (
           <SpeechBubble isClosing={isPopupClosing}>
             <div>
-              {language === "english"
-                ? TICKET.english.popupMessage
-                : TICKET.korean.popupMessage}
+              {language === 'english' ? TICKET.english.popupMessage : TICKET.korean.popupMessage}
             </div>
           </SpeechBubble>
         )}
@@ -149,13 +145,11 @@ const Ticket = () => {
 
       <TicketCarouselContainer>
         <TicketIndex>
-          <CurrentTicketIndex className="Podo-Ticket-Headline-H2">
+          <CurrentTicketIndex className='Podo-Ticket-Headline-H2'>
             {currentIndex + 1}
           </CurrentTicketIndex>
-          <DummyComponent className="Podo-Ticket-Headline-H4">/</DummyComponent>
-          <DummyComponent className="Podo-Ticket-Headline-H4">
-            {tickets.length}
-          </DummyComponent>
+          <DummyComponent className='Podo-Ticket-Headline-H4'>/</DummyComponent>
+          <DummyComponent className='Podo-Ticket-Headline-H4'>{tickets.length}</DummyComponent>
         </TicketIndex>
         <TicketMain>
           <TicketCarousel
@@ -169,9 +163,9 @@ const Ticket = () => {
         <CancelTicketBtn
           onClick={() => setIsCancelTicketModalOpen(true)}
           isAvailable={true}
-          className="Podo-Ticket-Headline-H5"
+          className='Podo-Ticket-Headline-H5'
         >
-          {language === "english"
+          {language === 'english'
             ? TICKET.english.ticketCancellation
             : TICKET.korean.ticketCancellation}
         </CancelTicketBtn>
@@ -184,19 +178,17 @@ const Ticket = () => {
 
       <FinishTicketingModal
         showNoticeModal={isFinshTicketingModalOpen}
-        imgStatus="success"
+        imgStatus='success'
         title={
-          language === "english"
-            ? TICKET.english.issuedModalTitle
-            : TICKET.korean.issuedModalTitle
+          language === 'english' ? TICKET.english.issuedModalTitle : TICKET.korean.issuedModalTitle
         }
         description={
-          language === "english"
+          language === 'english'
             ? TICKET.english.issuedModalSubtitle
             : TICKET.korean.issuedModalSubtitle
         }
         buttonContent={
-          language === "english"
+          language === 'english'
             ? TICKET.english.issuedModalAccept
             : TICKET.korean.issuedModalAccept
         }
@@ -205,19 +197,19 @@ const Ticket = () => {
 
       <NoTicketsModal
         showNoticeModal={isNoTicketsModalOpen}
-        imgStatus="danger"
+        imgStatus='danger'
         title={
-          language === "english"
+          language === 'english'
             ? TICKET.english.noTicketsModalTitle
             : TICKET.korean.noTicketsModalTitle
         }
         description={
-          language === "english"
+          language === 'english'
             ? TICKET.english.noTicketsModalSubtitle
             : TICKET.korean.noTicketsModalSubtitle
         }
         buttonContent={
-          language === "english"
+          language === 'english'
             ? TICKET.english.noTicketsModalAccept
             : TICKET.korean.noTicketsModalAccept
         }
@@ -227,12 +219,12 @@ const Ticket = () => {
       <GoSurveyModal
         showDefaultModal={isGoSurveyModalOpen}
         title={
-          language === "english"
+          language === 'english'
             ? SERVICE_FEEDBACK_MESSAGES.english.title
             : SERVICE_FEEDBACK_MESSAGES.korean.title
         }
         description={
-          language === "english"
+          language === 'english'
             ? SERVICE_FEEDBACK_MESSAGES.english.description
             : SERVICE_FEEDBACK_MESSAGES.korean.description
         }
@@ -246,12 +238,12 @@ const Ticket = () => {
       <CancelTicketModal
         showDefaultModal={isCancelTicketModalOpen}
         title={
-          language === "english"
+          language === 'english'
             ? TICKET.english.cancelTicketConfirmation
             : TICKET.korean.cancelTicketConfirmation
         }
         description={
-          language === "english"
+          language === 'english'
             ? TICKET.english.issuedSeatsCancelNotice
             : TICKET.korean.issuedSeatsCancelNotice
         }
@@ -279,7 +271,7 @@ const TopNavContainer = styled.div`
   position: relative;
 `;
 
-const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
+const SpeechBubble = styled.div.attrs({className: 'Podo-Ticket-Body-B7'})<{
   isClosing: boolean;
 }>`
   position: absolute;
@@ -301,11 +293,10 @@ const SpeechBubble = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })<{
 
   z-index: 1000;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s
-    ease-in-out;
+  animation: ${({isClosing}) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     bottom: 100%;
     left: 75%;
@@ -326,7 +317,7 @@ const TicketMain = styled.div`
   margin-bottom: 3.1%;
 `;
 
-const TicketIndex = styled.div.attrs({ className: "Podo-Ticket-Headline-H4" })`
+const TicketIndex = styled.div.attrs({className: 'Podo-Ticket-Headline-H4'})`
   display: flex;
   justify-content: center;
   align-items: center;

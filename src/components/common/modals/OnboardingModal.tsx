@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 
 import onboardingHomeImage from '@assets/images/admin/onboarding_home.png';
@@ -9,7 +9,7 @@ import dontpresentChecked from '@assets/images/admin/dont_present_checked.png';
 import dontpresentUnchecked from '@assets/images/admin/dont_present_unchecked.png';
 import closeImage from '@assets/images/admin/white_x.png';
 
-import { fadeIn, fadeOut } from '../../../styles/animation/DefaultAnimation.ts'
+import {fadeIn, fadeOut} from '../../../styles/animation/DefaultAnimation.ts';
 
 interface OnboardingModalProps {
   showOnboardingModal: boolean;
@@ -19,8 +19,13 @@ interface OnboardingModalProps {
   setIsDontShowAgainChecked: (checked: boolean) => void;
 }
 
-const OnboardingModal: React.FC<OnboardingModalProps> = ({ showOnboardingModal, pageType,
-  onDismissFunc, isDontShowAgainChecked, setIsDontShowAgainChecked, }) => {
+const OnboardingModal: React.FC<OnboardingModalProps> = ({
+  showOnboardingModal,
+  pageType,
+  onDismissFunc,
+  isDontShowAgainChecked,
+  setIsDontShowAgainChecked,
+}) => {
   const [isClosing] = useState(false);
 
   if (!showOnboardingModal && !isClosing) return null;
@@ -46,9 +51,14 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ showOnboardingModal, 
         <CheckBoxContainer>
           <CheckBoxContent>
             <AgreementText>
-              <HiddenCheckbox checked={isDontShowAgainChecked} onChange={(e) => setIsDontShowAgainChecked(e.target.checked)} />
+              <HiddenCheckbox
+                checked={isDontShowAgainChecked}
+                onChange={e => setIsDontShowAgainChecked(e.target.checked)}
+              />
               <CustomCheckbox checked={isDontShowAgainChecked} onClick={handleCheckboxClick} />
-              <span onClick={handleCheckboxClick} className='Podo-Ticket-Headline-H5'>다시 보지 않기</span>
+              <span onClick={handleCheckboxClick} className='Podo-Ticket-Headline-H5'>
+                다시 보지 않기
+              </span>
             </AgreementText>
           </CheckBoxContent>
           <CloseButton src={closeImage} onClick={onDismissFunc} />
@@ -76,7 +86,7 @@ const Overlay = styled.div`
   pointer-events: auto;
 `;
 
-const Content = styled.div <{ isClosing: boolean }>`
+const Content = styled.div<{isClosing: boolean}>`
   position: relative;
 
   display: flex;
@@ -87,12 +97,12 @@ const Content = styled.div <{ isClosing: boolean }>`
   width: 100%;
   height: 100%;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.3s ease-in-out;
+  animation: ${({isClosing}) => (isClosing ? fadeOut : fadeIn)} 0.3s ease-in-out;
 `;
 
 const PageTypeImage = styled.img`
-width: 100%;
-height: 100%;
+  width: 100%;
+  height: 100%;
 `;
 
 const CheckBoxContainer = styled.div`
@@ -105,7 +115,7 @@ const CheckBoxContainer = styled.div`
   align-items: center;
 
   width: 100%;
-  background: rgba(0, 0, 0, 0.60);
+  background: rgba(0, 0, 0, 0.6);
   padding: 15px 25px;
 
   color: var(--ect-white);
@@ -131,17 +141,16 @@ const AgreementText = styled.span`
   gap: 10px;
 `;
 
-const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+const HiddenCheckbox = styled.input.attrs({type: 'checkbox'})`
   display: none;
 `;
 
-const CustomCheckbox = styled.div <{ checked: boolean }>`
+const CustomCheckbox = styled.div<{checked: boolean}>`
   width: 14px;
-  height: 14px; 
+  height: 14px;
   margin-right: 3px;
-  background-image: ${props => props.checked ?
-    `url(${dontpresentChecked})` :
-    `url(${dontpresentUnchecked})`};
+  background-image: ${props =>
+    props.checked ? `url(${dontpresentChecked})` : `url(${dontpresentUnchecked})`};
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;

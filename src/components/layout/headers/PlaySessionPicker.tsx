@@ -1,10 +1,10 @@
-import React, { useRef } from "react";
-import styled from "styled-components";
+import React, {useRef} from 'react';
+import styled from 'styled-components';
 
-import calendarIcon from "@assets/images/admin/calendar.png";
-import arrowDownIcon from "@assets/images/admin/arrow_down.png";
+import calendarIcon from '@assets/images/admin/calendar.png';
+import arrowDownIcon from '@assets/images/admin/arrow_down.png';
 
-import { DateUtil } from "../../../utils/DateUtil";
+import {DateUtil} from '../../../utils/DateUtil';
 
 // Schedule 타입 정의
 export interface Schedule {
@@ -36,13 +36,11 @@ const PlaySessionPicker: React.FC<PlaySessionPickerProps> = ({
 
   // 아이콘을 클릭해도 선택 상자에 포커스가 가도록 처리
   const handleIconClick = () => {
-    console.log("Icon clicked");
-
     if (selectRef.current) {
       selectRef.current.focus(); // 포커스 설정
       // ArrowDown 키 이벤트를 트리거하여 드롭다운 열기
-      const event = new KeyboardEvent("keydown", {
-        key: "ArrowDown",
+      const event = new KeyboardEvent('keydown', {
+        key: 'ArrowDown',
         bubbles: true,
       });
       selectRef.current.dispatchEvent(event);
@@ -55,13 +53,13 @@ const PlaySessionPicker: React.FC<PlaySessionPickerProps> = ({
         <SessionPickerContentLeft>
           <IconContainer src={calendarIcon} onClick={handleIconClick} />
           <SessionSelector
-            className="Podo-Ticket-Body-B5"
+            className='Podo-Ticket-Body-B5'
             ref={selectRef}
             value={selectedSession}
             onChange={onContentChange}
             disabled={isDisabled}
           >
-            {schedules.map((schedule) => (
+            {schedules.map(schedule => (
               <option key={schedule.id} value={schedule.id.toString()}>
                 {DateUtil.formatDate(schedule.date_time)}
               </option>
@@ -89,13 +87,11 @@ const SessionPickerContainer = styled.div<{
   justify-content: center;
   align-items: center;
 
-  width: ${({ isEllipse }) => (isEllipse ? "90%" : "100%")};
-  border-radius: ${({ isEllipse, isRounded }) =>
-    isEllipse || isRounded ? "10px" : "0"};
+  width: ${({isEllipse}) => (isEllipse ? '90%' : '100%')};
+  border-radius: ${({isEllipse, isRounded}) => (isEllipse || isRounded ? '10px' : '0')};
   border: 1px solid var(--grey-3);
   background: var(--ect-white);
-  box-shadow: ${({ isRounded }) =>
-    isRounded ? "0px 0px 5px 3px rgba(0, 0, 0, 0.02)" : "none"};
+  box-shadow: ${({isRounded}) => (isRounded ? '0px 0px 5px 3px rgba(0, 0, 0, 0.02)' : 'none')};
 
   user-select: none; /* 텍스트 선택 방지 */
 `;

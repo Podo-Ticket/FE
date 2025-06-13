@@ -1,28 +1,25 @@
-import { useState } from "react";
-import socket from "../../../../api/socket";
-import styled from "styled-components";
-import { useForceLogoutStore } from "../../../../store/useForceLogoutStore";
-import {
-  fadeIn,
-  fadeOut,
-} from "../../../../styles/animation/DefaultAnimation.ts";
-import SmallBtn from "@components/common/buttons/SmallBtn";
-import { FORCE_LOGOUT_MODAL } from "@/constants/text/UIText.ts";
+import {useState} from 'react';
+import socket from '../../../../api/socket';
+import styled from 'styled-components';
+import {useForceLogoutStore} from '../../../../store/useForceLogoutStore';
+import {fadeIn, fadeOut} from '../../../../styles/animation/DefaultAnimation.ts';
+import SmallBtn from '@components/common/buttons/SmallBtn';
+import {FORCE_LOGOUT_MODAL} from '@/constants/text/UIText.ts';
 
 const ForceLogoutModal = () => {
-  const { isOpen, message, closeModal } = useForceLogoutStore();
-  const language = localStorage.getItem("language");
+  const {isOpen, message, closeModal} = useForceLogoutStore();
+  const language = localStorage.getItem('language');
   const [isClosing] = useState(false);
 
   if (!isOpen) return null;
 
   const handleLogout = () => {
-    fetch("/logout", {
-      method: "POST",
-      credentials: "include",
+    fetch('/logout', {
+      method: 'POST',
+      credentials: 'include',
     }).finally(() => {
       socket.disconnect();
-      window.location.href = "/";
+      window.location.href = '/';
       closeModal();
     });
   };
@@ -30,15 +27,15 @@ const ForceLogoutModal = () => {
   return (
     <ModalOverlay>
       <ModalContent isClosing={isClosing}>
-        <Title className="Podo-Ticket-Headline-H2">{message}</Title>
-        <Subtitle className="Podo-Ticket-Body-B5">
-          {language === "english"
+        <Title className='Podo-Ticket-Headline-H2'>{message}</Title>
+        <Subtitle className='Podo-Ticket-Body-B5'>
+          {language === 'english'
             ? FORCE_LOGOUT_MODAL.english.description
             : FORCE_LOGOUT_MODAL.korean.description}
         </Subtitle>
         <SmallBtn
           content={
-            language === "english"
+            language === 'english'
               ? FORCE_LOGOUT_MODAL.english.button
               : FORCE_LOGOUT_MODAL.korean.button
           }
@@ -67,7 +64,7 @@ const ModalOverlay = styled.div`
   z-index: 10000;
 `;
 
-const ModalContent = styled.div<{ isClosing: boolean }>`
+const ModalContent = styled.div<{isClosing: boolean}>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -82,8 +79,7 @@ const ModalContent = styled.div<{ isClosing: boolean }>`
 
   text-align: center;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s
-    ease-in-out;
+  animation: ${({isClosing}) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
 `;
 
 const Title = styled.div`

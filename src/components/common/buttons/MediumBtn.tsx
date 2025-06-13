@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 interface MediumBtnProps {
   content: string; // 버튼 안 내용
@@ -8,15 +8,10 @@ interface MediumBtnProps {
   isGray?: boolean;
 }
 
-const MediumBtn: React.FC<MediumBtnProps> = ({
-  content,
-  onClick,
-  isAvailable,
-  isGray = false,
-}) => {
+const MediumBtn: React.FC<MediumBtnProps> = ({content, onClick, isAvailable, isGray = false}) => {
   return (
     <MediumBtnContainer
-      className="Podo-Ticket-Body-B2"
+      className='Podo-Ticket-Body-B2'
       onClick={onClick}
       disabled={!isAvailable}
       isAvailable={isAvailable}
@@ -43,23 +38,19 @@ const MediumBtnContainer = styled.button<{
   padding: 15px 0px;
   border-radius: 10px;
   border: none;
-  background: ${({ isAvailable, isGray }) =>
-    isGray
-      ? "var(--grey-3)"
-      : isAvailable
-      ? "var(--purple-4)"
-      : "var(--purple-9)"};
+  background: ${({isAvailable, isGray}) =>
+    isGray ? 'var(--grey-3)' : isAvailable ? 'var(--purple-4)' : 'var(--purple-9)'};
 
   gap: 6px;
 
-  color: ${({ isAvailable, isGray }) =>
+  color: ${({isAvailable, isGray}) =>
     isGray && !isAvailable
-      ? "var(--grey-4)"
+      ? 'var(--grey-4)'
       : isGray
-      ? "var(--grey-6)"
-      : isAvailable
-      ? "var(--ect-white)"
-      : "var(--ect-white)"};
+        ? 'var(--grey-6)'
+        : isAvailable
+          ? 'var(--ect-white)'
+          : 'var(--ect-white)'};
   text-align: center;
 
   transition: background 0.3s ease-in-out;

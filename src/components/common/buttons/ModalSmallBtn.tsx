@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 interface SmallBtnProps {
   content: string; // 버튼 안 내용
@@ -16,7 +16,7 @@ const ModalSmallBtn: React.FC<SmallBtnProps> = ({
 }) => {
   return (
     <ModalSmallBtnContainer
-      className="Podo-Ticket-Body-B4"
+      className='Podo-Ticket-Body-B4'
       onClick={onClick}
       disabled={!isAvailable}
       isAvailable={isAvailable}
@@ -42,23 +42,15 @@ const ModalSmallBtnContainer = styled.button<{
 
   padding: 11px 48px;
   border-radius: 10px;
- 
-  background: ${({ isAvailable, isDarkblue }) =>
-    isDarkblue
-      ? "var(--grey-3)"
-      : isAvailable
-      ? "var(--purple-4)"
-      : "var(--purple-9)"};
+
+  background: ${({isAvailable, isDarkblue}) =>
+    isDarkblue ? 'var(--grey-3)' : isAvailable ? 'var(--purple-4)' : 'var(--purple-9)'};
   border: none;
 
   gap: 10px;
 
-  color: ${({ isAvailable, isDarkblue }) =>
-    isDarkblue
-      ? "var(--grey-6)"
-      : isAvailable
-      ? "var(--ect-white)"
-      : "var(--ect-white)"};
+  color: ${({isAvailable, isDarkblue}) =>
+    isDarkblue ? 'var(--grey-6)' : isAvailable ? 'var(--ect-white)' : 'var(--ect-white)'};
   text-align: center;
 
   transition: background 0.3s ease-in-out;

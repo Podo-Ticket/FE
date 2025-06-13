@@ -1,21 +1,18 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import styled from 'styled-components';
 
-import PulseLoader from "react-spinners/PulseLoader";
-import waitReserve from "@assets/images/wait_reserve_icon.png";
-import { ONSITE_RESERVE } from "@/constants/text/UIText";
+import PulseLoader from 'react-spinners/PulseLoader';
+import waitReserve from '@assets/images/wait_reserve_icon.png';
+import {ONSITE_RESERVE} from '@/constants/text/UIText';
 
 interface LoadingModalProps {
   showLoading: boolean;
   isOnSiteReserve?: boolean;
 }
 
-const Loading: React.FC<LoadingModalProps> = ({
-  showLoading,
-  isOnSiteReserve = false,
-}) => {
-  const [color] = useState<string>("#6A39C0");
-  const language = localStorage.getItem("language");
+const Loading: React.FC<LoadingModalProps> = ({showLoading, isOnSiteReserve = false}) => {
+  const [color] = useState<string>('#6A39C0');
+  const language = localStorage.getItem('language');
 
   if (!showLoading) return null;
 
@@ -24,18 +21,14 @@ const Loading: React.FC<LoadingModalProps> = ({
       <ModalOverlay>
         {isOnSiteReserve ? (
           <ModalContentReserve>
-            <img
-              src={waitReserve}
-              alt="대기 아이콘"
-              className="modal-content-load-icon"
-            />
-            <p className="Podo-Ticket-Headline-H3">
-              {language === "english"
+            <img src={waitReserve} alt='대기 아이콘' className='modal-content-load-icon' />
+            <p className='Podo-Ticket-Headline-H3'>
+              {language === 'english'
                 ? ONSITE_RESERVE.english.loadingModalTitle
                 : ONSITE_RESERVE.korean.loadingModalTitle}
             </p>
-            <span className="Podo-Ticket-Body-B5">
-              {language === "english"
+            <span className='Podo-Ticket-Body-B5'>
+              {language === 'english'
                 ? ONSITE_RESERVE.english.loadingModalSubtitle
                 : ONSITE_RESERVE.korean.loadingModalSubtitle}
             </span>
@@ -43,8 +36,8 @@ const Loading: React.FC<LoadingModalProps> = ({
               color={color}
               size={13}
               loading={showLoading}
-              aria-label="Loading Spinner"
-              data-testid="loader"
+              aria-label='Loading Spinner'
+              data-testid='loader'
             />
           </ModalContentReserve>
         ) : (
@@ -53,9 +46,9 @@ const Loading: React.FC<LoadingModalProps> = ({
               color={color}
               size={21}
               loading={showLoading}
-              aria-label="Loading Spinner"
-              data-testid="loader"
-              style={{ position: "absolute" }}
+              aria-label='Loading Spinner'
+              data-testid='loader'
+              style={{position: 'absolute'}}
             />
           </ModalContentLoad>
         )}
