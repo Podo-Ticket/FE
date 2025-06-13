@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import styled from 'styled-components';
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
+import {Swiper, SwiperSlide} from 'swiper/react';
+import 'swiper/css';
 
-import TicketBackground from "@assets/images/ticket_background.svg?react";
-import poster from "@/assets/images/posters/2025_Spring_KwangwoonUniv_poster.png"; // 해당 공연에 맞는 상수값 적용 필요
-import { Language } from "@/constants/text/Language";
+import TicketBackground from '@assets/images/ticket_background.svg?react';
+import poster from '@/assets/images/posters/2025_Spring_KwangwoonUniv_poster.png'; // 해당 공연에 맞는 상수값 적용 필요
+import {Language} from '@/constants/text/Language';
 
-import { splitDateTime } from "../../../../utils/DateUtil";
-import { TICKET } from "@/constants/text/UIText";
+import {splitDateTime} from '../../../../utils/DateUtil';
+import {TICKET} from '@/constants/text/UIText';
 interface Ticket {
   id: string;
   title: string;
@@ -37,9 +37,7 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const language =
-    localStorage.getItem("language") === "english"
-      ? Language.English
-      : Language.Korean;
+    localStorage.getItem('language') === 'english' ? Language.English : Language.Korean;
 
   const handleSlideChange = (swiper: any) => {
     const newIndex = swiper.activeIndex;
@@ -49,7 +47,6 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
 
   if (!currentTicketInfo) return null;
 
-  console.log(currentTicketInfo.dateTime);
   const result = splitDateTime(currentTicketInfo.dateTime, language);
 
   return (
@@ -63,23 +60,17 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
         }}
         onSlideChange={handleSlideChange}
       >
-        {Array.from({ length: ticketCount }, (_, index) => (
+        {Array.from({length: ticketCount}, (_, index) => (
           <TicketSwiperSlide
             key={index}
-            className={
-              index === activeIndex ? "active-slide" : "inactive-slide"
-            }
+            className={index === activeIndex ? 'active-slide' : 'inactive-slide'}
           >
             <TicketCellBackground>
-              <TicketBackground
-                width="100%"
-                height="100%"
-                preserveAspectRatio="none"
-              />
+              <TicketBackground width='100%' height='100%' preserveAspectRatio='none' />
             </TicketCellBackground>
 
             <TicketHeaderContainer>
-              <Poster src={poster} alt="공연 포스터" />
+              <Poster src={poster} alt='공연 포스터' />
               {/* 현장예매/사전예매 태그 */}
               {/* {isOnSite ? (
                 <ReservationTag
@@ -116,13 +107,13 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
                 <TopContent>
                   <ContentItem>
                     <Category>
-                      {language === "english"
+                      {language === 'english'
                         ? TICKET.english.performanceTitle
                         : TICKET.korean.performanceTitle}
                     </Category>
                     <PlayTitle>
-                      {" "}
-                      {language === "english"
+                      {' '}
+                      {language === 'english'
                         ? currentTicketInfo.en_title
                         : currentTicketInfo.title}
                     </PlayTitle>
@@ -133,7 +124,7 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
                   <MiddleLeftContent>
                     <ContentItem>
                       <Category>
-                        {language === "english"
+                        {language === 'english'
                           ? TICKET.english.performanceDate
                           : TICKET.korean.performanceDate}
                       </Category>
@@ -142,13 +133,11 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
 
                     <ContentItem>
                       <Category>
-                        {language === "english"
-                          ? TICKET.english.venue
-                          : TICKET.korean.venue}
+                        {language === 'english' ? TICKET.english.venue : TICKET.korean.venue}
                       </Category>
                       <Description>
-                        {" "}
-                        {language === "english"
+                        {' '}
+                        {language === 'english'
                           ? currentTicketInfo.en_location
                           : currentTicketInfo.location}
                       </Description>
@@ -157,7 +146,7 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
                   <MiddleRightContent>
                     <ContentItem>
                       <Category>
-                        {language === "english"
+                        {language === 'english'
                           ? TICKET.english.startTime
                           : TICKET.korean.startTime}
                       </Category>
@@ -165,15 +154,13 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
                     </ContentItem>
                     <ContentItem>
                       <Category>
-                        {language === "english"
+                        {language === 'english'
                           ? TICKET.english.runningTime
                           : TICKET.korean.runningTime}
                       </Category>
                       <Description>
-                        {currentTicketInfo.runningTime}{" "}
-                        {language === "english"
-                          ? TICKET.english.minutes
-                          : TICKET.korean.minutes}
+                        {currentTicketInfo.runningTime}{' '}
+                        {language === 'english' ? TICKET.english.minutes : TICKET.korean.minutes}
                       </Description>
                     </ContentItem>
                   </MiddleRightContent>
@@ -182,10 +169,8 @@ const TicketCarousel: React.FC<TicketCarouselProps> = ({
 
               <BottomContent>
                 <Category>
-                  {" "}
-                  {language === "english"
-                    ? TICKET.english.seatNumber
-                    : TICKET.korean.seatNumber}
+                  {' '}
+                  {language === 'english' ? TICKET.english.seatNumber : TICKET.korean.seatNumber}
                 </Category>
                 <CurrentSeat>{currentTicketInfo.seat}</CurrentSeat>
               </BottomContent>
@@ -220,13 +205,17 @@ const TicketSwiper = styled(Swiper)`
   .active-slide {
     opacity: 1;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
-    transition: box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transition:
+      box-shadow 0.3s ease-in-out,
+      opacity 0.3s ease-in-out;
   }
 
   .inactive-slide {
     opacity: 0.5;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
-    transition: box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transition:
+      box-shadow 0.3s ease-in-out,
+      opacity 0.3s ease-in-out;
   }
 `;
 
@@ -251,7 +240,9 @@ const TicketCellBackground = styled.div`
 
   border-radius: inherit;
 
-  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+  transition:
+    width 0.3s ease-in-out,
+    height 0.3s ease-in-out;
 
   z-index: 2;
 `;
@@ -297,12 +288,12 @@ const Information = styled.div`
   height: 74.85%;
 `;
 
-const Category = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })`
+const Category = styled.div.attrs({className: 'Podo-Ticket-Body-B7'})`
   color: var(--grey-5);
   white-space: nowrap; // 줄 바꿈 방지
 `;
 
-const Description = styled.div.attrs({ className: "Podo-Ticket-Body-B6" })`
+const Description = styled.div.attrs({className: 'Podo-Ticket-Body-B6'})`
   color: var(--grey-7);
 `;
 
@@ -316,7 +307,7 @@ const TopContent = styled.div`
   border-bottom: 1px solid var(--grey-2);
 `;
 
-const PlayTitle = styled.div.attrs({ className: "Podo-Ticket-Headline-H3" })`
+const PlayTitle = styled.div.attrs({className: 'Podo-Ticket-Headline-H3'})`
   color: var(--grey-7);
 `;
 
@@ -358,7 +349,7 @@ const BottomContent = styled.div`
   gap: 4%;
 `;
 
-const CurrentSeat = styled.div.attrs({ className: "Podo-Ticket-Headline-H2" })`
+const CurrentSeat = styled.div.attrs({className: 'Podo-Ticket-Headline-H2'})`
   color: var(--purple-4);
 `;
 

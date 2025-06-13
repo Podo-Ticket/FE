@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import styled from 'styled-components';
 
 import SmallBtn from '@components/common/buttons/SmallBtn.tsx';
 
 import successImage from '@assets/images/check_icon.png';
 import dangerImage from '@assets/images/purple_danger.png';
 
-import { fadeIn, fadeOut } from '../../../styles/animation/DefaultAnimation.ts'
+import {fadeIn, fadeOut} from '../../../styles/animation/DefaultAnimation.ts';
 
 interface NoticeModalProps {
   showNoticeModal: boolean;
-  imgStatus?: "success" | "danger" | null;
+  imgStatus?: 'success' | 'danger' | null;
   title: string;
   description: string;
   onAcceptFunc: () => void;
@@ -23,7 +23,7 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
   title,
   description,
   onAcceptFunc,
-  buttonContent = "",
+  buttonContent = '',
 }) => {
   const [isClosing, setIsClosing] = useState(false);
 
@@ -40,9 +40,9 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
   // 이미지 경로 선택
   const getImageSrc = () => {
     switch (imgStatus) {
-      case "success":
+      case 'success':
         return successImage;
-      case "danger":
+      case 'danger':
         return dangerImage;
       default:
         return null;
@@ -53,9 +53,9 @@ const NoticeModal: React.FC<NoticeModalProps> = ({
   return (
     <Overlay onClick={handleOverlayClick}>
       <Content isClosing={isClosing}>
-        {imageSrc && <ContentImage src={imageSrc} alt={imgStatus || ""} />}
-        <Title className="Podo-Ticket-Headline-H3">{title}</Title>
-        <Description className="Podo-Ticket-Body-B5">{description}</Description>
+        {imageSrc && <ContentImage src={imageSrc} alt={imgStatus || ''} />}
+        <Title className='Podo-Ticket-Headline-H3'>{title}</Title>
+        <Description className='Podo-Ticket-Body-B5'>{description}</Description>
         <ButtonContainer>
           <SmallBtn
             content={buttonContent}
@@ -85,7 +85,7 @@ const Overlay = styled.div`
   z-index: 10000;
 `;
 
-const Content = styled.div<{ isClosing: boolean }>`
+const Content = styled.div<{isClosing: boolean}>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -100,8 +100,7 @@ const Content = styled.div<{ isClosing: boolean }>`
 
   text-align: center;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s
-    ease-in-out;
+  animation: ${({isClosing}) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
 
   @media (max-resolution: 2dppx) {
     border-radius: 15px;

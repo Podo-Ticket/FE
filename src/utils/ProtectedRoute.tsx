@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
-import { verifyAdminSession } from "../api/admin/AdminAuthApi";
+import React, {useEffect, useState} from 'react';
+import {Navigate} from 'react-router-dom';
+import {verifyAdminSession} from '../api/admin/AdminAuthApi';
 
-import NoticeModal from "@components/common/modals/NoticeModal";
+import NoticeModal from '@components/common/modals/NoticeModal';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
   const [isLoading, setIsLoading] = useState(true); // 세션 확인 중 로딩 상태
   const [isSessionValid, setIsSessionValid] = useState(false); // 세션 유효성 상태
   const [showNoticeModal, setShowNoticeModal] = useState(false);
@@ -24,7 +24,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
           setShowNoticeModal(true); // 세션 만료 시 모달 띄움
         }
       } catch (error) {
-        console.error("세션 확인 중 오류 발생:", error);
         setIsSessionValid(false); // 세션이 유효하지 않음으로 설정
         if (firstCheckDone) {
           setShowNoticeModal(true);
@@ -41,7 +40,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   if (isLoading) return <div />;
 
   if (redirect) {
-    return <Navigate to="/adminAuth" replace />;
+    return <Navigate to='/adminAuth' replace />;
   }
 
   if (!isSessionValid) {
@@ -50,13 +49,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         {showNoticeModal && (
           <NoticeModal
             showNoticeModal={true}
-            title="인증코드를 다시 입력해주세요!"
-            description="세션이 만료되었습니다."
+            title='인증코드를 다시 입력해주세요!'
+            description='세션이 만료되었습니다.'
             onAcceptFunc={() => {
               setShowNoticeModal(false);
               setRedirect(true); // 모달 닫은 뒤 리다이렉트
             }}
-            buttonContent="확인"
+            buttonContent='확인'
           />
         )}
       </>

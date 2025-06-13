@@ -8,11 +8,7 @@ export const pxToVh = (px: number, baseHeight = 852, precision = 2): string => {
   return `${vh.toFixed(precision)}vh`;
 };
 
-export const pxToPercent = (
-  px: number,
-  parentSize: number,
-  precision = 2
-): string => {
+export const pxToPercent = (px: number, parentSize: number, precision = 2): string => {
   const percent = (px / parentSize) * 100;
   return `${percent.toFixed(precision)}%`;
 };

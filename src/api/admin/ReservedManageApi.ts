@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 // Create an Axios instance with default configurations
@@ -6,7 +6,7 @@ const api = axios.create({
   baseURL: apiUrl, // Use environment variables
   timeout: 10000,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
   withCredentials: true,
 });
@@ -26,24 +26,21 @@ export interface User {
 }
 
 // 사용자 리스트 가져오기
-export const fetchReservedUserList = async (
-  scheduleId: string
-): Promise<FetchUserListResponse> => {
+export const fetchReservedUserList = async (scheduleId: string): Promise<FetchUserListResponse> => {
   try {
-    const response = await api.get<FetchUserListResponse>("/user/list", {
-      params: { scheduleId }, // Query 파라미터 전달
+    const response = await api.get<FetchUserListResponse>('/user/list', {
+      params: {scheduleId},
     });
-    return response.data; // 전체 응답 데이터 반환
+    return response.data;
   } catch (error: any) {
-    console.error("Error fetching user list:", error);
-    throw new Error(error.response?.data?.error || "Failed to fetch user list");
+    throw new Error(error.response?.data?.error || 'Failed to fetch user list');
   }
 };
 
 export interface Schedule {
   id: number;
-  date_time: string; // 공연 날짜 및 시간
-  free_seats: number; // 남은 좌석 수
+  date_time: string;
+  free_seats: number;
 }
 
 interface FetchSchedulesResponse {
@@ -52,15 +49,11 @@ interface FetchSchedulesResponse {
 
 // 공연 회차 가져오기
 export const fetchSchedules = async (): Promise<Schedule[]> => {
-
   try {
-    const response = await api.get<FetchSchedulesResponse>("/user/schedule");
+    const response = await api.get<FetchSchedulesResponse>('/user/schedule');
     return response.data.schedules; // 공연 회차 데이터 반환
   } catch (error: any) {
-    console.error("Error fetching schedules:", error);
-    throw new Error(
-      error.response?.data?.message || "Failed to fetch schedules"
-    );
+    throw new Error(error.response?.data?.message || 'Failed to fetch schedules');
   }
 };
 
@@ -78,17 +71,13 @@ interface ReservationResponse {
 
 // 예매 추가
 export const addReservation = async (
-  reservationData: ReservationRequest
+  reservationData: ReservationRequest,
 ): Promise<ReservationResponse> => {
   try {
-    const response = await api.post<ReservationResponse>(
-      "/user/admin",
-      reservationData
-    );
+    const response = await api.post<ReservationResponse>('/user/admin', reservationData);
     return response.data;
   } catch (error: any) {
-    console.error("Error reserving ticket:", error);
-    throw new Error(error.response?.data?.error || "Failed to reserve ticket");
+    throw new Error(error.response?.data?.error || 'Failed to reserve ticket');
   }
 };
 
@@ -107,18 +96,15 @@ export interface ReservationInfo {
 // 현장 예매 정보 가져오기
 export const fetchReservationInfo = async (
   scheduleId: number,
-  userId: bigint
+  userId: bigint,
 ): Promise<ReservationInfo> => {
   try {
-    const response = await api.get<ReservationInfo>("/user/info", {
-      params: { scheduleId, userId },
+    const response = await api.get<ReservationInfo>('/user/info', {
+      params: {scheduleId, userId},
     });
     return response.data;
   } catch (error: any) {
-    console.error("Error fetching reservation info:", error);
-    throw new Error(
-      error.response?.data?.error || "Failed to fetch reservation info"
-    );
+    throw new Error(error.response?.data?.error || 'Failed to fetch reservation info');
   }
 };
 
@@ -127,19 +113,14 @@ export interface ReservationDelete {
   error?: string;
 }
 
-export const deleteReservation = async (
-  userId: bigint
-): Promise<ReservationDelete> => {
+export const deleteReservation = async (userId: bigint): Promise<ReservationDelete> => {
   try {
-    const response = await api.delete<ReservationDelete>("/user/delete", {
-      params: { userId },
+    const response = await api.delete<ReservationDelete>('/user/delete', {
+      params: {userId},
     });
     return response.data;
   } catch (error: any) {
-    console.error("Error fetching reservation delete:", error);
-    throw new Error(
-      error.response?.data?.error || "Failed to fetch reservation delete"
-    );
+    throw new Error(error.response?.data?.error || 'Failed to fetch reservation delete');
   }
 };
 
@@ -156,16 +137,12 @@ interface EditResponse {
   error?: string;
 }
 
-export const editReservation = async (
-  editData: EditRequest
-): Promise<EditResponse> => {
+export const editReservation = async (editData: EditRequest): Promise<EditResponse> => {
   try {
-    const response = await api.patch<EditResponse>("/user/update", editData);
+    const response = await api.patch<EditResponse>('/user/update', editData);
 
     return response.data;
   } catch (error: any) {
-    console.error("Error EditReservation:", error);
-    throw new Error(error.response?.data?.error || "Failed to reserve ticket");
+    throw new Error(error.response?.data?.error || 'Failed to reserve ticket');
   }
-
 };

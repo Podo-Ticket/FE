@@ -1,29 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
-import styled from "styled-components";
+import React, {useState, useEffect} from 'react';
+import {useLocation, Link} from 'react-router-dom';
+import styled from 'styled-components';
 
-import Home from "@assets/images/admin/grey_home.png";
-import ActHome from "@assets/images/admin/purple_home.png";
-import Reserved from "@assets/images/admin/grey_checked_list.png";
-import ActReserved from "@assets/images/admin/purple_checked_list.png";
-import Onsite from "@assets/images/admin/grey_plus_list.png";
-import ActOnsite from "@assets/images/admin/purple_plus_list.png";
-import Setting from "@assets/images/admin/grey_setting.png";
-import ActSetting from "@assets/images/admin/purple_setting.png";
+import Home from '@assets/images/admin/grey_home.png';
+import ActHome from '@assets/images/admin/purple_home.png';
+import Reserved from '@assets/images/admin/grey_checked_list.png';
+import ActReserved from '@assets/images/admin/purple_checked_list.png';
+import Onsite from '@assets/images/admin/grey_plus_list.png';
+import ActOnsite from '@assets/images/admin/purple_plus_list.png';
+import Setting from '@assets/images/admin/grey_setting.png';
+import ActSetting from '@assets/images/admin/purple_setting.png';
 
-import RedCirclePng from "@assets/images/admin/redCircle.png";
-import { pxToVh, pxToPercent } from "../../../utils/unitConverter.ts";
-import {
-  UserWithApproval,
-  fetchOnsiteUserList,
-} from "../../../api/admin/OnsiteManageApi";
-import { usePath } from "../../../utils/PathContext.tsx";
+import RedCirclePng from '@assets/images/admin/redCircle.png';
+import {pxToVh, pxToPercent} from '../../../utils/unitConverter.ts';
+import {UserWithApproval, fetchOnsiteUserList} from '../../../api/admin/OnsiteManageApi';
+import {usePath} from '../../../utils/PathContext.tsx';
 
 const pathToIndex = (path: string) => {
-  if (path.startsWith("/home")) return 0;
-  if (path.startsWith("/reserved")) return 1;
-  if (path.startsWith("/onsite")) return 2;
-  if (path.startsWith("/setting")) return 3;
+  if (path.startsWith('/home')) return 0;
+  if (path.startsWith('/reserved')) return 1;
+  if (path.startsWith('/onsite')) return 2;
+  if (path.startsWith('/setting')) return 3;
   return 0;
 };
 
@@ -41,11 +38,11 @@ const FotterNav: React.FC<FooterNavProps> = ({
   isDeleteClick,
 }) => {
   const location = useLocation();
-  const { prevPath, setPrevPath } = usePath();
+  const {prevPath, setPrevPath} = usePath();
   const [, setPreveIndex] = useState(pathToIndex(location.pathname));
   const prevIndex = pathToIndex(prevPath);
   const [activeIndex] = useState(pathToIndex(location.pathname));
-  const [direction, setDirection] = useState<"left" | "right">("right");
+  const [direction, setDirection] = useState<'left' | 'right'>('right');
   const [hasPendingApproval, setHasPendingApproval] = useState(false);
   const [, setData] = useState<UserWithApproval[]>([]);
   const [barX, setBarX] = useState(prevIndex * 100);
@@ -53,24 +50,8 @@ const FotterNav: React.FC<FooterNavProps> = ({
   useEffect(() => {
     const currentIndex = pathToIndex(location.pathname);
     const prevesIndex = pathToIndex(prevPath);
-    console.log("🔵 현재 path:", location.pathname);
-    console.log("🟡 이전 path:", prevPath);
-    console.log("🔵 currentIndex:", currentIndex);
-    console.log("🔵 activeIndex:", activeIndex);
-    console.log("🟡 prevIndex:", prevesIndex);
-    console.log(
-      "➡️ 방향:",
-      currentIndex > prevesIndex
-        ? "오른쪽"
-        : currentIndex < prevesIndex
-        ? "왼쪽"
-        : "변화 없음"
-    );
-
-    console.log("📦 ActiveBar 이동 →", activeIndex * 100, "%");
-
-    if (currentIndex > prevesIndex) setDirection("right");
-    else if (currentIndex < prevesIndex) setDirection("left");
+    if (currentIndex > prevesIndex) setDirection('right');
+    else if (currentIndex < prevesIndex) setDirection('left');
 
     setPrevPath(location.pathname);
     setPreveIndex(prevesIndex);
@@ -81,15 +62,15 @@ const FotterNav: React.FC<FooterNavProps> = ({
 
   useEffect(() => {
     const loadUserList = async () => {
-      const scheduleId = localStorage.getItem("scheduleId");
+      const scheduleId = localStorage.getItem('scheduleId');
       if (!scheduleId) return;
 
       try {
         const response = await fetchOnsiteUserList(Number(scheduleId));
         setData(response.users);
-        setHasPendingApproval(response.users.some((item) => !item.approve));
+        setHasPendingApproval(response.users.some(item => !item.approve));
       } catch (error) {
-        console.error("Error loading user list:", error);
+        console.error('Error loading user list:', error);
       }
     };
 
@@ -97,44 +78,40 @@ const FotterNav: React.FC<FooterNavProps> = ({
   }, [location.pathname]);
 
   return (
-    <Nav className="Podo-Ticket-Body-B7" isGroupAllow={isGroupAllow}>
+    <Nav className='Podo-Ticket-Body-B7' isGroupAllow={isGroupAllow}>
       {!isGroupAllow ? (
         <>
-          <NavItem className={activeIndex === 0 ? "active" : ""}>
-            <NavLink to="/home">
+          <NavItem className={activeIndex === 0 ? 'active' : ''}>
+            <NavLink to='/home'>
               <IconHome src={activeIndex === 0 ? ActHome : Home} />
               <p>홈</p>
             </NavLink>
           </NavItem>
-          <NavItem className={activeIndex === 1 ? "active" : ""}>
-            <NavLink to="/reserved">
+          <NavItem className={activeIndex === 1 ? 'active' : ''}>
+            <NavLink to='/reserved'>
               <IconReserved src={activeIndex === 1 ? ActReserved : Reserved} />
               <p>발권 명단 관리</p>
             </NavLink>
           </NavItem>
-          <NavItem className={activeIndex === 2 ? "active" : ""}>
-            <NavLink to="/onsite">
+          <NavItem className={activeIndex === 2 ? 'active' : ''}>
+            <NavLink to='/onsite'>
               <IconOnsite src={activeIndex === 2 ? ActOnsite : Onsite} />
               {hasPendingApproval && <RedCircle src={RedCirclePng} />}
               <p>현장 예매 관리</p>
             </NavLink>
           </NavItem>
-          <NavItem className={activeIndex === 3 ? "active" : ""}>
-            <NavLink to="/setting">
+          <NavItem className={activeIndex === 3 ? 'active' : ''}>
+            <NavLink to='/setting'>
               <IconSetting src={activeIndex === 3 ? ActSetting : Setting} />
               <p>설정</p>
             </NavLink>
           </NavItem>
-          <ActiveBar
-            x={barX ?? 0}
-            direction={direction}
-            hasTransition={barX !== null}
-          />
+          <ActiveBar x={barX ?? 0} direction={direction} hasTransition={barX !== null} />
         </>
       ) : (
         <>
           <AllowItem
-            className="Podo-Ticket-Headline-H4"
+            className='Podo-Ticket-Headline-H4'
             isActive={groupAllowCnt !== 0}
             onClick={() => isApproveClick?.(true)}
             disabled={groupAllowCnt === 0}
@@ -142,7 +119,7 @@ const FotterNav: React.FC<FooterNavProps> = ({
             수락
           </AllowItem>
           <DeleteItem
-            className="Podo-Ticket-Headline-H4"
+            className='Podo-Ticket-Headline-H4'
             isActive={groupAllowCnt !== 0}
             onClick={() => isDeleteClick?.(false)}
             disabled={groupAllowCnt === 0}
@@ -157,7 +134,7 @@ const FotterNav: React.FC<FooterNavProps> = ({
 
 export default FotterNav;
 
-const Nav = styled.nav<{ isGroupAllow: boolean }>`
+const Nav = styled.nav<{isGroupAllow: boolean}>`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -165,7 +142,7 @@ const Nav = styled.nav<{ isGroupAllow: boolean }>`
   bottom: 0;
   left: 0;
   right: 0;
-  height: ${({ isGroupAllow }) =>
+  height: ${({isGroupAllow}) =>
     !isGroupAllow ? `${pxToPercent(86, 661)}` : `${pxToPercent(60, 661)}`};
   background: var(--ect-white);
   border-top: 1px solid var(--grey-3);
@@ -221,7 +198,7 @@ const IconSetting = styled.img`
   margin: ${pxToVh(5)} 0;
 `;
 
-const AllowItem = styled.button<{ isActive: boolean }>`
+const AllowItem = styled.button<{isActive: boolean}>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -233,13 +210,12 @@ const AllowItem = styled.button<{ isActive: boolean }>`
   border-right: 1px solid var(--grey-3);
   border-radius: 20px 0 0 0;
   text-align: center;
-  color: ${({ isActive }) =>
-    isActive ? "var(--purple-4)" : "var(--purple-8)"};
+  color: ${({isActive}) => (isActive ? 'var(--purple-4)' : 'var(--purple-8)')};
   transition: color 0.3s ease-in-out;
   user-select: none;
 `;
 
-const DeleteItem = styled.button<{ isActive: boolean }>`
+const DeleteItem = styled.button<{isActive: boolean}>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -250,7 +226,7 @@ const DeleteItem = styled.button<{ isActive: boolean }>`
   background: var(--grey-1);
   border-radius: 0 20px 0 0;
   text-align: center;
-  color: ${({ isActive }) => (isActive ? "var(--grey-7)" : "var(--grey-4)")};
+  color: ${({isActive}) => (isActive ? 'var(--grey-7)' : 'var(--grey-4)')};
   transition: color 0.3s ease-in-out;
   user-select: none;
 `;
@@ -264,7 +240,7 @@ const RedCircle = styled.img`
 
 const ActiveBar = styled.div<{
   x: number;
-  direction: "left" | "right";
+  direction: 'left' | 'right';
   hasTransition: boolean;
 }>`
   position: absolute;
@@ -273,10 +249,8 @@ const ActiveBar = styled.div<{
   width: 25%;
   height: 4px;
   background-color: var(--purple-4);
-  transform: translateX(${({ x }) => `${x}%`});
-  transition: ${({ hasTransition, direction }) =>
-    hasTransition
-      ? `transform 0.3s ${direction === "right" ? "ease-out" : "ease-in"}`
-      : "none"};
+  transform: translateX(${({x}) => `${x}%`});
+  transition: ${({hasTransition, direction}) =>
+    hasTransition ? `transform 0.3s ${direction === 'right' ? 'ease-out' : 'ease-in'}` : 'none'};
   will-change: transform;
 `;

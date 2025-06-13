@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import magnifier from "@assets/images/admin/magnifier.png";
-import closeIcon from "@assets/icons/ic_delete.svg";
+import magnifier from '@assets/images/admin/magnifier.png';
+import closeIcon from '@assets/icons/ic_delete.svg';
 
 // SearchBar Props 타입 정의
 interface SearchFilterBarProps {
@@ -35,15 +35,13 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
       {/* 검색 바 */}
       <SearchBar>
         <SearchInput
-          className="Podo-Ticket-Body-B5"
-          type="text"
-          placeholder="이름과 연락처로 검색 가능합니다."
+          className='Podo-Ticket-Body-B5'
+          type='text'
+          placeholder='이름과 연락처로 검색 가능합니다.'
           value={search}
           onChange={handleSearch}
         />
-        <SearchButton
-          onClick={search ? handleClearSearch : handleSearchButtonClick}
-        >
+        <SearchButton onClick={search ? handleClearSearch : handleSearchButtonClick}>
           <SearchIcon src={search ? closeIcon : magnifier} />
         </SearchButton>
       </SearchBar>
@@ -51,23 +49,20 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
       {/* 필터 버튼 */}
       <FilterButtonsContainer>
         <FilterButtons>
-          <FilterButton
-            isActive={filter === "전체"}
-            onClick={() => handleFilterClick("전체")}
-          >
+          <FilterButton isActive={filter === '전체'} onClick={() => handleFilterClick('전체')}>
             전체 {totalCount}건
           </FilterButton>
           <FilterButton
-            isActive={filter === "미 수락"}
-            onClick={() => handleFilterClick("미 수락")}
+            isActive={filter === '미 수락'}
+            onClick={() => handleFilterClick('미 수락')}
           >
-            {isReserved ? "미 발권" : "미 수락"} {unacceptCount}건
+            {isReserved ? '미 발권' : '미 수락'} {unacceptCount}건
           </FilterButton>
           <FilterButton
-            isActive={filter === "수락 완료"}
-            onClick={() => handleFilterClick("수락 완료")}
+            isActive={filter === '수락 완료'}
+            onClick={() => handleFilterClick('수락 완료')}
           >
-            {isReserved ? "발권 완료" : "수락"} {acceptCount}건
+            {isReserved ? '발권 완료' : '수락'} {acceptCount}건
           </FilterButton>
         </FilterButtons>
       </FilterButtonsContainer>
@@ -155,21 +150,19 @@ interface FilterButtonProps {
 }
 
 const FilterButton = styled.button.attrs({
-  className: "Podo-Ticket-Body-B9",
+  className: 'Podo-Ticket-Body-B9',
 })<FilterButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  border: 1px solid
-    ${({ isActive }) => (isActive ? "var(--purple-7)" : "var(--grey-3)")};
+  border: 1px solid ${({isActive}) => (isActive ? 'var(--purple-7)' : 'var(--grey-3)')};
   border-radius: 30px;
-  background-color: ${({ isActive }) =>
-    isActive ? "var(--lightpurple-2)" : "var(--ect-white)"};
+  background-color: ${({isActive}) => (isActive ? 'var(--lightpurple-2)' : 'var(--ect-white)')};
 
   padding: 4px 14px;
 
-  color: ${({ isActive }) => (isActive ? "var(--purple-4)" : "var(--grey-5)")};
+  color: ${({isActive}) => (isActive ? 'var(--purple-4)' : 'var(--grey-5)')};
 
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;

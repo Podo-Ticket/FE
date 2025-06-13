@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 
 import ModalSmallBtn from '@components/common/buttons/ModalSmallBtn.tsx';
 
-import { DateUtil } from '../../../../utils/DateUtil';
-import { fadeIn, fadeOut } from '../../../../styles/animation/DefaultAnimation.ts'
+import {DateUtil} from '../../../../utils/DateUtil';
+import {fadeIn, fadeOut} from '../../../../styles/animation/DefaultAnimation.ts';
 
 // 개별 예약된 좌석 정보
 export interface ReservedSeat {
@@ -22,23 +22,32 @@ interface NoticeReservedSeatModalProps {
   noOverlay?: boolean;
 }
 
-const NoticeReservedSeatModal: React.FC<NoticeReservedSeatModalProps> = ({ showNoticeReservedSeatModal, reservedList, onAcceptFunc, onUnacceptFunc, noOverlay = false }) => {
+const NoticeReservedSeatModal: React.FC<NoticeReservedSeatModalProps> = ({
+  showNoticeReservedSeatModal,
+  reservedList,
+  onAcceptFunc,
+  onUnacceptFunc,
+  noOverlay = false,
+}) => {
   const [isClosing, setIsClosing] = useState(false);
 
   if (!showNoticeReservedSeatModal) return null;
 
   // reservedList를 dateTime 기준으로 그룹화
-  const groupedReservedSeats = (reservedList || []).reduce((acc, seat) => {
-    const { dateTime, row, number } = seat;
+  const groupedReservedSeats = (reservedList || []).reduce(
+    (acc, seat) => {
+      const {dateTime, row, number} = seat;
 
-    if (!acc[dateTime]) {
-      acc[dateTime] = []; // 해당 dateTime이 없으면 초기화
-    }
+      if (!acc[dateTime]) {
+        acc[dateTime] = []; // 해당 dateTime이 없으면 초기화
+      }
 
-    acc[dateTime].push(`${row}${number}`); // 좌석 정보를 추가
+      acc[dateTime].push(`${row}${number}`); // 좌석 정보를 추가
 
-    return acc;
-  }, {} as Record<string, string[]>); // dateTime을 키로, 좌석 배열을 값으로 갖는 객체 생성
+      return acc;
+    },
+    {} as Record<string, string[]>,
+  ); // dateTime을 키로, 좌석 배열을 값으로 갖는 객체 생성
 
   const handleUnacceptClick = () => {
     setIsClosing(true); // 페이드아웃 애니메이션 시작
@@ -52,14 +61,17 @@ const NoticeReservedSeatModal: React.FC<NoticeReservedSeatModalProps> = ({ showN
     <Overlay noOverlay={noOverlay}>
       <Content isClosing={isClosing}>
         <TitleContainer>
-          <Title className='Podo-Ticket-Headline-H3'><span style={{ color: 'var(--purple-4)' }}>이미 발권된 좌석</span>이 포함되었습니다.</Title>
+          <Title className='Podo-Ticket-Headline-H3'>
+            <span style={{color: 'var(--purple-4)'}}>이미 발권된 좌석</span>이 포함되었습니다.
+          </Title>
           <Title className='Podo-Ticket-Headline-H3'>나머지 회차 좌석을 잠그시겠습니까?</Title>
         </TitleContainer>
 
         <DescriptioncContainer>
-          <Description className='Podo-Ticket-Body-B5'>이미 발권된 좌석 정보를 확인해보세요.</Description>
+          <Description className='Podo-Ticket-Body-B5'>
+            이미 발권된 좌석 정보를 확인해보세요.
+          </Description>
           <ReservedSeatsContainer>
-
             {Object.entries(groupedReservedSeats).map(([dateTime, seats], index, array) => (
               <SessionReservedSeatsContainer>
                 <SessionReservedSeats key={index}>
@@ -73,7 +85,7 @@ const NoticeReservedSeatModal: React.FC<NoticeReservedSeatModalProps> = ({ showN
                     <CategoryContainer>
                       <Category>좌석</Category>
                     </CategoryContainer>
-                    <Detail>{seats.join(", ")}</Detail>
+                    <Detail>{seats.join(', ')}</Detail>
                   </SessionInfo>
                 </SessionReservedSeats>
 
@@ -85,13 +97,13 @@ const NoticeReservedSeatModal: React.FC<NoticeReservedSeatModalProps> = ({ showN
 
         <ButtonContainer>
           <ModalSmallBtn
-            content="취소"
+            content='취소'
             onClick={handleUnacceptClick}
             isAvailable={true}
             isDarkblue={true}
           />
           <ModalSmallBtn
-            content="확인"
+            content='확인'
             onClick={onAcceptFunc}
             isAvailable={true}
             isDarkblue={false}
@@ -104,13 +116,13 @@ const NoticeReservedSeatModal: React.FC<NoticeReservedSeatModalProps> = ({ showN
 
 export default NoticeReservedSeatModal;
 
-const Overlay = styled.div<{ noOverlay: boolean }>`
+const Overlay = styled.div<{noOverlay: boolean}>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: ${({ noOverlay }) => (noOverlay ? 'rgba(0, 0, 0, 0.0)' : 'rgba(0, 0, 0, 0.6)')};
+  background-color: ${({noOverlay}) => (noOverlay ? 'rgba(0, 0, 0, 0.0)' : 'rgba(0, 0, 0, 0.6)')};
 
   display: flex;
   justify-content: center;
@@ -118,7 +130,7 @@ const Overlay = styled.div<{ noOverlay: boolean }>`
   z-index: 10000;
 `;
 
-const Content = styled.div<{ isClosing: boolean }>`
+const Content = styled.div<{isClosing: boolean}>`
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -132,7 +144,7 @@ const Content = styled.div<{ isClosing: boolean }>`
 
   text-align: center;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
+  animation: ${({isClosing}) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
 `;
 
 const Title = styled.h2`
@@ -152,7 +164,7 @@ const ButtonContainer = styled.div`
   gap: 11px;
 `;
 
-const TitleContainer = styled.div` 
+const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -194,7 +206,6 @@ const SessionInfo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
 `;
 
 const CategoryContainer = styled.div`
@@ -202,19 +213,18 @@ const CategoryContainer = styled.div`
   flex-grow: 1;
 `;
 
+const Category = styled.div.attrs({className: 'Podo-Ticket-Body-B9'})`
+  border-radius: 30px;
+  border: 1px solid var(--grey-3);
+  background: var(--ect-white);
 
-const Category = styled.div.attrs({ className: "Podo-Ticket-Body-B9" })`
-border-radius: 30px;
-border: 1px solid var(--grey-3);
-background: var(--ect-white);
+  padding: 0px 10px;
 
-padding: 0px 10px;
-
-color: var(--grey-6);
+  color: var(--grey-6);
 `;
 
-const Detail = styled.div.attrs({ className: "Podo-Ticket-Body-B7" })`
-color: var(--grey-7);
+const Detail = styled.div.attrs({className: 'Podo-Ticket-Body-B7'})`
+  color: var(--grey-7);
 `;
 
 const SessionReservedSeatsContainer = styled.div`
@@ -223,11 +233,11 @@ const SessionReservedSeatsContainer = styled.div`
 `;
 
 const Divider = styled.div`
-width: 100%;
-height: 0.5px;
+  width: 100%;
+  height: 0.5px;
 
-background: var(--grey-3);
+  background: var(--grey-3);
 
-margin: 10px 0;
-padding: 0 20px;
+  margin: 10px 0;
+  padding: 0 20px;
 `;

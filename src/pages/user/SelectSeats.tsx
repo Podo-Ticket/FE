@@ -1,41 +1,39 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { useMediaQuery } from "react-responsive";
+import {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
+import {useMediaQuery} from 'react-responsive';
 
-import TopNav from "@components/layout/headers/TopNav";
-import SelectSeatsInfo from "@components/pages/customer/selectSeats/SeatsInfo";
-import LargeBtn from "@components/common/buttons/LargeBtn";
-import ErrorModal from "@components/common/errors/DefaultErrorModal";
-import NoSuchCustomerModal from "@components/common/modals/NoticeModal.tsx";
+import TopNav from '@components/layout/headers/TopNav';
+import SelectSeatsInfo from '@components/pages/customer/selectSeats/SeatsInfo';
+import LargeBtn from '@components/common/buttons/LargeBtn';
+import ErrorModal from '@components/common/errors/DefaultErrorModal';
+import NoSuchCustomerModal from '@components/common/modals/NoticeModal.tsx';
 
-import { SELECT_FAIL } from "../../constants/text/ErrorMessage";
-import refreshIcon from "../../assets/images/refresh2_icon.png";
+import {SELECT_FAIL} from '../../constants/text/ErrorMessage';
+import refreshIcon from '../../assets/images/refresh2_icon.png';
 
-import { fetchSeats, checkSeats } from "../../api/user/SelectSeatsApi";
-import { useLanguage } from "../../hooks/useLanguage";
-import { SELECT_SEATS } from "../../constants/text/UIText.ts";
+import {fetchSeats, checkSeats} from '../../api/user/SelectSeatsApi';
+import {useLanguage} from '../../hooks/useLanguage';
+import {SELECT_SEATS} from '../../constants/text/UIText.ts';
 
-import SeongbukVillageTheaterSeatMap from "@components/pages/customer/selectSeats/UserSeatMap_SeongbukVillageTheater.tsx";
+import SeongbukVillageTheaterSeatMap from '@components/pages/customer/selectSeats/UserSeatMap_SeongbukVillageTheater.tsx';
 // import RiveractSeatMap from "@components/pages/customer/selectSeats/UserSeatMap_Riveract.tsx";
 // import KwangwoonSeatMap from '@components/pages/customer/selectSeats/UserSeatMap_Kwangwoon';
 
 function SelectSeats() {
   const navigate = useNavigate();
-  const { language } = useLanguage();
+  const {language} = useLanguage();
 
-  const currentScheduleId = Number(localStorage.getItem("scheduleId")) || 0;
+  const currentScheduleId = Number(localStorage.getItem('scheduleId')) || 0;
 
   const [selectedSeats, setSelectedSeats] = useState<any>([]);
-  const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] =
-    useState(false);
-  const [showNoSuchCustomerModal, setShowNoSuchCustomerModal] =
-    useState<boolean>(false);
+  const [isAlreadySelectedModalOpen, setIsAlreadySelectedModalOpen] = useState(false);
+  const [showNoSuchCustomerModal, setShowNoSuchCustomerModal] = useState<boolean>(false);
   const [headCount, setHeadCount] = useState(0); // headCount
 
   const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
   const triggerRefresh = () => {
-    setIsRefreshed((prev) => !prev);
+    setIsRefreshed(prev => !prev);
     setSelectedSeats([]);
   };
 
@@ -46,9 +44,7 @@ function SelectSeats() {
         try {
           const data = await fetchSeats(currentScheduleId);
           setHeadCount(data.headCount);
-        } catch (error: any) {
-          console.error(error.message);
-        }
+        } catch (error: any) {}
       };
 
       loadSeats();
@@ -59,14 +55,14 @@ function SelectSeats() {
     const handlePopState = () => {
       handleBack();
     };
-    window.addEventListener("popstate", handlePopState);
+    window.addEventListener('popstate', handlePopState);
     return () => {
-      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener('popstate', handlePopState);
     };
   }, [navigate]);
 
   const handleBack = async () => {
-    navigate("/"); // 성공 시 선택 페이지로 이동
+    navigate('/'); // 성공 시 선택 페이지로 이동
   };
 
   const handleTicketCheck = async () => {
@@ -76,33 +72,28 @@ function SelectSeats() {
       const response = await checkSeats(currentScheduleId, selectedSeats);
 
       if (response.success) {
-        navigate("/confirm", { state: { selectedSeats } });
+        navigate('/confirm', {state: {selectedSeats}});
       } else {
         setIsAlreadySelectedModalOpen(true);
       }
     } catch (error: any) {
-      if (error.message == "예매 내역 확인 불가") {
+      if (error.message == '예매 내역 확인 불가') {
         setShowNoSuchCustomerModal(true);
       } else {
-        console.log(error.message);
       }
     }
   };
 
   const buttonText = `${
-    language === "english"
-      ? SELECT_SEATS.english.NextBtn
-      : SELECT_SEATS.korean.NextBtn
+    language === 'english' ? SELECT_SEATS.english.NextBtn : SELECT_SEATS.korean.NextBtn
   } ${selectedSeats.length} / ${headCount}`;
 
   const SmallWidthDevice = () => {
-    const isSmallWidthDevice = useMediaQuery({ maxDeviceWidth: 370 });
+    const isSmallWidthDevice = useMediaQuery({maxDeviceWidth: 370});
     return isSmallWidthDevice
-      ? "좌석 선택"
+      ? '좌석 선택'
       : `${
-          language === "english"
-            ? SELECT_SEATS.english.pageTitle
-            : SELECT_SEATS.korean.pageTitle
+          language === 'english' ? SELECT_SEATS.english.pageTitle : SELECT_SEATS.korean.pageTitle
         }`;
   };
 
@@ -116,12 +107,7 @@ function SelectSeats() {
 
   return (
     <SelectSeatsContainer>
-      <TopNav
-        lefter={undefined}
-        center={righter}
-        righter={righter}
-        isGrey={true}
-      />
+      <TopNav lefter={undefined} center={righter} righter={righter} isGrey={true} />
 
       <SelectSeatsContentContainer>
         <SelectSeatsInfo />
@@ -148,25 +134,25 @@ function SelectSeats() {
 
       <NoSuchCustomerModal
         showNoticeModal={showNoSuchCustomerModal}
-        imgStatus="danger"
+        imgStatus='danger'
         title={
-          language === "english"
+          language === 'english'
             ? SELECT_SEATS.english.NoSuchCustomerModalTitle
             : SELECT_SEATS.korean.NoSuchCustomerModalTitle
         }
         description={
-          language === "english"
+          language === 'english'
             ? SELECT_SEATS.english.NoSuchCustomerModalSubitle
             : SELECT_SEATS.korean.NoSuchCustomerModalSubitle
         }
         buttonContent={
-          language === "english"
+          language === 'english'
             ? SELECT_SEATS.english.NoSuchCustomerModalAccpet
             : SELECT_SEATS.korean.NoSuchCustomerModalAccpet
         }
         onAcceptFunc={() => {
           setShowNoSuchCustomerModal(false);
-          navigate("/");
+          navigate('/');
         }}
       />
 
@@ -208,5 +194,4 @@ const SeatMapContainer = styled.div`
   border: 1px solid var(--grey-3);
   background: var(--ect-white);
   box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.02);
-
 `;

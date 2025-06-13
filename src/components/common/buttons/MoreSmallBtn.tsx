@@ -1,11 +1,11 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 interface MoreSmallBtnProps {
   content: string;
   onClick: () => void;
-  isAvailable: boolean; 
-  isGray?: boolean; 
+  isAvailable: boolean;
+  isGray?: boolean;
 }
 
 const MoreSmallBtn: React.FC<MoreSmallBtnProps> = ({
@@ -16,7 +16,7 @@ const MoreSmallBtn: React.FC<MoreSmallBtnProps> = ({
 }) => {
   return (
     <MoreSmallBtnContainer
-      className="Podo-Ticket-Body-B4"
+      className='Podo-Ticket-Body-B4'
       onClick={onClick}
       disabled={!isAvailable}
       isAvailable={isAvailable}
@@ -42,27 +42,25 @@ const MoreSmallBtnContainer = styled.button<{
 
   padding: 11px 0;
   border-radius: 10px;
-  background: ${({ isAvailable, isGray }) =>
-    isGray
-      ? "var(--grey-3)"
-      : isAvailable
-      ? "var(--purple-4)"
-      : "var(--purple-9)"};
+  background: ${({isAvailable, isGray}) =>
+    isGray ? 'var(--grey-3)' : isAvailable ? 'var(--purple-4)' : 'var(--purple-9)'};
   border: none;
 
   gap: 10px;
 
-  color: ${({ isAvailable, isGray }) =>
+  color: ${({isAvailable, isGray}) =>
     isGray && !isAvailable
-      ? "var(--grey-4)"
+      ? 'var(--grey-4)'
       : isGray
-      ? "var(--grey-6)"
-      : isAvailable
-      ? "var(--ect-white)"
-      : "var(--ect-white)"};
+        ? 'var(--grey-6)'
+        : isAvailable
+          ? 'var(--ect-white)'
+          : 'var(--ect-white)'};
   text-align: center;
 
-  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+  transition:
+    background 0.3s ease-in-out,
+    color 0.3s ease-in-out;
 
   user-select: none; /* 텍스트 선택 방지 */
   -webkit-user-select: none; /* Safari에서 드래그 방지 */

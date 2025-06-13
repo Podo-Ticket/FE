@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import styled from 'styled-components';
 
-import TopNav from "@components/layout/headers/TopNav";
-import CloseBtn from "@components/common/buttons/SmallBtn";
+import TopNav from '@components/layout/headers/TopNav';
+import CloseBtn from '@components/common/buttons/SmallBtn';
 
-import SeatMap from "@assets/images/seatMap/seongbuk_village_theater.png";
-import VenueMap from "@assets/images/guideMap/guideMap_SeongbukVillageTheater.png";
-import backIcon from "@assets/images/left_arrow.png";
+import SeatMap from '@assets/images/seatMap/seongbuk_village_theater.png';
+import VenueMap from '@assets/images/guideMap/guideMap_SeongbukVillageTheater.png';
+import backIcon from '@assets/images/left_arrow.png';
 
-import { PERFORMANCE_NOTICE } from "../../../constants/text/playInfo/2025_spring_kwangwoonUniv.ts";
-import { fadeIn, fadeOut } from "../../../styles/animation/DefaultAnimation.ts";
-import { TICKET } from "@/constants/text/UIText.ts";
+import {PERFORMANCE_NOTICE} from '../../../constants/text/playInfo/2025_spring_kwangwoonUniv.ts';
+import {fadeIn, fadeOut} from '../../../styles/animation/DefaultAnimation.ts';
+import {TICKET} from '@/constants/text/UIText.ts';
 
 interface TheaterInfoModalProps {
-  showTheaterInfoModal: boolean; 
+  showTheaterInfoModal: boolean;
   onAcceptFunc: () => void;
   pageMode?: boolean;
 }
@@ -24,8 +24,8 @@ const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({
   pageMode = false,
 }) => {
   const [isClosing, setIsClosing] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>("1");
-  const language = localStorage.getItem("language");
+  const [activeTab, setActiveTab] = useState<string>('1');
+  const language = localStorage.getItem('language');
 
   if (!showTheaterInfoModal) return null;
 
@@ -39,19 +39,19 @@ const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({
 
   const renderContent = () => {
     switch (activeTab) {
-      case "1":
+      case '1':
         return (
           <SeatDescription>
-            <img src={SeatMap} alt="좌석 안내" />
+            <img src={SeatMap} alt='좌석 안내' />
           </SeatDescription>
         );
-      case "2":
+      case '2':
         return (
           <VenueMapDescription>
-            <img src={VenueMap} alt="공연장 지도" />
+            <img src={VenueMap} alt='공연장 지도' />
           </VenueMapDescription>
         );
-      case "3":
+      case '3':
         return (
           <PerformanceDescription>
             {PERFORMANCE_NOTICE.map((notice, index) => (
@@ -68,7 +68,7 @@ const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({
     icon: backIcon,
     iconWidth: 13,
     iconHeight: 20,
-    text: "",
+    text: '',
     clickFunc: onAcceptFunc,
   };
 
@@ -79,41 +79,30 @@ const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({
           lefter={pageMode ? lefter : undefined}
           center={{
             text: `${
-              language === "english"
+              language === 'english'
                 ? TICKET.english.venueModalTitle
                 : TICKET.korean.venueModalTitle
             }`,
           }}
           righter={undefined}
           customStyles={{
-            borderRadius: "20px 20px 0px 0px",
-            background: "transparent",
-            height: "60px",
+            borderRadius: '20px 20px 0px 0px',
+            background: 'transparent',
+            height: '60px',
           }}
         />
 
         <TabNavBar>
-          <NavButton
-            onClick={() => setActiveTab("1")}
-            isActive={activeTab === "1"}
-          >
-            {language === "english"
+          <NavButton onClick={() => setActiveTab('1')} isActive={activeTab === '1'}>
+            {language === 'english'
               ? TICKET.english.venueModalSeatGuide
               : TICKET.korean.venueModalSeatGuide}
           </NavButton>
-          <NavButton
-            onClick={() => setActiveTab("2")}
-            isActive={activeTab === "2"}
-          >
-            {language === "english"
-              ? TICKET.english.venueModalMap
-              : TICKET.korean.venueModalMap}
+          <NavButton onClick={() => setActiveTab('2')} isActive={activeTab === '2'}>
+            {language === 'english' ? TICKET.english.venueModalMap : TICKET.korean.venueModalMap}
           </NavButton>
-          <NavButton
-            onClick={() => setActiveTab("3")}
-            isActive={activeTab === "3"}
-          >
-            {language === "english"
+          <NavButton onClick={() => setActiveTab('3')} isActive={activeTab === '3'}>
+            {language === 'english'
               ? TICKET.english.venueModalGuidelines
               : TICKET.korean.venueModalGuidelines}
           </NavButton>
@@ -125,7 +114,7 @@ const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({
         {pageMode ? undefined : (
           <CloseBtn
             content={
-              language === "english"
+              language === 'english'
                 ? TICKET.english.venueModalAccpet
                 : TICKET.korean.venueModalAccpet
             }
@@ -140,14 +129,13 @@ const TheaterInfoModal: React.FC<TheaterInfoModalProps> = ({
 
 export default TheaterInfoModal;
 
-const ModalOverlay = styled.div<{ pageMode: boolean }>`
+const ModalOverlay = styled.div<{pageMode: boolean}>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: ${({ pageMode }) =>
-    pageMode ? "var(--ect-white)" : "rgba(0, 0, 0, 0.6)"};
+  background: ${({pageMode}) => (pageMode ? 'var(--ect-white)' : 'rgba(0, 0, 0, 0.6)')};
 
   display: flex;
   justify-content: center;
@@ -156,23 +144,22 @@ const ModalOverlay = styled.div<{ pageMode: boolean }>`
   z-index: 10000;
 `;
 
-const ModalContent = styled.div<{ isClosing: boolean; pageMode: boolean }>`
+const ModalContent = styled.div<{isClosing: boolean; pageMode: boolean}>`
   display: flex;
   flex-direction: column;
-  ${({ pageMode }) => (pageMode ? "" : "justify-content: center")};
+  ${({pageMode}) => (pageMode ? '' : 'justify-content: center')};
 
   align-items: center;
 
-  width: ${({ pageMode }) => (pageMode ? "100%" : "90%")};
-  height: ${({ pageMode }) => (pageMode ? "100%" : "90%")};
+  width: ${({pageMode}) => (pageMode ? '100%' : '90%')};
+  height: ${({pageMode}) => (pageMode ? '100%' : '90%')};
   background-color: var(--ect-white);
   border-radius: 10px;
 
   gap: 15px;
   padding: 25px 20px;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s
-    ease-in-out;
+  animation: ${({isClosing}) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
 `;
 
 const TabNavBar = styled.div`
@@ -190,18 +177,16 @@ const TabNavBar = styled.div`
   padding: 4px 7px;
 `;
 
-const NavButton = styled.button.attrs<{ isActive: boolean }>(
-  ({ isActive }) => ({
-    className: isActive ? "Podo-Ticket-Headline-H6" : "Podo-Ticket-Body-B9",
-  })
-)<{ isActive: boolean }>`
+const NavButton = styled.button.attrs<{isActive: boolean}>(({isActive}) => ({
+  className: isActive ? 'Podo-Ticket-Headline-H6' : 'Podo-Ticket-Body-B9',
+}))<{isActive: boolean}>`
   display: flex;
   justify-content: center;
   align-items: center;
 
   width: calc(100% / 3);
   background-color: transparent;
-  color: ${({ isActive }) => (isActive ? "var(--purple-4)" : "var(--grey-5)")};
+  color: ${({isActive}) => (isActive ? 'var(--purple-4)' : 'var(--grey-5)')};
   border: none;
   border-radius: 30px;
 
@@ -212,7 +197,7 @@ const NavButton = styled.button.attrs<{ isActive: boolean }>(
   transition: background-color 0.3s ease-in-out;
 `;
 
-const HighlightBox = styled.div<{ activeTab: string }>`
+const HighlightBox = styled.div<{activeTab: string}>`
   position: absolute;
   bottom: 4px;
 
@@ -223,16 +208,16 @@ const HighlightBox = styled.div<{ activeTab: string }>`
   border: 1px solid var(--purple-7);
   border-radius: 30px;
 
-  transform: ${({ activeTab }) => {
+  transform: ${({activeTab}) => {
     switch (activeTab) {
-      case "1":
-        return "translateX(0%)"; // 첫 번째 탭
-      case "2":
-        return "translateX(calc(100% + 7px))"; // 두 번째 탭 (gap 포함)
-      case "3":
-        return "translateX(calc(200% + 16px))"; // 세 번째 탭 (gap 포함)
+      case '1':
+        return 'translateX(0%)'; // 첫 번째 탭
+      case '2':
+        return 'translateX(calc(100% + 7px))'; // 두 번째 탭 (gap 포함)
+      case '3':
+        return 'translateX(calc(200% + 16px))'; // 세 번째 탭 (gap 포함)
       default:
-        return "translateX(0%)";
+        return 'translateX(0%)';
     }
   }};
 
@@ -280,7 +265,7 @@ const VenueMapDescription = styled.div`
 `;
 
 const PerformanceDescription = styled.div.attrs({
-  className: "Podo-Ticket-Body-B8",
+  className: 'Podo-Ticket-Body-B8',
 })`
   display: flex;
   flex-direction: column;

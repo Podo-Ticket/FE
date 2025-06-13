@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import styled from 'styled-components';
 
-import checkIcon from "@assets/images/check_reserve_icon.png";
-import reserveIcon from "@assets/images/reserve_icon.png";
+import checkIcon from '@assets/images/check_reserve_icon.png';
+import reserveIcon from '@assets/images/reserve_icon.png';
 
-import {
-  fadeIn,
-  fadeOut,
-} from "../../../../styles/animation/DefaultAnimation.ts";
+import {fadeIn, fadeOut} from '../../../../styles/animation/DefaultAnimation.ts';
 
 interface ReservationCheckModalProps {
   showChoiceModal: boolean;
@@ -36,7 +33,7 @@ const ReservationCheckModal: React.FC<ReservationCheckModalProps> = ({
   // 다른 곳 클릭했을 때 모달 닫아지는 함수
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     // 이벤트가 ModalContent 내부에서 발생했는지 확인
-    if ((e.target as HTMLElement).closest(".modal-content")) {
+    if ((e.target as HTMLElement).closest('.modal-content')) {
       return; // ModalContent 내부 클릭 시 아무 작업도 하지 않음
     }
     handleFadeOutAnimation;
@@ -44,7 +41,7 @@ const ReservationCheckModal: React.FC<ReservationCheckModalProps> = ({
 
   return (
     <ModalOverlay onClick={handleOverlayClick}>
-      <ModalContent isClosing={isClosing} className="modal-content">
+      <ModalContent isClosing={isClosing} className='modal-content'>
         <ButtonContainer>
           <GetTicketButton
             onClick={() => {
@@ -52,22 +49,18 @@ const ReservationCheckModal: React.FC<ReservationCheckModalProps> = ({
               closeChoiceModal();
             }}
           >
-            <GetTicketIcon src={checkIcon} alt="Check Reservation Icon" />
-            <p className="Podo-Ticket-Headline-H2">티켓 발권</p>
-            <span className="Podo-Ticket-Body-B5">
-              사전에 예매한 티켓을 발권받을 수 있어요!
-            </span>
+            <GetTicketIcon src={checkIcon} alt='Check Reservation Icon' />
+            <p className='Podo-Ticket-Headline-H2'>티켓 발권</p>
+            <span className='Podo-Ticket-Body-B5'>사전에 예매한 티켓을 발권받을 수 있어요!</span>
           </GetTicketButton>
           <ReserveTicketButton
             onClick={() => {
               handleFadeOutAnimation();
             }}
           >
-            <ReserveTicketIcon src={reserveIcon} alt="Reserve Icon" />
-            <p className="Podo-Ticket-Headline-H2">현장 예매</p>
-            <span className="Podo-Ticket-Body-B5">
-              티켓을 새로 예매할 수 있어요!
-            </span>
+            <ReserveTicketIcon src={reserveIcon} alt='Reserve Icon' />
+            <p className='Podo-Ticket-Headline-H2'>현장 예매</p>
+            <span className='Podo-Ticket-Body-B5'>티켓을 새로 예매할 수 있어요!</span>
           </ReserveTicketButton>
         </ButtonContainer>
       </ModalContent>
@@ -93,7 +86,7 @@ const ModalOverlay = styled.div`
   z-index: 100;
 `;
 
-const ModalContent = styled.div<{ isClosing: boolean }>`
+const ModalContent = styled.div<{isClosing: boolean}>`
   width: 90%;
   background: var(--ect-white);
   border-radius: 10px;
@@ -102,8 +95,7 @@ const ModalContent = styled.div<{ isClosing: boolean }>`
 
   text-align: center;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s
-    ease-in-out;
+  animation: ${({isClosing}) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
 `;
 
 const ButtonContainer = styled.div`

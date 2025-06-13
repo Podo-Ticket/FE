@@ -1,58 +1,58 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import socket from "../../api/socket";
+import {useEffect, useState} from 'react';
+import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
+import socket from '../../api/socket';
 
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {useForm, Controller} from 'react-hook-form';
+import {z} from 'zod';
+import {zodResolver} from '@hookform/resolvers/zod';
 
-import TopNav from "@components/layout/headers/TopNav";
-import DefaultInput from "@components/common/inputs/DefaultInput";
-import LargeBtn from "@components/common/buttons/LargeBtn";
-import ErrorModal from "@components/common/errors/DefaultErrorModal";
-import Loading from "@components/common/loadings/Loading.tsx";
-import NoticeModal from "@components/common/modals/NoticeModal.tsx";
-import PrivacyPolicyModal from "@components/common/modals/TextModal.tsx";
+import TopNav from '@components/layout/headers/TopNav';
+import DefaultInput from '@components/common/inputs/DefaultInput';
+import LargeBtn from '@components/common/buttons/LargeBtn';
+import ErrorModal from '@components/common/errors/DefaultErrorModal';
+import Loading from '@components/common/loadings/Loading.tsx';
+import NoticeModal from '@components/common/modals/NoticeModal.tsx';
+import PrivacyPolicyModal from '@components/common/modals/TextModal.tsx';
 
-import goBackIcon from "../../assets/images/left_arrow.png";
+import goBackIcon from '../../assets/images/left_arrow.png';
 
-import { Language } from "../../constants/text/Language.ts";
+import {Language} from '../../constants/text/Language.ts';
 
-import { DateUtil } from "../../utils/DateUtil";
-import { fadeIn } from "../../styles/animation/DefaultAnimation.ts";
+import {DateUtil} from '../../utils/DateUtil';
+import {fadeIn} from '../../styles/animation/DefaultAnimation.ts';
 import {
   fetchPerformanceSchedules,
   submitReservation,
   ReservationRequest,
-} from "../../api/user/OnSiteReserveApi";
+} from '../../api/user/OnSiteReserveApi';
 import {
   ONSITE_RESERVE,
   PERSONAL_INFORMATION_AGREE_CONTENT,
   MODAL,
-} from "@/constants/text/UIText.ts";
+} from '@/constants/text/UIText.ts';
 
 const reservationSchema = z.object({
-  name: z.string().min(1, "이름을 입력해주세요."),
+  name: z.string().min(1, '이름을 입력해주세요.'),
   phoneNumber: z
     .string()
-    .regex(/^\d{3}-\d{3,4}-\d{4}$/, "올바른 전화번호 형식이 아닙니다.")
-    .min(1, "전화번호를 입력해주세요."),
+    .regex(/^\d{3}-\d{3,4}-\d{4}$/, '올바른 전화번호 형식이 아닙니다.')
+    .min(1, '전화번호를 입력해주세요.'),
   headCount: z
     .number()
-    .min(1, "최소 1명 이상의 인원을 입력해주세요.")
-    .max(16, "최대 10명까지 예매 가능합니다."),
-  scheduleId: z.number().min(1, "공연 회차를 선택해주세요."),
+    .min(1, '최소 1명 이상의 인원을 입력해주세요.')
+    .max(16, '최대 10명까지 예매 가능합니다.'),
+  scheduleId: z.number().min(1, '공연 회차를 선택해주세요.'),
 });
 
 type ReservationFormData = z.infer<typeof reservationSchema>;
 
 function OnSiteReserve() {
   const navigate = useNavigate();
-  const language = localStorage.getItem("language") as Language;
+  const language = localStorage.getItem('language') as Language;
 
   const [performanceSchedules, setPerformanceSchedules] = useState<
-    Array<{ id: number; date_time: string; free_seats: number }>
+    Array<{id: number; date_time: string; free_seats: number}>
   >([]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -61,23 +61,21 @@ function OnSiteReserve() {
   const closePrivacyModal = () => setShowPrivacyModal(false);
 
   const [isRejectedModalOpen, setIsRejectedModalOpen] = useState(false);
-  const [isDuplicatePhoneModalOpen, setIsDuplicatePhoneModalOpen] =
-    useState(false);
-  const [isMaximumPersonModalOpen, setIsMaximumPersonModalOpen] =
-    useState(false);
+  const [isDuplicatePhoneModalOpen, setIsDuplicatePhoneModalOpen] = useState(false);
+  const [isMaximumPersonModalOpen, setIsMaximumPersonModalOpen] = useState(false);
 
   const [value, setValue] = useState<number>(0);
 
   const {
     control,
     handleSubmit,
-    formState: { isDirty, isValid },
+    formState: {isDirty, isValid},
   } = useForm<ReservationFormData>({
     resolver: zodResolver(reservationSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      name: "",
-      phoneNumber: "",
+      name: '',
+      phoneNumber: '',
       headCount: 0,
       scheduleId: 0,
     },
@@ -94,14 +92,10 @@ function OnSiteReserve() {
   }, []);
 
   useEffect(() => {
-    const storedScheduleId = localStorage.getItem("scheduleId");
+    const storedScheduleId = localStorage.getItem('scheduleId');
     if (storedScheduleId) {
       setValue(Number(storedScheduleId));
-      console.log(storedScheduleId, "andand", value);
     }
-
-    console.log(performanceSchedules);
-    console.log(performanceSchedules);
   }, [setValue]);
 
   const handleReservationSubmit = async (data: ReservationRequest) => {
@@ -109,111 +103,88 @@ function OnSiteReserve() {
       // 예매 신청 API 호출
       const response = await submitReservation(data);
 
-      console.log("response: ", response);
-
       if (response.success) {
-        console.log("Reservation request sent successfully.");
-        console.log("current user id: ", response.userId);
         setIsLoading(true); // 로딩 상태 활성화
 
         const userId = response.userId; // 예매 신청한 사용자 ID
 
         socket.off(`user:${userId}`);
-        socket.off("error");
-        socket.off("disconnect");
+        socket.off('error');
+        socket.off('disconnect');
 
-        socket.on(`user:${userId}`, (messageData: { type: string }) => {
-          console.log(`Message received for user ${userId}:`, messageData);
-
-          if (messageData.type === "approval") {
-            console.log("Reservation approved");
-            localStorage.setItem("scheduleId", data.scheduleId.toString());
+        socket.on(`user:${userId}`, (messageData: {type: string}) => {
+          if (messageData.type === 'approval') {
+            localStorage.setItem('scheduleId', data.scheduleId.toString());
             setIsLoading(false);
-            navigate("/select"); // 성공 시 이동
-          } else if (messageData.type === "reject") {
-            console.log("Reservation rejected");
+            navigate('/select'); // 성공 시 이동
+          } else if (messageData.type === 'reject') {
             setIsLoading(false);
             setIsRejectedModalOpen(true);
           } else {
-            console.warn("Unknown message type:", messageData.type);
           }
         });
 
-        socket.on("error", (error: any) => {
-          console.error("WebSocket error occurred:", error);
+        socket.on('error', () => {
           setIsLoading(false);
         });
 
-        socket.on("disconnect", () => {
-          console.log("WebSocket connection closed");
+        socket.on('disconnect', () => {
           setIsLoading(false);
         });
-
-        console.log("Waiting for approval...");
       } else {
         setIsLoading(false);
-        if (response.error === "이미 예약되었습니다.") {
+        if (response.error === '이미 예약되었습니다.') {
           setIsDuplicatePhoneModalOpen(true);
-        } else if (response.error === "예약 가능 인원을 초과하였습니다.") {
+        } else if (response.error === '예약 가능 인원을 초과하였습니다.') {
           setIsMaximumPersonModalOpen(true);
         }
       }
     } catch (error) {
-      console.error("Error during reservation submission:", error);
       setIsLoading(false);
     }
   };
 
   const navTitle =
-    language === "english"
-      ? ONSITE_RESERVE.english.pageTitle
-      : ONSITE_RESERVE.korean.pageTitle;
+    language === 'english' ? ONSITE_RESERVE.english.pageTitle : ONSITE_RESERVE.korean.pageTitle;
   const lefter = {
     icon: goBackIcon,
     iconWidth: 13,
     iconHeight: 20,
     text: navTitle,
-    clickFunc: () => navigate("/"),
+    clickFunc: () => navigate('/'),
   };
 
-  const filteredSchedules = performanceSchedules.filter(
-    (schedule) => schedule.id === value
-  );
+  const filteredSchedules = performanceSchedules.filter(schedule => schedule.id === value);
 
   return (
     <OnSiteReserveContainer>
-      <TopNav
-        lefter={lefter}
-        center={lefter}
-        righter={undefined}
-        isUnderlined={true}
-      />
+      <TopNav lefter={lefter} center={lefter} righter={undefined} isUnderlined={true} />
 
       <InputContainer>
         <Controller
-          name="name"
+          name='name'
           control={control}
-          render={({ field }) => (
+          render={({field}) => (
             <DefaultInput
               category={
-                language === "english"
+                language === 'english'
                   ? ONSITE_RESERVE.english.firstInputName
                   : ONSITE_RESERVE.korean.firstInputName
               }
               placeholder={
-                language === "english"
+                language === 'english'
                   ? ONSITE_RESERVE.english.firstInputPlaceholder
                   : ONSITE_RESERVE.korean.firstInputPlaceholder
               }
               value={field.value}
-              onChangeFunc={(e) => {
+              onChangeFunc={e => {
                 const input = e.target.value;
 
                 // 1. 20자 초과 제한
                 if (input.length > 20) return;
 
                 // 2. 공백만 있는 경우 입력 반영 안 함
-                if (input.trim().length === 0 && input !== "") return;
+                if (input.trim().length === 0 && input !== '') return;
 
                 field.onChange(input);
               }}
@@ -222,27 +193,27 @@ function OnSiteReserve() {
         />
 
         <Controller
-          name="phoneNumber"
+          name='phoneNumber'
           control={control}
-          render={({ field }) => (
+          render={({field}) => (
             <DefaultInput
               category={
-                language === "english"
+                language === 'english'
                   ? ONSITE_RESERVE.english.secondInputName
                   : ONSITE_RESERVE.korean.secondInputName
               }
               placeholder={
-                language === "english"
+                language === 'english'
                   ? ONSITE_RESERVE.english.secondInputPlaceholder
                   : ONSITE_RESERVE.korean.secondInputPlaceholder
               }
               value={field.value}
-              onChangeFunc={(e) => {
-                const rawValue = e.target.value.replace(/[^0-9]/g, "");
+              onChangeFunc={e => {
+                const rawValue = e.target.value.replace(/[^0-9]/g, '');
                 const formattedValue = rawValue
                   .slice(0, 11)
                   .replace(/(\d{3})(\d{3,4})?(\d{4})?/, (_, p1, p2, p3) =>
-                    [p1, p2, p3].filter(Boolean).join("-")
+                    [p1, p2, p3].filter(Boolean).join('-'),
                   );
                 field.onChange(formattedValue);
               }}
@@ -251,54 +222,54 @@ function OnSiteReserve() {
         />
 
         <Controller
-          name="headCount"
+          name='headCount'
           control={control}
-          render={({ field }) => (
+          render={({field}) => (
             <DefaultInput
               category={
-                language === "english"
+                language === 'english'
                   ? ONSITE_RESERVE.english.thirdInputName
                   : ONSITE_RESERVE.korean.thirdInputName
               }
               placeholder={
-                language === "english"
+                language === 'english'
                   ? ONSITE_RESERVE.english.thirdInputPlaceholder
                   : ONSITE_RESERVE.korean.thirdInputPlaceholder
               }
               isSelect={true}
               isNumberSelect={true}
               value={field.value.toString()}
-              onChangeFunc={(e) => field.onChange(Number(e.target.value))}
+              onChangeFunc={e => field.onChange(Number(e.target.value))}
             />
           )}
         />
 
         <Controller
-          name="scheduleId"
+          name='scheduleId'
           control={control}
-          render={({ field }) => (
+          render={({field}) => (
             <DefaultInput
               category={
-                language === "english"
+                language === 'english'
                   ? ONSITE_RESERVE.english.fourthInputName
                   : ONSITE_RESERVE.korean.fourthInputName
               }
               placeholder={
-                language === "english"
+                language === 'english'
                   ? ONSITE_RESERVE.english.fouthInputPlaceholder
                   : ONSITE_RESERVE.korean.fouthInputPlaceholder
               }
               isSelect={true}
-              options={filteredSchedules.map((schedule) => ({
+              options={filteredSchedules.map(schedule => ({
                 value: schedule.id,
                 label: `${DateUtil.formatDate(schedule.date_time, language)} [${
-                  language === "english"
+                  language === 'english'
                     ? ONSITE_RESERVE.english.availableSeats
                     : ONSITE_RESERVE.korean.availableSeats
                 }: ${schedule.free_seats}]`,
               }))}
               value={field.value.toString()}
-              onChangeFunc={(e) => field.onChange(Number(e.target.value))}
+              onChangeFunc={e => field.onChange(Number(e.target.value))}
             />
           )}
         />
@@ -307,7 +278,7 @@ function OnSiteReserve() {
       <ButtonContainer>
         <LargeBtn
           content={
-            language === "english"
+            language === 'english'
               ? ONSITE_RESERVE.english.submitBtn
               : ONSITE_RESERVE.korean.submitBtn
           }
@@ -322,12 +293,12 @@ function OnSiteReserve() {
         showTextModal={showPrivacyModal}
         onAcceptFunc={closePrivacyModal}
         title={
-          language === "english"
+          language === 'english'
             ? ONSITE_RESERVE.english.personalDataModalTitle
             : ONSITE_RESERVE.korean.peronalDataModalAccept
         }
         description={
-          language === "english"
+          language === 'english'
             ? PERSONAL_INFORMATION_AGREE_CONTENT.english.detail
             : PERSONAL_INFORMATION_AGREE_CONTENT.korean.detail
         }
@@ -337,7 +308,7 @@ function OnSiteReserve() {
       <ErrorModal
         showDefaultErrorModal={isDuplicatePhoneModalOpen}
         errorMessage={
-          language === "english"
+          language === 'english'
             ? ONSITE_RESERVE.english.alreadyReservedContactMessage
             : ONSITE_RESERVE.korean.alreadyReservedContactMessage
         }
@@ -348,7 +319,7 @@ function OnSiteReserve() {
       <ErrorModal
         showDefaultErrorModal={isMaximumPersonModalOpen}
         errorMessage={
-          language === "english"
+          language === 'english'
             ? ONSITE_RESERVE.english.reservationLimitExceeded
             : ONSITE_RESERVE.korean.reservationLimitExceeded
         }
@@ -359,18 +330,16 @@ function OnSiteReserve() {
       <NoticeModal
         showNoticeModal={isRejectedModalOpen}
         title={
-          language === "english"
+          language === 'english'
             ? ONSITE_RESERVE.english.failedModalTitle
             : ONSITE_RESERVE.korean.failedModalTitle
         }
         description={
-          language === "english"
+          language === 'english'
             ? ONSITE_RESERVE.english.failedModalSubtitle
             : ONSITE_RESERVE.korean.failedModalSubtitle
         }
-        buttonContent={
-          language === "english" ? MODAL.english.ok : MODAL.korean.ok
-        }
+        buttonContent={language === 'english' ? MODAL.english.ok : MODAL.korean.ok}
         onAcceptFunc={() => setIsRejectedModalOpen(false)}
       />
     </OnSiteReserveContainer>

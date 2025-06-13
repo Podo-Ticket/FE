@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import nameImage from "@assets/images/admin/grey_person.png";
-import phoneImage from "@assets/images/admin/grey_home_phone.png";
-import headCountImage from "@assets/images/admin/grey_sofa.png";
+import nameImage from '@assets/images/admin/grey_person.png';
+import phoneImage from '@assets/images/admin/grey_home_phone.png';
+import headCountImage from '@assets/images/admin/grey_sofa.png';
 
 interface AudienceInfoProps {
   name?: string;
@@ -11,11 +11,7 @@ interface AudienceInfoProps {
   headCount?: number;
 }
 
-const AudienceInfo: React.FC<AudienceInfoProps> = ({
-  name,
-  phoneNumber,
-  headCount,
-}) => {
+const AudienceInfo: React.FC<AudienceInfoProps> = ({name, phoneNumber, headCount}) => {
   return (
     <AudienceInfoContainer>
       <AudienceInfoItem>
@@ -79,13 +75,13 @@ const AudienceInfoIcon = styled.img`
 `;
 
 const AudienceInfoCategory = styled.div.attrs({
-  className: "Podo-Ticket-Body-B11",
+  className: 'Podo-Ticket-Body-B11',
 })`
   color: var(--grey-7);
 `;
 
 const AudienceInfoDescription = styled.div.attrs({
-  className: "Podo-Ticket-Body-B12",
+  className: 'Podo-Ticket-Body-B12',
 })`
   color: var(--purple-4);
 `;

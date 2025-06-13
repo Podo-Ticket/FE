@@ -1,27 +1,21 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, {useState} from 'react';
+import styled from 'styled-components';
 
-import BackBtn from "@components/common/buttons/SmallBtn";
-import NextBtn from "@components/common/buttons/SmallBtn";
-import PrivacyPolicyModal from "@components/common/modals/TextModal";
-import Loading from "@components/common/loadings/Loading.tsx";
+import BackBtn from '@components/common/buttons/SmallBtn';
+import NextBtn from '@components/common/buttons/SmallBtn';
+import PrivacyPolicyModal from '@components/common/modals/TextModal';
+import Loading from '@components/common/loadings/Loading.tsx';
 
-import ErrorModal from "@components/common/errors/DefaultErrorModal.tsx";
-import NoticeModal from "@components/common/modals/NoticeModal";
+import ErrorModal from '@components/common/errors/DefaultErrorModal.tsx';
+import NoticeModal from '@components/common/modals/NoticeModal';
 
-import CheckedIcon from "@assets/images/privacy_checked.png";
-import UncheckedIcon from "@assets/images/privacy_unchecked.png";
+import CheckedIcon from '@assets/images/privacy_checked.png';
+import UncheckedIcon from '@assets/images/privacy_unchecked.png';
 
-import {
-  USER_HOME,
-  PERSONAL_INFORMATION_AGREE_CONTENT,
-} from "@/constants/text/UIText.ts";
-import { useNavigateTo } from "../../../../utils/NavigateUtil.ts";
-import { checkPhoneNumber } from "../../../../api/user/UserHomeApi";
-import {
-  fadeIn,
-  fadeOut,
-} from "../../../../styles/animation/DefaultAnimation.ts";
+import {USER_HOME, PERSONAL_INFORMATION_AGREE_CONTENT} from '@/constants/text/UIText.ts';
+import {useNavigateTo} from '../../../../utils/NavigateUtil.ts';
+import {checkPhoneNumber} from '../../../../api/user/UserHomeApi';
+import {fadeIn, fadeOut} from '../../../../styles/animation/DefaultAnimation.ts';
 
 interface PhoneAuthModalProps {
   showPhoneModal: boolean; // 버튼 동작 여부
@@ -38,21 +32,20 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
 }) => {
   const navigateTo = useNavigateTo();
 
-  const language = localStorage.getItem("language");
+  const language = localStorage.getItem('language');
 
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState('');
 
   const [isClosing, setIsClosing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   const [isChecked, setIsChecked] = useState(false);
   const handleCheckboxChange = () => {
-    setIsChecked((prevChecked) => !prevChecked);
+    setIsChecked(prevChecked => !prevChecked);
   };
   const handleCheckboxClick = () => {
-    setIsChecked((prevChecked) => !prevChecked);
+    setIsChecked(prevChecked => !prevChecked);
   };
 
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
@@ -64,12 +57,9 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
   const openInvalidPhoneError = () => setInvalidPhoneError(true);
   const closeInvalidPhoneError = () => setInvalidPhoneError(false);
 
-  const [waitingForReservationError, setWaitingForReservationError] =
-    useState(false);
-  const openWaitingForReservationError = () =>
-    setWaitingForReservationError(true);
-  const closeWaitingForReservationError = () =>
-    setWaitingForReservationError(false);
+  const [waitingForReservationError, setWaitingForReservationError] = useState(false);
+  const openWaitingForReservationError = () => setWaitingForReservationError(true);
+  const closeWaitingForReservationError = () => setWaitingForReservationError(false);
 
   if (!showPhoneModal) return null;
 
@@ -82,18 +72,18 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
   };
 
   const handlePhoneChange = (e: any) => {
-    const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 남기기
-    let formattedValue = "";
+    const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 남기기
+    let formattedValue = '';
 
     // 전화번호 형식에 맞게 하이픈 추가
     if (value.length > 0) {
       formattedValue += value.slice(0, 3);
     }
     if (value.length > 3) {
-      formattedValue += "-" + value.slice(3, 7);
+      formattedValue += '-' + value.slice(3, 7);
     }
     if (value.length > 7) {
-      formattedValue += "-" + value.slice(7, 11);
+      formattedValue += '-' + value.slice(7, 11);
     }
 
     setPhone(formattedValue);
@@ -115,13 +105,13 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
       await delay(500);
       const result = await checkPhoneNumber(phone, scheduleId);
 
-      if (localStorage.getItem("isForceLogout") === "true") {
-        navigateTo("/confirm");
-      } else if (result.data === "예매 내역 확인 불가") {
+      if (localStorage.getItem('isForceLogout') === 'true') {
+        navigateTo('/confirm');
+      } else if (result.data === '예매 내역 확인 불가') {
         setShowNoticeModal(true);
-      } else if (result.data === "이미 발권한 사용자") {
-        navigateTo("/ticket"); // 티켓 페이지로 이동
-      } else if (result.data === "현장 예매 수락 대기 중") {
+      } else if (result.data === '이미 발권한 사용자') {
+        navigateTo('/ticket'); // 티켓 페이지로 이동
+      } else if (result.data === '현장 예매 수락 대기 중') {
         openWaitingForReservationError();
       } else {
         onAcceptFunc();
@@ -137,17 +127,17 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
     <ModalOverlay>
       <ModalContent isClosing={isClosing}>
         <ModalTopContainer>
-          <HeadText className="Podo-Ticket-Headline-H2">
-            {language === "english"
+          <HeadText className='Podo-Ticket-Headline-H2'>
+            {language === 'english'
               ? USER_HOME.english.authModalTitle
               : USER_HOME.korean.authModalTitle}
           </HeadText>
 
           <PhoneInput
-            className="Podo-Ticket-Body-B1"
-            type="text"
+            className='Podo-Ticket-Body-B1'
+            type='text'
             placeholder={
-              language === "english"
+              language === 'english'
                 ? USER_HOME.english.authInputPlaceholder
                 : USER_HOME.korean.authInputPlaceholder
             }
@@ -155,32 +145,23 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
             onChange={handlePhoneChange}
           />
 
-          <AgreementContainer className="Podo-Ticket-Body-B5">
+          <AgreementContainer className='Podo-Ticket-Body-B5'>
             <AgreementText isChecked={isChecked}>
-              <HiddenCheckbox
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-              />
-              <CustomCheckbox
-                checked={isChecked}
-                onClick={handleCheckboxClick}
-              ></CustomCheckbox>
-              <span
-                onClick={handleCheckboxClick}
-                className="Podo-Ticket-Body-B5"
-              >
-                {language === "english"
+              <HiddenCheckbox checked={isChecked} onChange={handleCheckboxChange} />
+              <CustomCheckbox checked={isChecked} onClick={handleCheckboxClick}></CustomCheckbox>
+              <span onClick={handleCheckboxClick} className='Podo-Ticket-Body-B5'>
+                {language === 'english'
                   ? USER_HOME.english.authCheckbox
                   : USER_HOME.korean.authCheckbox}
               </span>
             </AgreementText>
 
             <AgreementModalLink
-              href="#"
-              className="Podo-Ticket-Body-B10"
+              href='#'
+              className='Podo-Ticket-Body-B10'
               onClick={openPrivacyModal}
             >
-              {language === "english"
+              {language === 'english'
                 ? USER_HOME.english.authShowMore
                 : USER_HOME.korean.authShowMore}
             </AgreementModalLink>
@@ -190,7 +171,7 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
         <PhoneModalBtns>
           <BackBtn
             content={
-              language === "english"
+              language === 'english'
                 ? USER_HOME.english.authModalCancel
                 : USER_HOME.korean.authModalCancel
             }
@@ -200,7 +181,7 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
           />
           <NextBtn
             content={
-              language === "english"
+              language === 'english'
                 ? USER_HOME.english.authModalAccept
                 : USER_HOME.korean.authModalAccept
             }
@@ -214,12 +195,12 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
         showTextModal={showPrivacyModal}
         onAcceptFunc={closePrivacyModal}
         title={
-          language === "english"
+          language === 'english'
             ? USER_HOME.english.personalDataModalTitle
             : USER_HOME.korean.personalDataModalTitle
         }
         description={
-          language === "english"
+          language === 'english'
             ? PERSONAL_INFORMATION_AGREE_CONTENT.english.detail
             : PERSONAL_INFORMATION_AGREE_CONTENT.korean.detail
         }
@@ -230,36 +211,36 @@ const PhoneAuthModal: React.FC<PhoneAuthModalProps> = ({
       <NoticeModal
         showNoticeModal={showNoticeModal}
         title={
-          language === "english"
+          language === 'english'
             ? USER_HOME.english.noReserveDataModalTitle
             : USER_HOME.korean.noReserveDataModalTitle
         }
         description={
-          language === "english"
+          language === 'english'
             ? USER_HOME.english.noReserveDataModalSubtitle
             : USER_HOME.korean.noReserveDataModalSubtitle
         }
         buttonContent={
-          language === "english"
+          language === 'english'
             ? USER_HOME.english.noReserveDataModalAccept
             : USER_HOME.korean.noReserveDataModalAccept
         }
         onAcceptFunc={() => {
           setShowNoticeModal(false);
-          navigateTo("/reserve");
+          navigateTo('/reserve');
         }}
       />
 
       <ErrorModal
         showDefaultErrorModal={invalidPhoneError}
-        errorMessage="예매내역을 확인할 수 없습니다."
+        errorMessage='예매내역을 확인할 수 없습니다.'
         onAcceptFunc={closeInvalidPhoneError}
         OnTopSide={true}
       />
 
       <ErrorModal
         showDefaultErrorModal={waitingForReservationError}
-        errorMessage="현장 예매 수락 대기 중 입니다."
+        errorMessage='현장 예매 수락 대기 중 입니다.'
         onAcceptFunc={closeWaitingForReservationError}
         OnTopSide={true}
       />
@@ -283,7 +264,7 @@ const ModalOverlay = styled.div`
   z-index: 100;
 `;
 
-const ModalContent = styled.div<{ isClosing: boolean }>`
+const ModalContent = styled.div<{isClosing: boolean}>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -300,8 +281,7 @@ const ModalContent = styled.div<{ isClosing: boolean }>`
 
   text-align: center;
 
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.4s
-    ease-in-out;
+  animation: ${({isClosing}) => (isClosing ? fadeOut : fadeIn)} 0.4s ease-in-out;
 `;
 
 const ModalTopContainer = styled.div`
@@ -347,23 +327,21 @@ const AgreementContainer = styled.div`
   gap: 6px;
 `;
 
-const AgreementText = styled.span<{ isChecked: boolean }>`
+const AgreementText = styled.span<{isChecked: boolean}>`
   display: flex;
   align-items: center;
-  color: ${({ isChecked }) =>
-    isChecked ? "var(--purple-5)" : "var(--grey-6)"};
+  color: ${({isChecked}) => (isChecked ? 'var(--purple-5)' : 'var(--grey-6)')};
 `;
 
-const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
+const HiddenCheckbox = styled.input.attrs({type: 'checkbox'})`
   display: none;
 `;
 
-const CustomCheckbox = styled.div<{ checked: boolean }>`
+const CustomCheckbox = styled.div<{checked: boolean}>`
   width: 14px;
   height: 14px;
   margin-right: 3px;
-  background-image: ${(props) =>
-    props.checked ? `url(${CheckedIcon})` : `url(${UncheckedIcon})`};
+  background-image: ${props => (props.checked ? `url(${CheckedIcon})` : `url(${UncheckedIcon})`)};
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;

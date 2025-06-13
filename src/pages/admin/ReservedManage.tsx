@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
 
-import FooterNav from "@components/layout/footers/FooterNav.tsx";
-import PlaySessionPicker from "@components/layout/headers/PlaySessionPicker.tsx";
-import SearchFilterBar from "@components/layout/headers/SearchFilterBar.tsx";
-import CustomerListItem from "@components/common/informations/CustomerListItem.tsx";
-import TopNav from "@components/layout/headers/TopNav.tsx";
+import FooterNav from '@components/layout/footers/FooterNav.tsx';
+import PlaySessionPicker from '@components/layout/headers/PlaySessionPicker.tsx';
+import SearchFilterBar from '@components/layout/headers/SearchFilterBar.tsx';
+import CustomerListItem from '@components/common/informations/CustomerListItem.tsx';
+import TopNav from '@components/layout/headers/TopNav.tsx';
 
-import insertCustomer from "@assets/icons/ic_plus_user.svg";
+import insertCustomer from '@assets/icons/ic_plus_user.svg';
 
-import { fadeIn } from "../../styles/animation/DefaultAnimation.ts";
+import {fadeIn} from '../../styles/animation/DefaultAnimation.ts';
 import {
   User,
   fetchReservedUserList,
   Schedule,
   fetchSchedules,
-} from "../../api/admin/ReservedManageApi.ts";
+} from '../../api/admin/ReservedManageApi.ts';
 
 const ReservedManage = () => {
   const navigate = useNavigate();
 
   const [isRefreshed] = useState<boolean>(false);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
-  const [selectedSession, setSelectedSession] = useState<string>("");
+  const [selectedSession, setSelectedSession] = useState<string>('');
   const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
     setSelectedSession(event.target.value);
   useEffect(() => {
@@ -34,7 +34,7 @@ const ReservedManage = () => {
         setSchedules(data);
 
         // 로컬스토리지에서 currentScheduleId 가져오기
-        const currentScheduleId = localStorage.getItem("currentScheduleId");
+        const currentScheduleId = localStorage.getItem('currentScheduleId');
 
         if (currentScheduleId) {
           // 로컬스토리지에 저장된 ID가 유효한 경우
@@ -43,42 +43,36 @@ const ReservedManage = () => {
           // 로컬스토리지가 비어있는 경우 첫 번째 회차 선택
           setSelectedSession(data[0].id.toString());
         }
-      } catch (error) {
-        console.error("Error loading schedules:", error);
-      }
+      } catch (error) {}
     };
 
     loadSchedules();
   }, []);
 
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("전체");
+  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('전체');
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
-  const handleSearchButtonClick = () => setSearch(""); // 검색어 초기화
+  const handleSearchButtonClick = () => setSearch(''); // 검색어 초기화
 
   const handleClearSearch = () => {
-    setSearch("");
+    setSearch('');
   };
   // 예매자 리스트 데이터 가져오기
   const [data, setData] = useState<User[]>([]);
   useEffect(() => {
     if (!selectedSession) return;
 
-    localStorage.setItem("currentScheduleId", selectedSession);
-    console.log("Saved to localStorage:", selectedSession);
+    localStorage.setItem('currentScheduleId', selectedSession);
 
     const loadUserList = async () => {
       try {
         const data = await fetchReservedUserList(selectedSession); // 사용자 리스트 가져오기
 
-        console.log("users: ", data);
         setData(data.users);
-      } catch (error) {
-        console.error("Error loading user list:", error);
-      }
+      } catch (error) {}
     };
 
     loadUserList();
@@ -89,21 +83,21 @@ const ReservedManage = () => {
     icon: insertCustomer,
     iconWidth: 22,
     iconHeight: 19,
-    clickFunc: () => navigate("add"),
+    clickFunc: () => navigate('add'),
   };
 
   const centerItem = {
-    text: "예매 명단 관리",
+    text: '예매 명단 관리',
   };
 
   // 필터에 따라 데이터를 필터링 및 정렬
   const filteredData = data
-    .filter((item) => {
+    .filter(item => {
       // 상태 필터링
-      if (filter === "전체") return true; // 전체일 경우 필터링 없이 다 보여줌
-      return item.state === (filter === "수락 완료"); // '수락 완료'일 경우 true, 미 수락일 경우 false
+      if (filter === '전체') return true; // 전체일 경우 필터링 없이 다 보여줌
+      return item.state === (filter === '수락 완료'); // '수락 완료'일 경우 true, 미 수락일 경우 false
     })
-    .filter((item) => {
+    .filter(item => {
       // 검색 필터링 (이름 또는 전화번호)
       const lowerCaseSearch = search.toLowerCase();
       return (
@@ -128,16 +122,16 @@ const ReservedManage = () => {
 
   // 전체 데이터에서 발권 완료 및 미발권 건수 계산
   const totalCount = data.length;
-  const acceptCount = data.filter((item) => item.state === true).length;
-  const unacceptCount = data.filter((item) => item.state === false).length;
+  const acceptCount = data.filter(item => item.state === true).length;
+  const unacceptCount = data.filter(item => item.state === false).length;
   const handleFilterClick = (newFilter: React.SetStateAction<string>) => {
     setFilter(newFilter);
   };
 
-  const handleListItemlick = (item: { scheduleId: string; id: any }) => {
+  const handleListItemlick = (item: {scheduleId: string; id: any}) => {
     item.scheduleId = selectedSession;
 
-    navigate("/reserved/check", {
+    navigate('/reserved/check', {
       state: {
         scheduleId: selectedSession, // 현재 선택된 공연 회차 ID
         userId: item.id, // 선택한 사용자 ID
@@ -147,12 +141,7 @@ const ReservedManage = () => {
 
   return (
     <ViewContainer>
-      <TopNav
-        lefter={undefined}
-        center={centerItem}
-        righter={rightItem}
-        isUnderlined={true}
-      />
+      <TopNav lefter={undefined} center={centerItem} righter={rightItem} isUnderlined={true} />
 
       <PlaySessionPicker
         schedules={schedules}

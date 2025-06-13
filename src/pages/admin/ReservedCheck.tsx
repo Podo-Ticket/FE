@@ -1,44 +1,36 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import {useEffect, useState} from 'react';
+import {useNavigate, useLocation} from 'react-router-dom';
+import styled from 'styled-components';
 
-import TopNav from "@components/layout/headers/TopNav.tsx";
-import MultipleAcceptModal from "@components/common/modals/DefaultModal";
+import TopNav from '@components/layout/headers/TopNav.tsx';
+import MultipleAcceptModal from '@components/common/modals/DefaultModal';
 
-import leftArrow from "../../assets/images/left_arrow.png";
-import rightArrow from "../../assets/images/admin/lightGrey_rightArrow.png";
-import editIcon from "../../assets/images/admin/mynaui_pencil.png";
+import leftArrow from '../../assets/images/left_arrow.png';
+import rightArrow from '../../assets/images/admin/lightGrey_rightArrow.png';
+import editIcon from '../../assets/images/admin/mynaui_pencil.png';
 
 import {
   fetchReservationInfo,
   ReservationInfo,
   deleteReservation,
-} from "../../api/admin/ReservedManageApi.ts";
+} from '../../api/admin/ReservedManageApi.ts';
 
 export default function ReservedCheck() {
-  const [showMultipleAcceptModal, setShowMultipleAcceptModal] =
-    useState<boolean>(false);
-  const [reservationInfo, setReservationInfo] =
-    useState<ReservationInfo | null>(null);
+  const [showMultipleAcceptModal, setShowMultipleAcceptModal] = useState<boolean>(false);
+  const [reservationInfo, setReservationInfo] = useState<ReservationInfo | null>(null);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { scheduleId, userId } = location.state || {}; // 바로 state에서 추출
+  const {scheduleId, userId} = location.state || {}; // 바로 state에서 추출
 
   useEffect(() => {
     const loadReservationInfo = async () => {
       try {
         if (!scheduleId || !userId) return;
-        const info: any = await fetchReservationInfo(
-          Number(scheduleId),
-          BigInt(userId)
-        );
-        console.log(info.user);
+        const info: any = await fetchReservationInfo(Number(scheduleId), BigInt(userId));
         setReservationInfo(info.user);
-      } catch (error) {
-        console.error("Failed to load reservation info:", error);
-      }
+      } catch (error) {}
     };
     loadReservationInfo();
   }, [scheduleId, userId]);
@@ -46,36 +38,29 @@ export default function ReservedCheck() {
   const handleDelete = async () => {
     try {
       if (!userId) {
-        console.error("userId is missing!");
         return;
       }
       await deleteReservation(BigInt(userId));
       setShowMultipleAcceptModal(false);
-      navigate("/reserved");
-    } catch (error) {
-      console.error("Failed to delete reservation:", error);
-    }
+      navigate('/reserved');
+    } catch (error) {}
   };
 
   const navItem = {
     icon: leftArrow,
     iconWidth: 13,
     iconHeight: 20,
-    text: "예매 명단 확인",
-    clickFunc: () => navigate("/reserved"),
+    text: '예매 명단 확인',
+    clickFunc: () => navigate('/reserved'),
   };
-
-  console.log("Received state:", location.state);
-  console.log("Extracted scheduleId:", scheduleId);
-  console.log("Extracted userId:", userId);
 
   const rightItem = {
     icon: editIcon,
     iconWidth: 24,
     iconHeight: 24,
-    text: "",
+    text: '',
     clickFunc: () =>
-      navigate("/reserved/check/edit", {
+      navigate('/reserved/check/edit', {
         state: {
           userId,
           name: reservationInfo?.name,
@@ -97,10 +82,10 @@ export default function ReservedCheck() {
       <Form>
         <div
           style={{
-            padding: "0 30px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "30px",
+            padding: '0 30px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '30px',
           }}
         >
           <FormContainer>
@@ -125,18 +110,18 @@ export default function ReservedCheck() {
         </div>
         <div>
           <DeleteButton
-            className="Podo-Ticket-Headline-H5"
-            type="button"
+            className='Podo-Ticket-Headline-H5'
+            type='button'
             onClick={() => setShowMultipleAcceptModal(true)}
           >
-            명단 삭제 <img src={rightArrow} style={{ width: "8px" }}></img>
+            명단 삭제 <img src={rightArrow} style={{width: '8px'}}></img>
           </DeleteButton>
         </div>
 
         <MultipleAcceptModal
           showDefaultModal={showMultipleAcceptModal}
-          title={"해당 명단을 삭제하시겠습니까?"}
-          description={"삭제한 명단은 다시 복구 불가합니다."}
+          title={'해당 명단을 삭제하시겠습니까?'}
+          description={'삭제한 명단은 다시 복구 불가합니다.'}
           onAcceptFunc={handleDelete}
           onUnacceptFunc={() => {
             setShowMultipleAcceptModal(false);

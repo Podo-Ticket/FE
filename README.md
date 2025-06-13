@@ -1,6 +1,6 @@
 # **frontend_PodoTicket**
-🍇 **PodoTicket web-applicaton front** 🍇
 
+🍇 **PodoTicket web-applicaton front** 🍇
 
 ## Podo Ticket v1.3.0 Release Description
 

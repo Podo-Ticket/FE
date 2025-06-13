@@ -1,10 +1,8 @@
-import React, { ButtonHTMLAttributes, PropsWithChildren } from "react";
-import styled from "styled-components";
-import goFrontIcon from "@assets/images/lightgrey_right_arrow.png";
+import React, {ButtonHTMLAttributes, PropsWithChildren} from 'react';
+import styled from 'styled-components';
+import goFrontIcon from '@assets/images/lightgrey_right_arrow.png';
 
-interface SmallMoreBtnProps
-  extends PropsWithChildren,
-    ButtonHTMLAttributes<HTMLButtonElement> {
+interface SmallMoreBtnProps extends PropsWithChildren, ButtonHTMLAttributes<HTMLButtonElement> {
   isAvailable: boolean;
   isUnderlined?: boolean;
 }
@@ -13,10 +11,10 @@ const SmallMoreBtn: React.FC<SmallMoreBtnProps> = ({
   children,
   isAvailable,
   isUnderlined = false,
-  className = "",
+  className = '',
   ...props
 }) => {
-  const UnderlinedFont = isUnderlined ? "Podo-Ticket-Body-B10" : "";
+  const UnderlinedFont = isUnderlined ? 'Podo-Ticket-Body-B10' : '';
 
   return (
     <SmallMoreBtnContainer
@@ -25,9 +23,7 @@ const SmallMoreBtn: React.FC<SmallMoreBtnProps> = ({
       {...props}
     >
       <>{children}</>
-      {isUnderlined ? undefined : (
-        <Icon src={goFrontIcon} alt="Go Front Icon" />
-      )}
+      {isUnderlined ? undefined : <Icon src={goFrontIcon} alt='Go Front Icon' />}
     </SmallMoreBtnContainer>
   );
 };

@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
 
-import TopNav from "@components/layout/headers/TopNav";
-import PlaySessionPicker from "@components/layout/headers/PlaySessionPicker";
-import AdminSeatInfo from "@components/common/informations/AdminSeatInfo";
-import AudienceInfo from "@components/pages/admin/realtimeSeats/AudienceInfo";
+import TopNav from '@components/layout/headers/TopNav';
+import PlaySessionPicker from '@components/layout/headers/PlaySessionPicker';
+import AdminSeatInfo from '@components/common/informations/AdminSeatInfo';
+import AudienceInfo from '@components/pages/admin/realtimeSeats/AudienceInfo';
 // import AdminSeatMap from "@components/pages/admin/seatsComponent/AdminSeatMap_Riveract";
 // import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_Kwangwoon';
 import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_SeongbukVillageTheater';
 
-import backIcon from "@assets/images/left_arrow.png";
-import refreshIcon from "@assets/images/refresh2_icon.png";
+import backIcon from '@assets/images/left_arrow.png';
+import refreshIcon from '@assets/images/refresh2_icon.png';
 
-import { Schedule, fetchSchedules } from "../../api/admin/RealtimeSeatsApi";
+import {Schedule, fetchSchedules} from '../../api/admin/RealtimeSeatsApi';
 
 interface IAudienceInfo {
   name: string;
@@ -27,7 +27,7 @@ const RealtimeSeats = () => {
   // 공연 회차 선택 관리
   const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
-  const [selectedSession, setSelectedSession] = useState<string>("");
+  const [selectedSession, setSelectedSession] = useState<string>('');
   // 공연 회차 선택 핸들러
   const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
     setSelectedSession(event.target.value);
@@ -39,7 +39,7 @@ const RealtimeSeats = () => {
         setSchedules(data);
 
         // 로컬스토리지에서 currentScheduleId 가져오기
-        const currentScheduleId = localStorage.getItem("currentScheduleId");
+        const currentScheduleId = localStorage.getItem('currentScheduleId');
 
         if (currentScheduleId) {
           // 로컬스토리지에 저장된 ID가 유효한 경우
@@ -49,7 +49,7 @@ const RealtimeSeats = () => {
           setSelectedSession(data[0].id.toString());
         }
       } catch (error) {
-        console.error("Error loading schedules:", error);
+        console.error('Error loading schedules:', error);
       }
     };
 
@@ -57,9 +57,9 @@ const RealtimeSeats = () => {
   }, []);
   useEffect(() => {
     if (!selectedSession) return;
-    localStorage.setItem("currentScheduleId", selectedSession);
+    localStorage.setItem('currentScheduleId', selectedSession);
   }, [selectedSession]);
-  const triggerRefresh = () => setIsRefreshed((prev) => !prev);
+  const triggerRefresh = () => setIsRefreshed(prev => !prev);
 
   const [audienceInfo, setAudienceInfo] = useState<IAudienceInfo>();
   const [remainingSeats, setRemainingSeats] = useState<number>(0);
@@ -68,7 +68,7 @@ const RealtimeSeats = () => {
     icon: backIcon,
     iconWidth: 9, // 아이콘 너비 (px 단위)
     iconHeight: 16, // 아이콘 높이 (px 단위)
-    text: "실시간 좌석 현황",
+    text: '실시간 좌석 현황',
     clickFunc: () => {
       navigate(-1);
     },
@@ -82,12 +82,7 @@ const RealtimeSeats = () => {
 
   return (
     <ViewContainer>
-      <TopNav
-        lefter={navItem}
-        center={navItem}
-        righter={righter}
-        isGrey={true}
-      />
+      <TopNav lefter={navItem} center={navItem} righter={righter} isGrey={true} />
 
       <SelectSeatsContentContainer>
         <PlaySessionPicker
@@ -104,7 +99,7 @@ const RealtimeSeats = () => {
               phoneNumber={audienceInfo.phoneNumber}
               headCount={audienceInfo.headCount}
             />
-          ) : undefined }
+          ) : undefined}
           <AdminSeatMap
             isRealTime={true}
             manageMode={false}
@@ -114,10 +109,7 @@ const RealtimeSeats = () => {
             setAudienceInfo={setAudienceInfo}
             setRemainingSeats={setRemainingSeats}
           />
-          <AdminSeatInfo
-            isRealTime={true}
-            remainingSeatsCount={remainingSeats}
-          />
+          <AdminSeatInfo isRealTime={true} remainingSeatsCount={remainingSeats} />
         </SeatMapContainer>
       </SelectSeatsContentContainer>
     </ViewContainer>

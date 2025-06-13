@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 // Create an Axios instance with default configurations
@@ -6,7 +6,7 @@ const api = axios.create({
   baseURL: apiUrl, // Use environment variables
   timeout: 10000,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
   withCredentials: true,
 });
@@ -46,13 +46,11 @@ export interface TicketInfo {
 // 좌석 선택 중인 티켓 정보 가져오기 API
 export const fetchTicketingInfo = async (): Promise<TicketInfo> => {
   try {
-    const response = await api.get<TicketingApiResponse>("/seat/ticketing");
-    console.log("response in ticketing api: ", response);
+    const response = await api.get<TicketingApiResponse>('/seat/ticketing');
+    console.log('response in ticketing api: ', response);
 
     const playInfo = response.data.play[0];
-    const seats = response.data.seats
-      .map((seat) => `${seat.row}${seat.number}`)
-      .join(", ");
+    const seats = response.data.seats.map(seat => `${seat.row}${seat.number}`).join(', ');
     console.log(playInfo);
     return {
       title: playInfo.play.title,
@@ -64,8 +62,7 @@ export const fetchTicketingInfo = async (): Promise<TicketInfo> => {
       seats,
     };
   } catch (error) {
-    console.error("Error fetching ticketing info:", error);
-    throw new Error("티켓 정보를 가져오는 데 실패했습니다.");
+    throw new Error('티켓 정보를 가져오는 데 실패했습니다.');
   }
 };
 
@@ -76,30 +73,27 @@ export const cancelSeatSelection = async (): Promise<boolean> => {
 
     return response.data.success; // 성공 여부 반환
   } catch (error) {
-    console.error("Error cancelling seat selection:", error);
-    throw new Error("발권 신청을 취소하는 데 실패했습니다.");
+    throw new Error('발권 신청을 취소하는 데 실패했습니다.');
   }
 };
 
 // 티켓 발권 API
-export const handleTicketIssuance = async (
-  selectedSeats: string[]
-): Promise<boolean> => {
+export const handleTicketIssuance = async (selectedSeats: string[]): Promise<boolean> => {
   try {
-    const response = await api.patch("/seat/ticketing", {
+    const response = await api.patch('/seat/ticketing', {
       seats: selectedSeats,
     });
 
     if (response.data.success) {
       return true;
     } else {
-      throw new Error("티켓 발권 불가");
+      throw new Error('티켓 발권 불가');
     }
   } catch (error: any) {
     if (error.status == 400) {
-      throw new Error("예매 내역 확인 불가");
+      throw new Error('예매 내역 확인 불가');
     } else {
     }
-    throw new Error("티켓 발권에 실패했습니다.");
+    throw new Error('티켓 발권에 실패했습니다.');
   }
 };

@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import { TICKET_CONFIRMATION } from "@/constants/text/UIText";
+import {TICKET_CONFIRMATION} from '@/constants/text/UIText';
 
 interface TicketConfirmCardProps {
   poster: string;
@@ -22,25 +22,25 @@ const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
   en_location,
   seats,
 }) => {
-  const language = localStorage.getItem("language");
+  const language = localStorage.getItem('language');
 
   return (
     <TicketConfirmCardContainer>
       <CardTitle>
-        {language === "english"
+        {language === 'english'
           ? TICKET_CONFIRMATION.english.summaryTitle
           : TICKET_CONFIRMATION.korean.summaryTitle}
       </CardTitle>
 
       <CardContent>
-        <Poster src={poster} alt="공연 포스터" />
+        <Poster src={poster} alt='공연 포스터' />
 
         <Details>
-          <Title> {language === "english" ? en_title : title}</Title>
+          <Title> {language === 'english' ? en_title : title}</Title>
           <DetailsRow>
             <Label>
-              {" "}
-              {language === "english"
+              {' '}
+              {language === 'english'
                 ? TICKET_CONFIRMATION.english.firstCategory
                 : TICKET_CONFIRMATION.korean.firstCategory}
             </Label>
@@ -48,17 +48,17 @@ const TicketConfirmCard: React.FC<TicketConfirmCardProps> = ({
           </DetailsRow>
           <DetailsRow>
             <Label>
-              {" "}
-              {language === "english"
+              {' '}
+              {language === 'english'
                 ? TICKET_CONFIRMATION.english.secondCategory
                 : TICKET_CONFIRMATION.korean.secondCategory}
             </Label>
-            <Text> {language === "english" ? en_location : location}</Text>
+            <Text> {language === 'english' ? en_location : location}</Text>
           </DetailsRow>
           <DetailsRow>
             <Label>
-              {" "}
-              {language === "english"
+              {' '}
+              {language === 'english'
                 ? TICKET_CONFIRMATION.english.thirdCategory
                 : TICKET_CONFIRMATION.korean.thirdCategory}
             </Label>
@@ -95,7 +95,7 @@ const TicketConfirmCardContainer = styled.div`
   -ms-user-select: none;
 `;
 
-const CardTitle = styled.span.attrs({ className: "Podo-Ticket-Headline-H4" })`
+const CardTitle = styled.span.attrs({className: 'Podo-Ticket-Headline-H4'})`
   color: var(--ect-black);
 `;
 
@@ -120,7 +120,7 @@ const Details = styled.div`
   gap: 7%;
 `;
 
-const Title = styled.span.attrs({ className: "Podo-Ticket-Headline-H5" })`
+const Title = styled.span.attrs({className: 'Podo-Ticket-Headline-H5'})`
   color: var(--ect-black);
   margin-left: 3px;
 `;
@@ -140,7 +140,7 @@ const DetailsRow = styled.div`
   }
 `;
 
-const Label = styled.span.attrs({ className: "Podo-Ticket-Body-B9" })`
+const Label = styled.span.attrs({className: 'Podo-Ticket-Body-B9'})`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,10 +154,10 @@ const Label = styled.span.attrs({ className: "Podo-Ticket-Body-B9" })`
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 `;
 
-const Time = styled.span.attrs({ className: "Podo-Ticket-Body-B7" })`
+const Time = styled.span.attrs({className: 'Podo-Ticket-Body-B7'})`
   color: var(--grey-7);
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 `;
-const Text = styled.span.attrs({ className: "Podo-Ticket-Body-B7" })`
+const Text = styled.span.attrs({className: 'Podo-Ticket-Body-B7'})`
   color: var(--grey-7);
 `;

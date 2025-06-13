@@ -1,29 +1,26 @@
-import React, { useState } from "react";
-import {
-  USER_HOME,
-  PERSONAL_INFORMATION_AGREE_CONTENT,
-} from "../../constants/text/UIText.ts";
-import { useNavigateTo } from "../../utils/NavigateUtil.ts";
-import styled from "styled-components";
-import TopNav from "@components/layout/headers/TopNav";
-import ReservationCheckLabel from "@/components/pages/customer/userHome/ReservationCheckLabel.tsx";
-import MediumBtn from "@components/common/buttons/MediumBtn.tsx";
-import CheckedIcon from "@assets/icons/ic_privacy_checked.svg";
-import UncheckedIcon from "@assets/icons/ic_privacy_unchecked.svg";
-import Loading from "@components/common/loadings/Loading.tsx";
+import React, {useState} from 'react';
+import {USER_HOME, PERSONAL_INFORMATION_AGREE_CONTENT} from '../../constants/text/UIText.ts';
+import {useNavigateTo} from '../../utils/NavigateUtil.ts';
+import styled from 'styled-components';
+import TopNav from '@components/layout/headers/TopNav';
+import ReservationCheckLabel from '@/components/pages/customer/userHome/ReservationCheckLabel.tsx';
+import MediumBtn from '@components/common/buttons/MediumBtn.tsx';
+import CheckedIcon from '@assets/icons/ic_privacy_checked.svg';
+import UncheckedIcon from '@assets/icons/ic_privacy_unchecked.svg';
+import Loading from '@components/common/loadings/Loading.tsx';
 
-import ErrorModal from "@components/common/errors/DefaultErrorModal.tsx";
-import NoticeModal from "@components/common/modals/NoticeModal";
-import Success from "@components/common/loadings/Success.tsx";
-import PhoneActiveIcon from "@assets/icons/ic_phone_active.svg";
-import PhoneDefaultIcon from "@assets/icons/ic_phone_default.svg";
-import { checkPhoneNumber } from "../../api/user/UserHomeApi";
+import ErrorModal from '@components/common/errors/DefaultErrorModal.tsx';
+import NoticeModal from '@components/common/modals/NoticeModal';
+import Success from '@components/common/loadings/Success.tsx';
+import PhoneActiveIcon from '@assets/icons/ic_phone_active.svg';
+import PhoneDefaultIcon from '@assets/icons/ic_phone_default.svg';
+import {checkPhoneNumber} from '../../api/user/UserHomeApi';
 
 const IssueTicket: React.FC = () => {
-  const scheduleId = Number(localStorage.getItem("scheduleId"));
-  const language = localStorage.getItem("language");
+  const scheduleId = Number(localStorage.getItem('scheduleId'));
+  const language = localStorage.getItem('language');
 
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState('010-');
   const [step, setStep] = useState(1);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -31,72 +28,58 @@ const IssueTicket: React.FC = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [showNoticeModal, setShowNoticeModal] = useState(false);
   const [invalidPhoneError, setInvalidPhoneError] = useState(false);
-  const [waitingForReservationError, setWaitingForReservationError] =
-    useState(false);
+  const [waitingForReservationError, setWaitingForReservationError] = useState(false);
 
   const isValidPhone = /^\d{3}-\d{4}-\d{4}$/.test(phone);
 
   const closeInvalidPhoneError = () => setInvalidPhoneError(false);
-  const closeWaitingForReservationError = () =>
-    setWaitingForReservationError(false);
+  const closeWaitingForReservationError = () => setWaitingForReservationError(false);
   const openInvalidPhoneError = () => setInvalidPhoneError(true);
-  const openWaitingForReservationError = () =>
-    setWaitingForReservationError(true);
+  const openWaitingForReservationError = () => setWaitingForReservationError(true);
 
   const navigateTo = useNavigateTo();
-  const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   const agreementTitle =
-    language === "english"
+    language === 'english'
       ? PERSONAL_INFORMATION_AGREE_CONTENT.english.title
       : PERSONAL_INFORMATION_AGREE_CONTENT.korean.title;
   const description =
-    language === "english"
+    language === 'english'
       ? PERSONAL_INFORMATION_AGREE_CONTENT.english.detail
       : PERSONAL_INFORMATION_AGREE_CONTENT.korean.detail;
   const navTitle =
-    language === "english"
-      ? USER_HOME.english.pickupBtn
-      : USER_HOME.korean.pickupBtn;
+    language === 'english' ? USER_HOME.english.pickupBtn : USER_HOME.korean.pickupBtn;
 
   const checkReservation =
-    language === "english"
-      ? USER_HOME.english.checkReservation
-      : USER_HOME.korean.checkReservation;
+    language === 'english' ? USER_HOME.english.checkReservation : USER_HOME.korean.checkReservation;
 
   const acceptTerms =
-    language === "english"
-      ? USER_HOME.english.acceptTerms
-      : USER_HOME.korean.acceptTerms;
+    language === 'english' ? USER_HOME.english.acceptTerms : USER_HOME.korean.acceptTerms;
 
   const preveButton =
-    language === "english"
-      ? USER_HOME.english.authModalCancel
-      : USER_HOME.korean.authModalCancel;
+    language === 'english' ? USER_HOME.english.authModalCancel : USER_HOME.korean.authModalCancel;
 
   const NextButton =
-    language === "english"
-      ? USER_HOME.english.authModalAccept
-      : USER_HOME.korean.authModalAccept;
+    language === 'english' ? USER_HOME.english.authModalAccept : USER_HOME.korean.authModalAccept;
 
   const topNav = {
     text: navTitle,
   };
 
   const handlePhoneChange = (e: any) => {
-    const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 남기기
-    let formattedValue = "";
+    const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 남기기
+    let formattedValue = '';
 
     // 전화번호 형식에 맞게 하이픈 추가
     if (value.length > 0) {
       formattedValue += value.slice(0, 3);
     }
     if (value.length > 3) {
-      formattedValue += "-" + value.slice(3, 7);
+      formattedValue += '-' + value.slice(3, 7);
     }
     if (value.length > 7) {
-      formattedValue += "-" + value.slice(7, 11);
+      formattedValue += '-' + value.slice(7, 11);
     }
 
     setPhone(formattedValue);
@@ -104,12 +87,12 @@ const IssueTicket: React.FC = () => {
 
   const handlePrevButton = () => {
     if (step === 1) {
-      navigateTo("/");
+      navigateTo('/');
     } else setStep(1);
   };
 
   const handleCheckboxClick = () => {
-    setIsChecked((prevChecked) => !prevChecked);
+    setIsChecked(prevChecked => !prevChecked);
   };
 
   const handleActivateNextButton = () => {
@@ -134,7 +117,6 @@ const IssueTicket: React.FC = () => {
 
   const handleSubmit = async () => {
     if (!phone || !scheduleId) {
-      console.error("전화번호 또는 scheduleId 없음");
       return;
     }
 
@@ -143,16 +125,16 @@ const IssueTicket: React.FC = () => {
       await delay(500);
       const result = await checkPhoneNumber(phone, scheduleId);
 
-      if (localStorage.getItem("isForceLogout") === "true") {
+      if (localStorage.getItem('isForceLogout') === 'true') {
         setIsSuccess(true);
-        navigateTo("/confirm");
-      } else if (result.data === "예매 내역 확인 불가") {
+        navigateTo('/confirm');
+      } else if (result.data === '예매 내역 확인 불가') {
         setShowNoticeModal(true);
-      } else if (result.data === "이미 발권한 사용자") {
-        handleAuthModalAccept("/ticket");
-      } else if (result.data === "현장 예매 수락 대기 중") {
+      } else if (result.data === '이미 발권한 사용자') {
+        handleAuthModalAccept('/ticket');
+      } else if (result.data === '현장 예매 수락 대기 중') {
         openWaitingForReservationError();
-      } else handleAuthModalAccept("/select");
+      } else handleAuthModalAccept('/select');
     } catch (error) {
       openInvalidPhoneError(); // 에러 모달 표시
     } finally {
@@ -171,28 +153,25 @@ const IssueTicket: React.FC = () => {
 
   return (
     <Container>
-      {" "}
+      {' '}
       <TopNav center={topNav} isUnderlined={true} />
       <Contents>
         <Step>
           <ReservationCheckLabel isActive={true} labelText={checkReservation} />
           <LabelLine isActive={step === 2} />
-          <ReservationCheckLabel
-            isActive={step === 2}
-            labelText={acceptTerms}
-          />
+          <ReservationCheckLabel isActive={step === 2} labelText={acceptTerms} />
         </Step>
         {step === 1 && (
           <PhoneNumberContainer>
             <PhoneImg
               src={phone ? PhoneActiveIcon : PhoneDefaultIcon}
-              alt="전화번호 입력 아이콘"
-            ></PhoneImg>{" "}
+              alt='전화번호 입력 아이콘'
+            ></PhoneImg>{' '}
             <PhoneInput
-              className="Podo-Ticket-Body-B4"
-              type="text"
+              className='Podo-Ticket-Body-B4'
+              type='text'
               placeholder={
-                language === "english"
+                language === 'english'
                   ? USER_HOME.english.authInputPlaceholder
                   : USER_HOME.korean.authInputPlaceholder
               }
@@ -205,21 +184,16 @@ const IssueTicket: React.FC = () => {
         {step === 2 && (
           <AgreementContainer>
             <AgreementContainerHeader>
-              <AgreementContainerTitle
-                isChecked={isChecked}
-                className="Podo-Ticket-Body-B4"
-              >
+              <AgreementContainerTitle isChecked={isChecked} className='Podo-Ticket-Body-B4'>
                 {agreementTitle}
               </AgreementContainerTitle>
               <CustomCheckbox
                 src={isChecked ? CheckedIcon : UncheckedIcon}
                 onClick={handleCheckboxClick}
-                alt="약관 동의 체크박스"
+                alt='약관 동의 체크박스'
               />
             </AgreementContainerHeader>
-            <ContentPrivacy className="Podo-Ticket-Body-B8">
-              {description}
-            </ContentPrivacy>
+            <ContentPrivacy className='Podo-Ticket-Body-B8'>{description}</ContentPrivacy>
           </AgreementContainer>
         )}
       </Contents>
@@ -241,34 +215,34 @@ const IssueTicket: React.FC = () => {
       <NoticeModal
         showNoticeModal={showNoticeModal}
         title={
-          language === "english"
+          language === 'english'
             ? USER_HOME.english.noReserveDataModalTitle
             : USER_HOME.korean.noReserveDataModalTitle
         }
         description={
-          language === "english"
+          language === 'english'
             ? USER_HOME.english.noReserveDataModalSubtitle
             : USER_HOME.korean.noReserveDataModalSubtitle
         }
         buttonContent={
-          language === "english"
+          language === 'english'
             ? USER_HOME.english.noReserveDataModalAccept
             : USER_HOME.korean.noReserveDataModalAccept
         }
         onAcceptFunc={() => {
           setShowNoticeModal(false);
-          navigateTo("/reserve");
+          navigateTo('/reserve');
         }}
       />
       <ErrorModal
         showDefaultErrorModal={invalidPhoneError}
-        errorMessage="예매내역을 확인할 수 없습니다."
+        errorMessage='예매내역을 확인할 수 없습니다.'
         onAcceptFunc={closeInvalidPhoneError}
         OnTopSide={true}
       />
       <ErrorModal
         showDefaultErrorModal={waitingForReservationError}
-        errorMessage="현장 예매 수락 대기 중 입니다."
+        errorMessage='현장 예매 수락 대기 중 입니다.'
         onAcceptFunc={closeWaitingForReservationError}
         OnTopSide={true}
       />
@@ -336,14 +310,13 @@ const PhoneInput = styled.input`
   }
 `;
 
-const LabelLine = styled.span<{ isActive?: boolean }>`
+const LabelLine = styled.span<{isActive?: boolean}>`
   display: flex;
   width: 20px;
   height: 1px;
   align-items: center;
   justify-content: center;
-  background: ${({ isActive }) =>
-    isActive ? "var(--purple-7)" : "var(--grey-4)"};
+  background: ${({isActive}) => (isActive ? 'var(--purple-7)' : 'var(--grey-4)')};
 `;
 
 const ButtonContainer = styled.div`
@@ -385,8 +358,8 @@ const AgreementContainerHeader = styled.div`
   margin-bottom: 3.8%;
 `;
 
-const AgreementContainerTitle = styled.p<{ isChecked: boolean }>`
-  color: ${({ isChecked }) => (isChecked ? "var(--purple-4)" : "")};
+const AgreementContainerTitle = styled.p<{isChecked: boolean}>`
+  color: ${({isChecked}) => (isChecked ? 'var(--purple-4)' : '')};
 `;
 
 const CustomCheckbox = styled.img`

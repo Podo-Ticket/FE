@@ -7,8 +7,8 @@ export const RESERVE_FAIL = `이미 예매 신청이 완료된 연락처입니�
 export const VERIFICATION_FAIL = `잘못된 인증 코드입니다.`;
 
 export const MESSAGES = {
-  reserveConfirmFail: "예매내역을 확인할 수 없습니다.",
-  selectSeatsFail: "다른 고객님께서 이미 선택한 좌석입니다.",
-  alreadyReservedCustomer: "이미 예매 신청이 완료된 연락처입니다.",
-  invalidVerificationCode: "잘못된 인증 코드입니다.",
+  reserveConfirmFail: '예매내역을 확인할 수 없습니다.',
+  selectSeatsFail: '다른 고객님께서 이미 선택한 좌석입니다.',
+  alreadyReservedCustomer: '이미 예매 신청이 완료된 연락처입니다.',
+  invalidVerificationCode: '잘못된 인증 코드입니다.',
 };

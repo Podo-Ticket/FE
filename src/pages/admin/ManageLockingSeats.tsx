@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
+import {useNavigate, useLocation} from 'react-router-dom';
 
-import TopNav from "@components/layout/headers/TopNav";
-import PlaySessionPicker from "@components/layout/headers/PlaySessionPicker";
-import AdminSeatInfo from "@components/common/informations/AdminSeatInfo";
-import NoticeModal from "@components/common//modals/NoticeModal";
-import SingleManagelBtn from "@components/common/buttons/SmallBtn";
-import MultipleManagelBtn from "@components/common/buttons/SmallBtn";
-import SingleAcceptModal from "@components/common/modals/DefaultModal";
-import MultipleAcceptModal from "@components/common/modals/DefaultModal";
-import NoticeReservedSeatModal from "@components/pages/admin/manageLockingSeats/NoticeReservedSeatModal";
+import TopNav from '@components/layout/headers/TopNav';
+import PlaySessionPicker from '@components/layout/headers/PlaySessionPicker';
+import AdminSeatInfo from '@components/common/informations/AdminSeatInfo';
+import NoticeModal from '@components/common//modals/NoticeModal';
+import SingleManagelBtn from '@components/common/buttons/SmallBtn';
+import MultipleManagelBtn from '@components/common/buttons/SmallBtn';
+import SingleAcceptModal from '@components/common/modals/DefaultModal';
+import MultipleAcceptModal from '@components/common/modals/DefaultModal';
+import NoticeReservedSeatModal from '@components/pages/admin/manageLockingSeats/NoticeReservedSeatModal';
 
-import backIcon from "../../assets/images/admin/grey_left_arrow.png";
-import refreshIcon from "../../assets/images/refresh2_icon.png";
+import backIcon from '../../assets/images/admin/grey_left_arrow.png';
+import refreshIcon from '../../assets/images/refresh2_icon.png';
 
 import {
   Schedule,
@@ -25,9 +25,9 @@ import {
   checkReservedSeats,
   CheckingLockSeatsRequest,
   ReservedSeat,
-} from "../../api/admin/ManageLockingSeatsApi";
+} from '../../api/admin/ManageLockingSeatsApi';
 
-import AdminSeatMap from "@components/pages/admin/seatsComponent/AdminSeatMap_SeongbukVillageTheater";
+import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_SeongbukVillageTheater';
 // import AdminSeatMap from "@components/pages/admin/seatsComponent/AdminSeatMap_Riveract";
 // import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_Kwangwoon';
 
@@ -39,76 +39,60 @@ const ManageLockingSeats = () => {
   const [remainingSeats, setRemainingSeats] = useState<number>(0);
 
   // 공연 회차 선택 관리
-  const [isRefreshed, setIsRefreshed] = useState<boolean>(false); // 새로고침 트리거 state
+  const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
-  const [selectedSession, setSelectedSession] = useState<string>("");
-  // 공연 회차 선택 핸들러
+  const [selectedSession, setSelectedSession] = useState<string>('');
   const handleSessionChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
     setSelectedSession(event.target.value);
   useEffect(() => {
     // 공연 회차 데이터 가져오기 처리
     const loadSchedules = async () => {
       try {
-        const data = await fetchSchedules(); // 공연 회차 데이터 가져오기
+        const data = await fetchSchedules();
         setSchedules(data);
 
-        // 로컬스토리지에서 currentScheduleId 가져오기
-        const currentScheduleId = localStorage.getItem("currentScheduleId");
+        const currentScheduleId = localStorage.getItem('currentScheduleId');
 
         if (currentScheduleId) {
-          // 로컬스토리지에 저장된 ID가 유효한 경우
           setSelectedSession(currentScheduleId);
         } else {
-          // 데이터가 있는 경우 첫 번째 회차 선택
           setSelectedSession(data[0].id.toString());
         }
-      } catch (error) {
-        console.error("Error loading schedules:", error);
-      }
+      } catch (error) {}
     };
 
     loadSchedules();
   }, []);
   useEffect(() => {
     if (!selectedSession) return;
-    localStorage.setItem("currentScheduleId", selectedSession);
+    localStorage.setItem('currentScheduleId', selectedSession);
   }, [selectedSession]);
-  const triggerRefresh = () => setIsRefreshed((prev) => !prev);
+  const triggerRefresh = () => setIsRefreshed(prev => !prev);
 
-  const manage = params.get("manage"); // "lock" 또는 "unlock"
-  const navCenterTitle = manage === "lock" ? "좌석 잠금" : "좌석 잠금 해제";
+  const manage = params.get('manage'); // "lock" 또는 "unlock"
+  const navCenterTitle = manage === 'lock' ? '좌석 잠금' : '좌석 잠금 해제';
   const [showEntryModal, setShowEntryModal] = useState<boolean>(true);
   const entryModalTitle =
-    manage === "lock"
-      ? "잠글 좌석을 선택해주세요"
-      : "잠금 해제할 좌석을 선택해주세요";
+    manage === 'lock' ? '잠글 좌석을 선택해주세요' : '잠금 해제할 좌석을 선택해주세요';
   const entryModalSubtitle =
-    manage === "lock"
-      ? "좌석을 잠그면 발권이 불가합니다"
-      : "잠금을 해제하면 발권이 가능합니다";
-  const singleButtonTitle =
-    manage === "lock" ? "해당 회차 잠금" : "해당 회차 잠금 해제";
-  const multipleButtonTitle =
-    manage === "lock" ? "전체 회차 잠금" : "전체 회차 잠금 해제";
+    manage === 'lock' ? '좌석을 잠그면 발권이 불가합니다' : '잠금을 해제하면 발권이 가능합니다';
+  const singleButtonTitle = manage === 'lock' ? '해당 회차 잠금' : '해당 회차 잠금 해제';
+  const multipleButtonTitle = manage === 'lock' ? '전체 회차 잠금' : '전체 회차 잠금 해제';
 
-  const [showSingleAcceptModal, setShowSingleAcceptModal] =
-    useState<boolean>(false);
-  const [showMultipleAcceptModal, setShowMultipleAcceptModal] =
-    useState<boolean>(false);
+  const [showSingleAcceptModal, setShowSingleAcceptModal] = useState<boolean>(false);
+  const [showMultipleAcceptModal, setShowMultipleAcceptModal] = useState<boolean>(false);
   const [showMultipleWarningAcceptModal, setShowMultipleWarningAcceptModal] =
     useState<boolean>(false);
   const singleAcceptTitle =
-    manage === "lock"
-      ? "해당 회차 좌석을 잠그시겠습니까?"
-      : "선택한 좌석의 해당 회차만 잠금 해제하시겠습니까?";
-  const singleAcceptSubTitle =
-    manage === "lock" ? "좌석을 잠그면 발권이 불가합니다." : "";
+    manage === 'lock'
+      ? '해당 회차 좌석을 잠그시겠습니까?'
+      : '선택한 좌석의 해당 회차만 잠금 해제하시겠습니까?';
+  const singleAcceptSubTitle = manage === 'lock' ? '좌석을 잠그면 발권이 불가합니다.' : '';
   const multipleAcceptTitle =
-    manage === "lock"
-      ? "전체 회차 좌석을 잠그시겠습니까?"
-      : "선택한 좌석의 전체 회차를 잠금 해제하시겠습니까?";
-  const multipleAcceptSubTitle =
-    manage === "lock" ? "좌석을 잠그면 발권이 불가합니다." : "";
+    manage === 'lock'
+      ? '전체 회차 좌석을 잠그시겠습니까?'
+      : '선택한 좌석의 전체 회차를 잠금 해제하시겠습니까?';
+  const multipleAcceptSubTitle = manage === 'lock' ? '좌석을 잠그면 발권이 불가합니다.' : '';
 
   // Top navigation 요소 정의
   const navItem = {
@@ -130,65 +114,35 @@ const ManageLockingSeats = () => {
 
   const [newLockedSeats, setNewLockedSeats] = useState<string[]>([]);
   const [newUnlockedSeats, setNewUnlockedSeats] = useState<string[]>([]);
-  const [currentLockedSeatsInfo, setCurrentLockedSeatsInfo] = useState<
-    { id: string; row: string; number: number }[]
-  >([]);
+  const [, setCurrentLockedSeatsInfo] = useState<{id: string; row: string; number: number}[]>([]);
   const [reservedList, setReservedList] = useState<ReservedSeat[]>([]);
 
-  useEffect(() => {
-    console.log("newLockedSeats : ", newLockedSeats);
-    //console.log("newUnlockedSeats : ", newUnlockedSeats);
-    //console.log("lockedSeatsInfo : ", lockedSeatsInfo);
-  }, [newLockedSeats]);
-
-  useEffect(() => {
-    //console.log("newLockedSeats : ", newLockedSeats);
-    console.log("newUnlockedSeats : ", newUnlockedSeats);
-    //console.log("lockedSeatsInfo : ", lockedSeatsInfo);
-  }, [newUnlockedSeats]);
-
-  useEffect(() => {
-    //console.log("newLockedSeats : ", newLockedSeats);
-    //console.log("newUnlockedSeats : ", newUnlockedSeats);
-    console.log("currentLockedSeatsInfo : ", currentLockedSeatsInfo);
-  }, [currentLockedSeatsInfo]);
-
-  // 좌석 잠금 함수
   const handleLockSeats = async () => {
     if (newLockedSeats.length === 0) {
       return;
     }
 
-    // 좌석 데이터를 변환
-    const lockedSeats: Seat[] = newLockedSeats.map((seat) => {
-      const row = seat.slice(0, 1); // 좌석 ID의 첫 글자를 행으로 설정
-      const column = parseInt(seat.slice(1)); // 나머지 부분을 숫자로 변환하여 열로 설정
-
-      return { row, number: column }; // 객체 형식으로 변환
+    const lockedSeats: Seat[] = newLockedSeats.map(seat => {
+      const row = seat.slice(0, 1);
+      const column = parseInt(seat.slice(1));
+      return {row, number: column};
     });
 
     const encodedSeats = encodeURIComponent(JSON.stringify(lockedSeats));
 
     try {
-      // 좌석 잠금 API 호출
       const response = await lockSeats({
         scheduleId: [Number(selectedSession)],
         seats: encodedSeats,
       });
 
-      // 응답 처리
       if (response.success) {
-        console.log("좌석 잠금 성공");
-
-        setNewLockedSeats([]); // 상태 초기화
-        triggerRefresh(); // 새로고침 트리거
-        setShowSingleAcceptModal(false); // 모달 닫기
+        setNewLockedSeats([]);
+        triggerRefresh();
+        setShowSingleAcceptModal(false);
       } else {
-        console.error("좌석 잠금 실패");
       }
-    } catch (error) {
-      console.error("좌석 잠금 오류:", error);
-    }
+    } catch (error) {}
   };
 
   // 좌석 잠금 해제 함수
@@ -198,11 +152,11 @@ const ManageLockingSeats = () => {
     }
 
     // 좌석 데이터를 변환
-    const unlockedSeats: Seat[] = newUnlockedSeats.map((seat) => {
+    const unlockedSeats: Seat[] = newUnlockedSeats.map(seat => {
       const row = seat.slice(0, 1); // 좌석 ID의 첫 글자를 행으로 설정
       const column = parseInt(seat.slice(1)); // 나머지 부분을 숫자로 변환하여 열로 설정
 
-      return { row, number: column }; // 객체 형식으로 변환
+      return {row, number: column}; // 객체 형식으로 변환
     });
 
     const encodedSeats = encodeURIComponent(JSON.stringify(unlockedSeats));
@@ -214,15 +168,11 @@ const ManageLockingSeats = () => {
       });
 
       if (success) {
-        setNewLockedSeats((prev) =>
-          prev.filter((seat) => !newUnlockedSeats.includes(seat))
-        );
+        setNewLockedSeats(prev => prev.filter(seat => !newUnlockedSeats.includes(seat)));
         triggerRefresh();
         setShowSingleAcceptModal(false);
       }
-    } catch (error) {
-      console.error("좌석 잠금 해제 오류:", error);
-    }
+    } catch (error) {}
   };
 
   // 전체 회차 동시 잠금 함수
@@ -231,54 +181,32 @@ const ManageLockingSeats = () => {
       return;
     }
 
-    // 좌석 데이터를 변환
-    const lockedSeats: Seat[] = newLockedSeats.map((seat) => {
-      const row = seat.slice(0, 1); // 좌석 ID의 첫 글자를 행으로 설정
-      const column = parseInt(seat.slice(1)); // 나머지 부분을 숫자로 변환하여 열로 설정
+    const lockedSeats: Seat[] = newLockedSeats.map(seat => {
+      const row = seat.slice(0, 1);
+      const column = parseInt(seat.slice(1));
 
-      return { row, number: column }; // 객체 형식으로 변환
+      return {row, number: column};
     });
 
     const encodedSeats = encodeURIComponent(JSON.stringify(lockedSeats));
 
+    // 모든 회차에 대해 좌석 잠금 요청을 병렬로 처리
     try {
-      // 모든 회차에 대해 좌석 잠금 요청을 병렬로 처리
-      const lockPromises = schedules.map((schedule) =>
-        lockSeats({ scheduleId: [schedule.id], seats: encodedSeats })
+      const lockPromises = schedules.map(schedule =>
+        lockSeats({scheduleId: [schedule.id], seats: encodedSeats}),
       );
 
       const results: LockSeatsResponses = await Promise.all(lockPromises); // 모든 요청 완료 대기
 
-      console.log("전체 응답 확인: ", results);
-      // 각 요청의 결과를 순회하며 로그 출력
-      results.forEach((result, index) => {
-        console.log(`Schedule ID: ${schedules[index].id}`);
-        console.log("Response:", result);
-
-        if (result.success) {
-          if (!result.reservedList) {
-            console.log("예약된 좌석이 없습니다.");
-          } else {
-            console.log("이미 예약된 좌석 목록:", result.reservedList);
-          }
-        } else {
-          console.error("좌석 잠금 실패");
-        }
-      });
-
       // 성공 여부 확인
-      if (results.every((res) => res.success)) {
-        console.log("전체 회차 좌석 잠금 성공");
+      if (results.every(res => res.success)) {
         setNewLockedSeats([]); // 상태 초기화
         triggerRefresh(); // 새로고침 트리거
         setShowMultipleAcceptModal(false); // 모달 닫기
         setShowMultipleWarningAcceptModal(false);
       } else {
-        console.error("일부 회차에서 좌석 잠금 실패");
       }
-    } catch (error) {
-      console.error("전체 회차 좌석 잠금 오류:", error);
-    }
+    } catch (error) {}
   };
 
   // 전체 회차 동시 잠금 해제 함수
@@ -287,59 +215,45 @@ const ManageLockingSeats = () => {
       return;
     }
 
-    // 좌석 데이터를 변환
-    const unlockedSeats: Seat[] = newUnlockedSeats.map((seat) => {
-      const row = seat.slice(0, 1); // 좌석 ID의 첫 글자를 행으로 설정
-      const column = parseInt(seat.slice(1)); // 나머지 부분을 숫자로 변환하여 열로 설정
+    const unlockedSeats: Seat[] = newUnlockedSeats.map(seat => {
+      const row = seat.slice(0, 1);
+      const column = parseInt(seat.slice(1));
 
-      return { row, number: column }; // 객체 형식으로 변환
+      return {row, number: column};
     });
 
     const encodedSeats = encodeURIComponent(JSON.stringify(unlockedSeats));
 
+    // 모든 회차에 대해 좌석 잠금 해제 요청을 병렬로 처리
     try {
-      // 모든 회차에 대해 좌석 잠금 해제 요청을 병렬로 처리
-      const unlockPromises = schedules.map((schedule) => {
-        console.log("current seatIds: ", schedule.id); // 디버그용 로그
-        return unlockSeats({ scheduleId: schedule.id, seats: encodedSeats });
+      const unlockPromises = schedules.map(schedule => {
+        return unlockSeats({scheduleId: schedule.id, seats: encodedSeats});
       });
 
       const results = await Promise.all(unlockPromises); // 모든 요청 완료 대기
 
-      console.log("results: ", results);
-
-      // 성공 여부 확인
-      if (results.every((res) => res.success)) {
-        console.log("전체 회차 좌석 잠금 해제 성공");
-        setNewUnlockedSeats([]); // 상태 초기화
-        triggerRefresh(); // 새로고침 트리거
-        setShowMultipleAcceptModal(false); // 모달 닫기
+      if (results.every(res => res.success)) {
+        setNewUnlockedSeats([]);
+        triggerRefresh();
+        setShowMultipleAcceptModal(false);
         setShowMultipleWarningAcceptModal(false);
       } else {
-        console.error("일부 회차에서 좌석 잠금 해제 실패");
       }
-    } catch (error) {
-      console.error("전체 회차 좌석 잠금 해제 오류:", error);
-    }
+    } catch (error) {}
   };
 
   // 전체 회차 잠금 시 모달 컨트롤 처리
   const handleMultipleManagelBtn = async () => {
     try {
-      // 좌석 데이터를 변환
-      const lockedSeats: Seat[] = newLockedSeats.map((seat) => {
-        const row = seat.slice(0, 1); // 좌석 ID의 첫 글자를 행으로 설정
-        const column = parseInt(seat.slice(1)); // 나머지 부분을 숫자로 변환하여 열로 설정
+      const lockedSeats: Seat[] = newLockedSeats.map(seat => {
+        const row = seat.slice(0, 1);
+        const column = parseInt(seat.slice(1));
 
-        return { row, number: column }; // 객체 형식으로 변환
+        return {row, number: column};
       });
 
       const encodedSeats = encodeURIComponent(JSON.stringify(lockedSeats));
-
-      console.log("selectedSession: ", selectedSession);
-      console.log("encodedSeats: ", encodedSeats);
-
-      const ids = schedules.map((schedule) => schedule.id);
+      const ids = schedules.map(schedule => schedule.id);
 
       const request: CheckingLockSeatsRequest = {
         scheduleId: ids, // 공연 ID
@@ -347,31 +261,21 @@ const ManageLockingSeats = () => {
       };
 
       const result = await checkReservedSeats(request);
-      console.log("예약된 좌석 확인 결과:", result);
 
       if (result.success) {
         if (result.reservedList.length === 0) {
-          console.log("예약된 좌석이 없습니다.");
           setShowMultipleAcceptModal(true); // 일반 모달 표시
         } else {
-          console.log("이미 예약된 좌석 목록:", result.reservedList);
           setReservedList(result.reservedList); // 예약된 좌석 목록 저장
           setShowMultipleWarningAcceptModal(true); // 경고 모달 표시
         }
       }
-    } catch (error) {
-      console.error("좌석 확인 중 오류 발생:", error);
-    }
+    } catch (error) {}
   };
 
   return (
     <ViewContainer>
-      <TopNav
-        lefter={navItem}
-        center={navItem}
-        righter={righter}
-        isGrey={true}
-      />
+      <TopNav lefter={navItem} center={navItem} righter={righter} isGrey={true} />
 
       <SelectSeatsContentContainer>
         <PlaySessionPicker
@@ -385,7 +289,7 @@ const ManageLockingSeats = () => {
           <AdminSeatMap
             isRefreshed={isRefreshed}
             isRealTime={false}
-            manageMode={manage === "lock" ? true : false}
+            manageMode={manage === 'lock' ? true : false}
             scheduleId={Number(selectedSession)}
             disabled={false}
             onLockedSeatsChange={setNewLockedSeats}
@@ -394,10 +298,7 @@ const ManageLockingSeats = () => {
             setRemainingSeats={setRemainingSeats}
           />
 
-          <AdminSeatInfo
-            isRealTime={false}
-            remainingSeatsCount={remainingSeats}
-          />
+          <AdminSeatInfo isRealTime={false} remainingSeatsCount={remainingSeats} />
         </SeatMapContainer>
 
         <ButtonContainer>
@@ -407,9 +308,7 @@ const ManageLockingSeats = () => {
               setShowSingleAcceptModal(true);
             }}
             isAvailable={
-              manage === "lock"
-                ? newLockedSeats.length !== 0
-                : newUnlockedSeats.length !== 0
+              manage === 'lock' ? newLockedSeats.length !== 0 : newUnlockedSeats.length !== 0
             }
             isGray={true}
           />
@@ -417,16 +316,14 @@ const ManageLockingSeats = () => {
           <MultipleManagelBtn
             content={multipleButtonTitle}
             onClick={
-              manage === "lock"
+              manage === 'lock'
                 ? handleMultipleManagelBtn
                 : () => {
                     setShowMultipleAcceptModal(true);
                   }
             }
             isAvailable={
-              manage === "lock"
-                ? newLockedSeats.length !== 0
-                : newUnlockedSeats.length !== 0
+              manage === 'lock' ? newLockedSeats.length !== 0 : newUnlockedSeats.length !== 0
             }
           />
         </ButtonContainer>
@@ -436,7 +333,7 @@ const ManageLockingSeats = () => {
         showNoticeModal={showEntryModal}
         title={entryModalTitle}
         description={entryModalSubtitle}
-        buttonContent="확인"
+        buttonContent='확인'
         onAcceptFunc={() => {
           setShowEntryModal(false);
         }}
@@ -446,7 +343,7 @@ const ManageLockingSeats = () => {
         showDefaultModal={showSingleAcceptModal}
         title={singleAcceptTitle}
         description={singleAcceptSubTitle}
-        onAcceptFunc={manage === "lock" ? handleLockSeats : handleUnlockSeats}
+        onAcceptFunc={manage === 'lock' ? handleLockSeats : handleUnlockSeats}
         onUnacceptFunc={() => {
           setShowSingleAcceptModal(false);
         }}
@@ -457,9 +354,7 @@ const ManageLockingSeats = () => {
         title={multipleAcceptTitle}
         description={multipleAcceptSubTitle}
         onAcceptFunc={
-          manage === "lock"
-            ? handleLockSeatsForAllSchedules
-            : handleUnlockSeatsForAllSchedules
+          manage === 'lock' ? handleLockSeatsForAllSchedules : handleUnlockSeatsForAllSchedules
         }
         onUnacceptFunc={() => {
           setShowMultipleAcceptModal(false);
