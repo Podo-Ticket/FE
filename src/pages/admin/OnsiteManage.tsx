@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
 
 import TopNav from '@components/layout/headers/TopNav.tsx';
-import PlaySessionPicker from '@components/layout/headers/PlaySessionPicker.tsx';
-import SearchFilterBar from '@components/layout/headers/SearchFilterBar.tsx';
 import CustomerListItem from '@components/common/informations/CustomerListItem.tsx';
 import FooterNav from '@components/layout/footers/FooterNav.tsx';
+
+import backIcon from '@assets/icons/ic_arrow_left.svg';
 
 import {fadeIn} from '../../styles/animation/DefaultAnimation.ts';
 import {
@@ -15,6 +16,7 @@ import {
   fetchOnsiteUserList,
   fetchSchedules,
 } from '../../api/admin/OnsiteManageApi';
+import PlaySessionPicker from '@/components/layout/headers/PlaySessionPicker.tsx';
 
 interface OnsiteApprovalRequest {
   userIds: number[];
@@ -23,6 +25,8 @@ interface OnsiteApprovalRequest {
 }
 
 const OnsiteManage = () => {
+  const navigate = useNavigate();
+
   const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [selectedSession, setSelectedSession] = useState<string>('');
@@ -52,6 +56,16 @@ const OnsiteManage = () => {
     loadSchedules();
   }, []);
   const triggerRefresh = () => setIsRefreshed(prev => !prev);
+
+  const lefter = {
+    icon: backIcon,
+    iconWidth: 13, // 아이콘 너비 (px 단위)
+    iconHeight: 20, // 아이콘 높이 (px 단위)
+    text: '',
+    clickFunc: () => {
+      navigate(-1);
+    },
+  };
 
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('전체');
@@ -180,34 +194,19 @@ const OnsiteManage = () => {
       // 3순위: ID의 오름차순 정렬
       return a.user.id - b.user.id; // ID로 오름차순 정렬
     });
-  const handleFilterClick = (newFilter: React.SetStateAction<string>) => setFilter(newFilter);
-
-  // 전체 데이터에서 발권 완료 및 미발권 건수 계산
-  const totalCount = data.length;
-  const acceptCount = data.filter(item => item.approve === true).length;
-  const unacceptCount = data.filter(item => item.approve === false).length;
 
   return (
     <ViewContainer>
-      <TopNav lefter={undefined} center={center} righter={righter} isUnderlined={true} />
+      <TopNav lefter={lefter} center={center} righter={righter} isUnderlined={false} />
 
-      <PlaySessionPicker
-        schedules={schedules}
-        selectedSession={selectedSession}
-        onContentChange={handleSessionChange}
-      />
-
-      <SearchFilterBar
-        search={search}
-        handleSearch={handleSearch}
-        handleSearchButtonClick={handleSearchButtonClick}
-        handleClearSearch={handleClearSearch}
-        filter={filter}
-        totalCount={totalCount}
-        acceptCount={acceptCount}
-        unacceptCount={unacceptCount}
-        handleFilterClick={handleFilterClick}
-      />
+      <FilterContainer>
+        <PlaySessionPicker
+          schedules={schedules}
+          selectedSession={selectedSession}
+          onContentChange={handleSessionChange}
+          isRounded={true}
+        />
+      </FilterContainer>
 
       <ListContainer>
         <CustomerListItem
@@ -223,12 +222,14 @@ const OnsiteManage = () => {
         />
       </ListContainer>
 
-      <FooterNav
-        isGroupAllow={isManaging}
-        groupAllowCnt={checkedItems.length}
-        isApproveClick={() => handleGroupApproveClick()}
-        isDeleteClick={() => handleGroupApproveClick()}
-      />
+      {isManaging ? (
+        <FooterNav
+          isGroupAllow={true}
+          groupAllowCnt={checkedItems.length}
+          isApproveClick={() => handleGroupApproveClick()}
+          isDeleteClick={() => handleGroupApproveClick()}
+        />
+      ) : undefined}
     </ViewContainer>
   );
 };
@@ -239,6 +240,10 @@ const ViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+`;
+
+const FilterContainer = styled.div`
+  padding: 0 10px;
 `;
 
 const ListContainer = styled.div`

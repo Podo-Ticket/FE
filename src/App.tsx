@@ -245,7 +245,9 @@ function App() {
             path='/reserved'
             element={
               <ProtectedRoute>
-                <ReservedManange />
+                <ScrollLockWrapper>
+                  <ReservedManange />
+                </ScrollLockWrapper>
               </ProtectedRoute>
             }
           />
@@ -278,7 +280,9 @@ function App() {
             path='/onsite'
             element={
               <ProtectedRoute>
-                <OnsiteManage />
+                <ScrollLockWrapper>
+                  <OnsiteManage />
+                </ScrollLockWrapper>
               </ProtectedRoute>
             }
           />

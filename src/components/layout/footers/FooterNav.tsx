@@ -19,8 +19,8 @@ import {usePath} from '../../../utils/PathContext.tsx';
 const pathToIndex = (path: string) => {
   if (path.startsWith('/home')) return 0;
   if (path.startsWith('/reserved')) return 1;
-  if (path.startsWith('/onsite')) return 2;
-  if (path.startsWith('/setting')) return 3;
+  // if (path.startsWith('/onsite')) return 2;
+  if (path.startsWith('/setting')) return 2;
   return 0;
 };
 
@@ -90,19 +90,19 @@ const FotterNav: React.FC<FooterNavProps> = ({
           <NavItem className={activeIndex === 1 ? 'active' : ''}>
             <NavLink to='/reserved'>
               <IconReserved src={activeIndex === 1 ? ActReserved : Reserved} />
-              <p>발권 명단 관리</p>
+              <p>명단 관리</p>
             </NavLink>
           </NavItem>
-          <NavItem className={activeIndex === 2 ? 'active' : ''}>
+          {/* <NavItem className={activeIndex === 2 ? 'active' : ''}>
             <NavLink to='/onsite'>
               <IconOnsite src={activeIndex === 2 ? ActOnsite : Onsite} />
               {hasPendingApproval && <RedCircle src={RedCirclePng} />}
               <p>현장 예매 관리</p>
             </NavLink>
-          </NavItem>
-          <NavItem className={activeIndex === 3 ? 'active' : ''}>
+          </NavItem> */}
+          <NavItem className={activeIndex === 2 ? 'active' : ''}>
             <NavLink to='/setting'>
-              <IconSetting src={activeIndex === 3 ? ActSetting : Setting} />
+              <IconSetting src={activeIndex === 2 ? ActSetting : Setting} />
               <p>설정</p>
             </NavLink>
           </NavItem>
@@ -246,7 +246,7 @@ const ActiveBar = styled.div<{
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 25%;
+  width: 33.33%;
   height: 4px;
   background-color: var(--purple-4);
   transform: translateX(${({x}) => `${x}%`});

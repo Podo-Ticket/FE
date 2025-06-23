@@ -9,6 +9,8 @@ import CustomerListItem from '@components/common/informations/CustomerListItem.t
 import TopNav from '@components/layout/headers/TopNav.tsx';
 
 import insertCustomer from '@assets/icons/ic_plus_user.svg';
+import onsiteAlarmIcon from '@assets/icons/ic_ticket_add.svg';
+import directIcon from '@assets/icons/ic_arrow_right.svg';
 
 import {fadeIn} from '../../styles/animation/DefaultAnimation.ts';
 import {
@@ -87,15 +89,15 @@ const ReservedManage = () => {
   };
 
   const centerItem = {
-    text: '예매 명단 관리',
+    text: '명단 관리',
   };
 
-  // 필터에 따라 데이터를 필터링 및 정렬
+  const [isOnsiteExist, setIsOnsiteExist] = useState(true);
   const filteredData = data
     .filter(item => {
       // 상태 필터링
-      if (filter === '전체') return true; // 전체일 경우 필터링 없이 다 보여줌
-      return item.state === (filter === '수락 완료'); // '수락 완료'일 경우 true, 미 수락일 경우 false
+      if (filter === '전체') return true;
+      return item.state === (filter === '수락 완료');
     })
     .filter(item => {
       // 검색 필터링 (이름 또는 전화번호)
@@ -106,18 +108,13 @@ const ReservedManage = () => {
       );
     })
     .sort((a, b) => {
-      // 1순위: "미 수락" 항목을 최상단으로
-      if (a.state === false && b.state !== false) return -1; // a가 미 수락이면 a를 먼저
-      if (b.state === false && a.state !== false) return 1; // b가 미 수락이면 b를 먼저
-
-      // 2순위: 이름의 가나다 순 정렬
+      if (a.state === false && b.state !== false) return -1;
+      if (b.state === false && a.state !== false) return 1;
       const nameA = a.name.charCodeAt(0);
       const nameB = b.name.charCodeAt(0);
       if (nameA < nameB) return -1;
       if (nameA > nameB) return 1;
-
-      // 3순위: ID의 오름차순 정렬
-      return a.id - b.id; // ID로 오름차순 정렬
+      return a.id - b.id;
     });
 
   // 전체 데이터에서 발권 완료 및 미발권 건수 계산
@@ -130,7 +127,6 @@ const ReservedManage = () => {
 
   const handleListItemlick = (item: {scheduleId: string; id: any}) => {
     item.scheduleId = selectedSession;
-
     navigate('/reserved/check', {
       state: {
         scheduleId: selectedSession, // 현재 선택된 공연 회차 ID
@@ -141,27 +137,52 @@ const ReservedManage = () => {
 
   return (
     <ViewContainer>
-      <TopNav lefter={undefined} center={centerItem} righter={rightItem} isUnderlined={true} />
+      <TopNav lefter={undefined} center={centerItem} righter={rightItem} isUnderlined={false} />
 
-      <PlaySessionPicker
-        schedules={schedules}
-        selectedSession={selectedSession}
-        onContentChange={handleSessionChange}
-        isRounded={false}
-      />
+      <FilterContainer>
+        <OnsiteAlarm
+          enabled={isOnsiteExist}
+          onClick={
+            isOnsiteExist
+              ? () => {
+                  navigate('/onsite');
+                }
+              : undefined
+          }
+        >
+          <LeftAlarmContent>
+            <OnsiteIcon src={onsiteAlarmIcon} />
+            {isOnsiteExist ? '현장 예매 요청' : '현장 예매 요청이 없습니다!'}
+            {isOnsiteExist ? <NewIcon>NEW</NewIcon> : undefined}
+          </LeftAlarmContent>
 
-      <SearchFilterBar
-        search={search}
-        handleSearch={handleSearch}
-        handleSearchButtonClick={handleSearchButtonClick}
-        handleClearSearch={handleClearSearch}
-        filter={filter}
-        totalCount={totalCount}
-        acceptCount={acceptCount}
-        unacceptCount={unacceptCount}
-        handleFilterClick={handleFilterClick}
-        isReserved={true}
-      />
+          {isOnsiteExist ? (
+            <>
+              <OnsiteDirect>바로가기</OnsiteDirect>
+              <img src={directIcon} />
+            </>
+          ) : undefined}
+        </OnsiteAlarm>
+
+        <PlaySessionPicker
+          schedules={schedules}
+          selectedSession={selectedSession}
+          onContentChange={handleSessionChange}
+          isRounded={true}
+        />
+        <SearchFilterBar
+          search={search}
+          handleSearch={handleSearch}
+          handleSearchButtonClick={handleSearchButtonClick}
+          handleClearSearch={handleClearSearch}
+          filter={filter}
+          totalCount={totalCount}
+          acceptCount={acceptCount}
+          unacceptCount={unacceptCount}
+          handleFilterClick={handleFilterClick}
+          isReserved={true}
+        />
+      </FilterContainer>
 
       <ListContainer>
         <CustomerListItem
@@ -183,6 +204,55 @@ const ViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+`;
+
+const FilterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  padding: 0 10px;
+`;
+
+const OnsiteAlarm = styled.div<{enabled: boolean}>`
+  display: flex;
+  align-items: center;
+
+  border-radius: 10px;
+
+  background: ${({enabled}) => (enabled ? 'var(--purple-4)' : 'var(--grey-5)')};
+  padding: 10px 18px;
+  margin-bottom: 20px;
+`;
+
+const LeftAlarmContent = styled.div.attrs({className: 'Podo-Ticket-Headline-5'})`
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+
+  gap: 10px;
+
+  color: var(--ect-white);
+`;
+
+const OnsiteIcon = styled.img`
+  width: 16px;
+  height: 16px;
+`;
+
+const NewIcon = styled.div.attrs({className: 'Podo-Ticket-Body-B12'})`
+  border-radius: 30px;
+
+  padding: 3px 5px;
+  background: var(--ect-white);
+  height: 100%;
+
+  color: var(--purple-4);
+`;
+
+const OnsiteDirect = styled.div.attrs({className: 'Podo-Ticket-Body-B11'})`
+  margin-right: 5px;
+
+  color: var(--grey-3);
 `;
 
 const ListContainer = styled.div`

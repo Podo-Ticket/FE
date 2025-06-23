@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import magnifier from '@assets/images/admin/magnifier.png';
+import magnifier from '@assets/icons/ic_magnify.svg';
 import closeIcon from '@assets/icons/ic_delete.svg';
 
-// SearchBar Props 타입 정의
 interface SearchFilterBarProps {
   search: string;
   handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -32,8 +31,10 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
 }) => {
   return (
     <ViewContainer>
-      {/* 검색 바 */}
       <SearchBar>
+        <SearchButton onClick={search ? handleClearSearch : handleSearchButtonClick}>
+          <SearchIcon src={search ? closeIcon : magnifier} />
+        </SearchButton>
         <SearchInput
           className='Podo-Ticket-Body-B5'
           type='text'
@@ -41,9 +42,6 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
           value={search}
           onChange={handleSearch}
         />
-        <SearchButton onClick={search ? handleClearSearch : handleSearchButtonClick}>
-          <SearchIcon src={search ? closeIcon : magnifier} />
-        </SearchButton>
       </SearchBar>
 
       {/* 필터 버튼 */}
@@ -72,33 +70,33 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
 
 export default SearchFilterBar;
 
-// 컨테이너 스타일
 const ViewContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  background: var(--background-1);
-  border: 0.5px solid var(--grey-4);
+  background: var(--ect-white);
+  border: none;
 
   padding: 15px;
 `;
 
-// 검색 바 스타일
 const SearchBar = styled.div`
   display: flex;
-  position: relative;
-  align-items: center;
-  width: 92.37vw;
+  align-items: stretch;
+
+  border-bottom: 0.5px solid var(--grey-5);
+
+  width: 100%;
 `;
 
 const SearchInput = styled.input`
   flex-grow: 1;
 
-  border: 0.5px solid var(--grey-4);
-  border-radius: 10px;
+  border: none;
   background: var(--ect-white);
 
-  padding: 5px 15px;
+  padding: 5px 10px;
+  height: 100%;
 
   &:focus {
     outline: none;
@@ -112,32 +110,29 @@ const SearchInput = styled.input`
   }
 `;
 
-const SearchButton = styled.button`
-  position: absolute;
-  right: 4%;
+const SearchButton = styled.div`
   display: flex;
   align-items: center;
-  border: none;
-  background: transparent;
 
-  margin-left: 10px;
+  border: none;
+
+  padding: 0 5px;
+  height: 100%;
 
   cursor: pointer;
 `;
 
 const SearchIcon = styled.img`
-  width: 16px;
-  height: 16px;
+  width: 100%;
+  height: 100%;
 `;
 
-// 필터 버튼 컨테이너 스타일
 const FilterButtonsContainer = styled.div`
   display: flex;
 
   margin-top: 10px;
 `;
 
-// 필터 버튼 그룹 스타일
 const FilterButtons = styled.div`
   display: flex;
 
