@@ -1,26 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import {useLocation, Link} from 'react-router-dom';
 import styled from 'styled-components';
+import socket from '../../../api/socket';
 
-import Home from '@assets/images/admin/grey_home.png';
-import ActHome from '@assets/images/admin/purple_home.png';
-import Reserved from '@assets/images/admin/grey_checked_list.png';
-import ActReserved from '@assets/images/admin/purple_checked_list.png';
-import Onsite from '@assets/images/admin/grey_plus_list.png';
-import ActOnsite from '@assets/images/admin/purple_plus_list.png';
-import Setting from '@assets/images/admin/grey_setting.png';
-import ActSetting from '@assets/images/admin/purple_setting.png';
+import HomeIcon from '@assets/icons/ic_home.svg?react';
+import ReservedIcon from '@assets/icons/ic_check_list.svg?react';
+import SettingIcon from '@assets/icons/ic_cogwheel.svg?react';
+import RedCircleIcon from '@assets/icons/ic_new_bubble.svg';
 
-import RedCirclePng from '@assets/images/admin/redCircle.png';
 import {pxToVh, pxToPercent} from '../../../utils/unitConverter.ts';
 import {UserWithApproval, fetchOnsiteUserList} from '../../../api/admin/OnsiteManageApi';
 import {usePath} from '../../../utils/PathContext.tsx';
 
 const pathToIndex = (path: string) => {
-  if (path.startsWith('/home')) return 0;
-  if (path.startsWith('/reserved')) return 1;
-  if (path.startsWith('/onsite')) return 2;
-  if (path.startsWith('/setting')) return 3;
+  if (path.startsWith('/admin/home')) return 0;
+  if (path.startsWith('/admin/reserved')) return 1;
+  if (path.startsWith('/admin/setting')) return 2;
   return 0;
 };
 
@@ -43,7 +38,7 @@ const FotterNav: React.FC<FooterNavProps> = ({
   const prevIndex = pathToIndex(prevPath);
   const [activeIndex] = useState(pathToIndex(location.pathname));
   const [direction, setDirection] = useState<'left' | 'right'>('right');
-  const [hasPendingApproval, setHasPendingApproval] = useState(false);
+  const [isOnsiteExist, setIsOnsiteExist] = useState(false);
   const [, setData] = useState<UserWithApproval[]>([]);
   const [barX, setBarX] = useState(prevIndex * 100);
 
@@ -68,41 +63,52 @@ const FotterNav: React.FC<FooterNavProps> = ({
       try {
         const response = await fetchOnsiteUserList(Number(scheduleId));
         setData(response.users);
-        setHasPendingApproval(response.users.some(item => !item.approve));
+        setIsOnsiteExist(response.users.some(item => !item.approve));
       } catch (error) {
         console.error('Error loading user list:', error);
       }
     };
 
     loadUserList();
-  }, [location.pathname]);
+  }, []);
+
+  useEffect(() => {
+    const handleOnsiteReservation = () => {
+      setIsOnsiteExist(true);
+    };
+    const handleNoRequests = () => {
+      setIsOnsiteExist(false);
+    };
+
+    socket.on('admin:onsite-reservation', handleOnsiteReservation);
+    socket.on('admin:no-onsite-requests', handleNoRequests);
+
+    return () => {
+      socket.off('admin:onsite-reservation', handleOnsiteReservation);
+      socket.off('admin:no-onsite-requests', handleNoRequests);
+    };
+  }, []);
 
   return (
     <Nav className='Podo-Ticket-Body-B7' isGroupAllow={isGroupAllow}>
       {!isGroupAllow ? (
         <>
           <NavItem className={activeIndex === 0 ? 'active' : ''}>
-            <NavLink to='/home'>
-              <IconHome src={activeIndex === 0 ? ActHome : Home} />
+            <NavLink to='/admin/home'>
+              <HomeIcon color={activeIndex === 0 ? 'var(--purple-4)' : 'var(--grey-5)'} />
               <p>홈</p>
             </NavLink>
           </NavItem>
           <NavItem className={activeIndex === 1 ? 'active' : ''}>
-            <NavLink to='/reserved'>
-              <IconReserved src={activeIndex === 1 ? ActReserved : Reserved} />
-              <p>발권 명단 관리</p>
+            <NavLink to='/admin/reserved'>
+              <ReservedIcon color={activeIndex === 1 ? 'var(--purple-4)' : 'var(--grey-5)'} />
+              {isOnsiteExist ? <RedCircle src={RedCircleIcon} /> : undefined}
+              <p>명단 관리</p>
             </NavLink>
           </NavItem>
           <NavItem className={activeIndex === 2 ? 'active' : ''}>
-            <NavLink to='/onsite'>
-              <IconOnsite src={activeIndex === 2 ? ActOnsite : Onsite} />
-              {hasPendingApproval && <RedCircle src={RedCirclePng} />}
-              <p>현장 예매 관리</p>
-            </NavLink>
-          </NavItem>
-          <NavItem className={activeIndex === 3 ? 'active' : ''}>
-            <NavLink to='/setting'>
-              <IconSetting src={activeIndex === 3 ? ActSetting : Setting} />
+            <NavLink to='/admin/setting'>
+              <SettingIcon color={activeIndex === 2 ? 'var(--purple-4)' : 'var(--grey-5)'} />
               <p>설정</p>
             </NavLink>
           </NavItem>
@@ -181,23 +187,6 @@ const NavLink = styled(Link)`
   }
 `;
 
-const IconHome = styled.img`
-  height: ${pxToPercent(24, 59)};
-  margin: ${pxToVh(5)} 0;
-`;
-const IconReserved = styled.img`
-  height: ${pxToPercent(24, 59)};
-  margin: ${pxToVh(5)} 0;
-`;
-const IconOnsite = styled.img`
-  height: ${pxToPercent(24, 59)};
-  margin: ${pxToVh(5)} 0;
-`;
-const IconSetting = styled.img`
-  height: ${pxToPercent(24, 59)};
-  margin: ${pxToVh(5)} 0;
-`;
-
 const AllowItem = styled.button<{isActive: boolean}>`
   display: flex;
   flex-direction: column;
@@ -233,9 +222,9 @@ const DeleteItem = styled.button<{isActive: boolean}>`
 
 const RedCircle = styled.img`
   position: absolute;
-  height: ${pxToPercent(7, 59)};
-  top: 0%;
-  right: 20%;
+  height: ${pxToPercent(13, 59)};
+  top: -10%;
+  right: 10%;
 `;
 
 const ActiveBar = styled.div<{
@@ -246,7 +235,7 @@ const ActiveBar = styled.div<{
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 25%;
+  width: 33.33%;
   height: 4px;
   background-color: var(--purple-4);
   transform: translateX(${({x}) => `${x}%`});

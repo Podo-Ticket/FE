@@ -23,6 +23,7 @@ import TicketConfirmation from './pages/user/TicketConfirmation.tsx';
 import TicketScreen from './pages/user/Ticket.tsx';
 import SurveyLink from './pages/user/SurveyLink.tsx';
 
+import AdminLayout from '@/components/layout/screenLayouts/AdminLayout';
 import AdminAuth from './pages/admin/AdminAuth.tsx';
 import AdminHome from './pages/admin/AdminHome.tsx';
 import ManageLockingSeats from './pages/admin/ManageLockingSeats.tsx';
@@ -209,18 +210,44 @@ function App() {
             }
           />
 
+          <Route path='/admin' element={<AdminLayout />}>
+            <Route
+              path='home'
+              element={
+                <ProtectedRoute>
+                  <ScrollLockWrapper>
+                    <AdminHome />
+                  </ScrollLockWrapper>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Reserved Routes */}
+            <Route
+              path='reserved'
+              element={
+                <ProtectedRoute>
+                  <ScrollLockWrapper>
+                    <ReservedManange />
+                  </ScrollLockWrapper>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path='setting'
+              element={
+                <ProtectedRoute>
+                  <ScrollLockWrapper>
+                    <AdminSetting />
+                  </ScrollLockWrapper>
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+
           <Route
-            path='/home'
-            element={
-              <ProtectedRoute>
-                <ScrollLockWrapper>
-                  <AdminHome />
-                </ScrollLockWrapper>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/home/realtime'
+            path='admin/home/realtime'
             element={
               <ProtectedRoute>
                 <ScrollLockWrapper>
@@ -230,7 +257,7 @@ function App() {
             }
           />
           <Route
-            path='/home/manage'
+            path='admin/home/manage'
             element={
               <ProtectedRoute>
                 <ScrollLockWrapper>
@@ -239,18 +266,8 @@ function App() {
               </ProtectedRoute>
             }
           />
-
-          {/* Reserved Routes */}
           <Route
-            path='/reserved'
-            element={
-              <ProtectedRoute>
-                <ReservedManange />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/reserved/add'
+            path='admin/reserved/add'
             element={
               <ProtectedRoute>
                 <ReservedAdd />
@@ -258,7 +275,7 @@ function App() {
             }
           />
           <Route
-            path='/reserved/check'
+            path='admin/reserved/check'
             element={
               <ProtectedRoute>
                 <ReservedCheck />
@@ -266,35 +283,24 @@ function App() {
             }
           />
           <Route
-            path='/reserved/check/edit'
+            path='admin/reserved/check/edit'
             element={
               <ProtectedRoute>
                 <ReservedEdit />
               </ProtectedRoute>
             }
           />
-
           <Route
-            path='/onsite'
-            element={
-              <ProtectedRoute>
-                <OnsiteManage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/setting'
+            path='admin/onsite'
             element={
               <ProtectedRoute>
                 <ScrollLockWrapper>
-                  <AdminSetting />
+                  <OnsiteManage />
                 </ScrollLockWrapper>
               </ProtectedRoute>
             }
           />
-
           <Route path='/survey' element={<SurveyLink />} />
-
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </AnimatePresence>

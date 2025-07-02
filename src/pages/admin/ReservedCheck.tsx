@@ -42,7 +42,7 @@ export default function ReservedCheck() {
       }
       await deleteReservation(BigInt(userId));
       setShowMultipleAcceptModal(false);
-      navigate('/reserved');
+      navigate('/admin/reserved');
     } catch (error) {}
   };
 
@@ -51,7 +51,7 @@ export default function ReservedCheck() {
     iconWidth: 13,
     iconHeight: 20,
     text: '예매 명단 확인',
-    clickFunc: () => navigate('/reserved'),
+    clickFunc: () => navigate('/admin/reserved'),
   };
 
   const rightItem = {
@@ -60,7 +60,7 @@ export default function ReservedCheck() {
     iconHeight: 24,
     text: '',
     clickFunc: () =>
-      navigate('/reserved/check/edit', {
+      navigate('/admin/reserved/check/edit', {
         state: {
           userId,
           name: reservationInfo?.name,

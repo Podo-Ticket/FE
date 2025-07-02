@@ -4,7 +4,6 @@ import {useNavigate, createSearchParams} from 'react-router-dom';
 import {pxToVw, pxToVh, pxToPercent} from '../../utils/unitConverter.ts'; // 경로는 실제 구조에 맞게!
 import {fetchAdminEnter, PerformanceInfo} from '../../api/admin/AdminAuthApi.ts';
 
-import FooterNav from '@components/layout/footers/FooterNav.tsx';
 import SeatLockButton from '@components/common/buttons/WhiteBoxBtn.tsx';
 
 import podoLogo from '../../assets/images/admin/mainLogo.png';
@@ -40,14 +39,11 @@ const AdminHome = () => {
   const handleMoveLockingPage = (isLocking: boolean) => {
     const params = {manage: isLocking ? 'lock' : 'unlock'};
     navigate({
-      pathname: '/home/manage',
-      search: `?${createSearchParams(params)}`, // Query Parameters 추가
+      pathname: '/admin/home/manage',
+      search: `?${createSearchParams(params)}`,
     });
   };
 
-  /**
-   * 현재 시간과 가장 가까운 공연을 찾는 함수
-   */
   const getClosestPerformance = (performances: PerformanceInfo[]): PerformanceInfo | null => {
     if (performances.length === 0) return null;
 
@@ -235,7 +231,7 @@ const AdminHome = () => {
             </TopMenu>
             <BottomMenu
               onClick={() => {
-                navigate('/reserved');
+                navigate('/admin/reserved');
               }}
             >
               <span
@@ -251,7 +247,6 @@ const AdminHome = () => {
           </TicketingStatusDiv>
         </MenuContainer>
       </ViewMainContainer>
-      <FooterNav />
     </ViewContainer>
   );
 };

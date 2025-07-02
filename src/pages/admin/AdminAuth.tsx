@@ -22,7 +22,7 @@ const AdminAuth = () => {
       const response = await verifyAdminCode(adminCode); // 유틸리티 함수 호출
 
       if (response.success) {
-        navigate('/home'); // 인증 성공 시 이동
+        navigate('/admin/home'); // 인증 성공 시 이동
       }
     } catch (error: any) {
       setIsInvalidCodeModalOpen(true); // 인증 실패 시 모달 열기
@@ -36,20 +36,17 @@ const AdminAuth = () => {
   const [isInputVisible, setIsInputVisible] = useState(false);
 
   useEffect(() => {
-    // 첫 번째 설명 텍스트를 페이드 인
     const descriptionTimer = setTimeout(() => {
       setIsContentVisible(true);
-    }, 300); // 첫 번째 텍스트는 약간의 지연 후 표시
+    }, 300);
 
-    // "포도티켓"을 나중에 페이드 인
     const highlightedTextTimer = setTimeout(() => {
       setIsHighlightedTextVisible(true);
-    }, 1000); // 두 번째 텍스트는 더 긴 지연 후 표시
+    }, 1000);
 
-    // Input을 나중에 페이드 인
     const inputTimer = setTimeout(() => {
       setIsInputVisible(true);
-    }, 1500); // 두 번째 텍스트는 더 긴 지연 후 표시
+    }, 1500);
 
     return () => {
       clearTimeout(descriptionTimer);

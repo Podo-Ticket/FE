@@ -120,7 +120,7 @@ function OnSiteReserve() {
       const response = await submitReservation(data);
 
       if (response.success) {
-        setIsLoading(true); // 로딩 상태 활성화
+        setIsLoading(true);
 
         const userId = response.userId; // 예매 신청한 사용자 ID
 

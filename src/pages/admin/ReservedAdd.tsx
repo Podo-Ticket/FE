@@ -96,7 +96,7 @@ function ReservedAdd() {
       const response = await addReservation(data);
 
       if (response.success) {
-        navigate('/reserved');
+        navigate('/admin/reserved');
       } else {
         setIsLoading(false);
         if (response.error === '이미 예약되었습니다.') {
@@ -115,7 +115,7 @@ function ReservedAdd() {
     iconWidth: 13,
     iconHeight: 20,
     text: '예매 명단 추가',
-    clickFunc: () => navigate('/reserved'),
+    clickFunc: () => navigate('/admin/reserved'),
   };
 
   return (
