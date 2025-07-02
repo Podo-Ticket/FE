@@ -2,11 +2,11 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
 
-import FooterNav from '@components/layout/footers/FooterNav.tsx';
 import PlaySessionPicker from '@components/layout/headers/PlaySessionPicker.tsx';
 import SearchFilterBar from '@components/layout/headers/SearchFilterBar.tsx';
 import CustomerListItem from '@components/common/informations/CustomerListItem.tsx';
 import TopNav from '@components/layout/headers/TopNav.tsx';
+import socket from '../../api/socket';
 
 import insertCustomer from '@assets/icons/ic_plus_user.svg';
 import onsiteAlarmIcon from '@assets/icons/ic_ticket_add.svg';
@@ -19,6 +19,7 @@ import {
   Schedule,
   fetchSchedules,
 } from '../../api/admin/ReservedManageApi.ts';
+import {fetchOnsiteUserList} from '@/api/admin/OnsiteManageApi.ts';
 
 const ReservedManage = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const ReservedManage = () => {
     setSearch(e.target.value);
   };
 
-  const handleSearchButtonClick = () => setSearch(''); // 검색어 초기화
+  const handleSearchButtonClick = () => setSearch('');
 
   const handleClearSearch = () => {
     setSearch('');
@@ -85,22 +86,54 @@ const ReservedManage = () => {
     icon: insertCustomer,
     iconWidth: 22,
     iconHeight: 19,
-    clickFunc: () => navigate('add'),
+    clickFunc: () => navigate('/admin/reserved/add'),
   };
 
   const centerItem = {
     text: '명단 관리',
   };
 
-  const [isOnsiteExist, setIsOnsiteExist] = useState(true);
+  useEffect(() => {
+    const loadUserList = async () => {
+      const scheduleId = localStorage.getItem('scheduleId');
+      if (!scheduleId) return;
+
+      try {
+        const response = await fetchOnsiteUserList(Number(scheduleId));
+        setIsOnsiteExist(response.users.some(item => !item.approve));
+      } catch (error) {
+        console.error('Error loading user list:', error);
+      }
+    };
+
+    loadUserList();
+  }, []);
+
+  const [isOnsiteExist, setIsOnsiteExist] = useState(false);
+
+  useEffect(() => {
+    const handleOnsiteReservation = () => {
+      setIsOnsiteExist(true);
+    };
+    const handleNoRequests = () => {
+      setIsOnsiteExist(false);
+    };
+
+    socket.on('admin:onsite-reservation', handleOnsiteReservation);
+    socket.on('admin:no-onsite-requests', handleNoRequests);
+
+    return () => {
+      socket.off('admin:onsite-reservation', handleOnsiteReservation);
+      socket.off('admin:no-onsite-requests', handleNoRequests);
+    };
+  }, []);
+
   const filteredData = data
     .filter(item => {
-      // 상태 필터링
       if (filter === '전체') return true;
       return item.state === (filter === '수락 완료');
     })
     .filter(item => {
-      // 검색 필터링 (이름 또는 전화번호)
       const lowerCaseSearch = search.toLowerCase();
       return (
         item.name?.toLowerCase().includes(lowerCaseSearch) ||
@@ -117,7 +150,6 @@ const ReservedManage = () => {
       return a.id - b.id;
     });
 
-  // 전체 데이터에서 발권 완료 및 미발권 건수 계산
   const totalCount = data.length;
   const acceptCount = data.filter(item => item.state === true).length;
   const unacceptCount = data.filter(item => item.state === false).length;
@@ -127,7 +159,7 @@ const ReservedManage = () => {
 
   const handleListItemlick = (item: {scheduleId: string; id: any}) => {
     item.scheduleId = selectedSession;
-    navigate('/reserved/check', {
+    navigate('/admin/reserved/check', {
       state: {
         scheduleId: selectedSession, // 현재 선택된 공연 회차 ID
         userId: item.id, // 선택한 사용자 ID
@@ -145,7 +177,7 @@ const ReservedManage = () => {
           onClick={
             isOnsiteExist
               ? () => {
-                  navigate('/onsite');
+                  navigate('/admin/onsite');
                 }
               : undefined
           }
@@ -192,8 +224,6 @@ const ReservedManage = () => {
           canControll={false}
         />
       </ListContainer>
-
-      <FooterNav />
     </ViewContainer>
   );
 };

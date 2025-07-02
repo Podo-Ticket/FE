@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import styled from 'styled-components';
 
-import FooterNav from '@components/layout/footers/FooterNav.tsx';
 import TheaterInfoModal from '@components/common/modals/TheaterInfoModal.tsx';
 import TopNav from '@components/layout/headers/TopNav.tsx';
 import PWAInstallModal from '@components/pages/admin/adminSetting/PWAInstallModal.tsx';
@@ -64,7 +63,7 @@ const AdminSetting = () => {
             <ContentLeftContainer>
               <ContentImage src={versionImage} style={{width: '22px', height: '22px'}} />
               <ContentName>버전 정보</ContentName>
-              <ContentSubName>v1.3.0</ContentSubName>
+              <ContentSubName>v1.3.1</ContentSubName>
             </ContentLeftContainer>
             <ContentDescription>최신 버전</ContentDescription>
           </CategoryItem>
@@ -89,8 +88,6 @@ const AdminSetting = () => {
         onAcceptFunc={closeTheaterInfoModal}
         pageMode={true}
       />
-
-      <FooterNav />
     </ViewContainer>
   );
 };

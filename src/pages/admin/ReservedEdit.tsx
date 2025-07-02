@@ -93,7 +93,7 @@ function ReservedEdit() {
       }
 
       const requestData: EditRequest = {
-        userId: userId, // 🔥 userId 추가!
+        userId: userId,
         name: data.name,
         phoneNumber: data.phoneNumber,
         headCount: data.headCount,
@@ -102,7 +102,7 @@ function ReservedEdit() {
       const response = await editReservation(requestData);
 
       if (response.success) {
-        navigate('/reserved');
+        navigate('/admin/reserved');
       } else {
         if (response.error === '관리자 권한이 필요합니다.') {
           setIsAdministratorRightsModalOpen(true);
@@ -120,7 +120,7 @@ function ReservedEdit() {
     iconWidth: 13,
     iconHeight: 20,
     text: '예매 명단 확인',
-    clickFunc: () => navigate('/reserved'),
+    clickFunc: () => navigate(-1),
   };
 
   return (

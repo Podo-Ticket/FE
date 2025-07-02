@@ -1,4 +1,5 @@
 import axios from 'axios';
+import socket from '../socket';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 // Create an Axios instance with default configurations
@@ -45,7 +46,10 @@ export const fetchPerformanceSchedules = async (playId: number) => {
 // 예매 신청
 export const submitReservation = async (data: ReservationRequest): Promise<ReservationResponse> => {
   try {
-    const response = await api.post('/reservation', data, {withCredentials: true});
+    const socketId = socket.id;
+    const response = await api.post(`/reservation?socketId=${socketId}`, data, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.data.error) {

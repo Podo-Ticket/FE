@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
+import socket from '../../api/socket';
 
 import TopNav from '@components/layout/headers/TopNav.tsx';
 import CustomerListItem from '@components/common/informations/CustomerListItem.tsx';
@@ -59,8 +60,8 @@ const OnsiteManage = () => {
 
   const lefter = {
     icon: backIcon,
-    iconWidth: 13, // 아이콘 너비 (px 단위)
-    iconHeight: 20, // 아이콘 높이 (px 단위)
+    iconWidth: 13,
+    iconHeight: 20,
     text: '',
     clickFunc: () => {
       navigate(-1);
@@ -69,16 +70,20 @@ const OnsiteManage = () => {
 
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('전체');
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  };
 
-  const handleSearchButtonClick = () => setSearch(''); // 검색어 초기화
+  const [isOnsiteArrived, setIsOnsiteArrived] = useState(false);
+  useEffect(() => {
+    const handleOnsiteReservation = () => {
+      setIsOnsiteArrived(true);
+      console.log('onsite reservation');
+    };
 
-  const handleClearSearch = () => {
-    setSearch('');
-  };
+    socket.on('admin:onsite-reservation', handleOnsiteReservation);
 
+    return () => {
+      socket.off('admin:onsite-reservation', handleOnsiteReservation);
+    };
+  }, []);
   // 현장 예매자 리스트 데이터 가져오기
   const [data, setData] = useState<UserWithApproval[]>([]);
   useEffect(() => {
@@ -88,13 +93,14 @@ const OnsiteManage = () => {
 
     const loadUserList = async () => {
       try {
-        const data = await fetchOnsiteUserList(Number(selectedSession)); // 사용자 리스트 가져오기
+        const data = await fetchOnsiteUserList(Number(selectedSession));
         setData(data.users);
       } catch (error) {}
     };
 
     loadUserList();
-  }, [selectedSession, isRefreshed]);
+  }, [selectedSession, isRefreshed, isOnsiteArrived]);
+
   // 현장 예매자 발권 승인, 거절 처리
   const handleApproveClick = async (request: OnsiteApprovalRequest) => {
     try {
