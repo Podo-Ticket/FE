@@ -10,7 +10,7 @@ import NoticeModal from '@components/common/modals/NoticeModal';
 import NoSuchCustomerModal from '@components/common/modals/NoticeModal.tsx';
 import NoSeatsDataModal from '@components/common/modals/NoticeModal.tsx';
 
-import poster from '@/assets/images/posters/2025_Spring_KwangwoonUniv_poster.png';
+import poster from '@/assets/images/posters/2nd_KUTA_conference_poster.jpeg';
 
 import confirmIcon from '../../assets/images/confirm_icon.png';
 import backIcon from '../../assets/images/left_arrow.png';

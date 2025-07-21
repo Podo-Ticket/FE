@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 import MediumBtn from '@components/common/buttons/MediumBtn.tsx';
 import MultiLanguageHeader from '@components/layout/headers/MultiLanguageHeader.tsx';
-import lowResPoster from '../../assets/images/posters/2025_Spring_KwangwoonUniv_poster_lowRes.png';
-import poster from '../../assets/images/posters/2025_Spring_KwangwoonUniv_poster.png'; // 해당 공연에 맞는 상수값 적용 필요
+import lowResPoster from '../../assets/images/posters/2nd_KUTA_conference_poster_lowRes.jpeg';
+import poster from '../../assets/images/posters/2nd_KUTA_conference_poster.jpeg'; // 해당 공연에 맞는 상수값 적용 필요
 
 import {fetchPlayInfo} from '../../api/user/UserHomeApi';
 import {slideUp} from '../../styles/animation/DefaultAnimation.ts';

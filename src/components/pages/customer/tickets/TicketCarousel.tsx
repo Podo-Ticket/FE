@@ -5,7 +5,7 @@ import {Swiper, SwiperSlide} from 'swiper/react';
 import 'swiper/css';
 
 import TicketBackground from '@assets/images/ticket_background.svg?react';
-import poster from '@/assets/images/posters/2025_Spring_KwangwoonUniv_poster.png'; // 해당 공연에 맞는 상수값 적용 필요
+import poster from '@/assets/images/posters/2nd_KUTA_conference_poster.jpeg'; // 해당 공연에 맞는 상수값 적용 필요
 import {Language} from '@/constants/text/Language';
 
 import {splitDateTime} from '../../../../utils/DateUtil';
