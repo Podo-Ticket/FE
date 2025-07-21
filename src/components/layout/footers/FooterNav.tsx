@@ -9,7 +9,7 @@ import SettingIcon from '@assets/icons/ic_cogwheel.svg?react';
 import RedCircleIcon from '@assets/icons/ic_new_bubble.svg';
 
 import {pxToVh, pxToPercent} from '../../../utils/unitConverter.ts';
-import {UserWithApproval, fetchOnsiteUserList} from '../../../api/admin/OnsiteManageApi';
+import {fetchOnsiteUserList} from '../../../api/admin/OnsiteManageApi';
 import {usePath} from '../../../utils/PathContext.tsx';
 
 const pathToIndex = (path: string) => {
@@ -39,7 +39,6 @@ const FotterNav: React.FC<FooterNavProps> = ({
   const [activeIndex] = useState(pathToIndex(location.pathname));
   const [direction, setDirection] = useState<'left' | 'right'>('right');
   const [isOnsiteExist, setIsOnsiteExist] = useState(false);
-  const [, setData] = useState<UserWithApproval[]>([]);
   const [barX, setBarX] = useState(prevIndex * 100);
 
   useEffect(() => {
@@ -62,7 +61,6 @@ const FotterNav: React.FC<FooterNavProps> = ({
 
       try {
         const response = await fetchOnsiteUserList(Number(scheduleId));
-        setData(response.users);
         setIsOnsiteExist(response.users.some(item => !item.approve));
       } catch (error) {
         console.error('Error loading user list:', error);
@@ -75,9 +73,11 @@ const FotterNav: React.FC<FooterNavProps> = ({
   useEffect(() => {
     const handleOnsiteReservation = () => {
       setIsOnsiteExist(true);
+      console.log('handleOnsiteReservation');
     };
     const handleNoRequests = () => {
       setIsOnsiteExist(false);
+      console.log('handleNoRequests');
     };
 
     socket.on('admin:onsite-reservation', handleOnsiteReservation);

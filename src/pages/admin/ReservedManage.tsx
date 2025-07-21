@@ -184,16 +184,14 @@ const ReservedManage = () => {
         >
           <LeftAlarmContent>
             <OnsiteIcon src={onsiteAlarmIcon} />
-            {isOnsiteExist ? '현장 예매 요청' : '현장 예매 요청이 없습니다!'}
+            현장 예매 요청
             {isOnsiteExist ? <NewIcon>NEW</NewIcon> : undefined}
           </LeftAlarmContent>
 
-          {isOnsiteExist ? (
-            <>
-              <OnsiteDirect>바로가기</OnsiteDirect>
-              <img src={directIcon} />
-            </>
-          ) : undefined}
+          <>
+            <OnsiteDirect>바로가기</OnsiteDirect>
+            <img src={directIcon} />
+          </>
         </OnsiteAlarm>
 
         <PlaySessionPicker

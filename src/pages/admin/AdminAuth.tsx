@@ -6,7 +6,7 @@ import AccessAdminBtn from '@components/common/buttons/LargeBtn';
 import DefaultErrorModal from '@components/common/errors/DefaultErrorModal';
 import AdminCodeInput from '@components/common/inputs/DefaultInput';
 
-import podoIcon from '../../assets/images/podo_icon.png';
+import podoIcon from '../../assets/icons/ic_podoticket_logo.svg';
 
 import {fadeIn} from '../../styles/animation/DefaultAnimation.ts';
 import {verifyAdminCode} from '../../api/admin/AdminAuthApi';

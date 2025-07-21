@@ -72,7 +72,6 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
   return (
     <ResultContent>
       {data.map(item => {
-        // isOnsite에 따라 데이터 구조 처리
         const user = isOnsite ? item.user : item; // UserWithApproval의 user 또는 User
         const approve = isOnsite ? item.approve : item.state; // 승인 여부 또는 발권 상태
 
@@ -89,7 +88,7 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
                 <Phone
                   as='a'
                   href={isMobile ? `tel:${user.phone_number.replace(/-/g, '')}` : undefined}
-                  className='Podo-Ticket-Body-B11'
+                  className='Podo-Ticket-Body-B6'
                   onClick={e => {
                     e.stopPropagation();
                   }}
@@ -141,8 +140,8 @@ const CustomerListItem: React.FC<CustomerListItemProps> = ({
             <Divider completed={approve} />
 
             <SeatInfo completed={approve}>
-              <SeatText className='Podo-Ticket-Body-B11'>예매 좌석 수</SeatText>
-              <Seats className='Podo-Ticket-Body-B9'>{user.head_count}석</Seats>
+              <SeatText className='Podo-Ticket-Body-B9'>예매 좌석 수</SeatText>
+              <Seats className='Podo-Ticket-Body-B7'>{user.head_count}석</Seats>
             </SeatInfo>
           </ResultContentItems>
         );

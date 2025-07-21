@@ -68,9 +68,6 @@ const OnsiteManage = () => {
     },
   };
 
-  const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState('전체');
-
   const [isOnsiteArrived, setIsOnsiteArrived] = useState(false);
   useEffect(() => {
     const handleOnsiteReservation = () => {
@@ -172,34 +169,20 @@ const OnsiteManage = () => {
   }, [isManaging]);
 
   // 유저 리스트 데이터 필터 정의
-  const filteredData = data
-    .filter(item => {
-      // 상태 필터링
-      if (filter === '전체') return true; // 전체일 경우 필터링 없이 다 보여줌
-      return item.approve === (filter === '수락 완료'); // '수락 완료'일 경우 true, 미 수락일 경우 false
-    })
-    .filter(item => {
-      // 검색 필터링 (이름 또는 전화번호)
-      const lowerCaseSearch = search.toLowerCase();
-      return (
-        item.user.name?.toLowerCase().includes(lowerCaseSearch) ||
-        item.user.phone_number?.includes(lowerCaseSearch)
-      );
-    })
-    .sort((a, b) => {
-      // 1순위: "미 수락" 항목을 최상단으로
-      if (a.approve === false && b.approve !== false) return -1; // a가 미 수락이면 a를 먼저
-      if (b.approve === false && a.approve !== false) return 1; // b가 미 수락이면 b를 먼저
+  const filteredData = data.sort((a, b) => {
+    // 1순위: "미 수락" 항목을 최상단으로
+    if (a.approve === false && b.approve !== false) return -1; // a가 미 수락이면 a를 먼저
+    if (b.approve === false && a.approve !== false) return 1; // b가 미 수락이면 b를 먼저
 
-      // 2순위: 이름의 가나다 순 정렬
-      const nameA = a.user.name.charCodeAt(0);
-      const nameB = b.user.name.charCodeAt(0);
-      if (nameA < nameB) return -1;
-      if (nameA > nameB) return 1;
+    // 2순위: 이름의 가나다 순 정렬
+    const nameA = a.user.name.charCodeAt(0);
+    const nameB = b.user.name.charCodeAt(0);
+    if (nameA < nameB) return -1;
+    if (nameA > nameB) return 1;
 
-      // 3순위: ID의 오름차순 정렬
-      return a.user.id - b.user.id; // ID로 오름차순 정렬
-    });
+    // 3순위: ID의 오름차순 정렬
+    return a.user.id - b.user.id; // ID로 오름차순 정렬
+  });
 
   return (
     <ViewContainer>
@@ -214,19 +197,25 @@ const OnsiteManage = () => {
         />
       </FilterContainer>
 
-      <ListContainer>
-        <CustomerListItem
-          data={filteredData}
-          scheduleId={Number(selectedSession)}
-          onBtnClick={undefined}
-          isOnsite={true}
-          canControll={true}
-          isExpanded={isExpanded}
-          checkedItems={checkedItems}
-          onApprovalRequest={handleApproveClick}
-          onCheckClick={handleCheckClick}
-        />
-      </ListContainer>
+      {filteredData && filteredData.length > 0 ? (
+        <ListContainer>
+          <CustomerListItem
+            data={filteredData}
+            scheduleId={Number(selectedSession)}
+            onBtnClick={undefined}
+            isOnsite={true}
+            canControll={true}
+            isExpanded={isExpanded}
+            checkedItems={checkedItems}
+            onApprovalRequest={handleApproveClick}
+            onCheckClick={handleCheckClick}
+          />
+        </ListContainer>
+      ) : (
+        <EmptyPlaceholder className='Podo-Ticket-Body-B5'>
+          현장 예매 요청이 없습니다.
+        </EmptyPlaceholder>
+      )}
 
       {isManaging ? (
         <FooterNav
@@ -259,4 +248,15 @@ const ListContainer = styled.div`
   padding-bottom: 50px;
 
   animation: ${fadeIn} 0.3s ease-in-out;
+`;
+
+const EmptyPlaceholder = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 80vh;
+
+  color: var(--grey-6);
 `;
