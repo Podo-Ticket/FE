@@ -27,7 +27,8 @@ import {
   ReservedSeat,
 } from '../../api/admin/ManageLockingSeatsApi';
 
-import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_SeongbukVillageTheater';
+import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_SAPY_Grayhall';
+// import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_SeongbukVillageTheater';
 // import AdminSeatMap from "@components/pages/admin/seatsComponent/AdminSeatMap_Riveract";
 // import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_Kwangwoon';
 
