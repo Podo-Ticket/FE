@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import TopNav from '@components/layout/headers/TopNav';
 import CloseBtn from '@components/common/buttons/SmallBtn';
 
-import SeatMap from '@assets/images/seatMap/seongbuk_village_theater.png';
+import SeatMap from '@assets/images/seatMap/sapy_grayhall.png';
 import VenueMap from '@assets/images/guideMap/guideMap_SeongbukVillageTheater.png';
 import backIcon from '@assets/images/left_arrow.png';
 
-import {PERFORMANCE_NOTICE} from '../../../constants/text/playInfo/2025_spring_kwangwoonUniv.ts';
+import {PERFORMANCE_NOTICE} from '../../../constants/text/playInfo/1st_Podo_CreativeStudio.ts';
 import {fadeIn, fadeOut} from '../../../styles/animation/DefaultAnimation.ts';
 import {TICKET} from '@/constants/text/UIText.ts';
 
