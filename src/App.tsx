@@ -34,7 +34,7 @@ import ReservedEdit from './pages/admin/ReservedEdit.tsx';
 import ReservedCheck from './pages/admin/ReservedCheck.tsx';
 import OnsiteManage from './pages/admin/OnsiteManage.tsx';
 import AdminSetting from './pages/admin/AdminSetting.tsx';
-
+import RegistrationPerformance from './pages/admin/RegistrationPerformance.tsx';
 import OnboardingModal from './components/common/modals/OnboardingModal.tsx';
 import ForceLogoutModal from './components/pages/customer/userHome/ForceLogoutModal.tsx';
 
@@ -297,6 +297,14 @@ function App() {
                 <ScrollLockWrapper>
                   <OnsiteManage />
                 </ScrollLockWrapper>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='admin/registration'
+            element={
+              <ProtectedRoute>
+                <RegistrationPerformance />
               </ProtectedRoute>
             }
           />

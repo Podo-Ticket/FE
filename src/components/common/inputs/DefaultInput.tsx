@@ -5,11 +5,13 @@ interface DefaultInputProps {
   category: string; // input 카테고리 명
   placeholder: string; // 입력 필드의 플레이스홀더
   type?: string; // 입력 필드의 타입 (기본값은 text)
-  value: string; // 입력 필드의 값
+  value?: string; // 입력 필드의 값
   onChangeFunc: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void; // onChange 핸들러
   isSelect?: boolean; // select 여부 (기본값 false)
   options?: Array<{value: string | number; label: string}> | string[];
   isNumberSelect?: boolean;
+  unitText?: string;
+  isEssential?: boolean;
 }
 
 const DefaultInput: React.FC<DefaultInputProps> = ({
@@ -21,10 +23,16 @@ const DefaultInput: React.FC<DefaultInputProps> = ({
   isSelect = false,
   options = [],
   isNumberSelect = false,
+  unitText,
+  isEssential = false,
 }) => {
   return (
     <InputContainer>
-      <Category className='Podo-Ticket-Body-B3'>{category}</Category>
+      <Category className='Podo-Ticket-Body-B3'>
+        {category}
+        {isEssential ? <Essential>&nbsp;*</Essential> : null}
+      </Category>
+
       {isSelect ? (
         <SelectField className='Podo-Ticket-Body-B4' value={value} onChange={onChangeFunc}>
           {placeholder && <option value='placeholder'>{placeholder}</option>}
@@ -52,14 +60,24 @@ const DefaultInput: React.FC<DefaultInputProps> = ({
             )}
         </SelectField>
       ) : (
-        <InputField
-          className='Podo-Ticket-Body-B4'
-          type={type}
-          placeholder={placeholder}
-          onChange={onChangeFunc}
-          value={value}
-          onFocus={e => e.preventDefault()}
-        />
+        <InputWrapper>
+          <InputField
+            className='Podo-Ticket-Body-B4'
+            type={type}
+            onWheel={e => e.currentTarget.blur()}
+            // onKeyDown={e => {
+            //   const invalidChars = ['e', 'E', '+', '-', '.'];
+            //   if (invalidChars.includes(e.key)) {
+            //     e.preventDefault();
+            //   }
+            // }}
+            placeholder={placeholder}
+            onChange={onChangeFunc}
+            value={value}
+            onFocus={e => e.preventDefault()}
+          />
+          {unitText && value && <UnitText>{unitText}</UnitText>}
+        </InputWrapper>
       )}
     </InputContainer>
   );
@@ -78,6 +96,8 @@ const InputContainer = styled.div`
 `;
 
 const Category = styled.div`
+  display: flex;
+  flex-direction: row;
   margin-bottom: 13px;
 
   color: var(--grey-7);
@@ -172,4 +192,26 @@ const SelectField = styled.select`
   @media (min-resolution: 3dppx) {
     padding-bottom: 10px;
   }
+`;
+
+const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const UnitText = styled.span`
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  font-size: 14px;
+  color: var(--grey-5);
+
+  @media (max-resolution: 2dppx) {
+    font-size: 21px;
+    bottom: 15px;
+  }
+`;
+
+const Essential = styled.p`
+  color: var(--red-1);
 `;
