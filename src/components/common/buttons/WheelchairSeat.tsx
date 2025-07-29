@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import lockIcon from '@assets/images/admin/purple_seat_lock.png';
 
-interface SingleSeatProps {
+interface WheelchairSeatProps {
   isAdmin: boolean; // 어드민 계정 여부
   content: string; // 버튼 안 내용
   onClick: () => void; // 클릭 이벤트 핸들러
@@ -16,7 +16,7 @@ interface SingleSeatProps {
   isUnlocking?: boolean; // 새로 잠금 해제된 좌석인지 여부
 }
 
-const SingleSeat: React.FC<SingleSeatProps> = ({
+const WheelchairSeat: React.FC<WheelchairSeatProps> = ({
   isAdmin,
   content,
   onClick,
@@ -29,7 +29,7 @@ const SingleSeat: React.FC<SingleSeatProps> = ({
   isUnlocking = false,
 }) => {
   return (
-    <SingleSeatContainer
+    <WheelchairSeatContainer
       onClick={onClick}
       disabled={!isAvailable}
       isAvailable={isAvailable}
@@ -43,13 +43,13 @@ const SingleSeat: React.FC<SingleSeatProps> = ({
     >
       {content}
       <LockImage isAdmin={isAdmin} isLocked={isLocked} isUnlocking={isUnlocking} />
-    </SingleSeatContainer>
+    </WheelchairSeatContainer>
   );
 };
 
-export default SingleSeat;
+export default WheelchairSeat;
 
-const SingleSeatContainer = styled.button<{
+const WheelchairSeatContainer = styled.button<{
   isAvailable: boolean;
   isAdmin: boolean;
   isLocked: boolean;
@@ -64,7 +64,7 @@ const SingleSeatContainer = styled.button<{
     pointer-events: none; /* 터치 이벤트 차단 해제 */
   }
 
-  width: 32px;
+  width: 64px;
   height: 32px;
   border-radius: 5px;
 

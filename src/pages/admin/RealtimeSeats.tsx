@@ -6,10 +6,12 @@ import TopNav from '@components/layout/headers/TopNav';
 import PlaySessionPicker from '@components/layout/headers/PlaySessionPicker';
 import AdminSeatInfo from '@components/common/informations/AdminSeatInfo';
 import AudienceInfo from '@components/pages/admin/realtimeSeats/AudienceInfo';
+
 // import AdminSeatMap from "@components/pages/admin/seatsComponent/AdminSeatMap_Riveract";
 // import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_Kwangwoon';
 // import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_SeongbukVillageTheater';
-import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_SAPY_Grayhall';
+// import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_SAPY_Grayhall';
+import AdminSeatMap from '@components/pages/admin/seatsComponent/AdminSeatMap_CAU_Arthall';
 
 import backIcon from '@assets/images/left_arrow.png';
 import refreshIcon from '@assets/images/refresh2_icon.png';
@@ -146,6 +148,8 @@ const SeatMapContainer = styled.div`
 
   width: 100%;
   height: 73vh;
+
+  overflow: hidden;
 
   border-radius: 10px;
   border: 1px solid var(--grey-3);
