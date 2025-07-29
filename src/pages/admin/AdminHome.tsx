@@ -6,14 +6,17 @@ import {fetchAdminEnter, PerformanceInfo} from '../../api/admin/AdminAuthApi.ts'
 
 import SeatLockButton from '@components/common/buttons/WhiteBoxBtn.tsx';
 
-import podoLogo from '../../assets/images/admin/mainLogo.png';
-import rightArror from '../../assets/images/admin/white_right-arrow.png';
+// import podoLogo from '../../assets/images/admin/mainLogo.png';
+
+import podoLogo from '../../assets/icons/ic_logo_podoticket.svg';
+import rightArrow from '../../assets/images/admin/white_right-arrow.png';
 import lockIcon from '../../assets/images/admin/lock_icon.png';
 import unlockIcon from '../../assets/images/admin/unlock_icon.png';
 import greyRightArrow from '../../assets/images/admin/grey_right_arrow.png';
 import character from '../../assets/images/admin/character.png';
 import character_100 from '../../assets/images/admin/100_character.png';
 import plus_icon from '../../assets/images/admin/tabler_plus.png';
+import onboarding_icon from '../../assets/icons/ic_onboding.svg';
 
 const AdminHome = () => {
   const [performance, setPerformance] = useState<PerformanceInfo[] | null>(null);
@@ -28,6 +31,7 @@ const AdminHome = () => {
         const data = await fetchAdminEnter();
         setPerformance(data.info);
       } catch (error) {
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -96,10 +100,10 @@ const AdminHome = () => {
   return (
     <ViewContainer>
       <ViewMainContainer>
-        <AppTitle>
-          <img src={podoLogo} style={{height: `100%`}} />
-          <MainName>포도티켓</MainName>
-        </AppTitle>
+        <HomeHeader>
+          <HomeLogo src={podoLogo} style={{height: `100%`}} />
+          <Onboarding src={onboarding_icon} alt='온보딩' onClick={() => {}} />
+        </HomeHeader>
 
         <MainContainer>
           <TextContainer>
@@ -131,7 +135,11 @@ const AdminHome = () => {
 
             <LiveSeatButton>
               {performance === null || minutesLeft === null ? (
-                <ButtonText>
+                <ButtonText
+                  onClick={() => {
+                    navigate('/admin/registration');
+                  }}
+                >
                   <p className='Podo-Ticket-Headline-H5'>새로운 공연 등록</p>
                   <img
                     style={{width: `${pxToPercent(14, 148)}`}}
@@ -146,7 +154,7 @@ const AdminHome = () => {
                     navigate('realtime');
                   }}
                 >
-                  실시간 좌석 현황 <WhiteRightArrow src={rightArror} alt='화살표 아이콘' />
+                  실시간 좌석 현황 <WhiteRightArrow src={rightArrow} alt='화살표 아이콘' />
                 </ButtonText>
               )}
             </LiveSeatButton>
@@ -270,22 +278,21 @@ const ViewMainContainer = styled.div`
   margin: 0 auto;
 `;
 
-const AppTitle = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${pxToVw(6)};
-  height: ${pxToVh(23)};
-  width: 100%;
-  margin: ${pxToVw(15)} auto 0;
+const HomeLogo = styled.img`
+  width: 31.25vw;
+  min-width: 100px;
 `;
 
-const MainName = styled.h1`
-  color: #6a39c0;
-  font-family: 'S-Core Dream';
-  font-size: ${pxToVw(18)};
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+const HomeHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 2.24svh;
+
+  justify-content: space-between;
+`;
+const Onboarding = styled.img`
+  width: 8.125vw;
+  min-width: 26px;
 `;
 
 const MainContainer = styled.div`
