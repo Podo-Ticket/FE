@@ -82,9 +82,17 @@ const RegistrationPerformance = () => {
 
       formData.append('poster', data.poster); // File 객체
       formData.append('title', data.title);
-      formData.append('en_title', data.en_title);
+
+      if (data.en_title) {
+        formData.append('en_title', data.en_title);
+      }
+
       formData.append('location', data.location);
-      formData.append('en_location', data.en_location);
+
+      if (data.en_location) {
+        formData.append('en_location', data.en_location);
+      }
+
       formData.append('price', String(data.price));
       formData.append('runningTime', String(data.runningTime));
       formData.append('schedules', JSON.stringify(transformedSchedules)); // 문자열로

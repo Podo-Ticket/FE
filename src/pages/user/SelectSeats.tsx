@@ -16,8 +16,8 @@ import {fetchSeats, checkSeats} from '../../api/user/SelectSeatsApi';
 import {useLanguage} from '../../hooks/useLanguage';
 import {SELECT_SEATS} from '../../constants/text/UIText.ts';
 
-import SAPYGrayhallSeatMap from '@components/pages/customer/selectSeats/UserSeatMap_sapy_grayhall.tsx';
-import SeongbukVillageTheaterSeatMap from '@components/pages/customer/selectSeats/UserSeatMap_SeongbukVillageTheater.tsx';
+import SAPYGrayhallSeatMap from '@components/pages/customer/selectSeats/UserSeatMap_SAPY_Grayhall.tsx';
+// import SeongbukVillageTheaterSeatMap from '@components/pages/customer/selectSeats/UserSeatMap_SeongbukVillageTheater.tsx';
 // import RiveractSeatMap from "@components/pages/customer/selectSeats/UserSeatMap_Riveract.tsx";
 // import KwangwoonSeatMap from '@components/pages/customer/selectSeats/UserSeatMap_Kwangwoon';
 
