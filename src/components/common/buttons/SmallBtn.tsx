@@ -33,7 +33,7 @@ const SmallBtnContainer = styled.button<{
   align-items: center;
 
   width: 43.51vw;
-  height: 8.32svh;
+  aspect-ratio: 150 / 46;
 
   padding: 11px 0;
   border-radius: 10px;
