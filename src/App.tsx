@@ -35,7 +35,7 @@ import ReservedCheck from './pages/admin/ReservedCheck.tsx';
 import OnsiteManage from './pages/admin/OnsiteManage.tsx';
 import AdminSetting from './pages/admin/AdminSetting.tsx';
 import RegistrationPerformance from './pages/admin/RegistrationPerformance.tsx';
-import OnboardingModal from './components/common/modals/OnboardingModal.tsx';
+import OnboardingModal from './components/common/modals/Onboarding/OnboardingModal_ver1.tsx';
 import ForceLogoutModal from './components/pages/customer/userHome/ForceLogoutModal.tsx';
 
 const GlobalStyle = createGlobalStyle`

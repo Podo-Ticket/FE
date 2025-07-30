@@ -8,7 +8,7 @@ import SeatLockButton from '@components/common/buttons/WhiteBoxBtn.tsx';
 
 // import podoLogo from '../../assets/images/admin/mainLogo.png';
 
-import podoLogo from '../../assets/icons/ic_logo_podoticket.svg';
+import podoLogo from '../../assets/images/admin/podo_ticket_logo.png';
 import rightArrow from '../../assets/images/admin/white_right-arrow.png';
 import lockIcon from '../../assets/images/admin/lock_icon.png';
 import unlockIcon from '../../assets/images/admin/unlock_icon.png';
@@ -18,9 +18,12 @@ import character_100 from '../../assets/images/admin/100_character.png';
 import plus_icon from '../../assets/images/admin/tabler_plus.png';
 import onboarding_icon from '../../assets/icons/ic_onboding.svg';
 
+import OnboardingModal_ver2 from '../../components/common/modals/Onboarding/OnboardingModal_ver2.tsx';
+
 const AdminHome = () => {
   const [performance, setPerformance] = useState<PerformanceInfo[] | null>(null);
   const [, setLoading] = useState(true);
+  const [onboarding, setOnboarding] = useState(false);
 
   const navigate = useNavigate();
 
@@ -102,7 +105,13 @@ const AdminHome = () => {
       <ViewMainContainer>
         <HomeHeader>
           <HomeLogo src={podoLogo} style={{height: `100%`}} />
-          <Onboarding src={onboarding_icon} alt='온보딩' onClick={() => {}} />
+          <Onboarding
+            src={onboarding_icon}
+            alt='온보딩'
+            onClick={() => {
+              setOnboarding(true);
+            }}
+          />
         </HomeHeader>
 
         <MainContainer>
@@ -255,6 +264,8 @@ const AdminHome = () => {
           </TicketingStatusDiv>
         </MenuContainer>
       </ViewMainContainer>
+
+      <OnboardingModal_ver2 onClose={() => setOnboarding(false)} isOpen={onboarding} />
     </ViewContainer>
   );
 };

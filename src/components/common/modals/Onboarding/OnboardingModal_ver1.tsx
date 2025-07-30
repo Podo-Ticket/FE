@@ -9,7 +9,7 @@ import dontpresentChecked from '@assets/images/admin/dont_present_checked.png';
 import dontpresentUnchecked from '@assets/images/admin/dont_present_unchecked.png';
 import closeImage from '@assets/images/admin/white_x.png';
 
-import {fadeIn, fadeOut} from '../../../styles/animation/DefaultAnimation.ts';
+import {fadeIn, fadeOut} from '../../../../styles/animation/DefaultAnimation.ts';
 
 interface OnboardingModalProps {
   showOnboardingModal: boolean;
