@@ -5,7 +5,7 @@ import TopNav from '@components/layout/headers/TopNav';
 import CloseBtn from '@components/common/buttons/SmallBtn';
 
 import SeatMap from '@assets/images/seatMap/sapy_grayhall.png';
-import VenueMap from '@assets/images/guideMap/guideMap_SeongbukVillageTheater.png';
+import VenueMap from '@assets/images/guideMap/guideMap_SAPY_Grayhall.png';
 import backIcon from '@assets/images/left_arrow.png';
 
 import {PERFORMANCE_NOTICE} from '../../../constants/text/playInfo/1st_Podo_CreativeStudio.ts';
